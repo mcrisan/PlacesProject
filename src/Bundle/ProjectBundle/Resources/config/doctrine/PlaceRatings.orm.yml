@@ -1,0 +1,28 @@
+Bundle\ProjectBundle\Entity\PlaceRatings:
+    type: entity
+    table: place_ratings
+    repositoryClass: Bundle\ProjectBundle\Entity\Repository\PlaceRatingsRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        placeId:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: place_id
+        totalVotes:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: total_votes
+        votesCount:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: votes_count
+    lifecycleCallbacks: {  }

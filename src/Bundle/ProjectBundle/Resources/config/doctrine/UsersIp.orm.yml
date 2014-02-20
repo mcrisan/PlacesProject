@@ -1,0 +1,27 @@
+Bundle\ProjectBundle\Entity\UsersIp:
+    type: entity
+    table: users_ip
+    repositoryClass: Bundle\ProjectBundle\Entity\Repository\UsersIpRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        ip:
+            type: string
+            length: 15
+            fixed: false
+            nullable: false
+        count:
+            type: integer
+            unsigned: false
+            nullable: false
+        voteFlag:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: vote_flag
+    lifecycleCallbacks: {  }

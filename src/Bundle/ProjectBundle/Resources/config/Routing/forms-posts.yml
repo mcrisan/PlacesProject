@@ -1,0 +1,39 @@
+## Forms-Posts YAML Template.
+
+# Forms Controller & Comm. controller
+#Create comment route
+comment_create:
+    pattern:  /comment/{place_id}
+    defaults: { _controller: BundleProjectBundle:Comment:create }
+    requirements:
+        _method:  POST
+        store_id: \d+
+        
+#Search by rating route
+search:
+    pattern:  /places/search
+    defaults: { _controller: BundleProjectBundle:Forms:search }
+    requirements:
+        _method:  POST
+        
+#Vote - POST REQUESTS
+votee:
+    pattern:  /votee
+    defaults: { _controller: BundleProjectBundle:Forms:votee }
+    requirements:
+        _method:  POST
+setVote:
+    pattern:  /setVote
+    defaults: { _controller: BundleProjectBundle:Forms:setVote }
+    requirements:
+        _method:  POST
+morePlacesRequest:
+    pattern:  /morePlacesRequest
+    defaults: { _controller: BundleProjectBundle:Forms:morePlacesRequest }
+    requirements:
+        _method:  POST       
+demoSearch:
+    pattern:  /demoSearch
+    defaults: { _controller: BundleProjectBundle:Forms:demoSearch }
+    requirements:
+        _method:  POST|GET

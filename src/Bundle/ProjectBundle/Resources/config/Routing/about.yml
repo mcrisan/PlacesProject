@@ -1,0 +1,15 @@
+## About YAML Template.
+
+#About
+about:
+  pattern:  /about
+  defaults: { _controller: BundleProjectBundle:Page:about }
+  requirements:
+    _method:  GET
+
+#Test
+about_test:
+  pattern:  /about/test
+  defaults: { _controller: BundleProjectBundle:Page:test }
+  requirements:
+    _method:  GET

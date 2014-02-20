@@ -1,0 +1,46 @@
+# *
+# _bundle_project:
+#      resource: "@BundleProjectBundle/Resources/config/routing/routing.yml"
+
+## Login YAML Template.
+login:
+    path:   /admin/login
+    defaults: { _controller: BundleProjectBundle:Auth:login }
+
+logout:
+    path:   /admin/logout
+    defaults: { _controller: BundleProjectBundle:Auth:logout }
+admin_start:
+    path:  /admin/start
+    defaults: { _controller: BundleProjectBundle:Auth:start }
+   
+login_check:
+    path:  /admin/login_check
+    defaults: { _controller: BundleProjectBundle:Auth:loginCheck }
+    
+#social sign-in
+testToken:
+  path: /testToken
+  defaults: { _controller:BundleProjectBundle:Auth:testToken }
+
+clear:
+  path: /clear
+  defaults: { _controller:BundleProjectBundle:Auth:clear }
+
+## Login YAML Template.
+
+## Home page
+_bundle_project_home:
+  resource: "@BundleProjectBundle/Resources/config/routing/home.yml"
+    
+## About page
+_bundle_project_about:
+  resource: "@BundleProjectBundle/Resources/config/routing/about.yml"
+
+## Render place actions
+_bundle_project_renderPlace:
+  resource: "@BundleProjectBundle/Resources/config/routing/render-place.yml"
+
+## Posts, comm. actions
+_bundle_project:
+  resource: "@BundleProjectBundle/Resources/config/routing/forms-posts.yml"

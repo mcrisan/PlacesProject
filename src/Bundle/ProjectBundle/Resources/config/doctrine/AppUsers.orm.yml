@@ -1,0 +1,39 @@
+Bundle\ProjectBundle\Entity\AppUsers:
+    type: entity
+    table: app_users
+    repositoryClass: Bundle\ProjectBundle\Entity\Repository\AppUsersRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        txtLogin:
+            type: string
+            length: 45
+            fixed: false
+            nullable: false
+            column: txt_login
+        txtPassword:
+            type: string
+            length: 45
+            fixed: false
+            nullable: false
+            column: txt_password
+        txtEmail:
+            type: string
+            length: 45
+            fixed: false
+            nullable: true
+            column: txt_email
+        booActive:
+            type: boolean
+            nullable: false
+            column: boo_active
+        timeStamp:
+            type: datetime
+            nullable: false
+            column: time_stamp
+    lifecycleCallbacks: {  }

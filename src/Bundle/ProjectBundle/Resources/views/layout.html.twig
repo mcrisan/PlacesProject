@@ -1,0 +1,47 @@
+{# src/Blogger/BlogBundle/Resources/views/layout.html.twig  #}
+
+{# extend the base template #}
+{% extends 'BundleProjectBundle::base.html.twig' %}
+
+{# add stylesheets - overload from base #}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{# aside content #}
+{% block aside %}
+
+<!-- Aside bar -->
+
+<div class="list-group">        
+    <a href="#" class="list-group-item active">
+        <h4 class="list-group-item-text">Global aside</h4>
+        <p class="list-group-item-text">aside content</p>
+        <p class="list-group-item-text">aside content</p>
+        <p class="list-group-item-text">aside content</p>
+    </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-text">Global aside</h4>
+        <p class="list-group-item-text">aside content</p>
+        <p class="list-group-item-text">aside content</p>
+        <p class="list-group-item-text">aside content</p>
+    </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-text">Global aside</h4>
+        <p class="list-group-item-text">aside content</p>
+        <p class="list-group-item-text">aside content</p>
+        <p class="list-group-item-text">aside content</p>
+    </a>
+</div>
+
+<div class="list-group">        
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-text">Global aside</h4>
+        <p class="list-group-item-text">aside content</p>
+        <p class="list-group-item-text">aside content</p>
+        <p class="list-group-item-text">aside content</p>
+    </a>
+    
+</div>
+
+{% endblock %}

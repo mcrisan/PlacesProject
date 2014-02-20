@@ -1,0 +1,372 @@
+{# demo page  #}
+{% extends 'BundleProjectBundle::layout.html.twig' %}
+{% block title %} Demo {% endblock %}
+
+{# session ###}
+{% block session %}
+<!-- Temp. vars. in flashbag -->
+    {% for flashMessage in app.session.flashbag.get('session_test') %}
+            {{ flashMessage|raw }}
+    {% endfor %}
+{% endblock %}
+
+{# var #}
+{% set placeAddress = "" %}
+
+{% block body %}
+<!-- Place container -->
+<div id="place-container">
+    <article class="row" style="border:0px solid black;">
+        <!-- Tabs content -->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:0px;">
+            <div class="tabable">
+                <ul class="nav nav-tabs">
+                    <li><a href="#pane1" data-toggle="tab">Details</a></li>
+                    <li class="active"><a href="#pane2" data-toggle="tab">Photos</a></li>
+                    <li><a href="#pane3" data-toggle="tab">Ratings</a></li>
+                    <li><a href="#pane4" data-toggle="tab">Reviews</a></li>
+                    <li><a href="#pane5" data-toggle="tab">Promotions</a></li>
+                </ul>
+                <div class="tab-content" style="padding:0px;border: 0px">
+                {% for place in placeDetail %}
+                {% set placeAddress = place.placevicinity %}
+                    <div id="pane1" class="tab-pane">
+                    {# hide some values - used to load map #}
+                        <input id="name" type="hidden" value="{{ place.placename }}" />
+                        <input id="lat" type="hidden" value="{{ place.placelat }}" />
+                        <input id="lng" type="hidden" value="{{ place.placelng }}" />
+                        <input id="placeId" type="hidden" value="{{ place.placeid }}" />
+                        <input id="placeAddress" type="hidden" value="{{ place.placevicinity }}" />
+
+                        <h1>{{ place.placename }}</h1>
+                    {% if placePhotos is not empty %}
+                        {% for photo in placePhotos %}
+                        <img src="{{ photo.imgUrl }}" title="{{ place.placename }}" width="160" height="140"/>
+                        {% endfor %}
+                    {% else %}
+                        <span class="glyphicon glyphicon-picture icon-font-size-verylarge"></span>
+                    {% endif %}
+                        <a href="{{ place.placeurl }}" target="_blank" title="{{ place.placename }}">
+                            <img src="{{ place.placeicon }}"/></a>
+                        <p><a href="{{ path('index_indexShowPlace',{'name':placeSlug}) }}">{{ place.placename|capitalize }}</a></p>
+                        <p><a href="{{ path('index_placeDetails',{'name':placeSlug}) }}">New - {{ place.placename|capitalize }}</a></p>
+
+                    {% if place.placephonenumber|length > 1 %}
+                        <p><b>Phone: </b>{{ place.placephonenumber }}</p>
+                    {% else %}
+                        <p><b>Phone: </b>number not avaiable.</p>
+                    {% endif %}   
+                        <p><b>Type: </b>type - recode querys</p>
+                        <p><b>Address: </b>{{ place.placevicinity }}</p>
+
+                    {% if place.placerating|length != 0 %}
+                        <p><b>Ratings: <big><font color="green">{{ place.placerating }}</font></b></big> / 5 points.</p>
+                    {% else %}
+                        <p><b>Ratings: </b> Ratings are not available for this place.</p>
+                    {% endif %}
+                        <p><b>Geo Location: </b><u>Lat. </u>{{ place.placelat }}. <u>Lng.</u>{{ place.placelng }}.</p>  
+
+                    {% if place.placeWebSite %}
+                        <p><b>WebSite: </b> <a href="{{ place.placeWebSite }}" target="_blank"/>{{ place.placeWebSite }}</a></p>
+                    {% else %}
+                        <p><b>WebSite: </b>website not avaiable</p>    
+                    {% endif %}
+                    </div><!-- /.panel1 -->
+
+                    <div id="pane2" class="tab-pane active">
+                        <h1>{{ place.placename }}</h1>
+
+                        <!-- SlideShow -->
+                    {% if placeAllPhotos is not empty %}
+                        {% if placeAllPhotos|length > 1 %}
+                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                {% for key,value in placeAllPhotos %}
+                                    {% if key == 0 %} 
+                                <li data-target="#carousel-example-generic" data-slide-to="{{ key }}" class="active"></li>
+                                    {% else %}
+                                <li data-target="#carousel-example-generic" data-slide-to="{{ key }}"></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ol>
+
+                            <!-- Wrapper for slide -->
+                            <div class="carousel-inner">
+                            {% for key,photo in placeAllPhotos %}
+                                {% if key == 0 %}
+                                <div class="item active" style="border:0px solid blue; height:350px;width:100%">
+                                    <img src="{{ photo.imgUrl }}" width="100%"/>
+                                        {#<img src="http://upload.wikimedia.org/wikipedia/commons/a/a2/BadHogastein-Winter.jpg" alt="First slide">#}
+                                    <div class="carousel-caption">
+                                        Slide {{ key }}
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="item" style="border:0px solid blue;height:350px;width:100%">
+                                    <img src="{{ photo.imgUrl }}" width="100%"/>
+                                        {#<img src="http://upload.wikimedia.org/wikipedia/commons/a/a2/BadHogastein-Winter.jpg" alt="First slide">#}
+                                    <div class="carousel-caption">
+                                        Slide {{ key }}
+                                    </div>
+                                </div>
+                                {% endif %}    
+                            {% endfor %}
+                            </div><!-- /carousel-inner -->
+
+                            <!-- Controls -->
+                            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </a>
+                        </div><!-- /carousel-example-generic -->
+                        {% else %}
+                            {% for photo in placePhotos %} 
+                        <div class="item" style="border:0px solid blue; width:100%;height:350px;" >
+                            <a href="{{ photo.imgUrl }}" target="_blank"><img src="{{ photo.imgUrl }}" width="100%" height="100%" title="{{ place.placename }}"/></a>
+                        </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% else %}
+                        <center>
+                            {#<p>Image not found !</p>#}
+                            <span class="glyphicon glyphicon-picture icon-font-size-verylarge" title="Image not found !"></span>
+                        </center>
+                    {% endif %}           
+                    </div><!-- /.panel2 -->
+
+                    <div id="pane3" class="tab-pane">
+                        <div id="voteSection"> 
+                            <h1>{{ place.placename }}</h1>
+                        {% if bool is defined %} {# client already voted ! #}
+                            <p><b>Total votes: </b>{{ totalVotesAllTime }} votes</p>
+                            <p><b>Total votes for this place: </b>{{ totalVotes }} votes</p>
+                            <p><b>Points / Stars:</b> <font color="green"><big>{{ usersRating }}</big></font></p>
+
+                            {% if usersRating < 2%}
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+                            {% elseif usersRating < 3 %}
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+                            {% elseif usersRating < 4 %}
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+                            {% elseif usersRating < 5 %}
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+                            {% elseif usersRating == 5 %}
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
+                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
+                            {% endif %}
+                        {% else %} {# if client dose not vote #}
+                            <p>Select a star</p>
+                            <form>
+                                <br />1<input type="radio" name="vote" value="1" onclick="setVote(this.value, '{{ path('setVote') }}');")>
+                                2<input type="radio" name="vote" value="2" onclick="setVote(this.value, '{{ path('setVote') }}');">
+                                3<input type="radio" name="vote" value="3" onclick="setVote(this.value, '{{ path('setVote') }}');">
+                                4<input type="radio" name="vote" value="4" onclick="setVote(this.value, '{{ path('setVote') }}');">
+                                5<input type="radio" name="vote" value="5" onclick="setVote(this.value, '{{ path('setVote') }}');">
+                            </form>
+                        {% endif %}
+                        </div><!-- /.voteSection -->
+                    </div><!-- /.panel3 -->
+
+                    <div id="pane4" class="tab-pane">
+                        <h1>{{ place.placename }}</h1>
+                     {% include 'BundleProjectBundle:Reviews:index.html.twig' with {'reviews':reviews} %}
+                    </div><!-- /.panel4 -->
+
+                    <div id="pane5" class="tab-pane">
+                        <h1>Promotions</h1>
+                        <p>promotions</p>
+                    </div><!-- /.panel4 -->
+            {% endfor %}
+                </div><!-- /.tab-content -->
+            </div><!-- /.tabbable -->
+        </div><!-- /.tabs-div -->
+        <!-- /Tabs content  -->
+    </article>   
+
+    <!-- Map and directions (nested) -->
+    <article class="row" style="border:0px solid red;">
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="padding:2px;border:0px solid black;margin-bottom: 2px;">
+            <!--col-xs-12 col-sm-8 col-md-8 col-lg-8<br/>-->
+            <div id="googleMap" class="place-map"></div>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="padding:2px;border:0px solid black;">
+            <!--col-xs-12 col-sm,md,lg-4 <br />-->
+            <div class="get-directions">
+                <h1>Directions</h1>
+                <div class="form-group">
+                    {# Method one
+                        <form id="calculate-route" name="calculate-route" action="#" method="get">
+                            <input class="form-control" type="text" id="from" name="from" required="required" placeholder="From A" size="15" />
+                            <a id="from-link" href="#">Get current position</a>
+                            <br />
+                            <input class="form-control" type="text" id="to" name="to" required="required" placeholder="To B" size="15" value="{{ placeAddress }}"/>
+                            <a id="to-link" href="#">Get current position</a>
+                            <br />
+                            <button class="btn btn-default" type="submit"><b>Get directions</b></button>
+                        </form>#}
+
+                    {#Metdod #2 with txt-directions #}
+                    <form action="#" onsubmit="setDirections(this.from.value, this.to.value);
+                            return false;">
+                        <input class="form-control" type="text" size="25" id="fromAddress" name="from" value="Cluj-Napoca,Romania" placeholder="location address"/>
+                        <a id="from-link" href="#">Get current position</a><img class="loader" style="display:none;padding-left: 5px;"src="{{ asset('bundles/bundleproject/images/load.gif') }}"/>
+                        <input class="form-control" type="text" size="25" id="toAddress" name="to" value="{#{{ placeAddress }}#}" placeholder="destination address"/>                               
+                        <button class="btn btn-default" type="submit" style="width:100px;margin-top: 2px;"><img src="{{ asset('bundles/bundleproject/images/icons/arrow_branch.png') }}" title="Get Directions" alt="accept" /></button>  <img src="{{ asset('bundles/bundleproject/images/icons/car.png') }}" title="By car" alt="accept" />
+                    </form>
+                </div><!-- /.form-group -->
+
+                <div id="directions" style="height: 310px;overflow: scroll;overflow-x: hidden;padding-top: 0px;padding-right: 3px;" class="scroll-style11">
+                    <p><small>Directions</small></p>
+                </div>
+            </div> 
+        </div><!-- /.nested cols -->  
+    </article>
+</div><!-- /#place-container -->
+
+{% endblock %}
+
+{# overwrite aside block #}
+{% block aside %}
+    {% if input is defined %}
+    
+<p class="results-header-msg">
+    Total results: {{ totalResults }}
+    <br/>
+    Search value: {{ input }}
+</p>
+<div class="row app-results-wrapper"> 
+    <div class="app-aside-div">
+        {% for key,place in places %}
+            {# set first result as active #}
+            {% set active = (key == 0 ? 'active' : '') %}
+        <a id="{{ place.placeId }}" class="list-group-item {{ active }}" href="{{ path('renderPlace',{'param':place.slug}) }}">
+            <p>{{ place.placeName }}</p>
+            <p>
+                    {% if place.placeRating|length > 1 %}
+                    {% if place.placeRating < 2%}
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />
+                {% elseif place.placeRating < 3 %}
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />
+                {% elseif place.placeRating < 4 %}
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />
+                {% elseif place.placeRating < 5 %}
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />
+                {% elseif place.placeRating == 5 %}
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/star.png') }}" width="15" height="15" />
+                {% endif %}
+             {% else %}
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />  
+                <img src="{{ asset('bundles/bundleproject/images/blank_star.png') }}" width="15" height="15" />  
+             {% endif %}
+            </p>
+        </a>
+        {% endfor %}
+    {% else %}
+        <p class="results-header-msg" style="padding-left:10px;">
+            Invalid search input
+        </p>
+    {% endif %}
+    </div>
+    
+</div>
+<div id="gif-loader" style="display:none;width:100%">
+            <center><img src="{{ asset('bundles/bundleproject/images/load.gif') }}"></center>
+        </div>
+{% endblock %}
+
+{# js #}
+{# jquery libs for the map & autocomplete function
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+#}
+{% block javascript %} 
+<script type="text/javascript">
+    $(document).ready(function() {
+        //var i = 1;
+        var array = ""; 
+         // store current places in list
+                $('.app-aside-div').children('a').each(function(){
+                    var arrHref = ( $(this).attr('id') );
+                    array+=arrHref+',';
+                });
+        $('.app-results-wrapper').scroll(function() {
+            if ($(this)[0].scrollHeight - $(this).scrollTop() == $(this).outerHeight()) {
+                $.ajax({
+                    url: "/PlacesProject/web/app_dev.php/morePlacesRequest",
+                    type: "POST",
+                    data: 'input=1643',
+                    success: function(data) {
+//                alert(data);
+                        if (data) {
+                            $('#gif-loader').hide();
+                            console.log(data);
+                            $('.app-aside-div').append(data);
+                            //$('#gif-loader').hide();
+                        }
+                    },
+                    beforeSend: function() {
+                        $('#gif-loader').show();
+                    },
+                    complete: function() {
+                        $('#gif-loader').hide();
+                    }
+                    
+                });
+{#                        alert(1111);#}
+            }
+        });
+    });
+</script>
+    {#<script src="{{ asset('bundles/bundleproject/js/loadMap.js') }}"></script>#}
+<script src="{{ asset('bundles/bundleproject/js/renderPlace.js') }}"></script>
+<script src="{{ asset('bundles/bundleproject/js/processingVote.js') }}"></script>
+
+<script type="text/javascript" src="{{ asset('bundles/bundleproject/js/google-map-get-directions.js') }}"></script>
+<script src=" http://maps.google.com/?file=api&amp;v=2&amp;key=AIzaSyBGEQqVNDD_xkI7j4viU-5qMa-SYUOX_6g" type="text/javascript"></script>
+    {#<script src="{{ asset('bundles/bundleproject/js/google-maps.js') }}"></script>#}
+{% endblock %}
