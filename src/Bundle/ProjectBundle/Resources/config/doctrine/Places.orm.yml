@@ -46,4 +46,48 @@ Bundle\ProjectBundle\Entity\Places:
         comments:
             targetEntity: Bundle\ProjectBundle\Entity\Comment
             mappedBy: place
+    oneToOne:
+        placeDetails:
+            targetEntity: Bundle\ProjectBundle\Entity\PlaceDetails
+            mappedBy: place        
+#    oneToOne:
+#        placeDetails:
+#            targetEntity: Bundle\ProjectBundle\Entity\PlaceDetails
+#            cascade: {  }
+#            mappedBy: null
+#            inversedBy: null
+#            joinColumns:
+#                    id:
+#                    referencedColumnName: place_id
+#            orphanRemoval: false  
+#    manyToOne:
+#        place:
+#            targetEntity: Places
+#            cascade: {  }
+#            mappedBy: null
+#            inversedBy: null
+#            joinColumns:
+#                place_id:
+#                    referencedColumnName: id
+#            orphanRemoval: false
+#    oneToOne:
+#        placeDetails:
+#            targetEntity: Bundle\ProjectBundle\Entity\PlaceDetails
+#            joinColumns:
+#                    id:
+#                    referencedColumnName: place_id
+#            orphanRemoval: false
+
+#    oneToOne:
+#        placeDetails:
+#            targetEntity: Bundle\ProjectBundle\Entity\PlaceDetails
+#            mappedBy: null
+#            inversedBy: null
+#            joinColumns:
+#                    id:
+#                    referencedColumnName: place_id
+#            joinColumn:
+#                    name: id
+#                    referencedColumnName: place_id
+            
     lifecycleCallbacks: {  }

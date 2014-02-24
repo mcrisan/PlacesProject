@@ -1,4 +1,6 @@
 parameters:
+    placeoperation.class: Bundle\ProjectBundle\Service\PlaceOperations
+    placeoperationDAO.class: Bundle\ProjectBundle\Service\PlaceOperationsDAO
 #    bundle_project.example.class: Bundle\ProjectBundle\Example
 
 #services:
@@ -9,3 +11,12 @@ parameters:
 #    bundle_project.example:
 #        class: %bundle_project.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+services:
+    placeop:
+        class: "%placeoperation.class%"
+        arguments: [@placeopDAO, @doctrine.orm.entity_manager]
+    placeopDAO:
+        class: "%placeoperationDAO.class%"   
+        arguments: [@doctrine.orm.entity_manager]
+        

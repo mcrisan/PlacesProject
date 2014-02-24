@@ -26,117 +26,49 @@ class InsertPlacesCommand extends ContainerAwareCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $doctrine = $this->getContainer()->get('doctrine');
-        $em = $doctrine->getManager();
-
+        $placeop = $this->getContainer()->get('placeop');
         $apiKey = $this->getContainer()->getParameter('api_key');
         $latLng = $this->getContainer()->getParameter('latLng');
-
-        //var_dump($apiKey);exit();
         $radius = 5000;
-
         $type = $input->getArgument('type');
-
-        $output->writeln($this->addPlaces($type, $apiKey, $latLng, $radius, $em));
+        $output->writeln($this->addPlaces($type, $apiKey, $latLng, $radius, $placeop));
     }
 
-    function addPlaces($type, $apiKey, $latLng, $radius, $em) {
+    function addPlaces($type, $apiKey, $latLng, $radius, $placeop) {
         $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
-        $this->addPlacesByUrl($url, $type, $apiKey, $latLng, $radius, $em);
+        $this->addPlacesByUrl($url, $type, $apiKey, $latLng, $radius, $placeop);
     }
 
-    private function addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius, $em) {
+    private function addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius, $placeop) {
         sleep(3);
         $places = simplexml_load_file($url);
-
-        if ($places->status != 'ZERO_RESULTS') {
-            var_dump($places);
-        }
-
-
+//        if ($places->status != 'ZERO_RESULTS') {
+//           // var_dump($places);
+//        }      
         $placeItems = $places->result;
         $pageToken = $places->next_page_token;
-
-
-        //var_dump($places);
-        // Run the results
-        $i = 1;
-        
         foreach ($placeItems as $item) {
             $extId = $item->id;
             $name = $item->name;
             $slug = $this->gen_slug($name);
-
-//            $str = "abcdef12345";
-//            $slug .="-".str_shuffle($str);
-
-            echo $name . PHP_EOL;
-
-            $checkSlug = $em->getRepository('BundleProjectBundle:Places')
-                    ->checkCurrentSlug($slug);
-            $lastSlug = $em->getRepository('BundleProjectBundle:Places') // last slug
-                    ->getLastSlug($slug . '-');
+            $origin = "google";
             $detailsRef = $item->reference;
-
-            $isPlace = $em->getRepository('BundleProjectBundle:Places')
-                    ->checkCurrentExtId($extId);
-            if (!$isPlace) { // if not-insert place   
-                //$detailsRef = $item->reference;
-                if ($checkSlug) {
-                    if ($lastSlug) { // if the place 'has number-to-slug'
-                        $lastSlugId = explode('-', $lastSlug[0]['slug']);
-                        $allKeys = array_keys($lastSlugId);
-                        
-                        echo $maxIndex = end($allKeys);
-                        $nextNoToSlug = $lastSlugId[$maxIndex] + 1;
-                        echo $slug .="-" . $nextNoToSlug;
-                        //exit();
-                    } else {
-                        $slug .="-" . $i;
-                    }
-                }
-                //exit();
-
-
-                $origin = "google";
-
-                if (!empty($detailsRef)) {
+            if (!empty($detailsRef)) {
                     $detailsRef = $item->reference;
                 } else {
                     $detailsRef = "no ref";
                 }
-
-                // set and insert
-                $place = new Places();
-                $place->setExtId($extId);
-                $place->setSlug($slug);
-                $place->setDetailsRef($detailsRef);
-                $place->setOrigin($origin);
-                $place->setHasOwner(0);
-
-                $em->persist($place);
-                $em->flush($place);
-
-                echo "Place: place name '$slug' origin '$origin' inserted ! \r\n";
-            } else {
-                // check
-//                if($checkSlug){
-//                    echo "continue..";
-//                    continue;
-//                }
-                // update 
-//                $update = $em->getRepository('BundleProjectBundle:Places')
-//                        ->updatePlace($extId,$slug,$detailsRef);
-//                $update->execute();
-//                
-//                echo "Place: place name '$slug' updated ! \r\n";
-                //exit();
-                //echo "Place: place name '" . $slug . "' already inserted ! Try update ! \r\n";
-            }
+            $place = new Places();
+            $place->setExtId($extId);
+            $place->setSlug($slug);
+            $place->setDetailsRef($detailsRef);
+            $place->setOrigin($origin);
+            $place->setHasOwner(0);
+            $placeop->checkPlace($place);
         }
         if ($pageToken[0] != "") {
             $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=" . $latLng . "&radius=" . $radius . "&types=" . $placeType . "&sensor=false&key=" . $apiKey . "&pagetoken=" . $pageToken[0];
-            $this->addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius, $em);
+            $this->addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius, $placeop);
         }
     }
 
@@ -148,6 +80,5 @@ class InsertPlacesCommand extends ContainerAwareCommand {
         $b = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 's', 'a', 'a', 'a', 'a', 'a', 'a', 'ae', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'D', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'IJ', 'ij', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'l', 'l', 'N', 'n', 'N', 'n', 'N', 'n', 'n', 'O', 'o', 'O', 'o', 'O', 'o', 'OE', 'oe', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'S', 's', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 'y', 'Y', 'Z', 'z', 'Z', 'z', 'Z', 'z', 's', 'f', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i', 'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'A', 'a', 'AE', 'ae', 'O', 'o');
         return strtolower(preg_replace(array('/[^a-zA-Z0-9 -]/', '/[ -]+/', '/^-|-$/'), array('', '-', ''), str_replace($a, $b, $str)));
     }
-
 
 }

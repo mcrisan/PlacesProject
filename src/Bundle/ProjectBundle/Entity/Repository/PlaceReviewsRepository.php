@@ -48,4 +48,20 @@ class PlaceReviewsRepository extends EntityRepository
                 ->getResult();
         return $qb;
     }
+    
+    // Delete reviews for a place from place_reviews
+    public function deletePlceReviews($id){
+        
+        $em = $this->getEntityManager();
+        echo "in delete";
+        $query = $em
+        ->createQuery("
+                DELETE 
+                FROM Bundle\ProjectBundle\Entity\PlaceReviews pr
+                WHERE pr.places = :id
+            ")
+        ->setParameter('id',$id);
+
+        return $query;
+    }
 }

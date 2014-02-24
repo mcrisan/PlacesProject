@@ -21,12 +21,12 @@ class FormsController extends Controller {
     public function renderPlaceAction($param) {
         $placeName = $this->gen_slug($param);
         //$placeName = $this->$this->getRequest()->get('param');
-        
+
         $this->em = $this->getDoctrine()->getManager();
         $placeDetails = $this->em->getRepository('BundleProjectBundle:PlaceDetails')
                 ->getPlaceDetailsBySlug($placeName);
-        
-        if(!$placeDetails){
+
+        if (!$placeDetails) {
             return $this->render('BundleProjectBundle:Error:error.html.twig');
             //throw $this->createNotFoundException('Error msg.');
         }
@@ -37,7 +37,7 @@ class FormsController extends Controller {
         //exit();
         $user = new GetUserIp();
         $currentIp = $user->get_user_ip();
-        
+
         //place ratings value & status
         $userStatus = $this->em->getRepository('BundleProjectBundle:VoteStatus')
                 ->getUserStatus($placeId, $currentIp);
@@ -57,39 +57,38 @@ class FormsController extends Controller {
                 ->getPlacePhotos($placeId);
         // reviews
         $getDefaultPlaceReviews = $this->em->getRepository('BundleProjectBundle:Places')->find($placeId);
-       
-        
+
+
         $placeReviews = $this->em->getRepository('BundleProjectBundle:PlaceReviews')
                 ->getReviews($getDefaultPlaceReviews->getId());
 //        var_dump($placeReviews);
 //        exit();
-        
         //if user voted
         if ($userStatus) {
             return $this->render('BundleProjectBundle:Places:renderPlace.html.twig', array(
-                'placeDetails' => $placeDetails,
-                'placePhotos' => $placePhotos,
-                'placeAllPhotos' => $placeAllPhotos,
-                'ip' => $currentIp,
-                'totalVotesAllTime' => $totalVotesAllTime,
-                'totalVotes' => $totalVotesForPlace[0]['votesCount'],
-                'usersRating' => round(
+                        'placeDetails' => $placeDetails,
+                        'placePhotos' => $placePhotos,
+                        'placeAllPhotos' => $placeAllPhotos,
+                        'ip' => $currentIp,
+                        'totalVotesAllTime' => $totalVotesAllTime,
+                        'totalVotes' => $totalVotesForPlace[0]['votesCount'],
+                        'usersRating' => round(
                                 $total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2),
-                'bool' => true,
-                'placeSlug' => $placeName,
-                'placeid' => $placeId,
-                'reviews' => $placeReviews
+                        'bool' => true,
+                        'placeSlug' => $placeName,
+                        'placeid' => $placeId,
+                        'reviews' => $placeReviews
             ));
         }
 
         return $this->render('BundleProjectBundle:Places:renderPlace.html.twig', array(
-            'placeDetails' => $placeDetails,
-            'placePhotos' => $placePhotos,
-            'placeAllPhotos' => $placeAllPhotos,
-            'ip' => $currentIp,
-            'placeSlug' => $placeName,
-                'placeid' => $placeId,
-            'reviews' => $placeReviews
+                    'placeDetails' => $placeDetails,
+                    'placePhotos' => $placePhotos,
+                    'placeAllPhotos' => $placeAllPhotos,
+                    'ip' => $currentIp,
+                    'placeSlug' => $placeName,
+                    'placeid' => $placeId,
+                    'reviews' => $placeReviews
         ));
     }
 
@@ -98,23 +97,22 @@ class FormsController extends Controller {
         $notLike = $this->getRequest()->get('input');
         $arr = explode(',', $notLike);
         //echo "<pre>";
-            //print_r($arr);echo "</pre>";
+        //print_r($arr);echo "</pre>";
         //var_dump($notLike);//exit();
-        
         //echo "$notLike";
-        
-        
+
+
         $this->em = $this->getDoctrine()->getManager();
-        
+
         $places = $this->em->getRepository('BundleProjectBundle:PlaceDetails')
-                    ->getMorePlaces($notLike);
+                ->getMorePlaces($notLike);
 //         $this->em->clear($places); 
         //exit();
 //        $this->em->refresh($places); 
         //echo "<pre>";print_r($places);//exit();
         //echo "<pre>";print_r($places);exit();
-        return $this->render('BundleProjectBundle:Places:morePlaces.html.twig',array(
-            'places' => $places
+        return $this->render('BundleProjectBundle:Places:morePlaces.html.twig', array(
+                    'places' => $places
         ));
     }
 
@@ -123,6 +121,7 @@ class FormsController extends Controller {
         $this->em = $this->getDoctrine()->getManager();
         $placeId = $this->getRequest()->get('id');
         $voteValue = $this->getRequest()->get('rating');
+        $params = $this->getRequest()->request->all();
         /*
           $param = explode(',', $vot);
           $voteValue = $param[0];
@@ -155,9 +154,9 @@ class FormsController extends Controller {
                 ->insertVoteStatus($placeId, $userIp, $this->em);
 
         return $this->render('BundleProjectBundle:Places:usersRating.html.twig', array(
-            'usersRating' => round(
+                    'usersRating' => round(
                             $total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2),
-            'totalVotes' => $totalCounts[0]['votesCount']
+                    'totalVotes' => $totalCounts[0]['votesCount']
         ));
     }
 
@@ -205,11 +204,11 @@ class FormsController extends Controller {
         fclose($fp);
 
         return $this->render('BundleProjectBundle:Places:voteResult.html.twig', array(
-            'yes' => $yes,
-            'ok' => $ok,
-            'notReally' => $notReally,
-            'no' => $no,
-            'totalVotes' => $total
+                    'yes' => $yes,
+                    'ok' => $ok,
+                    'notReally' => $notReally,
+                    'no' => $no,
+                    'totalVotes' => $total
         ));
     }
 

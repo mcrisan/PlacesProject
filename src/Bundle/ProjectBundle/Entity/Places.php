@@ -38,6 +38,11 @@ class Places
      * @var integer
      */
     private $hasOwner;
+    
+    /**
+     * @var \Bundle\ProjectBundle\Entity\PlaceDetails
+     */
+    private $placeDetails;
 
 
     /**
@@ -208,5 +213,26 @@ class Places
     public function getComments()
     {
         return $this->comments;
+    }
+    
+    /**
+     * Set placeDetails
+     *
+     * @param \Bundle\ProjectBundle\Entity\PlaceDetails $placeDetails
+     * @return Place
+     */
+    public function setPlaceDetails(\Bundle\ProjectBundle\Entity\PlaceDetails $placeDetails = null) {
+        $this->placeDetails = $placeDetails;
+
+        return $this;
+    }
+
+    /**
+     * Get placeDetails
+     *
+     * @return \Bundle\ProjectBundle\Entity\PlaceDetails 
+     */
+    public function getPlaceDetails() {
+        return $this->placeDetails;
     }
 }

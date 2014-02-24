@@ -3,14 +3,8 @@ Bundle\ProjectBundle\Entity\PlaceDetails:
     table: place_details
     repositoryClass: Bundle\ProjectBundle\Entity\Repository\PlaceDetailsRepository
     fields:
-        id:
-            id: true
-            type: integer
-            unsigned: false
-            nullable: false
-            generator:
-                strategy: IDENTITY
         placeId:
+            id: true
             type: integer
             unsigned: false
             nullable: false
@@ -69,4 +63,14 @@ Bundle\ProjectBundle\Entity\PlaceDetails:
             fixed: false
             nullable: false
             column: place_website
+    oneToOne:
+        place:
+            targetEntity: Bundle\ProjectBundle\Entity\Places
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumn:
+                    name: place_id
+                    referencedColumnName: id
+            orphanRemoval: false          
     lifecycleCallbacks: {  }

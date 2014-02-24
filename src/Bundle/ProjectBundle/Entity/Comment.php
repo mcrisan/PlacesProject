@@ -174,6 +174,7 @@ class Comment {
      * @param \Bundle\ProjectBundle\Entity\Places $place
      * @return Comment
      */
+    
     public function setPlace(\Bundle\ProjectBundle\Entity\Places $place = null) {
         $this->place = $place;
 
@@ -185,6 +186,7 @@ class Comment {
      *
      * @return \Bundle\ProjectBundle\Entity\Places 
      */
+    
     public function getPlace() {
         return $this->place;
     }

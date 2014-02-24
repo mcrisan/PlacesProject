@@ -1,7 +1,7 @@
 $(document).ready(function(event) {
     $(".list-group-item").on('click', function() {
         param = $(this).attr('href');
-        
+        //alert (param);
         $(this).addClass('active').siblings().removeClass('active');
 
         $.ajax({

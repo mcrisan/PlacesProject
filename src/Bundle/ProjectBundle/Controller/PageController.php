@@ -7,11 +7,12 @@ namespace Bundle\ProjectBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
-
 use Bundle\ProjectBundle\lib\GetUserIp;
 use Bundle\ProjectBundle\lib\ClientBrowser;
 use Bundle\ProjectBundle\Entity\UsersIp;
 use Bundle\ProjectBundle\Entity\Rating;
+use Bundle\ProjectBundle\Entity\Tags;
+use Bundle\ProjectBundle\Entity\PlaceDetails;
 use Bundle\ProjectBundle\lib\UserIp;
 
 class PageController extends Controller {
@@ -25,20 +26,18 @@ class PageController extends Controller {
 
     // Preload method - insert/update in/the users_ip table and redirect to homePage
     function preLoadAction() {
-        $this->em = $this->getDoctrine()->getManager();
-        $addIp = new UserIp();
-        $addIp->addUserIp($this->em);
+        //$mailer->send('ryan@foobar.net', ...);
         return $this->redirect($this->generateUrl('index'));
     }
 
     // Home page
     function indexxAction() {
         $this->em = $this->getDoctrine()->getManager();
-        
+
         $userBrowser = new ClientBrowser();
         $browserName = $userBrowser->Name;
         $browserVers = $userBrowser->Version;
-        
+
         $userIp = new GetUserIp();
         $currentIp = $userIp->get_user_ip();
         $userHits = $this->em->getRepository('BundleProjectBundle:UsersIp')
@@ -47,44 +46,44 @@ class PageController extends Controller {
                 ->getTotalUniqueUsers();
 
         return $this->render('BundleProjectBundle:Page:index.html.twig', array(
-            'userIp' => $currentIp,
-            'userSiteHits' => $userHits,
-            'browserName' => $browserName,
-            'browserVers' => $browserVers,
-            'allTimeUsers' => $allTimeUsers
+                    'userIp' => $currentIp,
+                    'userSiteHits' => $userHits,
+                    'browserName' => $browserName,
+                    'browserVers' => $browserVers,
+                    'allTimeUsers' => $allTimeUsers
         ));
     }
 
     // About page
     function aboutAction() {
         $this->em = $this->getDoctrine()->getManager();
-        
+
         $userIp = new GetUserIp();
         $currentIp = $userIp->get_user_ip();
-        
+
         $providerName = "";
         $userName = "";
         $userId = "";
         $socialLogged = false;
-        
+
         $userInfoFromSession = $this->getUserInfo();
-        if ( !empty($userInfoFromSession) ) {
-            $providerName   = $userInfoFromSession['providerName'];
+        if (!empty($userInfoFromSession)) {
+            $providerName = $userInfoFromSession['providerName'];
             $userIdentifier = $userInfoFromSession['userIdentifier'];
-            $userName       = $userInfoFromSession['userName'];
-            $userId         = 1010;
-            $socialLogged   = true;
+            $userName = $userInfoFromSession['userName'];
+            $userId = 1010;
+            $socialLogged = true;
         } else {
             // check if current user is logged and get info
             $info = $this->getUser();
-            
+
             if (!empty($info)) {
                 $userName = $info->getTxtLogin();
                 $userId = $info->getId();
                 //exit();
             }
         }
-        
+
         // check if the user already voted
         $isUser = $this->em->getRepository('BundleProjectBundle:UsersIp')
                 ->isUser($currentIp); // return true or false
@@ -104,43 +103,42 @@ class PageController extends Controller {
         //if the user already voted
         if ($isUser) {
             return $this->render("BundleProjectBundle:About:about.html.twig", array(
-                'bool' => true,
-                'yes' => $yes,
-                'ok' => $ok,
-                'notReally' => $notReally,
-                'no' => $no,
-                'totalVotes' => $total,
-                
-                'userId'   => $userId,
-                'userName' => $userName,
-                'socialLogged' => $socialLogged,
-                'providerName' => $providerName
+                        'bool' => true,
+                        'yes' => $yes,
+                        'ok' => $ok,
+                        'notReally' => $notReally,
+                        'no' => $no,
+                        'totalVotes' => $total,
+                        'userId' => $userId,
+                        'userName' => $userName,
+                        'socialLogged' => $socialLogged,
+                        'providerName' => $providerName
             ));
         }
         return $this->render("BundleProjectBundle:About:about.html.twig");
     }
-    
+
     // Demo page - main (New homepage)
     public function indexAction() {
         $this->em = $this->getDoctrine()->getManager();
         //$request = $this->getRequest();
         $request = Request::createFromGlobals();
-        
+
         $userIp = new GetUserIp();
         $currentIp = $userIp->get_user_ip();
-        
+
         $providerName = "";
         $userName = "";
         $userId = "";
         $socialLogged = false;
-        
+
         $userInfoFromSession = $this->getUserInfo();
-        if ( !empty($userInfoFromSession) ) {
-            $providerName   = $userInfoFromSession['providerName'];
+        if (!empty($userInfoFromSession)) {
+            $providerName = $userInfoFromSession['providerName'];
             $userIdentifier = $userInfoFromSession['userIdentifier'];
-            $userName       = $userInfoFromSession['userName'];
-            $userId         = 1010;
-            $socialLogged   = true;
+            $userName = $userInfoFromSession['userName'];
+            $userId = 1010;
+            $socialLogged = true;
         } else {
             // check if current user is logged and get info
             $info = $this->getUser();
@@ -170,7 +168,7 @@ class PageController extends Controller {
         $getDefaultPlaceReviews = $this->em->getRepository('BundleProjectBundle:Places')->find($placeToShowId);
         $placeReviews = $this->em->getRepository('BundleProjectBundle:PlaceReviews')
                 ->getReviews($getDefaultPlaceReviews->getId());
-        
+
         $getPlaceSlug = $this->em->getRepository('BundleProjectBundle:PlaceDetails')
                 ->getPlacesSlug($placeToShowId);
         $placeSlug = $getPlaceSlug[0]['slug'];
@@ -237,95 +235,91 @@ class PageController extends Controller {
             $totalResults = count($places);
             if ($userStatus) { // if user voted for current store
                 return $this->render('BundleProjectBundle:Page:index.html.twig', array(
-                    'input' => $searchInput,
-                    'places' => $places,
-                    'placeDetail' => $place,
-                    'placePhotos' => $placePhotos,
-                    'placeAllPhotos' => $placeAllPhotos,
-                    'totalVotesAllTime' => $totalVotesAllTime,
-                    'totalVotes' => $totalVotesForPlace[0]['votesCount'],
-                    'usersRating' => round(
-                            $total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2),
-                    'bool' => true,
-                    'totalResults' => $totalResults,
-                    'placeSlug' => $placeSlug,
-                    'reviews' => $placeReviews,
-                    
-                    'userId'   => $userId,
-                    'userName' => $userName,
-                    'socialLogged' => $socialLogged,
-                    'providerName' => $providerName
+                            'input' => $searchInput,
+                            'places' => $places,
+                            'placeDetail' => $place,
+                            'placePhotos' => $placePhotos,
+                            'placeAllPhotos' => $placeAllPhotos,
+                            'totalVotesAllTime' => $totalVotesAllTime,
+                            'totalVotes' => $totalVotesForPlace[0]['votesCount'],
+                            'usersRating' => round(
+                                    $total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2),
+                            'bool' => true,
+                            'totalResults' => $totalResults,
+                            'placeSlug' => $placeSlug,
+                            'reviews' => $placeReviews,
+                            'userId' => $userId,
+                            'userName' => $userName,
+                            'socialLogged' => $socialLogged,
+                            'providerName' => $providerName
                 ));
             }
             return $this->render('BundleProjectBundle:Page:index.html.twig', array(
-                'input' => $searchInput,
-                'places' => $places,
-                'placeDetail' => $place,
-                'placePhotos' => $placePhotos,
-                'placeAllPhotos' => $placeAllPhotos,
-                'totalResults' => $totalResults,
-                'placeSlug' => $placeSlug,
-                'reviews' => $placeReviews,
-                
-                'userId'   => $userId,
-                'userName' => $userName,
-                'socialLogged' => $socialLogged
+                        'input' => $searchInput,
+                        'places' => $places,
+                        'placeDetail' => $place,
+                        'placePhotos' => $placePhotos,
+                        'placeAllPhotos' => $placeAllPhotos,
+                        'totalResults' => $totalResults,
+                        'placeSlug' => $placeSlug,
+                        'reviews' => $placeReviews,
+                        'userId' => $userId,
+                        'userName' => $userName,
+                        'socialLogged' => $socialLogged
             ));
         }
 
         if ($userStatus) {
             return $this->render('BundleProjectBundle:Page:index.html.twig', array(
-                'placeDetail' => $place,
-                'placePhotos' => $placePhotos,
-                'placeAllPhotos' => $placeAllPhotos,
-                'totalVotesAllTime' => $totalVotesAllTime,
-                'totalVotes' => $totalVotesForPlace[0]['votesCount'],
-                'usersRating' => round(
-                        $total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2),
-                'bool' => true,
-                'placeSlug' => $placeSlug,
-                'reviews' => $placeReviews,
-                
-                'userId'   => $userId,
-                'userName' => $userName,
-                'socialLogged' => $socialLogged
+                        'placeDetail' => $place,
+                        'placePhotos' => $placePhotos,
+                        'placeAllPhotos' => $placeAllPhotos,
+                        'totalVotesAllTime' => $totalVotesAllTime,
+                        'totalVotes' => $totalVotesForPlace[0]['votesCount'],
+                        'usersRating' => round(
+                                $total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2),
+                        'bool' => true,
+                        'placeSlug' => $placeSlug,
+                        'reviews' => $placeReviews,
+                        'userId' => $userId,
+                        'userName' => $userName,
+                        'socialLogged' => $socialLogged
             ));
         }
 
         return $this->render('BundleProjectBundle:Page:index.html.twig', array(
-            'placeDetail' => $place,
-            'placePhotos' => $placePhotos,
-            'placeAllPhotos' => $placeAllPhotos,
-            'placeSlug' => $placeSlug,
-            'reviews' => $placeReviews,
-            
-            'userId'   => $userId,
-            'userName' => $userName,
-            'socialLogged' => $socialLogged
+                    'placeDetail' => $place,
+                    'placePhotos' => $placePhotos,
+                    'placeAllPhotos' => $placeAllPhotos,
+                    'placeSlug' => $placeSlug,
+                    'reviews' => $placeReviews,
+                    'userId' => $userId,
+                    'userName' => $userName,
+                    'socialLogged' => $socialLogged
         ));
-    }// index
-    
-    
+    }
+
+// index
     // Demo showPlace
     public function indexShowPlaceAction($name) {
         $placeName = $name;
-        
+
         $providerName = "";
         $userName = "";
         $userId = "";
         $socialLogged = false;
-        
+
         $userInfoFromSession = $this->getUserInfo();
-        if ( !empty($userInfoFromSession) ) {
-            $providerName   = $userInfoFromSession['providerName'];
+        if (!empty($userInfoFromSession)) {
+            $providerName = $userInfoFromSession['providerName'];
             $userIdentifier = $userInfoFromSession['userIdentifier'];
-            $userName       = $userInfoFromSession['userName'];
-            $userId         = 1010;
-            $socialLogged   = true;
+            $userName = $userInfoFromSession['userName'];
+            $userId = 1010;
+            $socialLogged = true;
         } else {
             // check if current user is logged and get info
             $info = $this->getUser();
-            
+
             if (!empty($info)) {
                 $userName = $info->getTxtLogin();
                 $userId = $info->getId();
@@ -388,27 +382,26 @@ class PageController extends Controller {
 //        exit();
 
         return $this->render('BundleProjectBundle:Page:indexShowPlace.html.twig', array(
-            'name' => $placeN,
-            'slug' => $placeName,
-            'id' => $placeId,
-            'comments' => $comments,
-            'placeToShow' => $placeShow,
-            'placePhoto' => $placePhoto,
-            'placeAllPhotos' => $placeAllPhotos,
-            'reviews' => $reviews,
-            'randomPlace' => $randomSlug,
-            'placeAddress' => $placeAddr,
-            
-            'userId'   => $userId,
-            'userName' => $userName,
-            'socialLogged' => $socialLogged
+                    'name' => $placeN,
+                    'slug' => $placeName,
+                    'id' => $placeId,
+                    'comments' => $comments,
+                    'placeToShow' => $placeShow,
+                    'placePhoto' => $placePhoto,
+                    'placeAllPhotos' => $placeAllPhotos,
+                    'reviews' => $reviews,
+                    'randomPlace' => $randomSlug,
+                    'placeAddress' => $placeAddr,
+                    'userId' => $userId,
+                    'userName' => $userName,
+                    'socialLogged' => $socialLogged
         ));
     }
-    
+
     // Place details
     public function placeDetailsAction($name) {
-        return $this->render('BundleProjectBundle:Page:placeDetails.html.twig',array(
-            'slug' => $name
+        return $this->render('BundleProjectBundle:Page:placeDetails.html.twig', array(
+                    'slug' => $name
         ));
     }
 
@@ -425,7 +418,7 @@ class PageController extends Controller {
         $randomIndex = array_rand($array);
         return $randomValue = $array[$randomIndex];
     }
-    
+
     // Get userInfo from auth session - sym2 login
     public function getUser() {
         if (!$this->container->has('security.context')) {
@@ -442,21 +435,21 @@ class PageController extends Controller {
 
         return $user;
     }
-    
+
     // Get userInfo from auth session - social login
     public function getUserInfo() {
         //$session = new Session();
         $session = $this->get('session');
-        
+
         if ($session->get('providerName')) {
             return array(
-                'providerName'=>$session->get('providerName'),
-                'userIdentifier'=>$session->get('identifier'),
-                'userName'=>$session->get('userName'),
-                'userEmail'=>$session->get('userEmail')
+                'providerName' => $session->get('providerName'),
+                'userIdentifier' => $session->get('identifier'),
+                'userName' => $session->get('userName'),
+                'userEmail' => $session->get('userEmail')
             );
         }
-        return null; 
+        return null;
     }
 
 }

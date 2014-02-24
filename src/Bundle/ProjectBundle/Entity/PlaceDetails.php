@@ -8,11 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * PlaceDetails
  */
 class PlaceDetails
-{
-    /**
-     * @var integer
-     */
-    private $id;
+{  
 
     /**
      * @var integer
@@ -63,6 +59,11 @@ class PlaceDetails
      * @var string
      */
     private $placeWebsite;
+    
+    /**
+     * @var \Bundle\ProjectBundle\Entity\Places
+     */
+    private $place;
 
 
     /**
@@ -303,5 +304,28 @@ class PlaceDetails
     public function getPlaceWebsite()
     {
         return $this->placeWebsite;
+    }
+    
+    /**
+     * Set place
+     *
+     * @param \Bundle\ProjectBundle\Entity\Places $place
+     * @return Comment
+     */
+    
+    public function setPlace(\Bundle\ProjectBundle\Entity\Places $place = null) {
+        $this->place = $place;
+
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Bundle\ProjectBundle\Entity\Places 
+     */
+    
+    public function getPlace() {
+        return $this->place;
     }
 }

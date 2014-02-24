@@ -32,10 +32,14 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
     protected function execute(InputInterface $input, OutputInterface $output) {
         // vf. type!
         $type = $input->getArgument('type');
-        $output->writeln($this->addAllPlaces($type));
+        $apiKey = $this->getContainer()->getParameter('api_key');
+        $placeop = $this->getContainer()->get('placeop');
+        //$placeop->test("vara");
+        //$output->writeln($placeop->addAllPlaces($type, $apiKey));
+        $output->writeln($this->addAllPlaces($type, $placeop));
     }
 
-    private function addAllPlaces($type) {
+    private function addAllPlaces($type, $placeop) {
         $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
         $apiKey = $this->getContainer()->getParameter('api_key');
@@ -57,31 +61,32 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
         
         $place = new InsertPlacesCommand();
 
-        
-        for ($x = $p1['x']; $x <= $p2['x']; $x+=$step)
-        {
-            echo $x.','.$p1['y'];
-            for ($y = $p1['y']; $y >= $p2['y']; $y-=$step)
-            {
-                $run = $place->addPlaces($type, $apiKey, $x.','.$y, $radius, $em);
-                echo '.';
-            }
-            echo $y;
-            echo PHP_EOL;
-        }
-        exit();        
+        $x = 46.7680370;
+        $y = 23.5899400;
+//        for ($x = $p1['x']; $x <= $p2['x']; $x+=$step)
+//        {
+//            echo $x.','.$p1['y'];
+//            for ($y = $p1['y']; $y >= $p2['y']; $y-=$step)
+//            {
+               // $run = $place->addPlaces($type, $apiKey, $x.','.$y, $radius, $placeop);
+             //   echo '.';
+           // }
+          //  echo $y;
+          //  echo PHP_EOL;
+       // }
+        //exit();        
         //insert details
         $placeDetails = new InsertPlacesDetailsCommand();
-        $placeDetails->addPlacesDetails($apiKey, $em);
+        $placeDetails->addPlacesDetails($apiKey, $placeop);
 
         //insert photos
-        $placePhotos = new InsertPlacesPhotosCommand();
-        $placePhotos->addPlacePhotos($apiKey, $em);
+        //$placePhotos = new InsertPlacesPhotosCommand();
+        //$placePhotos->addPlacePhotos($apiKey, $placeop);
         
         //insert reviews - run this cmd only ones (truncate reviews table before import) or recode
         // cmd is: app/console places:insert-place-reviews
-//        $placeReviews = new InsertPlaceReviewsCommand();
-//        $placeReviews->addPlaceReviews($apiKey, $em);
+        //$placeReviews = new InsertPlaceReviewsCommand();
+        //$placeReviews->addPlaceReviews($apiKey, $placeop);
         
     }
 
