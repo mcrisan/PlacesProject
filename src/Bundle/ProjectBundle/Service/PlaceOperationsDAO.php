@@ -129,4 +129,16 @@ class PlaceOperationsDAO {
                             ->deletePlceReviews($placeId);
     }
     
+    public function getImageByPhotoRef($placeId, $imgUrl){
+
+        return $this->em->getRepository('BundleProjectBundle:PlacePhotos')
+                            ->findOneBy(array('placeId' => $placeId, 'imgUrl' => $imgUrl));
+    }
+    
+    public function getPlaceDetails($placeId){
+
+        return $this->em->getRepository('BundleProjectBundle:PlaceDetails')
+                            ->find($placeId);
+    }
+    
 }

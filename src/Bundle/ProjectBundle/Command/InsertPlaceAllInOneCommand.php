@@ -63,17 +63,17 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
 
         $x = 46.7680370;
         $y = 23.5899400;
-//        for ($x = $p1['x']; $x <= $p2['x']; $x+=$step)
-//        {
-//            echo $x.','.$p1['y'];
-//            for ($y = $p1['y']; $y >= $p2['y']; $y-=$step)
-//            {
-               // $run = $place->addPlaces($type, $apiKey, $x.','.$y, $radius, $placeop);
-             //   echo '.';
-           // }
+        for ($x = $p1['x']; $x <= $p2['x']; $x+=$step)
+        {
+            //echo $x.','.$p1['y'];
+            for ($y = $p1['y']; $y >= $p2['y']; $y-=$step)
+            {
+                $run = $place->addPlaces($type, $apiKey, $x.','.$y, $radius, $placeop);
+                echo '.';
+            }
           //  echo $y;
           //  echo PHP_EOL;
-       // }
+        }
         //exit();        
         //insert details
         $placeDetails = new InsertPlacesDetailsCommand();

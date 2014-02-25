@@ -44,20 +44,45 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
                 //insert photos for place    
                 foreach ($detailsResults as $detailResult) {
                     $photos = $detailResult->photo;
+                    var_dump($photos);
                     foreach ($photos as $photo) {
                         $photoRef = $photo->photo_reference;
                         $urlPicture = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoRef&sensor=true&key=" . $apiKey;
+                        $imgUrl = $this->getImgUrl($urlPicture);
                         $placePhotos = new PlacePhotos();
-                        $placePhotos->setImgUrl($urlPicture);
+                        $placePhotos->setImgUrl($imgUrl);
                         $placePhotos->setOrigin('google');
                         $placePhotos->setPlaceId($placeId);
                         $placePhotos->setImgRef($photoRef);
-                        
+
                         $placeop->checkPlacePhotos($placePhotos);
                     }
                 }
             } else {
-                echo "Photo already inserted for: '$placeName' \r\n";
+                echo "place: '$placeName' contains photos \r\n";
+                // if place contains other photos we save them to db
+                foreach ($detailsResults as $detailResult) {
+                    $photos = $detailResult->photo;
+                    foreach ($photos as $photo) {
+                        $photoRef = $photo->photo_reference;
+                        $urlPicture = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoRef&sensor=true&key=" . $apiKey;
+                        $imgUrl = $this->getImgUrl($urlPicture);
+                        $placePhotos = $placeop->getImageByPhotoRef($placeId, $imgUrl);
+                        if (!$placePhotos) {
+                            $placePhotos = new PlacePhotos();
+                            $placePhotos->setImgUrl($imgUrl);
+                            $placePhotos->setOrigin('google');
+                            $placePhotos->setPlaceId($placeId);
+                            $placePhotos->setImgRef($photoRef);
+                            $placeop->checkPlacePhotos($placePhotos);
+                        }
+                        var_dump($placePhotos);
+
+
+                        //$placeop->checkPlacePhotos($placePhotos);
+                    }
+                }
+                //exit();
             }
 
             /* else {
@@ -71,6 +96,17 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
               //exit();
               } */
         }
+    }
+
+    function getImgUrl($urlPicture) {
+        $toCurl = curl_init($urlPicture);
+        curl_setopt($toCurl, CURLOPT_URL, $urlPicture);
+        curl_setopt($toCurl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($toCurl, CURLOPT_RETURNTRANSFER, 1);
+        curl_exec($toCurl);
+        $urlToAdd = curl_getinfo($toCurl);
+        $imgUrl = $urlToAdd['redirect_url'];
+        return $imgUrl;
     }
 
 }

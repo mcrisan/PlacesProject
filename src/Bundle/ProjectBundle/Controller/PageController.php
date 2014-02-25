@@ -27,6 +27,24 @@ class PageController extends Controller {
     // Preload method - insert/update in/the users_ip table and redirect to homePage
     function preLoadAction() {
         //$mailer->send('ryan@foobar.net', ...);
+//        $this->em = $this->getDoctrine()->getManager();
+//         $p1 = $this->em->getRepository('BundleProjectBundle:PlaceDetails')
+//                ->find(2004); // return true or false
+//         var_dump($p1);
+//         $p2 = $this->em->getRepository('BundleProjectBundle:PlaceDetails')
+//                ->find(20040); // return true or false
+//                if($p2){
+//                echo "este";
+//    }else{
+//        echo "nu este";
+//    }
+//         var_dump($p2);
+//         
+//         if($p1==$p2){
+//             echo "egale";
+//         }else{
+//             echo "diferite";
+//         }
         return $this->redirect($this->generateUrl('index'));
     }
 

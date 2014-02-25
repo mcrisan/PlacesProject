@@ -67,8 +67,16 @@ class InsertPlacesDetailsCommand extends ContainerAwareCommand {
                 foreach ($geoLocation as $loc) {
                     $placeLat = $loc->lat;
                     $placeLng = $loc->lng;
-                    $place = new PlaceDetails();
-                    $place->setPlaceId($placeId);
+                    $place = $placeop->getPlaceDetails($placeId);
+                    if(!$place){
+                        //insert new place
+                        echo "new place";
+                        $place = new PlaceDetails();
+                        $place->setPlaceId($placeId);
+                    }
+                    //$place = new PlaceDetails();
+                    //$place->setPlaceId($placeId);
+                    echo "update";
                     $place->setPlaceName($placeName);
                     $place->setPlacePhonenumber($placePhoneNumber);
                     $place->setPlaceVicinity($placeAddr);
@@ -78,6 +86,8 @@ class InsertPlacesDetailsCommand extends ContainerAwareCommand {
                     $place->setPlaceIcon($placeIcon);
                     $place->setPlaceUrl($placeUrl);
                     $place->setPlaceWebsite($placeWebSite);
+                    var_dump($place);
+                    echo "si";
                     $placeop->checkPlaceDetails($place);
                 }
             }

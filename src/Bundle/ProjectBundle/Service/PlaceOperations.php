@@ -22,11 +22,9 @@ class PlaceOperations {
 
     //put your code here
     protected $opDAO;
-    protected $em;
 
-    public function __construct(PlaceOperationsDAO $dao, EntityManager $em) {
+    public function __construct(PlaceOperationsDAO $dao) {
         $this->opDAO = $dao;
-        $this->em = $em;
     }
 
     public function checkPlace($place) {
@@ -36,7 +34,7 @@ class PlaceOperations {
         $checkSlug = $this->opDAO->checkCurrentSlug($place->getSlug());
         $lastSlug = $this->opDAO->getLastSlug($place->getSlug() . '-'); // last slug
         $isPlace = $this->opDAO->checkCurrentExtId($place->getExtId());
-        if (!$isPlace) { // if not-insert place   
+          
             if ($checkSlug) {
                 if ($lastSlug) { // if the place 'has number-to-slug'
                     $lastSlugId = explode('-', $lastSlug[0]['slug']);
@@ -52,26 +50,19 @@ class PlaceOperations {
             if (empty($detailsRef)) {
                 $detailsRef = "no ref";
             }
-
+        if (!$isPlace) { // if not-insert place 
             $place->setSlug($slug);
             $place->setDetailsRef($detailsRef);
             var_dump($place);
             $this->opDAO->insertPlace($place);
-        } else {
+        } else { //update place
             echo "place exists";
-            // check
-//                if($checkSlug){
-//                    echo "continue..";
-//                    continue;
-//                }
-            // update 
-//                $update = $em->getRepository('BundleProjectBundle:Places')
-//                        ->updatePlace($extId,$slug,$detailsRef);
-//                $update->execute();
-//                
-//                echo "Place: place name '$slug' updated ! \r\n";
-            //exit();
-            //echo "Place: place name '" . $slug . "' already inserted ! Try update ! \r\n";
+            $place2 = $this->opDAO->getPlace($place->getId());
+            $place2->setExtId($place->getExtId());
+            $place2->setSlug($slug);
+            $place2->setDetailsRef($detailsRef);
+            $this->opDAO->insertPlace($place2);
+
         }
 
         echo $place->getSlug();
@@ -127,38 +118,20 @@ class PlaceOperations {
     }
 
     public function checkPlaceDetails($place) {
-        $isPlace = $this->opDAO->isPlaceDetails($place->getPlaceId());
-        $pname = $place->getPlaceName();
-        if (!$isPlace) {
+
             $place2 = $this->opDAO->getPlace($place->getPlaceId());
             $place->setPlace($place2);
             $this->opDAO->insertPlaceDetails($place);
 
-            echo "Place name: '$pname'. Action: details inserted ! \r\n";
-        } else {
-            echo "Place name: '$pname'. Action: Details already inserted ! Uncomment update code.. in InsertPlacesDetailsCommand.php  \r\n";
-//                        // update details table
-//                        $updateDetails = $em->getRepository('BundleProjectBundle:PlaceDetails')
-//                                ->updatePlaceDetails($placeId, $placeName, $placePhoneNumber, $placeAddr, $placeType, $placeLat, $placeLng, $placeRating, $placeIcon, $placeUrl, $placeWebSite);
-//
-//                        $updateDetails->execute();
-//
-//                        echo "Details for: '$placeName' updated ! \r\n";
-//                        //exit();
-        }
     }
 
+     public function getPlaceDetails($placeId) {
+        
+        return $this->opDAO->getPlaceDetails($placeId);
+    }
+    
     public function checkPlacePhotos($placePhotos) {
-        $urlPicture = $placePhotos->getImgUrl();
-        $toCurl = curl_init($urlPicture);
-        curl_setopt($toCurl, CURLOPT_URL, $urlPicture);
-        curl_setopt($toCurl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($toCurl, CURLOPT_RETURNTRANSFER, 1);
-        curl_exec($toCurl);
-        $urlToAdd = curl_getinfo($toCurl);
-        $imgUrl = $urlToAdd['redirect_url'];
-        $placePhotos->setImgUrl($imgUrl);
-        echo $placePhotos->getImgUrl();
+        
         $this->opDAO->insertPlacePhotos($placePhotos);
         echo "Photo inserted for \r\n";
     }
@@ -183,6 +156,11 @@ class PlaceOperations {
 
     public function getPlace($placeId) {
         return $this->opDAO->getPlace($placeId);
+    }
+    
+    public function getImageByPhotoRef($placeId, $imgUrl){
+
+        return $this->opDAO->getImageByPhotoRef($placeId, $imgUrl);
     }
 
 }

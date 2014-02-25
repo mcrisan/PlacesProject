@@ -15,7 +15,7 @@ parameters:
 services:
     placeop:
         class: "%placeoperation.class%"
-        arguments: [@placeopDAO, @doctrine.orm.entity_manager]
+        arguments: [@placeopDAO]
     placeopDAO:
         class: "%placeoperationDAO.class%"   
         arguments: [@doctrine.orm.entity_manager]
