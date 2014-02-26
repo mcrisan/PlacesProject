@@ -13,6 +13,7 @@ use Bundle\ProjectBundle\Entity\UsersIp;
 use Bundle\ProjectBundle\Entity\Rating;
 use Bundle\ProjectBundle\Entity\Tags;
 use Bundle\ProjectBundle\Entity\PlaceDetails;
+use Bundle\ProjectBundle\Entity\AppUsers;
 use Bundle\ProjectBundle\lib\UserIp;
 
 class PageController extends Controller {
@@ -26,12 +27,23 @@ class PageController extends Controller {
 
     // Preload method - insert/update in/the users_ip table and redirect to homePage
     function preLoadAction() {
+
+
         //$mailer->send('ryan@foobar.net', ...);
-//        $this->em = $this->getDoctrine()->getManager();
+        $this->em = $this->getDoctrine()->getManager();
+        $p1 = $this->em->getRepository('BundleProjectBundle:AppUsers')
+                ->find(1);
+        $p1->setTxtEmail("");
+        var_dump($p1);
+        $p2= new AppUsers();
+        $validator = $this->get('validator');
+    //$errors = $validator->validate($p1, array('registration'));
+    $errors = $validator->validate($p1);
+    var_dump($errors);
 //         $p1 = $this->em->getRepository('BundleProjectBundle:PlaceDetails')
 //                ->find(2004); // return true or false
 //         var_dump($p1);
-//         $p2 = $this->em->getRepository('BundleProjectBundle:PlaceDetails')
+//         $p2 = $this->em1->getRepository('BundleProjectBundle:PlaceDetails');
 //                ->find(20040); // return true or false
 //                if($p2){
 //                echo "este";
@@ -45,7 +57,25 @@ class PageController extends Controller {
 //         }else{
 //             echo "diferite";
 //         }
-        return $this->redirect($this->generateUrl('index'));
+        // sd
+//        try {
+//            file_put_contents( 'c:/er.txt', "as", FILE_APPEND);
+//            throw new \Exception("Value must be 1 or below");
+ //       $this->em1->getRepository('BundleProjectBundle:PlaceDetails');
+        
+//        
+//        }catch ( Exception $e ) {
+//       $this->error = $e->getMessage();
+//       echo "ex232323";
+//       // do your log writing stuff here
+//       file_put_contents( 'c:/er.txt', $error, FILE_APPEND); 
+//    }
+//        $p2 = $this->em->getRepository('BundleProjectBundle:Places')
+//                ->find(2004);
+//        
+//        var_dump($p2->getPlaceDetails());
+        
+ //       return $this->redirect($this->generateUrl('index'));
     }
 
     // Home page

@@ -12,3 +12,6 @@ parameters:
     mailer_password: null
     locale: en
     secret: 1ac7dc66bfe373ae669e58d597c1f28549dfd5d0
+    
+    api_key : AIzaSyBGEQqVNDD_xkI7j4viU-5qMa-SYUOX_6g
+    latLng : 46.7592,23.5577
