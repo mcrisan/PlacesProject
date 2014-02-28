@@ -26,6 +26,7 @@ class PlacesRepository extends EntityRepository
     public function getPlacesDetailsRef(){
         $qb = $this->createQueryBuilder('places')
                 ->select('places.id, places.detailsRef', 'places.slug')
+                ->where('places.id = 2014')
                 ->getQuery()
                 ->getResult();
         return $qb;

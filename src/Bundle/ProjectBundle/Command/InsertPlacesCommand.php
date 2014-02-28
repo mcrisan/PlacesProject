@@ -35,39 +35,36 @@ class InsertPlacesCommand extends ContainerAwareCommand {
     }
 
     function addPlaces($type, $apiKey, $latLng, $radius, $placeop) {
-        $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
+        $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
         $this->addPlacesByUrl($url, $type, $apiKey, $latLng, $radius, $placeop);
     }
 
     private function addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius, $placeop) {
         sleep(3);
-        $places = simplexml_load_file($url);
-//        if ($places->status != 'ZERO_RESULTS') {
-//           // var_dump($places);
-//        }      
-        $placeItems = $places->result;
-        $pageToken = $places->next_page_token;
+        $json = file_get_contents($url);
+        $data = json_decode($json, TRUE);
+        $placeItems = $data['results'];
+        $pageToken = $data['next_page_token'];
         foreach ($placeItems as $item) {
-            $extId = $item->id;
-            $name = $item->name;
+            $extId = $item['id'];
+            $name = $item['name'];
             $slug = $this->gen_slug($name);
             $origin = "google";
-            $detailsRef = $item->reference;
-            if (!empty($detailsRef)) {
-                    $detailsRef = $item->reference;
-                } else {
-                    $detailsRef = "no ref";
-                }
+            if (isset($item['reference'])) {
+            $detailsRef = $item['reference'];
+            }else{
+                $detailsRef = "no ref";
+            }            
             $place = new Places();
             $place->setExtId($extId);
             $place->setSlug($slug);
             $place->setDetailsRef($detailsRef);
             $place->setOrigin($origin);
             $place->setHasOwner(0);
-            $placeop->checkPlace($place);
+            $placeop->insertPlace($place);
         }
-        if ($pageToken[0] != "") {
-            $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=" . $latLng . "&radius=" . $radius . "&types=" . $placeType . "&sensor=false&key=" . $apiKey . "&pagetoken=" . $pageToken[0];
+        if ($pageToken != "") {
+            $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" . $latLng . "&radius=" . $radius . "&types=" . $placeType . "&sensor=false&key=" . $apiKey . "&pagetoken=" . $pageToken;
             $this->addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius, $placeop);
         }
     }

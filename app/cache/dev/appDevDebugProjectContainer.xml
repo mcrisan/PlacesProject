@@ -1558,7 +1558,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>530de5dfae573</argument>
+            <argument>531059a170efd</argument>
           </service>
         </argument>
       </argument>
@@ -1888,7 +1888,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>530de5dfae573</argument>
+            <argument>531059a170efd</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
           </service>
         </argument>
@@ -2396,6 +2396,7 @@
     </service>
     <service id="placeop" class="Bundle\ProjectBundle\Service\PlaceOperations">
       <argument type="service" id="placeopdao"/>
+      <argument type="service" id="service_container"/>
     </service>
     <service id="placeopdao" class="Bundle\ProjectBundle\Service\PlaceOperationsDAO">
       <argument type="service" id="doctrine.orm.default_entity_manager"/>

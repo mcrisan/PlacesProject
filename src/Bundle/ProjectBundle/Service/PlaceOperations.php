@@ -8,10 +8,8 @@
 
 namespace Bundle\ProjectBundle\Service;
 
-use Doctrine\ORM\EntityManager;
-use Bundle\ProjectBundle\Command\GreetCommand;
-use Bundle\ProjectBundle\Entity\Tags;
 use Bundle\ProjectBundle\Entity\PlaceTags;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Description of PlaceOperations
@@ -22,71 +20,92 @@ class PlaceOperations {
 
     //put your code here
     protected $opDAO;
+    private $container;
 
-    public function __construct(PlaceOperationsDAO $dao) {
+    public function __construct(PlaceOperationsDAO $dao, ContainerInterface $container) {
         $this->opDAO = $dao;
+        $this->container = $container;
     }
 
-    public function checkPlace($place) {
+    public function insertPlace($place) {
 
         $slug = $place->getSlug();
         $detailsRef = $place->getDetailsRef();
         $checkSlug = $this->opDAO->checkCurrentSlug($place->getSlug());
         $lastSlug = $this->opDAO->getLastSlug($place->getSlug() . '-'); // last slug
         $isPlace = $this->opDAO->checkCurrentExtId($place->getExtId());
-          
-            if ($checkSlug) {
-                if ($lastSlug) { // if the place 'has number-to-slug'
-                    $lastSlugId = explode('-', $lastSlug[0]['slug']);
-                    $allKeys = array_keys($lastSlugId);
-                    echo $maxIndex = end($allKeys);
-                    $nextNoToSlug = $lastSlugId[$maxIndex] + 1;
-                    echo $slug .="-" . $nextNoToSlug;
-                } else {
-                    $slug .="-" . $i;
-                }
+        $extId = $place->getExtId();
+        if ($checkSlug) {
+            if ($lastSlug) { // if the place 'has number-to-slug'
+                $lastSlugId = explode('-', $lastSlug[0]['slug']);
+                $allKeys = array_keys($lastSlugId);
+                echo $maxIndex = end($allKeys);
+                $nextNoToSlug = $lastSlugId[$maxIndex] + 1;
+                echo $slug .="-" . $nextNoToSlug;
+            } else {
+                $slug .="-" . $i;
             }
-            //check detailsRef
-            if (empty($detailsRef)) {
-                $detailsRef = "no ref";
-            }
+        }
+        //check detailsRef
+        if (empty($detailsRef)) {
+            $detailsRef = "no ref";
+        }
         if (!$isPlace) { // if not-insert place 
             $place->setSlug($slug);
             $place->setDetailsRef($detailsRef);
-            var_dump($place);
-            $this->opDAO->insertPlace($place);
+            $validator = $this->container->get('validator');
+            $errors = $validator->validate($place);
+            $strerror = (string) $errors;
+            if ($strerror) {
+                echo $strerror;
+                throw new \Exception($strerror);
+            } else {
+                $this->opDAO->insertPlace($place);
+            }
         } else { //update place
             echo "place exists";
-            $place2 = $this->opDAO->getPlace($place->getId());
+            $place2 = $this->opDAO->getPlaceByExtId($place->getExtId());
             $place2->setExtId($place->getExtId());
-            $place2->setSlug($slug);
             $place2->setDetailsRef($detailsRef);
-            $this->opDAO->insertPlace($place2);
-
+            $validator = $this->container->get('validator');
+            $errors = $validator->validate($place);
+            $strerror = (string) $errors;
+            if ($strerror) {
+                echo $strerror;
+                throw new \Exception($strerror);
+            } else {
+                $this->opDAO->insertPlace($place2);
+            }
         }
 
         echo $place->getSlug();
     }
 
-    public function checkTag($tag) {
-        $isTag = $this->opDAO->isTag($tag->getTag());
-        if (!$isTag) {
-            //insert tag to db
-            $this->opDAO->insertTag($tag);
-            $name = $tag->getTag();
-            echo "Place name: . Action: sec. tag  inserted in types table ! \r\n";
+    public function insertTag($tag) {
+
+        $validator = $this->container->get('validator');
+        $errors = $validator->validate($tag);
+        $strerror = (string) $errors;
+        if ($strerror) {
+            echo $strerror;
+            throw new \Exception($strerror);
         } else {
-            echo "Place name: . Action: sec tag already inserted in types table ! \r\n";
+            $isTag = $this->opDAO->isTag($tag->getTag());
+            if (!$isTag) {
+                //insert tag to db
+                $this->opDAO->insertTag($tag);
+                echo "tag  inserted in tags table ! \r\n";
+            } else {
+                echo "tag already inserted in tags table ! \r\n";
+            };
         }
     }
 
     //check place tags
-    public function checkPlaceTag($tag, $placeId) {
+    public function insertPlaceTag($tag, $placeId) {
 
         $allTypes = $this->opDAO->getAllTags();
-
         $currentTypes = json_decode(json_encode($tag), TRUE);
-
         // delete all tags in tb. 'place_tags' for current place
         $this->opDAO->deletePlaceTag($placeId);
         // run query's & insert details in place_tags
@@ -97,8 +116,6 @@ class PlaceOperations {
             $typeValue = $typeInfo['tag'];
 
             if (in_array($typeValue, $currentTypes)) {
-                echo $typeId . ".";
-                echo $typeValue . "\r\n";
                 //echo "Current place_id: ".$placeId;
                 $insertPlaceTypes = new PlaceTags();
                 $insertPlaceTypes->setPlaceId($placeId);
@@ -108,36 +125,67 @@ class PlaceOperations {
                 } else {
                     $insertPlaceTypes->setMain('false');
                 }
-                $this->opDAO->insertPlaceTag($insertPlaceTypes);
-                echo $inc;
-                echo "Place name: '$typeValue'. Action: type inserted ! \r\n";
-                $inc++;
+                $validator = $this->container->get('validator');
+                $errors = $validator->validate($insertPlaceTypes);
+                $strerror = (string) $errors;
+                if ($strerror) {
+                    echo $strerror;
+                    throw new \Exception($strerror);
+                } else {
+                    $this->opDAO->insertPlaceTag($insertPlaceTypes);
+                    echo $inc;
+                    echo "Place name: '$typeValue'. Action: type inserted ! \r\n";
+                    $inc++;
+                }
             }
-            //$inc++;
         }
     }
 
-    public function checkPlaceDetails($place) {
+    public function insertPlaceDetails($place) {
 
-            $place2 = $this->opDAO->getPlace($place->getPlaceId());
-            $place->setPlace($place2);
+        $place2 = $this->opDAO->getPlace($place->getPlaceId());
+        $place->setPlace($place2);
+        $validator = $this->container->get('validator');
+        $errors = $validator->validate($place);
+        $strerror = (string) $errors;
+        if ($strerror) {
+            echo $strerror;
+            throw new \Exception($strerror);
+        } else {
             $this->opDAO->insertPlaceDetails($place);
-
+        }
     }
 
-     public function getPlaceDetails($placeId) {
-        
+    public function getPlaceDetails($placeId) {
+
         return $this->opDAO->getPlaceDetails($placeId);
     }
-    
-    public function checkPlacePhotos($placePhotos) {
-        
-        $this->opDAO->insertPlacePhotos($placePhotos);
-        echo "Photo inserted for \r\n";
+
+    public function insertPlacePhotos($placePhotos) {
+
+        $validator = $this->container->get('validator');
+        $errors = $validator->validate($placePhotos);
+        $strerror = (string) $errors;
+        if ($strerror) {
+            echo $strerror;
+            throw new \Exception($strerror);
+        } else {
+            $this->opDAO->insertPlacePhotos($placePhotos);
+        }
+        echo "Photo inserted \r\n";
     }
 
-    public function checkPlaceReview($placeReview) {
-        $this->opDAO->insertPlaceReview($placeReview);
+    public function insertPlaceReview($placeReview) {
+
+        $validator = $this->container->get('validator');
+        $errors = $validator->validate($placeReview);
+        $strerror = (string) $errors;
+        if ($strerror) {
+            echo $strerror;
+            throw new \Exception($strerror);
+        } else {
+            $this->opDAO->insertPlaceReview($placeReview);
+        }
         echo "Photo inserted for \r\n";
     }
 
@@ -157,8 +205,8 @@ class PlaceOperations {
     public function getPlace($placeId) {
         return $this->opDAO->getPlace($placeId);
     }
-    
-    public function getImageByPhotoRef($placeId, $imgUrl){
+
+    public function getImageByPhotoRef($placeId, $imgUrl) {
 
         return $this->opDAO->getImageByPhotoRef($placeId, $imgUrl);
     }

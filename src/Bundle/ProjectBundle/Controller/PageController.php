@@ -31,15 +31,150 @@ class PageController extends Controller {
 
         //$mailer->send('ryan@foobar.net', ...);
         $this->em = $this->getDoctrine()->getManager();
-        $p1 = $this->em->getRepository('BundleProjectBundle:AppUsers')
-                ->find(1);
-        $p1->setTxtEmail("");
-        var_dump($p1);
-        $p2= new AppUsers();
-        $validator = $this->get('validator');
-    //$errors = $validator->validate($p1, array('registration'));
-    $errors = $validator->validate($p1);
-    var_dump($errors);
+//        $p1 = $this->em->getRepository('BundleProjectBundle:AppUsers')
+//                ->find(1);
+//        $p1->setTxtEmail("a");
+//        var_dump($p1);
+//////        $p2= new AppUsers();
+//        $validator = $this->get('validator');
+//       $errors = $validator->validate($p1, array('registration'));
+//////    $errors = $validator->validate($p2);
+//     var_dump($errors);
+//     
+//     $p2 = $this->em->getRepository('BundleProjectBundle:PlacePhotos')
+//                ->findOneBy(array('placeId'=> 2004));
+//     var_dump($p2);
+//     //$errors = $validator->validate($p2);
+//     //var_dump($errors);
+//     $placeop = $this->get('placeop');
+//     $placeop->insertPlacePhotos($p2);
+    $detailsRef = $this->em->getRepository('BundleProjectBundle:Places')->getPlacesDetailsRef();
+    //var_dump($detailsRef);
+    $apiKey = $this->container->getParameter('api_key');
+//    //$detailsRef = $placeop->getPlacesDetailsRef();
+//        //loop in all places
+//        foreach ($detailsRef as $place) {
+//            $placeId = $place['id'];
+//            $placeName = $place['slug'];
+//            $detailsRef = $place['detailsRef'];
+//            $url = "https://maps.googleapis.com/maps/api/place/details/xml?reference=" . $detailsRef . "&sensor=true&key=" . $apiKey;
+//
+//            $placeDetails = simplexml_load_file($url);
+//            var_dump($placeDetails);
+//            $detailsResults = $placeDetails->result;
+//            var_dump($detailsResults);
+//            //var_dump($detailsResults);
+//            $url2 = "https://maps.googleapis.com/maps/api/place/details/json?reference=" . $detailsRef . "&sensor=true&key=" . $apiKey;
+//            $json = file_get_contents($url2);
+//            $data = json_decode($json, TRUE);
+//            //print_r($data);
+//            //$detailsResults2 = $data[0]->result;
+//            $detailsResults2 = $data['result'];
+//            echo "json";
+//            var_dump($detailsResults2);
+//            var_dump($data);
+//            
+//            echo "xml 2";
+//            foreach ($detailsResults as $detailResult) {
+//                    var_dump($detailResult);
+//                    $photos = $detailResult->review;
+//                    var_dump($photos);
+////                    foreach ($photos as $photo) {
+////                        $photoRef = $photo->photo_reference;
+////                        var_dump($photoRef);
+////                        echo $photoRef;
+////                    }
+//                }
+//                echo " ghgh tot json";
+//                //foreach ($detailsResults2 as $detailResult) {
+//                   // $type=$detailsResults2['types'];
+//                $types = $detailsResults2['types'];
+//                $geoGeometry = $detailsResults2['geometry'];
+//                $geoLocation = $geoGeometry['location'];
+//                $placeUrl = $detailsResults2['url'];;
+//
+//                // root->el
+//                $placeName = $detailsResults2['name'];
+//                $placeAddr = $detailsResults2['formatted_address'];
+//                $placePhoneNumber = $detailsResults2['formatted_phone_number'];
+//                if (isset($detailsResults2['rating'])) {
+//                $placeRating = $detailsResults2['rating'];
+//                }
+//                if (isset($detailsResults2['website'])) {
+//                $placeWebSite = $detailsResults2['website'];
+//                }
+//                $placeIcon = $detailsResults2['icon'];
+//                
+//                foreach ($types as $innerType) {
+//                    $tag = new Tags();
+//                    $tag->setTag($innerType);
+//                    echo $innerType;
+//                    //$placeop->checkTag($tag);
+//                }
+//                
+//                //foreach ($geoLocation as $loc) {
+//                    $placeLat = $geoLocation['lat'];
+//                    $placeLng = $geoLocation['lng'];
+//                    echo $placeLat . "si". $placeLng;
+//                //}
+//
+//               // }
+//            
+//        }
+        $radius = 1011; // 1011 m
+        $x = 46.7680370;
+        $y = 23.5899400;
+        $latLng = $x.','.$y;
+        $type = 'establishment';
+        $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
+        
+        $places = simplexml_load_file($url);
+        $placeItems = $places->result;
+        var_dump($placeItems);
+        $pageToken = $places->next_page_token;
+        var_dump($pageToken[0]);
+        if ($pageToken[0] != "") {
+            $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey . "&pagetoken=" . $pageToken[0];
+        }
+        $places = simplexml_load_file($url);
+        $placeItems = $places->result;
+        var_dump($placeItems);
+        $pageToken = $places->next_page_token;
+        
+        
+        echo "json";
+        $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
+        $json = file_get_contents($url);
+        $data = json_decode($json, TRUE);
+        var_dump($data);
+        $placeItems = $data['results'];
+        var_dump($placeItems);
+        $pageToken = $data['next_page_token'];
+        var_dump($pageToken);
+        echo $pageToken;
+        foreach ($placeItems as $item) {
+            $extId = $item['id'];
+            $name = $item['name'];
+            //$slug = $this->gen_slug($name);
+            $origin = "google";
+            $detailsRef = $item['reference'];
+            if (!empty($detailsRef)) {
+                    $detailsRef = $item['reference'];
+                } else {
+                    $detailsRef = "no ref";
+                }
+               echo "$name \r\n";
+        }
+        
+        echo "place";
+        $extId = 'b8968c7ecf0926b7f8c13c3dabc898ed160b71ce';
+        $place = $this->em->getRepository('BundleProjectBundle:Places')
+                ->findOneBy(array("extId" => $extId));
+        var_dump($place);
+        $place->setExtId("23");
+        var_dump($place);
+        //var_dump($pageToken[0]);
+ //   var_dump($p2);
 //         $p1 = $this->em->getRepository('BundleProjectBundle:PlaceDetails')
 //                ->find(2004); // return true or false
 //         var_dump($p1);
@@ -74,8 +209,8 @@ class PageController extends Controller {
 //                ->find(2004);
 //        
 //        var_dump($p2->getPlaceDetails());
-        
- //       return $this->redirect($this->generateUrl('index'));
+      return $this->render("BundleProjectBundle:About:about.html.twig");  
+  //      return $this->redirect($this->generateUrl('index'));
     }
 
     // Home page

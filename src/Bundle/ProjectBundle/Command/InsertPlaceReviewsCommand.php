@@ -33,12 +33,12 @@ class InsertPlaceReviewsCommand extends ContainerAwareCommand {
             $placeId = $place['id'];
             $placeName = $place['slug'];
             $detailsRef = $place['detailsRef'];
-            $url = "https://maps.googleapis.com/maps/api/place/details/xml?reference=" . $detailsRef . "&sensor=true&key=" . $apiKey;
-            $placeDetails = simplexml_load_file($url);
-            $detailsResults = $placeDetails->result;
-            foreach ($detailsResults as $place) {
-                $reviews = $place->review;
-                var_dump($reviews);
+            $url = "https://maps.googleapis.com/maps/api/place/details/json?reference=" . $detailsRef . "&sensor=true&key=" . $apiKey;
+            $json = file_get_contents($url);
+            $data = json_decode($json, TRUE);
+            $detailsResults = $data['result'];
+            if( isset( $detailsResults['reviews'] ) ){
+                $reviews = $detailsResults['reviews'];
                 // delete existing reviews for place
                 $delete = $placeop->deletePlaceReviews($placeId);
                 if ($delete->execute()) {
@@ -46,14 +46,18 @@ class InsertPlaceReviewsCommand extends ContainerAwareCommand {
                 }
                 //insert reviews for place
                 foreach ($reviews as $review) {
-                    $time = $review->time;
-                    $text = $review->text;
-                    $authorName = $review->author_name;
-                    $authorUrl = $review->author_url;
-                    $aspects = $review->aspect;
+                    $time = $review['time'];
+                    $text = $review['text'];
+                    $authorName = $review['author_name'];
+                    if( isset( $review['author_url'] ) ){
+                    $authorUrl = $review['author_url'];
+                    }else{
+                       $authorUrl=""; 
+                    }
+                    $aspects = $review['aspects'];
                     foreach ($aspects as $aspect) {
-                        $aspectType = $aspect->type;
-                        $aspectRating = $aspect->rating;
+                        $aspectType = $aspect['type'];
+                        $aspectRating = $aspect['rating'];
                     }
                     $p = $placeop->getPlace($placeId);
                     $placeReview = new PlaceReviews();
@@ -64,7 +68,7 @@ class InsertPlaceReviewsCommand extends ContainerAwareCommand {
                     $placeReview->setRatingAspect($aspectType);
                     $placeReview->setRating($aspectRating);
                     $placeReview->setDate($time);
-                    $placeop->checkPlaceReview($placeReview);
+                    $placeop->InsertPlaceReview($placeReview);
                     echo "Review for: " . $placeName . " inserted ! \r\n";
                 }
             }

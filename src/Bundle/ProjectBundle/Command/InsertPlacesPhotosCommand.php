@@ -17,9 +17,7 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $placeop = $this->getContainer()->get('placeop');
-        $text = "";
         $apiKey = $this->getContainer()->getParameter('api_key');
-
         $output->writeln($this->addPlacePhotos($apiKey, $placeop));
     }
 
@@ -36,17 +34,17 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
             $placeId = $place['id'];
             $placeName = $place['slug'];
             $detailsRef = $place['detailsRef'];
-            $url = "https://maps.googleapis.com/maps/api/place/details/xml?reference=" . $detailsRef . "&sensor=true&key=" . $apiKey;
-            $placeDetails = simplexml_load_file($url);
-            $detailsResults = $placeDetails->result;
+            $url = "https://maps.googleapis.com/maps/api/place/details/json?reference=" . $detailsRef . "&sensor=true&key=" . $apiKey;
+            $json = file_get_contents($url);
+            $data = json_decode($json, TRUE);
+            $detailsResults = $data['result'];
             $isPhoto = $placeop->isPhoto($placeId);
-            if (!$isPhoto) { // if photos for place_id not inserted
-                //insert photos for place    
-                foreach ($detailsResults as $detailResult) {
-                    $photos = $detailResult->photo;
-                    var_dump($photos);
+            if (isset($detailsResults['photos'])) {
+                if (!$isPhoto) { // if photos for place_id not inserted
+                    //insert photos for place    
+                    $photos = $detailsResults['photos'];
                     foreach ($photos as $photo) {
-                        $photoRef = $photo->photo_reference;
+                        $photoRef = $photo['photo_reference'];
                         $urlPicture = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoRef&sensor=true&key=" . $apiKey;
                         $imgUrl = $this->getImgUrl($urlPicture);
                         $placePhotos = new PlacePhotos();
@@ -54,47 +52,30 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
                         $placePhotos->setOrigin('google');
                         $placePhotos->setPlaceId($placeId);
                         $placePhotos->setImgRef($photoRef);
-
-                        $placeop->checkPlacePhotos($placePhotos);
+                        $placeop->insertPlacePhotos($placePhotos);
                     }
-                }
-            } else {
-                echo "place: '$placeName' contains photos \r\n";
-                // if place contains other photos we save them to db
-                foreach ($detailsResults as $detailResult) {
-                    $photos = $detailResult->photo;
+                } else {
+                    echo "place: '$placeName' contains photos \r\n";
+                    // if place contains other photos we save them to db
+                    $photos = $detailsResults['photos'];
                     foreach ($photos as $photo) {
-                        $photoRef = $photo->photo_reference;
+                        $photoRef = $photo['photo_reference'];
                         $urlPicture = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoRef&sensor=true&key=" . $apiKey;
                         $imgUrl = $this->getImgUrl($urlPicture);
                         $placePhotos = $placeop->getImageByPhotoRef($placeId, $imgUrl);
-                        if (!$placePhotos) {
+                        if ($placePhotos) {
                             $placePhotos = new PlacePhotos();
                             $placePhotos->setImgUrl($imgUrl);
                             $placePhotos->setOrigin('google');
                             $placePhotos->setPlaceId($placeId);
                             $placePhotos->setImgRef($photoRef);
-                            $placeop->checkPlacePhotos($placePhotos);
+                            $placeop->insertPlacePhotos($placePhotos);
                         }
-                        var_dump($placePhotos);
-
-
-                        //$placeop->checkPlacePhotos($placePhotos);
                     }
                 }
-                //exit();
+            } else {
+                echo "Place does not have photos";
             }
-
-            /* else {
-              // update photos table
-              $updatePhotos = $em->getRepository('BundleProjectBundle:PlacePhotos')
-              ->updatePlacePhotos($placeId, $photoRef, $imgUrl);
-
-              $updatePhotos->execute();
-
-              echo "Photos paths for: '$placeName' updated ! \r\n";
-              //exit();
-              } */
         }
     }
 

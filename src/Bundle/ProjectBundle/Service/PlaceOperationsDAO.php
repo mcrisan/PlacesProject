@@ -113,6 +113,11 @@ class PlaceOperationsDAO {
         return $this->em->getRepository('BundleProjectBundle:Places')->find($placeId);
     }
     
+    public function getPlaceByExtId($extId){
+        return $this->em->getRepository('BundleProjectBundle:Places')
+                ->findOneBy(array("extId" => $extId));
+    }
+    
     public function getPlacesDetailsRef(){
         return $this->em->getRepository('BundleProjectBundle:Places')
                 ->getPlacesDetailsRef();
