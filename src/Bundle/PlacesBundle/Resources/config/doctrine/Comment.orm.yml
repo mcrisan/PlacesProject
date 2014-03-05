@@ -1,0 +1,40 @@
+Bundle\PlacesBundle\Entity\Comment:
+    type: entity
+    table: comment
+    repositoryClass: Bundle\PlacesBundle\Entity\Repository\CommentRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        user:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+        approved:
+            type: boolean
+            nullable: false
+        created:
+            type: datetime
+            nullable: false
+        updated:
+            type: datetime
+            nullable: false
+        comment:
+            type: text
+            nullable: false
+    manyToOne:
+        place:
+            targetEntity: Places
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                place_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

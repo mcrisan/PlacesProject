@@ -1,6 +1,6 @@
 security:
     encoders:
-        Bundle\ProjectBundle\Entity\AppUsers:
+        Bundle\PlacesBundle\Entity\AppUsers:
             algorithm:        md5
             encode_as_base64: false
             iterations:       1
@@ -11,7 +11,7 @@ security:
 
     providers:
         administrators:
-            entity: { class: BundleProjectBundle:AppUsers, property: txtLogin }
+            entity: { class: BundlePlacesBundle:AppUsers, property: login }
     firewalls:
             login:
                 pattern:  ^/admin/login$

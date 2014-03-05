@@ -1,0 +1,76 @@
+Bundle\PlacesBundle\Entity\PlaceDetails:
+    type: entity
+    table: place_details
+    repositoryClass: Bundle\PlacesBundle\Entity\Repository\PlaceDetailsRepository
+    fields:
+        placeId:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            column: place_id
+        placeName:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: place_name
+        placePhonenumber:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: place_phonenumber
+        placeVicinity:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: place_vicinity
+        placeLat:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: place_lat
+        placeLng:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: place_lng
+        placeRating:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: place_rating
+        placeIcon:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: place_icon
+        placeUrl:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: place_url
+        placeWebsite:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: place_website
+    oneToOne:
+        place:
+            targetEntity: Bundle\PlacesBundle\Entity\Places
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumn:
+                    name: place_id
+                    referencedColumnName: id
+            orphanRemoval: false          
+    lifecycleCallbacks: {  }

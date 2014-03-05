@@ -16,7 +16,7 @@
       <parameter key="AsseticBundle">Symfony\Bundle\AsseticBundle\AsseticBundle</parameter>
       <parameter key="DoctrineBundle">Doctrine\Bundle\DoctrineBundle\DoctrineBundle</parameter>
       <parameter key="SensioFrameworkExtraBundle">Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle</parameter>
-      <parameter key="BundleProjectBundle">Bundle\ProjectBundle\BundleProjectBundle</parameter>
+      <parameter key="BundlePlacesBundle">Bundle\PlacesBundle\BundlePlacesBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
       <parameter key="SensioGeneratorBundle">Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle</parameter>
@@ -158,8 +158,8 @@
       <parameter>C:\wamp\www\PlacesProject\vendor\symfony\symfony\src\Symfony\Component\Form/Resources/config/validation.xml</parameter>
     </parameter>
     <parameter key="validator.mapping.loader.yaml_files_loader.mapping_files" type="collection">
-      <parameter>C:\wamp\www\PlacesProject\src\Bundle\ProjectBundle\Resources\config\validation.yml</parameter>
-      <parameter>C:\wamp\www\PlacesProject\src\Bundle\ProjectBundle\DependencyInjection/../Resources/config/validation.yml</parameter>
+      <parameter>C:\wamp\www\PlacesProject\src\Bundle\PlacesBundle\Resources\config\validation.yml</parameter>
+      <parameter>C:\wamp\www\PlacesProject\src\Bundle\PlacesBundle\DependencyInjection/../Resources/config/validation.yml</parameter>
     </parameter>
     <parameter key="validator.translation_domain">validators</parameter>
     <parameter key="fragment.listener.class">Symfony\Component\HttpKernel\EventListener\FragmentListener</parameter>
@@ -478,8 +478,9 @@
     <parameter key="sensio_framework_extra.converter.doctrine.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter</parameter>
     <parameter key="sensio_framework_extra.converter.datetime.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DateTimeParamConverter</parameter>
     <parameter key="sensio_framework_extra.view.listener.class">Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener</parameter>
-    <parameter key="placeoperation.class">Bundle\ProjectBundle\Service\PlaceOperations</parameter>
-    <parameter key="placeoperationdao.class">Bundle\ProjectBundle\Service\PlaceOperationsDAO</parameter>
+    <parameter key="placeoperation.class">Bundle\PlacesBundle\Service\PlaceOperations</parameter>
+    <parameter key="placeoperationdao.class">Bundle\PlacesBundle\Service\PlaceOperationsDAO</parameter>
+    <parameter key="test.class">Bundle\PlacesBundle\Service\Test</parameter>
     <parameter key="web_profiler.controller.profiler.class">Symfony\Bundle\WebProfilerBundle\Controller\ProfilerController</parameter>
     <parameter key="web_profiler.controller.router.class">Symfony\Bundle\WebProfilerBundle\Controller\RouterController</parameter>
     <parameter key="web_profiler.controller.exception.class">Symfony\Bundle\WebProfilerBundle\Controller\ExceptionController</parameter>
@@ -1310,8 +1311,8 @@
             <argument type="service">
               <service class="Symfony\Component\Validator\Mapping\Loader\YamlFilesLoader" public="false">
                 <argument type="collection">
-                  <argument>C:\wamp\www\PlacesProject\src\Bundle\ProjectBundle\Resources\config\validation.yml</argument>
-                  <argument>C:\wamp\www\PlacesProject\src\Bundle\ProjectBundle\DependencyInjection/../Resources/config/validation.yml</argument>
+                  <argument>C:\wamp\www\PlacesProject\src\Bundle\PlacesBundle\Resources\config\validation.yml</argument>
+                  <argument>C:\wamp\www\PlacesProject\src\Bundle\PlacesBundle\DependencyInjection/../Resources/config/validation.yml</argument>
                 </argument>
               </service>
             </argument>
@@ -1558,7 +1559,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>531059a170efd</argument>
+            <argument>5315f8b75ddca</argument>
           </service>
         </argument>
       </argument>
@@ -1660,8 +1661,8 @@
     </service>
     <service id="security.user.provider.concrete.administrators" class="Symfony\Bridge\Doctrine\Security\User\EntityUserProvider" public="false">
       <argument type="service" id="doctrine"/>
-      <argument>BundleProjectBundle:AppUsers</argument>
-      <argument>txtLogin</argument>
+      <argument>BundlePlacesBundle:AppUsers</argument>
+      <argument>login</argument>
       <argument>null</argument>
     </service>
     <service id="security.firewall.map.context.login" class="Symfony\Bundle\SecurityBundle\Security\FirewallContext">
@@ -1888,7 +1889,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>531059a170efd</argument>
+            <argument>5315f8b75ddca</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
           </service>
         </argument>
@@ -2284,7 +2285,7 @@
         <service class="Doctrine\ORM\Configuration" public="false">
           <call method="setEntityNamespaces">
             <argument type="collection">
-              <argument key="BundleProjectBundle">Bundle\ProjectBundle\Entity</argument>
+              <argument key="BundlePlacesBundle">Bundle\PlacesBundle\Entity</argument>
             </argument>
           </call>
           <call method="setMetadataCacheImpl">
@@ -2321,14 +2322,14 @@
                   <argument type="service">
                     <service class="Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver" public="false">
                       <argument type="collection">
-                        <argument key="C:\wamp\www\PlacesProject\src\Bundle\ProjectBundle\Resources\config\doctrine">Bundle\ProjectBundle\Entity</argument>
+                        <argument key="C:\wamp\www\PlacesProject\src\Bundle\PlacesBundle\Resources\config\doctrine">Bundle\PlacesBundle\Entity</argument>
                       </argument>
                       <call method="setGlobalBasename">
                         <argument>mapping</argument>
                       </call>
                     </service>
                   </argument>
-                  <argument>Bundle\ProjectBundle\Entity</argument>
+                  <argument>Bundle\PlacesBundle\Entity</argument>
                 </call>
               </service>
             </argument>
@@ -2394,11 +2395,12 @@
     <service id="sensio_framework_extra.cache.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\CacheListener">
       <tag name="kernel.event_subscriber"/>
     </service>
-    <service id="placeop" class="Bundle\ProjectBundle\Service\PlaceOperations">
+    <service id="test" class="Bundle\PlacesBundle\Service\Test"/>
+    <service id="placeop" class="Bundle\PlacesBundle\Service\PlaceOperations">
       <argument type="service" id="placeopdao"/>
       <argument type="service" id="service_container"/>
     </service>
-    <service id="placeopdao" class="Bundle\ProjectBundle\Service\PlaceOperationsDAO">
+    <service id="placeopdao" class="Bundle\PlacesBundle\Service\PlaceOperationsDAO">
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
     </service>
     <service id="web_profiler.controller.profiler" class="Symfony\Bundle\WebProfilerBundle\Controller\ProfilerController">
@@ -2686,7 +2688,7 @@
     </service>
     <service id="security.encoder_factory" class="Symfony\Component\Security\Core\Encoder\EncoderFactory">
       <argument type="collection">
-        <argument key="Bundle\ProjectBundle\Entity\AppUsers" type="collection">
+        <argument key="Bundle\PlacesBundle\Entity\AppUsers" type="collection">
           <argument key="class">%security.encoder.digest.class%</argument>
           <argument key="arguments" type="collection">
             <argument>md5</argument>
@@ -2721,8 +2723,8 @@
         <argument>Doctrine</argument>
       </call>
       <call method="addPath">
-        <argument>C:\wamp\www\PlacesProject\src\Bundle\ProjectBundle/Resources/views</argument>
-        <argument>BundleProject</argument>
+        <argument>C:\wamp\www\PlacesProject\src\Bundle\PlacesBundle/Resources/views</argument>
+        <argument>BundlePlaces</argument>
       </call>
       <call method="addPath">
         <argument>C:\wamp\www\PlacesProject\vendor\symfony\symfony\src\Symfony\Bundle\WebProfilerBundle/Resources/views</argument>

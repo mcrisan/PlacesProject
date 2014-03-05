@@ -1,0 +1,8 @@
+## Places YAML Template.
+
+# Render place
+renderPlace:
+    pattern:  /renderPlace/{param}
+    defaults: { _controller: BundlePlacesBundle:Forms:renderPlace }
+    requirements:
+        _method:  GET

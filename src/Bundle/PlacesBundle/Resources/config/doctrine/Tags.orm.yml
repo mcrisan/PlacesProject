@@ -1,0 +1,18 @@
+Bundle\PlacesBundle\Entity\Tags:
+    type: entity
+    table: tags
+    repositoryClass: Bundle\PlacesBundle\Entity\Repository\TagsRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        tag:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+    lifecycleCallbacks: {  }

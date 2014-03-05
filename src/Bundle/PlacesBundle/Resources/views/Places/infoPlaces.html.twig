@@ -1,0 +1,75 @@
+{# src/Bundle/PlacesBundle/Resources/Views/Store/infostore.html.twig #}
+{% extends 'BundlePlacesBundle::layout.html.twig' %}
+
+{% block title %} Places Info {% endblock %}
+{% block body %}
+<article>
+    <hgroup>
+        <h1>Places Info</h1>
+        <h2><big>Places in Cluj-N.</big></h2>
+        <h2><i>Query found <b>{{ placesCount }}</b> places to show on this page.</i></h2>
+    </hgroup>
+    <br />
+        
+    <div id="placeContainer">
+        {% for place in places %}
+            <div class="place">
+                <p>Place id: {{ place.placeid }}</p>
+                <p>
+                    <a href="{{ place.PlaceIcon }}" target="_blank" title="{{ place.PlaceName }}">
+                        <img src="{{ place.PlaceIcon }}"/>
+                    </a>
+                </p>
+                <p><a href="{{ path('places_showPlace', { 'id':place.placeid }) }}"/>{{ place.PlaceName }}</a></p>
+                <p><b>Phone: </b> {{ place.PlacePhoneNumber }}</p>
+                <p><b>Type: </b> {{ place.PlaceType }}</p>
+                <p><b>Addr: </b> {{ place.PlaceVicinity }}</p>
+                <p><b>Geo Location: </b><u>Lat. </u>{{ place.placelat }}. <u>Lng.</u>{{ place.placelng }}.</p>
+                {% if place.placerating|length != 0 %}
+                    <p><b>Ratings:</b> {{ place.placerating }} / 5 points.</p>
+                {% else %}
+                    <p><b>Ratings: </b> No ratings available for this store.</p>
+                {% endif %}   
+            </div>
+        {% endfor %}  
+    </div>
+    <input id="start" type="hidden" value="{{ start }}" />
+    <input id="limit" type="hidden" value="{{ limit }}" />
+    <button id="loadmore" class="load-more-button">Load more stores</button>
+           
+    </article>
+{% endblock %}
+
+{% block sidebar %}
+<div class="sideDiv">
+    <hgroup>
+        <h1 class="sideHeader">Search by rating or type<h1>
+        <h2>Enter a rating. For example: 4.5<h2>
+        <h2>Enter a type. For example: cafe</h2>
+    </hgroup>
+        {#
+        <form action="{{ path('BundlePlacesBundle_searchByRating') }}" method="post">
+            {{ form_row(form.rating) }}
+            <input type="submit" value="Vote" style="padding:5px;border-radius:5px"/>
+        </form>  
+#}
+        
+    <form action="{{ path('search') }}" method="post">
+        <input type="text" name="input" style="padding:3px; width:80px" />
+        {#<input type="text" name="type" style="padding:3px; width:80px" />#}
+        <button class="button" type="submit" style="padding: 5px; border-radius:5px; width:80px"><b>Search</b></button>
+    </form>
+    
+</div>
+<div class="sideDiv">
+    <hgroup>
+        <h1 class="sideHeader">Side bar title</h1>
+        <h2>Side bar subtitle</h2>
+    </hgroup>
+    <p>Side bar content</p>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ asset('bundles/bundleplaces/js/loadMorePlaces.js') }}"></script>
+{% endblock %}

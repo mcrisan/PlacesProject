@@ -192,6 +192,7 @@ class appDevDebugProjectContainer extends Container
             'templating.loader' => 'getTemplating_LoaderService',
             'templating.locator' => 'getTemplating_LocatorService',
             'templating.name_parser' => 'getTemplating_NameParserService',
+            'test' => 'getTestService',
             'translation.dumper.csv' => 'getTranslation_Dumper_CsvService',
             'translation.dumper.ini' => 'getTranslation_Dumper_IniService',
             'translation.dumper.mo' => 'getTranslation_Dumper_MoService',
@@ -539,14 +540,14 @@ class appDevDebugProjectContainer extends Container
         $c = new \Doctrine\Common\Cache\ArrayCache();
         $c->setNamespace('sf2orm_default_75278806e06438af92e0d2ffb2234d4f');
 
-        $d = new \Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver(array('C:\\wamp\\www\\PlacesProject\\src\\Bundle\\ProjectBundle\\Resources\\config\\doctrine' => 'Bundle\\ProjectBundle\\Entity'));
+        $d = new \Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver(array('C:\\wamp\\www\\PlacesProject\\src\\Bundle\\PlacesBundle\\Resources\\config\\doctrine' => 'Bundle\\PlacesBundle\\Entity'));
         $d->setGlobalBasename('mapping');
 
         $e = new \Doctrine\ORM\Mapping\Driver\DriverChain();
-        $e->addDriver($d, 'Bundle\\ProjectBundle\\Entity');
+        $e->addDriver($d, 'Bundle\\PlacesBundle\\Entity');
 
         $f = new \Doctrine\ORM\Configuration();
-        $f->setEntityNamespaces(array('BundleProjectBundle' => 'Bundle\\ProjectBundle\\Entity'));
+        $f->setEntityNamespaces(array('BundlePlacesBundle' => 'Bundle\\PlacesBundle\\Entity'));
         $f->setMetadataCacheImpl($a);
         $f->setQueryCacheImpl($b);
         $f->setResultCacheImpl($c);
@@ -1582,11 +1583,11 @@ class appDevDebugProjectContainer extends Container
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @return Bundle\ProjectBundle\Service\PlaceOperations A Bundle\ProjectBundle\Service\PlaceOperations instance.
+     * @return Bundle\PlacesBundle\Service\PlaceOperations A Bundle\PlacesBundle\Service\PlaceOperations instance.
      */
     protected function getPlaceopService()
     {
-        return $this->services['placeop'] = new \Bundle\ProjectBundle\Service\PlaceOperations($this->get('placeopdao'), $this);
+        return $this->services['placeop'] = new \Bundle\PlacesBundle\Service\PlaceOperations($this->get('placeopdao'), $this);
     }
 
     /**
@@ -1595,11 +1596,11 @@ class appDevDebugProjectContainer extends Container
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @return Bundle\ProjectBundle\Service\PlaceOperationsDAO A Bundle\ProjectBundle\Service\PlaceOperationsDAO instance.
+     * @return Bundle\PlacesBundle\Service\PlaceOperationsDAO A Bundle\PlacesBundle\Service\PlaceOperationsDAO instance.
      */
     protected function getPlaceopdaoService()
     {
-        return $this->services['placeopdao'] = new \Bundle\ProjectBundle\Service\PlaceOperationsDAO($this->get('doctrine.orm.default_entity_manager'));
+        return $this->services['placeopdao'] = new \Bundle\PlacesBundle\Service\PlaceOperationsDAO($this->get('doctrine.orm.default_entity_manager'));
     }
 
     /**
@@ -1777,7 +1778,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_EncoderFactoryService()
     {
-        return $this->services['security.encoder_factory'] = new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array('Bundle\\ProjectBundle\\Entity\\AppUsers' => array('class' => 'Symfony\\Component\\Security\\Core\\Encoder\\MessageDigestPasswordEncoder', 'arguments' => array(0 => 'md5', 1 => false, 2 => 1))));
+        return $this->services['security.encoder_factory'] = new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array('Bundle\\PlacesBundle\\Entity\\AppUsers' => array('class' => 'Symfony\\Component\\Security\\Core\\Encoder\\MessageDigestPasswordEncoder', 'arguments' => array(0 => 'md5', 1 => false, 2 => 1))));
     }
 
     /**
@@ -1830,7 +1831,7 @@ class appDevDebugProjectContainer extends Container
         $n = new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $g, new \Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy('migrate'), $j, 'admin_area', $m, new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler($f, $j, array('login_path' => 'login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path'), $a), array('check_path' => 'login_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $a, $d);
         $n->setRememberMeServices($k);
 
-        return $this->services['security.firewall.map.context.admin_area'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($i, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $c), 'admin_area', $a, $d), 2 => $l, 3 => $n, 4 => new \Symfony\Component\Security\Http\Firewall\RememberMeListener($b, $k, $g, $a, $d), 5 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '531059a170efd', $a), 6 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $i, $g)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $j, 'admin_area', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($f, $j, 'login', false), NULL, NULL, $a));
+        return $this->services['security.firewall.map.context.admin_area'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($i, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $c), 'admin_area', $a, $d), 2 => $l, 3 => $n, 4 => new \Symfony\Component\Security\Http\Firewall\RememberMeListener($b, $k, $g, $a, $d), 5 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '5315f8b75ddca', $a), 6 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $i, $g)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $j, 'admin_area', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($f, $j, 'login', false), NULL, NULL, $a));
     }
 
     /**
@@ -2453,6 +2454,19 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'test' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Bundle\PlacesBundle\Service\Test A Bundle\PlacesBundle\Service\Test instance.
+     */
+    protected function getTestService()
+    {
+        return $this->services['test'] = new \Bundle\PlacesBundle\Service\Test();
+    }
+
+    /**
      * Gets the 'translation.dumper.csv' service.
      *
      * This service is shared.
@@ -2883,7 +2897,7 @@ class appDevDebugProjectContainer extends Container
         $instance->addPath('C:\\wamp\\www\\PlacesProject\\vendor\\symfony\\symfony\\src\\Symfony\\Bundle\\TwigBundle/Resources/views', 'Twig');
         $instance->addPath('C:\\wamp\\www\\PlacesProject\\vendor\\symfony\\swiftmailer-bundle\\Symfony\\Bundle\\SwiftmailerBundle/Resources/views', 'Swiftmailer');
         $instance->addPath('C:\\wamp\\www\\PlacesProject\\vendor\\doctrine\\doctrine-bundle\\Doctrine\\Bundle\\DoctrineBundle/Resources/views', 'Doctrine');
-        $instance->addPath('C:\\wamp\\www\\PlacesProject\\src\\Bundle\\ProjectBundle/Resources/views', 'BundleProject');
+        $instance->addPath('C:\\wamp\\www\\PlacesProject\\src\\Bundle\\PlacesBundle/Resources/views', 'BundlePlaces');
         $instance->addPath('C:\\wamp\\www\\PlacesProject\\vendor\\symfony\\symfony\\src\\Symfony\\Bundle\\WebProfilerBundle/Resources/views', 'WebProfiler');
         $instance->addPath('C:\\wamp\\www\\PlacesProject\\vendor\\sensio\\distribution-bundle\\Sensio\\Bundle\\DistributionBundle/Resources/views', 'SensioDistribution');
         $instance->addPath('C:/wamp/www/PlacesProject/app/Resources/views');
@@ -3138,7 +3152,7 @@ class appDevDebugProjectContainer extends Container
     {
         $a = new \Symfony\Component\Security\Core\User\UserChecker();
 
-        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('security.user.provider.concrete.administrators'), $a, 'admin_area', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\RememberMeAuthenticationProvider($a, '1ac7dc66bfe373ae669e58d597c1f28549dfd5d0', 'admin_area'), 2 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('531059a170efd')), true);
+        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('security.user.provider.concrete.administrators'), $a, 'admin_area', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\RememberMeAuthenticationProvider($a, '1ac7dc66bfe373ae669e58d597c1f28549dfd5d0', 'admin_area'), 2 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('5315f8b75ddca')), true);
 
         $instance->setEventDispatcher($this->get('event_dispatcher'));
 
@@ -3176,7 +3190,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_User_Provider_Concrete_AdministratorsService()
     {
-        return $this->services['security.user.provider.concrete.administrators'] = new \Symfony\Bridge\Doctrine\Security\User\EntityUserProvider($this->get('doctrine'), 'BundleProjectBundle:AppUsers', 'txtLogin', NULL);
+        return $this->services['security.user.provider.concrete.administrators'] = new \Symfony\Bridge\Doctrine\Security\User\EntityUserProvider($this->get('doctrine'), 'BundlePlacesBundle:AppUsers', 'login', NULL);
     }
 
     /**
@@ -3244,7 +3258,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getValidator_Mapping_ClassMetadataFactoryService()
     {
-        return $this->services['validator.mapping.class_metadata_factory'] = new \Symfony\Component\Validator\Mapping\ClassMetadataFactory(new \Symfony\Component\Validator\Mapping\Loader\LoaderChain(array(0 => new \Symfony\Component\Validator\Mapping\Loader\AnnotationLoader($this->get('annotation_reader')), 1 => new \Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader(), 2 => new \Symfony\Component\Validator\Mapping\Loader\XmlFilesLoader(array(0 => 'C:\\wamp\\www\\PlacesProject\\vendor\\symfony\\symfony\\src\\Symfony\\Component\\Form/Resources/config/validation.xml')), 3 => new \Symfony\Component\Validator\Mapping\Loader\YamlFilesLoader(array(0 => 'C:\\wamp\\www\\PlacesProject\\src\\Bundle\\ProjectBundle\\Resources\\config\\validation.yml', 1 => 'C:\\wamp\\www\\PlacesProject\\src\\Bundle\\ProjectBundle\\DependencyInjection/../Resources/config/validation.yml')))), NULL);
+        return $this->services['validator.mapping.class_metadata_factory'] = new \Symfony\Component\Validator\Mapping\ClassMetadataFactory(new \Symfony\Component\Validator\Mapping\Loader\LoaderChain(array(0 => new \Symfony\Component\Validator\Mapping\Loader\AnnotationLoader($this->get('annotation_reader')), 1 => new \Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader(), 2 => new \Symfony\Component\Validator\Mapping\Loader\XmlFilesLoader(array(0 => 'C:\\wamp\\www\\PlacesProject\\vendor\\symfony\\symfony\\src\\Symfony\\Component\\Form/Resources/config/validation.xml')), 3 => new \Symfony\Component\Validator\Mapping\Loader\YamlFilesLoader(array(0 => 'C:\\wamp\\www\\PlacesProject\\src\\Bundle\\PlacesBundle\\Resources\\config\\validation.yml', 1 => 'C:\\wamp\\www\\PlacesProject\\src\\Bundle\\PlacesBundle\\DependencyInjection/../Resources/config/validation.yml')))), NULL);
     }
 
     /**
@@ -3313,7 +3327,7 @@ class appDevDebugProjectContainer extends Container
                 'AsseticBundle' => 'Symfony\\Bundle\\AsseticBundle\\AsseticBundle',
                 'DoctrineBundle' => 'Doctrine\\Bundle\\DoctrineBundle\\DoctrineBundle',
                 'SensioFrameworkExtraBundle' => 'Sensio\\Bundle\\FrameworkExtraBundle\\SensioFrameworkExtraBundle',
-                'BundleProjectBundle' => 'Bundle\\ProjectBundle\\BundleProjectBundle',
+                'BundlePlacesBundle' => 'Bundle\\PlacesBundle\\BundlePlacesBundle',
                 'WebProfilerBundle' => 'Symfony\\Bundle\\WebProfilerBundle\\WebProfilerBundle',
                 'SensioDistributionBundle' => 'Sensio\\Bundle\\DistributionBundle\\SensioDistributionBundle',
                 'SensioGeneratorBundle' => 'Sensio\\Bundle\\GeneratorBundle\\SensioGeneratorBundle',
@@ -3461,8 +3475,8 @@ class appDevDebugProjectContainer extends Container
                 0 => 'C:\\wamp\\www\\PlacesProject\\vendor\\symfony\\symfony\\src\\Symfony\\Component\\Form/Resources/config/validation.xml',
             ),
             'validator.mapping.loader.yaml_files_loader.mapping_files' => array(
-                0 => 'C:\\wamp\\www\\PlacesProject\\src\\Bundle\\ProjectBundle\\Resources\\config\\validation.yml',
-                1 => 'C:\\wamp\\www\\PlacesProject\\src\\Bundle\\ProjectBundle\\DependencyInjection/../Resources/config/validation.yml',
+                0 => 'C:\\wamp\\www\\PlacesProject\\src\\Bundle\\PlacesBundle\\Resources\\config\\validation.yml',
+                1 => 'C:\\wamp\\www\\PlacesProject\\src\\Bundle\\PlacesBundle\\DependencyInjection/../Resources/config/validation.yml',
             ),
             'validator.translation_domain' => 'validators',
             'fragment.listener.class' => 'Symfony\\Component\\HttpKernel\\EventListener\\FragmentListener',
@@ -3793,8 +3807,9 @@ class appDevDebugProjectContainer extends Container
             'sensio_framework_extra.converter.doctrine.class' => 'Sensio\\Bundle\\FrameworkExtraBundle\\Request\\ParamConverter\\DoctrineParamConverter',
             'sensio_framework_extra.converter.datetime.class' => 'Sensio\\Bundle\\FrameworkExtraBundle\\Request\\ParamConverter\\DateTimeParamConverter',
             'sensio_framework_extra.view.listener.class' => 'Sensio\\Bundle\\FrameworkExtraBundle\\EventListener\\TemplateListener',
-            'placeoperation.class' => 'Bundle\\ProjectBundle\\Service\\PlaceOperations',
-            'placeoperationdao.class' => 'Bundle\\ProjectBundle\\Service\\PlaceOperationsDAO',
+            'placeoperation.class' => 'Bundle\\PlacesBundle\\Service\\PlaceOperations',
+            'placeoperationdao.class' => 'Bundle\\PlacesBundle\\Service\\PlaceOperationsDAO',
+            'test.class' => 'Bundle\\PlacesBundle\\Service\\Test',
             'web_profiler.controller.profiler.class' => 'Symfony\\Bundle\\WebProfilerBundle\\Controller\\ProfilerController',
             'web_profiler.controller.router.class' => 'Symfony\\Bundle\\WebProfilerBundle\\Controller\\RouterController',
             'web_profiler.controller.exception.class' => 'Symfony\\Bundle\\WebProfilerBundle\\Controller\\ExceptionController',

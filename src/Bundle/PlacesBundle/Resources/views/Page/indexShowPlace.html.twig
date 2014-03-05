@@ -1,0 +1,111 @@
+{# src/Bundle/PlacesBundle/Resources/Views/Page/demoShowPlace.html.twig #}
+{# extends layout #}
+
+{% extends 'BundlePlacesBundle::layout.html.twig' %}
+{# over aside #}
+{% block aside %} 
+    <div class="list-group">
+        {# <br /> #1 #}
+        <div class="list-group-item">
+            <h1 class="sideHeader">{{ name }}</h1>
+            <h2>Details</h2>
+            <p>Address: {{ placeAddress }}</p>
+        </div>
+
+        <br />
+        <br />{# #2 #}
+        <div class="list-group-item">
+            <p>Place slug: {{ slug }}</p>
+            <p>Palce id: {{ id }}</p>
+        </div>
+        
+        <br />{# #3 #}
+        <div class="list-group-item">
+            <h1 class="sideHeader">More info</h1>
+            <h2>More info</h2>
+        
+            <p>tags,comercials,menus,etc</p>
+        </div>
+        
+        <br />
+        <br />{# #4 #}
+        <div class="list-group-item">
+            <h1 class="sideHeader">{{ name }}</h1>
+            <h2>Details</h2>
+            <p>Address: {{ placeAddress }}</p>
+        </div>
+        
+    </div>
+{% endblock %}
+
+{% block title %} Place details {% endblock %}
+
+{# body #}
+{% block body %}
+
+<article class="page-article" style="padding:0px;border:0px;">
+     <div class="panel-bodyy">
+        {# slide show #}
+        {% if placeAllPhotos is not empty %} 
+            {% if placeAllPhotos|length > 1 %}
+                <div id="slides">
+                    {% for photo in placeAllPhotos %}
+                        <img src="{{ photo.imgUrl }}" width="100%"/>
+                    {% endfor %}
+                    {#<a href="#" class="slidesjs-previous slidesjs-navigation"><i class="icon-chevron-left icon-large"></i></a>
+                    <a href="#" class="slidesjs-next slidesjs-navigation"><i class="icon-chevron-right icon-large"></i></a>#}
+                </div>
+            {% else %}
+                {% for photo in placePhoto %}
+                    <p><img src="{{ photo.imgUrl }}" width="100%"</p>
+                {% endfor %}
+            {% endif %}
+        {% else %}
+            <p>Image not found !</p>
+            <span class="glyphicon glyphicon-picture icon-font-size-verylarge"></span>
+        {% endif %}
+    </div>
+</article>
+
+<article class="page-article">
+    <div class="reviews-comm-div" style="border-bottom: 0xp;">
+        <h1>Reviews from google</h1>
+        {% include 'BundlePlacesBundle:Reviews:index.html.twig' with {'reviews':reviews} %}
+    </div>
+</article>
+
+<article class="page-article">
+    <div class="reviews-comm-div" style="border-bottom: 0xp; height:auto;">
+        <h1>Comments</h1>
+        {% include 'BundlePlacesBundle:Comment:index.html.twig' with {'comments':comments} %}
+    </div>
+</article>
+
+<article class="page-article">
+    <div class="panel-body" style="padding:0px;border:1px solid green;">
+        <h4>From</h4>
+        {{ render(controller( 'BundlePlacesBundle:Comment:new', { 'place_id': id } )) }}
+    </div>
+</article>
+
+{% endblock %}
+
+{% block javascript %}
+    {# import the script for sildeshow #}
+    <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/jquery.slides.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('#slides').slidesjs({
+                width: 500,
+                height: 250,
+                //navigation: false
+                play: {
+                    active: true,
+                    auto: true,
+                    interval: 4000,
+                    swap: true
+                }
+            });
+        });
+    </script>   
+{% endblock %}

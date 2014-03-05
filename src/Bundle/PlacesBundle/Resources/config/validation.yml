@@ -1,0 +1,189 @@
+Bundle\PlacesBundle\Entity\AppUsers:
+    properties:
+        username:  
+            - NotBlank: ~
+        password:
+            - NotBlank: { groups: [registration] }
+            - Length: { min: 8, groups: [registration] }
+        email:   
+            - Email: { groups: [registration] }            
+        timeStamp:
+            - DateTime: ~
+            
+Bundle\PlacesBundle\Entity\UsersIp:
+    properties:
+        ip:
+            - Ip: ~
+        count:
+            - Range:
+                min: 0
+                minMessage: must be at least 0
+        voteFlag:  
+            - Range:
+                min: 0
+                max: 1
+                minMessage: must be at least 0
+                maxMessage: can't be over 1
+                
+Bundle\PlacesBundle\Entity\VoteStatus:
+    properties:
+        placeId:
+            - NotBlank: ~
+        userIp:
+            - Ip: ~
+            
+Bundle\PlacesBundle\Entity\Tags:
+    properties:
+        tag:
+           - NotBlank: ~
+           
+Bundle\PlacesBundle\Entity\Places:
+    properties:
+        extId:
+            - NotBlank: ~
+            - Length:
+                max: 255
+                maxMessage: "extId cannot be longer than {{ limit }} characters length"
+        slug:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        detailsRef:
+            - NotBlank: ~
+            - Length:
+                max: 300
+        origin:
+            - NotBlank: ~
+            - Length:
+                max: 20
+        hasOwner:
+            - Range:
+                min: 0
+                max: 1
+                minMessage: must be at least 0
+                maxMessage: can't be over 1
+                
+Bundle\PlacesBundle\Entity\PlaceTags:
+    properties:
+        placeId:
+            - NotBlank: ~
+            - Range:
+                min: 0
+        tagId:
+            - NotBlank: ~
+            - Range:
+                min: 0
+        main:
+            - Choice:
+                choices:  [true, false]
+                
+Bundle\PlacesBundle\Entity\PlaceReviews:
+    properties:
+        author:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        authorUrl:   
+            - Url: ~
+        review:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        ratingAspect:
+            - NotBlank: ~
+            - Length:
+                max: 30
+        rating:
+            - Range:
+                min: 0
+                max: 5
+                minMessage: must be at least 0
+                maxMessage: can't be over 5
+        date: 
+            - NotBlank: ~
+            - Length:
+                max: 100
+                
+Bundle\PlacesBundle\Entity\PlaceRatings:
+    properties:
+        placeId:
+            - NotBlank: ~
+            - Range:
+                min: 0
+        totalVotes: 
+            - NotBlank: ~
+        votesCount:    
+            - NotBlank: ~
+            
+Bundle\PlacesBundle\Entity\PlacePhotos:
+    properties:
+        placeId:
+            - NotBlank: ~
+            - Range:
+                min: 0
+        imgRef:        
+            - NotBlank: ~
+            - Length:
+                max: 255
+        imgUrl:
+            - Url: ~ 
+        origin:
+            - NotBlank: ~
+            - Length:
+                max: 20
+                
+Bundle\PlacesBundle\Entity\PlaceDetails:
+    properties:
+       placeId:
+            - NotBlank: ~
+            - Range:
+                min: 0
+       placeName: 
+           - NotBlank: ~
+           - Length:
+                max: 255
+       placePhonenumber: 
+           - Length:
+                max: 13
+       placeVicinity:
+           - NotBlank: ~
+           - Length:
+                max: 255
+       placeLat:
+           - NotBlank: ~
+           - Length:
+                max: 100
+       placeLng:
+           - NotBlank: ~
+           - Length:
+                max: 100
+       placeRating:
+           - Length:
+                max: 3
+       placeIcon:
+           - Url: ~
+       placeUrl:
+           - Url: ~
+       placeWebsite:    
+           - Url: ~
+           
+Bundle\PlacesBundle\Entity\Comment:
+    properties:
+        user:
+           - NotBlank: ~
+           - Length:
+                max: 100 
+        approved: 
+            - Choice:
+                choices:  [0, 1]
+        created:    
+           - DateTime: ~ 
+        updated:   
+           - DateTime: ~
+        comment:
+           - NotBlank: ~ 
+            
+            
+            
+            
+            

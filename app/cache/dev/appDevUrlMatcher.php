@@ -137,36 +137,36 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             if (0 === strpos($pathinfo, '/admin/log')) {
                 // login
                 if ($pathinfo === '/admin/login') {
-                    return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\AuthController::loginAction',  '_route' => 'login',);
+                    return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\AuthController::loginAction',  '_route' => 'login',);
                 }
 
                 // logout
                 if ($pathinfo === '/admin/logout') {
-                    return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\AuthController::logoutAction',  '_route' => 'logout',);
+                    return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\AuthController::logoutAction',  '_route' => 'logout',);
                 }
 
             }
 
             // admin_start
             if ($pathinfo === '/admin/start') {
-                return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\AuthController::startAction',  '_route' => 'admin_start',);
+                return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\AuthController::startAction',  '_route' => 'admin_start',);
             }
 
             // login_check
             if ($pathinfo === '/admin/login_check') {
-                return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\AuthController::loginCheckAction',  '_route' => 'login_check',);
+                return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\AuthController::loginCheckAction',  '_route' => 'login_check',);
             }
 
         }
 
         // testToken
         if ($pathinfo === '/testToken') {
-            return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\AuthController::testTokenAction',  '_route' => 'testToken',);
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\AuthController::testTokenAction',  '_route' => 'testToken',);
         }
 
         // clear
         if ($pathinfo === '/clear') {
-            return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\AuthController::clearAction',  '_route' => 'clear',);
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\AuthController::clearAction',  '_route' => 'clear',);
         }
 
         // preLoad
@@ -175,7 +175,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return $this->redirect($pathinfo.'/', 'preLoad');
             }
 
-            return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\PageController::preLoadAction',  '_route' => 'preLoad',);
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\PageController::preLoadAction',  '_route' => 'preLoad',);
         }
 
         if (0 === strpos($pathinfo, '/home')) {
@@ -186,7 +186,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                     goto not_index;
                 }
 
-                return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\PageController::indexAction',  '_route' => 'index',);
+                return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\PageController::indexAction',  '_route' => 'index',);
             }
             not_index:
 
@@ -197,13 +197,13 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                     goto not_index_indexShowPlace;
                 }
 
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'index_indexShowPlace')), array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\PageController::indexShowPlaceAction',));
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'index_indexShowPlace')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\PageController::indexShowPlaceAction',));
             }
             not_index_indexShowPlace:
 
             // index_placeDetails
             if (0 === strpos($pathinfo, '/home/details') && preg_match('#^/home/details/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'index_placeDetails')), array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\PageController::placeDetailsAction',));
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'index_placeDetails')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\PageController::placeDetailsAction',));
             }
 
         }
@@ -216,7 +216,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                     goto not_about;
                 }
 
-                return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\PageController::aboutAction',  '_route' => 'about',);
+                return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\PageController::aboutAction',  '_route' => 'about',);
             }
             not_about:
 
@@ -227,7 +227,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                     goto not_about_test;
                 }
 
-                return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\PageController::testAction',  '_route' => 'about_test',);
+                return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\PageController::testAction',  '_route' => 'about_test',);
             }
             not_about_test:
 
@@ -240,7 +240,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 goto not_renderPlace;
             }
 
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'renderPlace')), array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\FormsController::renderPlaceAction',));
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'renderPlace')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::renderPlaceAction',));
         }
         not_renderPlace:
 
@@ -251,7 +251,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 goto not_comment_create;
             }
 
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'comment_create')), array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\CommentController::createAction',));
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'comment_create')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\CommentController::createAction',));
         }
         not_comment_create:
 
@@ -262,7 +262,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 goto not_search;
             }
 
-            return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\FormsController::searchAction',  '_route' => 'search',);
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::searchAction',  '_route' => 'search',);
         }
         not_search:
 
@@ -273,7 +273,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 goto not_votee;
             }
 
-            return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\FormsController::voteeAction',  '_route' => 'votee',);
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::voteeAction',  '_route' => 'votee',);
         }
         not_votee:
 
@@ -284,7 +284,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 goto not_setVote;
             }
 
-            return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\FormsController::setVoteAction',  '_route' => 'setVote',);
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::setVoteAction',  '_route' => 'setVote',);
         }
         not_setVote:
 
@@ -295,7 +295,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 goto not_morePlacesRequest;
             }
 
-            return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\FormsController::morePlacesRequestAction',  '_route' => 'morePlacesRequest',);
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::morePlacesRequestAction',  '_route' => 'morePlacesRequest',);
         }
         not_morePlacesRequest:
 
@@ -306,7 +306,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 goto not_demoSearch;
             }
 
-            return array (  '_controller' => 'Bundle\\ProjectBundle\\Controller\\FormsController::demoSearchAction',  '_route' => 'demoSearch',);
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::demoSearchAction',  '_route' => 'demoSearch',);
         }
         not_demoSearch:
 

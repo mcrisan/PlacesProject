@@ -1,0 +1,26 @@
+parameters:
+    placeoperation.class: Bundle\PlacesBundle\Service\PlaceOperations
+    placeoperationDAO.class: Bundle\PlacesBundle\Service\PlaceOperationsDAO
+    test.class: Bundle\PlacesBundle\Service\Test
+
+#    bundle_project.example.class: Bundle\ProjectBundle\Example
+
+#services:
+#    model.storemodel:
+#      class: Bundle\ProjectBundle\Model\StoreModel
+#      arguments: 
+#        entityManager: "@doctrine.orm.entity_manager"
+#    bundle_project.example:
+#        class: %bundle_project.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+services:
+    test:
+        class: Bundle\PlacesBundle\Service\Test
+    placeop:
+        class: Bundle\PlacesBundle\Service\PlaceOperations
+        arguments: [@placeopDAO, @service_container]
+    placeopDAO:
+        class: "%placeoperationDAO.class%"   
+        arguments: [@doctrine.orm.entity_manager]
+        

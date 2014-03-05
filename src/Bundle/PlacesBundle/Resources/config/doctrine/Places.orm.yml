@@ -1,0 +1,53 @@
+Bundle\PlacesBundle\Entity\Places:
+    type: entity
+    table: places
+    repositoryClass: Bundle\PlacesBundle\Entity\Repository\PlacesRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        extId:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: ext_id
+        slug:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+        detailsRef:
+            type: string
+            length: 300
+            fixed: false
+            nullable: false
+            column: details_ref
+        origin:
+            type: string
+            length: 20
+            fixed: false
+            nullable: false
+        hasOwner:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: has_owner
+    
+    oneToMany:
+        reviews:
+            targetEntity: Bundle\PlacesBundle\Entity\PlaceReviews
+            mappedBy: places
+    oneToMany:
+        comments:
+            targetEntity: Bundle\PlacesBundle\Entity\Comment
+            mappedBy: place
+    oneToOne:
+        placeDetails:
+            targetEntity: Bundle\PlacesBundle\Entity\PlaceDetails
+            mappedBy: place        
+    lifecycleCallbacks: {  }

@@ -1,0 +1,12 @@
+## Login YAML Template.
+login:
+    path:   /login
+    defaults: { _controller: BundlePlacesBundle:Auth:login }
+
+logout:
+    path:   /logout
+    defaults: { _controller: EcoUserBundle:Auth:logout }
+
+login_check:
+    path:  /login_check
+    defaults: { _controller: EcoUserBundle:Auth:loginCheck }

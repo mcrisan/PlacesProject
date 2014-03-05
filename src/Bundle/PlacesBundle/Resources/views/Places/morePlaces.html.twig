@@ -1,0 +1,43 @@
+{% for place in places %}
+<a id="{{ place.placeId }}" class="list-group-item" href="{{ path('renderPlace',{'param':place.placeName}) }}">
+                <p>{{ place.placeName }}</p>
+                <p>{{ place.placeRating }}</p>
+                
+            </a>
+{% endfor %}
+{# create response for load-more-btn request 
+<p>start from: {{ start }}</p>
+<p>limit by: {{ limit }}</p>
+<p>total places: {{ total }}</p>
+{% if start >= total %}
+    <input id="start" type="hidden" value="{{ firstId-3 }}" />   
+{% else %}
+    <input id="start" type="hidden" value="{{ start }}" />
+    <input id="limit" type="hidden" value="{{ limit }}" />
+{% endif %}
+
+{% for place in places %}
+    <div class="place">
+    <p>Place id: {{ place.placeid }}</p>
+    <p>
+        <a href="{{ place.PlaceIcon }}" target="_blank" title="{{ place.PlaceName }}">
+            <img src="{{ place.PlaceIcon }}"/></a>
+    </p>
+    <a href="{{ path('places_showPlace', { 'id':place.placeid }) }}">
+        {{ place.placename }}</a>
+    
+    {% if place.PlacePhoneNumber|length >1 %}
+        <p><b>Phone: </b> {{ place.PlacePhoneNumber }}</p>
+    {% else %}
+        <p><b>Phone: </b>number not avaiable</p>
+    {% endif %}
+        <p><b>Type: </b> {{ place.PlaceType }}</p>
+        <p><b>Addr: </b> {{ place.PlaceVicinity }}</p>
+        <p><b>Geo Location: </b><u>Lat. </u>{{ place.placelat }}. <u>Lng.</u>{{ place.placelng }}.</p>
+     {% if place.placerating|length != 0 %}
+        <p><b>Ratings:</b> {{ place.placerating }} / 5 points.</p>
+     {% else %}
+        <p><b>Ratings: </b> No ratings available for this store.</p>
+     {% endif %}
+    </div>
+{% endfor %} #} 

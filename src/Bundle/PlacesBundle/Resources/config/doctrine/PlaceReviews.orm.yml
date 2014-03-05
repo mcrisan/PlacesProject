@@ -1,0 +1,52 @@
+Bundle\PlacesBundle\Entity\PlaceReviews:
+    type: entity
+    table: place_reviews
+    repositoryClass: Bundle\PlacesBundle\Entity\Repository\PlaceReviewsRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        author:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+        authorUrl:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: author_url
+        review:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+        ratingAspect:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: rating_aspect
+        rating:
+            type: integer
+            unsigned: false
+            nullable: false
+        date:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+    manyToOne:
+        places:
+            targetEntity: Bundle\PlacesBundle\Entity\Places
+            inversedBy: reviews
+            joinColumns:
+                place_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

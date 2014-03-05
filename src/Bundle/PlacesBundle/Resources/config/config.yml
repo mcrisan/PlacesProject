@@ -1,0 +1,5 @@
+# src/Bundle\PlacesBundle/Resources/config/config.yml
+parameters:
+    # 
+    bundle_project.emails.contact_email: mihualin@gmail.com
+    

@@ -1,0 +1,25 @@
+Bundle\PlacesBundle\Entity\VoteStatus:
+    type: entity
+    table: vote_status
+    repositoryClass: Bundle\PlacesBundle\Entity\Repository\VoteStatusRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        placeId:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: place_id
+        userIp:
+            type: string
+            length: 15
+            fixed: false
+            nullable: false
+            column: user_ip
+    lifecycleCallbacks: {  }

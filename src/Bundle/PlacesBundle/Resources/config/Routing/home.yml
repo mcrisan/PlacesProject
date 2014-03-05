@@ -1,0 +1,22 @@
+## Home page YAML Template.
+
+#Preload method
+preLoad:
+    pattern:  /
+    defaults: { _controller: BundlePlacesBundle:Page:preLoad }
+        
+#MAIN/HOME page
+index:
+    pattern: /home
+    defaults: { _controller: BundlePlacesBundle:Page:index }
+    requirements:
+      _method: GET
+index_indexShowPlace:
+    pattern:  /home/{name}
+    defaults: { _controller: BundlePlacesBundle:Page:indexShowPlace }
+    requirements:
+        _method:  GET
+        
+index_placeDetails:
+    pattern: /home/details/{name}
+    defaults: { _controller: BundlePlacesBundle:Page:placeDetails }
