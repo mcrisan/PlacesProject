@@ -556,199 +556,202 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                     <p><small>Directions</small></p>
                 </div>
             </div> 
-        </div><!-- /.nested cols -->  
+        </div><!-- /.nested cols -->
+        
+
+        
     </article>
 </div><!-- /#place-container -->
 
 ";
     }
 
-    // line 251
+    // line 254
     public function block_aside($context, array $blocks = array())
     {
-        // line 252
+        // line 255
         echo "    ";
         if (array_key_exists("input", $context)) {
-            // line 253
-            echo "    
+            // line 256
+            echo "
 <p class=\"results-header-msg\">
     Total results: ";
-            // line 255
+            // line 258
             echo twig_escape_filter($this->env, $this->getContext($context, "totalResults"), "html", null, true);
             echo "
     <br/>
     Search value: ";
-            // line 257
+            // line 260
             echo twig_escape_filter($this->env, $this->getContext($context, "input"), "html", null, true);
             echo "
 </p>
 <div class=\"row app-results-wrapper\"> 
     <div class=\"app-aside-div\">
         ";
-            // line 261
+            // line 264
             $context['_parent'] = (array) $context;
             $context['_seq'] = twig_ensure_traversable($this->getContext($context, "places"));
             foreach ($context['_seq'] as $context["key"] => $context["place"]) {
-                // line 262
+                // line 265
                 echo "            ";
-                // line 263
+                // line 266
                 echo "            ";
                 $context["active"] = ((($this->getContext($context, "key") == 0)) ? ("active") : (""));
-                // line 264
+                // line 267
                 echo "        <a id=\"";
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placeId"), "html", null, true);
-                echo "\" class=\"list-group-item ";
+                echo "\" class=\"list-group-item it1 ";
                 echo twig_escape_filter($this->env, $this->getContext($context, "active"), "html", null, true);
                 echo "\" href=\"";
                 echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("renderPlace", array("param" => $this->getAttribute($this->getContext($context, "place"), "slug"))), "html", null, true);
                 echo "\">
             <p>";
-                // line 265
+                // line 268
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placeName"), "html", null, true);
                 echo "</p>
             <p>
                     ";
-                // line 267
+                // line 270
                 if ((twig_length_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placeRating")) > 1)) {
-                    // line 268
+                    // line 271
                     echo "                    ";
                     if (($this->getAttribute($this->getContext($context, "place"), "placeRating") < 2)) {
-                        // line 269
+                        // line 272
                         echo "                <img src=\"";
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
-                        echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
-                        // line 270
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
-                        echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
-                        // line 271
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
-                        echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
-                        // line 272
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
                         // line 273
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
+                <img src=\"";
+                        // line 274
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
+                        echo "\" width=\"15\" height=\"15\" />
+                <img src=\"";
+                        // line 275
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
+                        echo "\" width=\"15\" height=\"15\" />
+                <img src=\"";
+                        // line 276
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
+                        echo "\" width=\"15\" height=\"15\" />
                 ";
                     } elseif (($this->getAttribute($this->getContext($context, "place"), "placeRating") < 3)) {
-                        // line 275
+                        // line 278
                         echo "                <img src=\"";
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
-                        // line 276
+                        // line 279
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
-                        // line 277
+                        // line 280
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
-                        // line 278
+                        // line 281
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
-                        // line 279
+                        // line 282
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 ";
                     } elseif (($this->getAttribute($this->getContext($context, "place"), "placeRating") < 4)) {
-                        // line 281
+                        // line 284
                         echo "                <img src=\"";
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
-                        // line 282
+                        // line 285
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
-                        // line 283
+                        // line 286
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
-                        // line 284
+                        // line 287
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
-                        // line 285
+                        // line 288
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 ";
                     } elseif (($this->getAttribute($this->getContext($context, "place"), "placeRating") < 5)) {
-                        // line 287
-                        echo "                <img src=\"";
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
-                        echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
-                        // line 288
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
-                        echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
-                        // line 289
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
-                        echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
                         // line 290
+                        echo "                <img src=\"";
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
                         // line 291
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
-                ";
-                    } elseif (($this->getAttribute($this->getContext($context, "place"), "placeRating") == 5)) {
+                <img src=\"";
+                        // line 292
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
+                        echo "\" width=\"15\" height=\"15\" />
+                <img src=\"";
                         // line 293
-                        echo "                <img src=\"";
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
                         // line 294
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
-                        // line 295
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
-                        echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
+                ";
+                    } elseif (($this->getAttribute($this->getContext($context, "place"), "placeRating") == 5)) {
                         // line 296
+                        echo "                <img src=\"";
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
                         // line 297
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
+                <img src=\"";
+                        // line 298
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
+                        echo "\" width=\"15\" height=\"15\" />
+                <img src=\"";
+                        // line 299
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
+                        echo "\" width=\"15\" height=\"15\" />
+                <img src=\"";
+                        // line 300
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
+                        echo "\" width=\"15\" height=\"15\" />
                 ";
                     }
-                    // line 299
+                    // line 302
                     echo "             ";
                 } else {
-                    // line 300
+                    // line 303
                     echo "                <img src=\"";
                     echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                     echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
-                    // line 301
+                    // line 304
                     echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                     echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
-                    // line 302
+                    // line 305
                     echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                     echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
-                    // line 303
+                    // line 306
                     echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                     echo "\" width=\"15\" height=\"15\" />  
                 <img src=\"";
-                    // line 304
+                    // line 307
                     echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                     echo "\" width=\"15\" height=\"15\" />  
              ";
                 }
-                // line 306
+                // line 309
                 echo "            </p>
         </a>
         ";
@@ -756,41 +759,42 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_iterated'], $context['key'], $context['place'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 309
+            // line 312
             echo "    ";
         } else {
-            // line 310
+            // line 313
             echo "        <p class=\"results-header-msg\" style=\"padding-left:10px;\">
             Invalid search input
         </p>
     ";
         }
-        // line 314
+        // line 317
         echo "    </div>
-    
+
 </div>
 <div id=\"gif-loader\" style=\"display:none;width:100%\">
-            <center><img src=\"";
-        // line 318
+    <center><img src=\"";
+        // line 321
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/load.gif"), "html", null, true);
         echo "\"></center>
-        </div>
+</div>
 ";
     }
 
-    // line 327
+    // line 330
     public function block_javascript($context, array $blocks = array())
     {
         echo " 
 <script type=\"text/javascript\">
     \$(document).ready(function() {
+        
         //var i = 1;
-        var array = \"\"; 
-         // store current places in list
-                \$('.app-aside-div').children('a').each(function(){
-                    var arrHref = ( \$(this).attr('id') );
-                    array+=arrHref+',';
-                });
+        var array = \"\";
+        // store current places in list
+        \$('.app-aside-div').children('a').each(function() {
+            var arrHref = (\$(this).attr('id'));
+            array += arrHref + ',';
+        });
         \$('.app-results-wrapper').scroll(function() {
             if (\$(this)[0].scrollHeight - \$(this).scrollTop() == \$(this).outerHeight()) {
                 \$.ajax({
@@ -804,6 +808,34 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                             console.log(data);
                             \$('.app-aside-div').append(data);
                             //\$('#gif-loader').hide();
+
+                            \$(\".it2\").on('click', function() {
+                                
+                                
+                                param = \$(this).attr('href');
+                                //alert(param);
+                                \$(this).addClass('active').siblings().removeClass('active');
+                                \$.ajax({
+//            url: \"/MyProject/web/app_dev.php/renderPlace/\" + param,
+                                    url: param,
+                                    type: \"GET\",
+                                    success: function(data) {
+//                alert(data);
+                                        if (data) {
+                                            console.log('1');
+                                            \$('#place-container').html(data);
+                                        }
+                                    }
+                                });
+                               // alert(param);
+                                return false;
+                                alert(22);
+                                event.preventDefault();
+
+                            });
+
+
+
                         }
                     },
                     beforeSend: function() {
@@ -812,29 +844,29 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                     complete: function() {
                         \$('#gif-loader').hide();
                     }
-                    
+
                 });
 ";
-        // line 361
+        // line 393
         echo "            }
         });
     });
 </script>
     ";
-        // line 366
+        // line 398
         echo "<script src=\"";
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/js/renderPlace.js"), "html", null, true);
         echo "\"></script>
 <script src=\"";
-        // line 367
+        // line 399
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/js/processingVote.js"), "html", null, true);
         echo "\"></script>
 
 <script type=\"text/javascript\" src=\"";
-        // line 369
+        // line 401
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/js/google-map-get-directions.js"), "html", null, true);
         echo "\"></script>
-<script src=\" http://maps.google.com/?file=api&amp;v=2&amp;key=AIzaSyBGEQqVNDD_xkI7j4viU-5qMa-SYUOX_6g\" type=\"text/javascript\"></script>
+<script src=\" http://maps.google.com/?file=api&amp;v=2&amp;key=AIzaSyBcy7J0eaTaMSxAj7re31bLUKSr9W9EPYE\" type=\"text/javascript\"></script>
     ";
     }
 
@@ -850,6 +882,6 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
 
     public function getDebugInfo()
     {
-        return array (  835 => 369,  830 => 367,  825 => 366,  819 => 361,  782 => 327,  775 => 318,  769 => 314,  763 => 310,  760 => 309,  752 => 306,  747 => 304,  743 => 303,  739 => 302,  735 => 301,  730 => 300,  727 => 299,  722 => 297,  718 => 296,  714 => 295,  710 => 294,  705 => 293,  700 => 291,  696 => 290,  692 => 289,  688 => 288,  683 => 287,  678 => 285,  674 => 284,  670 => 283,  666 => 282,  661 => 281,  656 => 279,  652 => 278,  648 => 277,  644 => 276,  639 => 275,  634 => 273,  630 => 272,  626 => 271,  622 => 270,  617 => 269,  614 => 268,  612 => 267,  607 => 265,  598 => 264,  595 => 263,  593 => 262,  589 => 261,  582 => 257,  577 => 255,  573 => 253,  570 => 252,  567 => 251,  548 => 236,  545 => 235,  541 => 234,  536 => 231,  533 => 229,  514 => 202,  494 => 195,  492 => 194,  488 => 193,  482 => 189,  476 => 186,  472 => 185,  468 => 184,  464 => 183,  460 => 182,  456 => 180,  452 => 179,  444 => 173,  436 => 167,  428 => 161,  420 => 155,  412 => 149,  410 => 148,  405 => 146,  401 => 145,  396 => 144,  393 => 143,  389 => 142,  382 => 137,  377 => 135,  374 => 133,  371 => 132,  368 => 131,  355 => 128,  347 => 126,  334 => 115,  327 => 113,  320 => 110,  317 => 109,  313 => 107,  310 => 106,  303 => 102,  300 => 101,  296 => 99,  293 => 98,  290 => 97,  286 => 96,  280 => 92,  274 => 91,  268 => 89,  263 => 87,  258 => 86,  254 => 85,  249 => 82,  246 => 81,  244 => 80,  238 => 77,  233 => 74,  229 => 72,  221 => 70,  219 => 69,  211 => 67,  207 => 65,  201 => 63,  199 => 62,  194 => 60,  190 => 58,  186 => 57,  180 => 55,  178 => 54,  171 => 52,  165 => 51,  161 => 50,  154 => 49,  150 => 47,  147 => 46,  136 => 44,  131 => 43,  129 => 42,  125 => 41,  120 => 39,  116 => 38,  112 => 37,  108 => 36,  103 => 35,  100 => 33,  97 => 32,  80 => 31,  64 => 17,  61 => 16,  50 => 9,  46 => 8,  43 => 7,  40 => 6,  34 => 3,  29 => 14,);
+        return array (  867 => 401,  862 => 399,  857 => 398,  851 => 393,  785 => 330,  778 => 321,  772 => 317,  766 => 313,  763 => 312,  755 => 309,  750 => 307,  746 => 306,  742 => 305,  738 => 304,  733 => 303,  730 => 302,  725 => 300,  721 => 299,  717 => 298,  713 => 297,  708 => 296,  703 => 294,  699 => 293,  695 => 292,  691 => 291,  686 => 290,  681 => 288,  677 => 287,  673 => 286,  669 => 285,  664 => 284,  659 => 282,  655 => 281,  651 => 280,  647 => 279,  642 => 278,  637 => 276,  633 => 275,  629 => 274,  625 => 273,  620 => 272,  617 => 271,  615 => 270,  610 => 268,  601 => 267,  598 => 266,  596 => 265,  592 => 264,  585 => 260,  580 => 258,  576 => 256,  573 => 255,  570 => 254,  548 => 236,  545 => 235,  541 => 234,  536 => 231,  533 => 229,  514 => 202,  494 => 195,  492 => 194,  488 => 193,  482 => 189,  476 => 186,  472 => 185,  468 => 184,  464 => 183,  460 => 182,  456 => 180,  452 => 179,  444 => 173,  436 => 167,  428 => 161,  420 => 155,  412 => 149,  410 => 148,  405 => 146,  401 => 145,  396 => 144,  393 => 143,  389 => 142,  382 => 137,  377 => 135,  374 => 133,  371 => 132,  368 => 131,  355 => 128,  347 => 126,  334 => 115,  327 => 113,  320 => 110,  317 => 109,  313 => 107,  310 => 106,  303 => 102,  300 => 101,  296 => 99,  293 => 98,  290 => 97,  286 => 96,  280 => 92,  274 => 91,  268 => 89,  263 => 87,  258 => 86,  254 => 85,  249 => 82,  246 => 81,  244 => 80,  238 => 77,  233 => 74,  229 => 72,  221 => 70,  219 => 69,  211 => 67,  207 => 65,  201 => 63,  199 => 62,  194 => 60,  190 => 58,  186 => 57,  180 => 55,  178 => 54,  171 => 52,  165 => 51,  161 => 50,  154 => 49,  150 => 47,  147 => 46,  136 => 44,  131 => 43,  129 => 42,  125 => 41,  120 => 39,  116 => 38,  112 => 37,  108 => 36,  103 => 35,  100 => 33,  97 => 32,  80 => 31,  64 => 17,  61 => 16,  50 => 9,  46 => 8,  43 => 7,  40 => 6,  34 => 3,  29 => 14,);
     }
 }

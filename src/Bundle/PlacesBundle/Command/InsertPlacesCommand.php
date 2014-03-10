@@ -43,6 +43,16 @@ class InsertPlacesCommand extends ContainerAwareCommand {
         sleep(3);
         $json = file_get_contents($url);
         $data = json_decode($json, TRUE);
+        $status = $data['status'];
+            if ($status =="REQUEST_DENIED"){
+                echo "er";
+                $mes = "Request denied while inserting places: ". $placeId;
+                $placeop->logMessage($mes);
+                return;
+            }
+            if ($status !="OK"){
+                return;
+            }
         $placeItems = $data['results'];
         $pageToken = $data['next_page_token'];
         foreach ($placeItems as $item) {

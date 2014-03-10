@@ -19,7 +19,8 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $placeop = $this->getContainer()->get('placeop');
         $apiKey = $this->getContainer()->getParameter('api_key');
-        $output->writeln($this->addPlacePhotos($apiKey, $placeop));
+        $id = $placeop->getLastPlaceId();
+        $output->writeln($this->addPlacePhotos($apiKey, $placeop, $id));
     }
 
     /**
@@ -27,9 +28,11 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
      * Add all photos for all places in placesdb.places
      * 
      */
-    function addPlacePhotos($apiKey, $placeop) {
+    function addPlacePhotos($apiKey, $placeop ,$startId) {
 
-        $detailsRef = $placeop->getPlacesDetailsRef();
+        //$detailsRef = $placeop->getPlacesDetailsRef();
+        $detailsRef = $placeop->getPlacesDetailsRefWithId($startId);
+        $nr=0;
         //loop in all places
         foreach ($detailsRef as $place) {
             $placeId = $place['id'];
@@ -38,6 +41,20 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
             $url = "https://maps.googleapis.com/maps/api/place/details/json?reference=" . $detailsRef . "&sensor=true&key=" . $apiKey;
             $json = file_get_contents($url);
             $data = json_decode($json, TRUE);
+            $status = $data['status'];
+            if ($status =="REQUEST_DENIED"){
+                $mes = "Request denied while inserting photos for place: ". $placeId;
+                $placeop->logMessage($mes);
+                break;
+            }
+            if ($status =="NOT_FOUND"){
+                $mes = "Place: ". $placeId . " not found while inserting photos";
+                $placeop->logMessage($mes);
+                continue;
+            }
+            if ($status !="OK"){
+                continue;
+            }
             $detailsResults = $data['result'];
             $isPhoto = $placeop->isPhoto($placeId);
             if (isset($detailsResults['photos'])) {
@@ -77,7 +94,10 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
             } else {
                 echo "Place does not have photos";
             }
+            $nr++;
         }
+        $mes = "We have inserted photos for: ". $nr . " places";
+        $placeop->logMessage($mes);
     }
 
     function getImgUrl($urlPicture) {

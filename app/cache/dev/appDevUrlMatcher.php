@@ -310,6 +310,67 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
         not_demoSearch:
 
+        if (0 === strpos($pathinfo, '/search')) {
+            // search_name
+            if (0 === strpos($pathinfo, '/searchname') && preg_match('#^/searchname/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_search_name;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'search_name')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\ServiceController::searchByNameAction',));
+            }
+            not_search_name:
+
+            // search_address
+            if (0 === strpos($pathinfo, '/searchaddress') && preg_match('#^/searchaddress/(?P<address>[^/]++)$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_search_address;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'search_address')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\ServiceController::searchByAddressAction',));
+            }
+            not_search_address:
+
+            if (0 === strpos($pathinfo, '/searchtag')) {
+                // search_tag
+                if (preg_match('#^/searchtag/(?P<tag>[^/]++)$#s', $pathinfo, $matches)) {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_search_tag;
+                    }
+
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'search_tag')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\ServiceController::searchByTagAction',));
+                }
+                not_search_tag:
+
+                // search_tag_addr
+                if (0 === strpos($pathinfo, '/searchtagaddr') && preg_match('#^/searchtagaddr/(?P<tag>[^/]++)/(?P<address>[^/]++)$#s', $pathinfo, $matches)) {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_search_tag_addr;
+                    }
+
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'search_tag_addr')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\ServiceController::searchByTagAndAddressAction',));
+                }
+                not_search_tag_addr:
+
+            }
+
+        }
+
+        // test_search_name
+        if ($pathinfo === '/testsearchname') {
+            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                $allow = array_merge($allow, array('GET', 'HEAD'));
+                goto not_test_search_name;
+            }
+
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\ServiceController::testServiceAction',  '_route' => 'test_search_name',);
+        }
+        not_test_search_name:
+
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
     }
 }

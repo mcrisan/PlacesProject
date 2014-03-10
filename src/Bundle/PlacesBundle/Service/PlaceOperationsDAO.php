@@ -146,4 +146,16 @@ class PlaceOperationsDAO {
                             ->find($placeId);
     }
     
+    public function getLastPlaceId(){
+
+        return $this->em->getRepository('BundlePlacesBundle:Places')
+                            ->getLastPlaceId();
+    }
+    
+    public function getPlacesDetailsRefWithId($startId){
+        
+        return $this->em->getRepository('BundlePlacesBundle:Places')
+                            ->getPlacesDetailsRefWithId($startId);
+    }
+    
 }

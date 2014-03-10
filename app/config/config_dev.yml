@@ -17,6 +17,13 @@ monolog:
             type:  stream
             path:  %kernel.logs_dir%/%kernel.environment%.log
             level: debug
+            channels: ["!comm"]
+        com:
+            type: stream
+            path: %kernel.logs_dir%/com.log
+            level: info  
+            channels: [comm]
+            formatter: monolog.formatter.session_request
         firephp:
             type:  firephp
             level: info

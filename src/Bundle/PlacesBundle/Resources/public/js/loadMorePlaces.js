@@ -2,7 +2,6 @@ $(document).ready(function() {
     $("#loadmore").on("click", function() {
         var start = $("#start").val();
         var limit = $("#limit").val();
-        
         $.post("/MyProject/web/app_dev.php/morePlacesRequest",
             {
                 start: start,

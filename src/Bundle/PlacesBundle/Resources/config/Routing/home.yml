@@ -19,4 +19,4 @@ index_indexShowPlace:
         
 index_placeDetails:
     pattern: /home/details/{name}
-    defaults: { _controller: BundlePlacesBundle:Page:placeDetails }
+    defaults: { _controller: BundlePlacesBundle:Page:placeDetails }     

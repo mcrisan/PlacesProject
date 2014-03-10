@@ -10,6 +10,7 @@ namespace Bundle\PlacesBundle\Service;
 
 use Bundle\PlacesBundle\Entity\PlaceTags;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bridge\Monolog\Logger;
 
 /**
  * Description of PlaceOperations
@@ -21,14 +22,27 @@ class PlaceOperations {
     //put your code here
     protected $opDAO;
     private $container;
+    private $logger;
 
-    public function __construct(PlaceOperationsDAO $dao, ContainerInterface $container) {
+    public function __construct(PlaceOperationsDAO $dao, ContainerInterface $container, Logger $logger) {
         $this->opDAO = $dao;
         $this->container = $container;
+        $this->logger = $logger;
+    }
+    
+    public function logMessage($mes) {
+//        $session = $this->container->get('session');
+//        $session ->set("cas","tare");
+//        echo $session->get("cas");
+//        echo $session->getId();
+        echo $mes;
+        $this->logger->info($mes);
+        
     }
 
     public function insertPlace($place) {
 
+        
         $slug = $place->getSlug();
         $detailsRef = $place->getDetailsRef();
         $checkSlug = $this->opDAO->checkCurrentSlug($place->getSlug());
@@ -209,6 +223,17 @@ class PlaceOperations {
     public function getImageByPhotoRef($placeId, $imgUrl) {
 
         return $this->opDAO->getImageByPhotoRef($placeId, $imgUrl);
+    }
+    
+    public function getLastPlaceId(){
+
+        $id = $this->opDAO->getLastPlaceId();
+        return $id[0]['id'];
+    }
+    
+    public function getPlacesDetailsRefWithId($startId){
+        
+        return $this->opDAO->getPlacesDetailsRefWithId($startId);
     }
 
 }

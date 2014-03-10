@@ -1,0 +1,30 @@
+
+search_name:
+    pattern: /searchname/{name}
+    defaults: { _controller: BundlePlacesBundle:Service:searchByName }
+    requirements:
+      _method: GET
+    
+search_address:
+    pattern: /searchaddress/{address}
+    defaults: { _controller: BundlePlacesBundle:Service:searchByAddress }
+    requirements:
+      _method: GET
+      
+search_tag:
+    pattern: /searchtag/{tag}
+    defaults: { _controller: BundlePlacesBundle:Service:searchByTag }
+    requirements:
+      _method: GET  
+      
+search_tag_addr:
+    pattern: /searchtagaddr/{tag}/{address}
+    defaults: { _controller: BundlePlacesBundle:Service:searchByTagAndAddress }
+    requirements:
+      _method: GET       
+      
+test_search_name:
+    pattern: /testsearchname
+    defaults: { _controller: BundlePlacesBundle:Service:testService }
+    requirements:
+      _method: GET   

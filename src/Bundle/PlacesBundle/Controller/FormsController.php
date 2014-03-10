@@ -64,6 +64,7 @@ class FormsController extends Controller {
 //        var_dump($placeReviews);
 //        exit();
         //if user voted
+        //echo "si";
         if ($userStatus) {
             return $this->render('BundlePlacesBundle:Places:renderPlace.html.twig', array(
                         'placeDetails' => $placeDetails,

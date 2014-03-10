@@ -1,9 +1,93 @@
 {% for place in places %}
-<a id="{{ place.placeId }}" class="list-group-item" href="{{ path('renderPlace',{'param':place.placeName}) }}">
+<a id="{{ place.placeId }}" class="list-group-item it2" href="{{ path('renderPlace',{'param':place.placeName}) }}">
                 <p>{{ place.placeName }}</p>
-                <p>{{ place.placeRating }}</p>
+                <p>
+                    {% if place.placeRating|length > 1 %}
+                    {% if place.placeRating < 2%}
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                {% elseif place.placeRating < 3 %}
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                {% elseif place.placeRating < 4 %}
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                {% elseif place.placeRating < 5 %}
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                {% elseif place.placeRating == 5 %}
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                {% endif %}
+             {% else %}
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />  
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />  
+             {% endif %}
+            </p>
                 
             </a>
+{#<a id="{{ place.placeId }}" class="list-group-item" href="{{ path('renderPlace',{'param':place.slug}) }}">
+            <p>{{ place.placeName }}</p>
+            <p>
+                    {% if place.placeRating|length > 1 %}
+                    {% if place.placeRating < 2%}
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                {% elseif place.placeRating < 3 %}
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                {% elseif place.placeRating < 4 %}
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                {% elseif place.placeRating < 5 %}
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                {% elseif place.placeRating == 5 %}
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                {% endif %}
+             {% else %}
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />  
+                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />  
+             {% endif %}
+            </p>
+        </a>#}
 {% endfor %}
 {# create response for load-more-btn request 
 <p>start from: {{ start }}</p>

@@ -32,7 +32,11 @@ class PageController extends Controller {
     function preLoadAction() {
 
 
+        //$doctrineLogger = $this->get('monolog.logger.foo');
+        //$doctrineLogger->info('I just got the logger');
         //$mailer->send('ryan@foobar.net', ...);
+        $placeop = $this->get('placeop');
+        //$placeop->logMessage("test");
         $this->em = $this->getDoctrine()->getManager();
 //        $p1 = $this->em->getRepository('BundlePlacesBundle:AppUsers')
 //                ->find(1);
@@ -56,6 +60,33 @@ class PageController extends Controller {
     //var_dump($detailsRef);
     $apiKey = $this->container->getParameter('api_key');
     var_dump($apiKey);
+    $det = $this->em->getRepository('BundlePlacesBundle:Places')->getLastPlaceId();
+    var_dump($det);
+    echo $det[0]['id'];
+    foreach($det as $d){
+        $id = $d['id'];
+    }
+    echo $id;
+    $detailsRef2 = $this->em->getRepository('BundlePlacesBundle:Places')->getPlacesDetailsRefWithId(1932);
+    echo count($detailsRef2);
+    
+     $search = $this->get('search');
+//     $res = $search->searchByName('BEST Cluj-Napoca');
+//     //var_dump($res);
+//     $data1 = json_decode($res, TRUE);
+     
+     $res = $search->searchByTag('food');
+     //var_dump($res);
+     $data1 = json_decode($res, TRUE);
+     //var_dump($data1['details']['places']);
+    $detailsRef = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')->getPlacesNamesByTagAndAddress("food", "Drumul Sfântul Ioan");
+    var_dump($detailsRef);
+    $str = "casa ardeleana";
+    echo urlencode ( $str );
+    echo urldecode(urlencode ( $str ));
+    
+
+    //var_dump($detailsRef2);
 //    //$detailsRef = $placeop->getPlacesDetailsRef();
 //        //loop in all places
 //        foreach ($detailsRef as $place) {
@@ -126,59 +157,62 @@ class PageController extends Controller {
 //               // }
 //            
 //        }
-        $radius = 1011; // 1011 m
-        $x = 46.7680370;
-        $y = 23.5899400;
-        $latLng = $x.','.$y;
-        $type = 'establishment';
-        $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
-        echo $url;
-        $places = simplexml_load_file($url);
-        $placeItems = $places->result;
-        var_dump($places);
+//        $radius = 1011; // 1011 m
+//        $x = 46.7680370;
+//        $y = 23.5899400;
+//        $latLng = $x.','.$y;
+//        $type = 'establishment';
+//        $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
+//        echo $url;
+//        $places = simplexml_load_file($url);
+//        $placeItems = $places->result;
+//        var_dump($places);
+//        
+//        $pageToken = $places->next_page_token;
+//        var_dump($pageToken[0]);
+//        if ($pageToken[0] != "") {
+//            $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey . "&pagetoken=" . $pageToken[0];
+//        }
+//        $places = simplexml_load_file($url);
+//        $placeItems = $places->result;
+//        var_dump($placeItems);
+//        $pageToken = $places->next_page_token;
         
-        $pageToken = $places->next_page_token;
-        var_dump($pageToken[0]);
-        if ($pageToken[0] != "") {
-            $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey . "&pagetoken=" . $pageToken[0];
-        }
-        $places = simplexml_load_file($url);
-        $placeItems = $places->result;
-        var_dump($placeItems);
-        $pageToken = $places->next_page_token;
         
-        
-        echo "json";
-        $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
-        $json = file_get_contents($url);
-        $data = json_decode($json, TRUE);
-        var_dump($data);
-        $placeItems = $data['results'];
-        var_dump($placeItems);
-        $pageToken = $data['next_page_token'];
-        var_dump($pageToken);
-        echo $pageToken;
-        foreach ($placeItems as $item) {
-            $extId = $item['id'];
-            $name = $item['name'];
-            //$slug = $this->gen_slug($name);
-            $origin = "google";
-            $detailsRef = $item['reference'];
-            if (!empty($detailsRef)) {
-                    $detailsRef = $item['reference'];
-                } else {
-                    $detailsRef = "no ref";
-                }
-               echo "$name \r\n";
-        }
-        
-        echo "place";
-        $extId = 'b8968c7ecf0926b7f8c13c3dabc898ed160b71ce';
-        $place = $this->em->getRepository('BundlePlacesBundle:Places')
-                ->findOneBy(array("extId" => $extId));
-        var_dump($place);
-        $place->setExtId("23");
-        var_dump($place);
+//        echo "json";
+//        //$url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
+//        $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=harbour&sensor=false&key=AIzaSyBcy7J0eaTaMSxAj7re31bLUKSr9W9EPYE";
+//        $json = file_get_contents($url);
+//        $data = json_decode($json, TRUE);
+//        var_dump($data);
+//        $placeItems = $data['results'];
+//        var_dump($placeItems);
+//        if (isset($data['next_page_token'])) {
+//        $pageToken = $data['next_page_token'];
+//        var_dump($pageToken);
+//        echo $pageToken;
+//        }
+//        foreach ($placeItems as $item) {
+//            $extId = $item['id'];
+//            $name = $item['name'];
+//            //$slug = $this->gen_slug($name);
+//            $origin = "google";
+//            $detailsRef = $item['reference'];
+//            if (!empty($detailsRef)) {
+//                    $detailsRef = $item['reference'];
+//                } else {
+//                    $detailsRef = "no ref";
+//                }
+//               echo "$name \r\n";
+//        }
+//        
+//        echo "place";
+//        $extId = 'b8968c7ecf0926b7f8c13c3dabc898ed160b71ce';
+//        $place = $this->em->getRepository('BundlePlacesBundle:Places')
+//                ->findOneBy(array("extId" => $extId));
+//        var_dump($place);
+//        $place->setExtId("23");
+//        var_dump($place);
         //var_dump($pageToken[0]);
  //   var_dump($p2);
 //         $p1 = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
@@ -332,7 +366,7 @@ class PageController extends Controller {
             // check if current user is logged and get info
             $info = $this->getUser();
             if (!empty($info)) {
-                $userName = $info->getTxtLogin();
+                $userName = $info->getUsername();
                 $userId = $info->getId();
                 //exit();
             }

@@ -241,7 +241,10 @@
                     <p><small>Directions</small></p>
                 </div>
             </div> 
-        </div><!-- /.nested cols -->  
+        </div><!-- /.nested cols -->
+        
+
+        
     </article>
 </div><!-- /#place-container -->
 
@@ -250,7 +253,7 @@
 {# overwrite aside block #}
 {% block aside %}
     {% if input is defined %}
-    
+
 <p class="results-header-msg">
     Total results: {{ totalResults }}
     <br/>
@@ -261,7 +264,7 @@
         {% for key,place in places %}
             {# set first result as active #}
             {% set active = (key == 0 ? 'active' : '') %}
-        <a id="{{ place.placeId }}" class="list-group-item {{ active }}" href="{{ path('renderPlace',{'param':place.slug}) }}">
+        <a id="{{ place.placeId }}" class="list-group-item it1 {{ active }}" href="{{ path('renderPlace',{'param':place.slug}) }}">
             <p>{{ place.placeName }}</p>
             <p>
                     {% if place.placeRating|length > 1 %}
@@ -312,11 +315,11 @@
         </p>
     {% endif %}
     </div>
-    
+
 </div>
 <div id="gif-loader" style="display:none;width:100%">
-            <center><img src="{{ asset('bundles/bundleplaces/images/load.gif') }}"></center>
-        </div>
+    <center><img src="{{ asset('bundles/bundleplaces/images/load.gif') }}"></center>
+</div>
 {% endblock %}
 
 {# js #}
@@ -327,13 +330,14 @@
 {% block javascript %} 
 <script type="text/javascript">
     $(document).ready(function() {
+        
         //var i = 1;
-        var array = ""; 
-         // store current places in list
-                $('.app-aside-div').children('a').each(function(){
-                    var arrHref = ( $(this).attr('id') );
-                    array+=arrHref+',';
-                });
+        var array = "";
+        // store current places in list
+        $('.app-aside-div').children('a').each(function() {
+            var arrHref = ($(this).attr('id'));
+            array += arrHref + ',';
+        });
         $('.app-results-wrapper').scroll(function() {
             if ($(this)[0].scrollHeight - $(this).scrollTop() == $(this).outerHeight()) {
                 $.ajax({
@@ -347,6 +351,34 @@
                             console.log(data);
                             $('.app-aside-div').append(data);
                             //$('#gif-loader').hide();
+
+                            $(".it2").on('click', function() {
+                                
+                                
+                                param = $(this).attr('href');
+                                //alert(param);
+                                $(this).addClass('active').siblings().removeClass('active');
+                                $.ajax({
+//            url: "/MyProject/web/app_dev.php/renderPlace/" + param,
+                                    url: param,
+                                    type: "GET",
+                                    success: function(data) {
+//                alert(data);
+                                        if (data) {
+                                            console.log('1');
+                                            $('#place-container').html(data);
+                                        }
+                                    }
+                                });
+                               // alert(param);
+                                return false;
+                                alert(22);
+                                event.preventDefault();
+
+                            });
+
+
+
                         }
                     },
                     beforeSend: function() {
@@ -355,7 +387,7 @@
                     complete: function() {
                         $('#gif-loader').hide();
                     }
-                    
+
                 });
 {#                        alert(1111);#}
             }
@@ -367,6 +399,6 @@
 <script src="{{ asset('bundles/bundleplaces/js/processingVote.js') }}"></script>
 
 <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/google-map-get-directions.js') }}"></script>
-<script src=" http://maps.google.com/?file=api&amp;v=2&amp;key=AIzaSyBGEQqVNDD_xkI7j4viU-5qMa-SYUOX_6g" type="text/javascript"></script>
+<script src=" http://maps.google.com/?file=api&amp;v=2&amp;key=AIzaSyBcy7J0eaTaMSxAj7re31bLUKSr9W9EPYE" type="text/javascript"></script>
     {#<script src="{{ asset('bundles/bundleplaces/js/google-maps.js') }}"></script>#}
 {% endblock %}

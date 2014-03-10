@@ -22,11 +22,30 @@ class PlacesRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
     
+    public function getLastPlaceId() {
+        $qb = $this->createQueryBuilder('place')
+                ->select('place.id')
+                ->orderBy('place.id', 'DESC')
+                ->setMaxResults(1);
+
+        return $qb->getQuery()->getResult();
+    }
+    
     // Get places details ref
     public function getPlacesDetailsRef(){
         $qb = $this->createQueryBuilder('places')
                 ->select('places.id, places.detailsRef', 'places.slug')
                 ->where('places.id = 2014')
+                ->getQuery()
+                ->getResult();
+        return $qb;
+    }
+    
+    public function getPlacesDetailsRefWithId($id){
+        $qb = $this->createQueryBuilder('places')
+                ->select('places.id, places.detailsRef', 'places.slug')
+                ->where('places.id > :id')
+                ->setParameter('id', $id)
                 ->getQuery()
                 ->getResult();
         return $qb;

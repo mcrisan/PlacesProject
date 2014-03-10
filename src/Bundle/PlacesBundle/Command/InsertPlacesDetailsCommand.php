@@ -23,12 +23,16 @@ class InsertPlacesDetailsCommand extends ContainerAwareCommand {
             $output->writeln("Invalid api key.");
             exit();
         }
-        $output->writeln($this->addPlacesDetails($apiKey, $placeop));
+        $id = $placeop->getLastPlaceId();
+        $output->writeln($this->addPlacesDetails($apiKey, $placeop, $id));
     }
 
-    function addPlacesDetails($apiKey, $placeop) {
-        $detailsRef = $placeop->getPlacesDetailsRef();
-
+    function addPlacesDetails($apiKey, $placeop, $startId) {
+        //$detailsRef = $placeop->getPlacesDetailsRef();
+        echo $startId;
+        $nr=0;
+        $detailsRef = $placeop->getPlacesDetailsRefWithId($startId);
+        echo count($detailsRef);
         foreach ($detailsRef as $place) {
             $placeId = $place['id'];
             $slug = $place['slug'];
@@ -37,6 +41,21 @@ class InsertPlacesDetailsCommand extends ContainerAwareCommand {
             $json = file_get_contents($url);
             $data = json_decode($json, TRUE);
             var_dump($data);
+            $status = $data['status'];
+            if ($status =="REQUEST_DENIED"){
+                echo "er";
+                $mes = "Request denied while inserting the details for place: ". $placeId;
+                $placeop->logMessage($mes);
+                break;
+            }
+            if ($status =="NOT_FOUND"){
+                $mes = "Place: ". $placeId . " not found while inserting details";
+                $placeop->logMessage($mes);
+                continue;
+            }
+            if ($status !="OK"){
+                continue;
+            }
             $detailsResults = $data['result'];
             $types = $detailsResults['types'];
             $geoGeometry = $detailsResults['geometry'];
@@ -46,18 +65,28 @@ class InsertPlacesDetailsCommand extends ContainerAwareCommand {
             $placeName = $detailsResults['name'];
             if (isset($detailsResults['formatted_address'])) {
             $placeAddr = $detailsResults['formatted_address'];
+            }else{
+                $placeAddr ="";
             }
             if (isset($detailsResults['formatted_phone_number'])) {
                 $placePhoneNumber = $detailsResults['formatted_phone_number'];
+            }else{
+                $placePhoneNumber=""; 
             }
             if (isset($detailsResults['rating'])) {
                 $placeRating = $detailsResults['rating'];
+            }else{
+                $placeRating ="";
             }
             if (isset($detailsResults['website'])) {
                 $placeWebSite = $detailsResults['website'];
+            }else{
+                $placeWebSite="";
             }
             if (isset($detailsResults['icon'])) {
             $placeIcon = $detailsResults['icon'];
+            }else{
+                $placeIcon="";
             }
             // insert current types in db
             foreach ($types as $innerType) {
@@ -88,7 +117,10 @@ class InsertPlacesDetailsCommand extends ContainerAwareCommand {
             $place->setPlaceUrl($placeUrl);
             $place->setPlaceWebsite($placeWebSite);
             $placeop->insertPlaceDetails($place);
+            $nr++;
         }
+        $mes = "We have inserted details for: ". $nr . " places";
+        $placeop->logMessage($mes);
     }
 
 }

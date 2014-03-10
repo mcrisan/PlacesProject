@@ -1,0 +1,42 @@
+
+[2014-03-06 09:55:36] [%token%] comm.INFO: Request denied while inserting the details for place: 1978
+[2014-03-06 09:55:36] [%token%] comm.INFO: We have inserted details for: 46 places
+[2014-03-06 10:22:59] [%token%] comm.INFO: Place: 1978 not found
+[2014-03-06 10:23:21] [%token%] comm.INFO: We have inserted details for: 39 places
+[2014-03-06 10:54:17] [%token%] comm.INFO: Place: 1978 not found while inserting photos
+[2014-03-06 10:54:58] [%token%] comm.INFO: We have inserted photos for: 85 places
+[2014-03-06 10:57:45] [%token%] comm.INFO: We have inserted photos for: 1 places
+[2014-03-06 12:30:56] [%token%] comm.INFO: We have inserted reviews for: 1 places
+[2014-03-06 12:35:27] [%token%] comm.INFO: Place: 1978 not found while inserting reviews
+[2014-03-06 12:35:45] [%token%] comm.INFO: We have inserted reviews for: 85 places
+[2014-03-06 13:12:02] [%token%] comm.INFO: Inserting places from lat 46.701731to lat46.71
+[2014-03-06 13:12:02] [%token%] comm.INFO: Inserting places from long 23.748214to long23.748214
+[2014-03-06 13:13:40] [%token%] comm.INFO: We have inserted: 7 places
+[2014-03-06 13:32:59] [%token%] comm.INFO: We have inserted details for: 7 places
+[2014-03-06 13:33:03] [%token%] comm.INFO: We have inserted photos for: 7 places
+[2014-03-06 13:33:05] [%token%] comm.INFO: We have inserted reviews for: 7 places
+
+[2014-03-07 10:45:26] [%token%] comm.INFO: Inserting places from lat 46.71 to lat 46.72
+[2014-03-07 10:45:26] [%token%] comm.INFO: Inserting places from long 23.748214 to long 23.748214
+[2014-03-07 10:48:51] [%token%] comm.INFO: We have made: 58 querys to search for places
+[2014-03-07 10:49:12] [%token%] comm.INFO: We have inserted details for: 40 places
+[2014-03-07 10:49:36] [%token%] comm.INFO: We have inserted photos for: 40 places
+[2014-03-07 10:49:49] [%token%] comm.INFO: We have inserted reviews for: 40 places
+[2014-03-07 10:53:25] [%token%] comm.INFO: Inserting places from lat 46.72 to lat 46.725
+[2014-03-07 10:53:25] [%token%] comm.INFO: Inserting places from long 23.748214 to long 23.748214
+[2014-03-07 10:55:10] [%token%] comm.INFO: We have made: 29 querys to search for places
+[2014-03-07 10:55:10] [%token%] comm.INFO: We have inserted details for: 0 places
+[2014-03-07 10:55:10] [%token%] comm.INFO: We have inserted photos for: 0 places
+[2014-03-07 10:55:10] [%token%] comm.INFO: We have inserted reviews for: 0 places
+[2014-03-07 11:47:41] [%token%] comm.INFO: Inserting places from lat 46.725 to lat 46.73
+[2014-03-07 11:47:41] [%token%] comm.INFO: Inserting places from long 23.748214 to long 23.748214
+[2014-03-07 11:49:30] [%token%] comm.INFO: We have made: 29 querys to search for places
+[2014-03-07 11:49:43] [%token%] comm.INFO: We have inserted details for: 22 places
+[2014-03-07 11:50:01] [%token%] comm.INFO: We have inserted photos for: 22 places
+[2014-03-07 11:50:08] [%token%] comm.INFO: We have inserted reviews for: 22 places
+[2014-03-07 12:00:43] [%token%] comm.INFO: Inserting places from lat 46.73 to lat 46.735
+[2014-03-07 12:00:43] [%token%] comm.INFO: Inserting places from long 23.748214 to long 23.748214
+[2014-03-07 12:03:01] [%token%] comm.INFO: We have made: 29 querys to search for places
+[2014-03-07 12:03:26] [%token%] comm.INFO: We have inserted details for: 43 places
+[2014-03-07 12:03:59] [%token%] comm.INFO: We have inserted photos for: 43 places
+[2014-03-07 12:04:12] [%token%] comm.INFO: We have inserted reviews for: 43 places

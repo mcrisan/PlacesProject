@@ -87,8 +87,6 @@ Bundle\PlacesBundle\Entity\PlaceReviews:
             - Url: ~
         review:
             - NotBlank: ~
-            - Length:
-                max: 255
         ratingAspect:
             - NotBlank: ~
             - Length:
@@ -123,8 +121,6 @@ Bundle\PlacesBundle\Entity\PlacePhotos:
                 min: 0
         imgRef:        
             - NotBlank: ~
-            - Length:
-                max: 255
         imgUrl:
             - Url: ~ 
         origin:

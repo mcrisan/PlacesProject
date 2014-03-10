@@ -18,9 +18,12 @@ function initialize(from, to) {
 }
 
 function setDirections(fromAddress, toAddress) {
-    alert("Loading map ...");
+    //alert("Loading map ...");
+    //alert(fromAddress);
+    //alert(toAddress);
     //gdir.load("from 46.7697930 23.5937010 to 46.766988 23.586917" ,{locale:"en_US"});
     if ("" !== fromAddress) {
+       // handleErrors();
         gdir.load("from: " + fromAddress + " to: " + toAddress, {"locale": "en_US"});
     } else {
         alert("An error occurred ! Please insert location address and try again !");
@@ -91,11 +94,11 @@ function addImg(url, id) {
 }
 
 $(function() {
-
+    
     var toAddrLatLng = $("#lat").val() + " " + $("#lng").val();
     var fromAddr = $("#fromAddress").val();
     var toAddr = $("#toAddress").val();
-    alert(toAddrLatLng);
+    //alert(toAddrLatLng);
     if ("" !== toAddr) {
         initialize(fromAddr, toAddrLatLng);
     } else {
@@ -105,7 +108,7 @@ $(function() {
     //alert(1);
 
     $("#from-link").click(function(event) {
-        //alert(1);
+        alert(1);
         event.preventDefault();
         $('.loader').show();
         var addressId = this.id.substring(0, this.id.indexOf("-"));

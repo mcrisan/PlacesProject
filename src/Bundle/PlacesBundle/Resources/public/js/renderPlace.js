@@ -1,9 +1,9 @@
 $(document).ready(function(event) {
-    $(".list-group-item").on('click', function() {
+    //$(".list-group-item").on('click', function() {
+    $(".it1").on('click', function() {
         param = $(this).attr('href');
         //alert (param);
         $(this).addClass('active').siblings().removeClass('active');
-
         $.ajax({
 //            url: "/MyProject/web/app_dev.php/renderPlace/" + param,
             url: param,
@@ -18,6 +18,7 @@ $(document).ready(function(event) {
         });
         //alert(param);
         return false;
+        //alert(22);
         event.preventDefault();
 
     });

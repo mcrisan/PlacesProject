@@ -21,15 +21,18 @@ class InsertPlaceReviewsCommand extends ContainerAwareCommand {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $placeop = $this->getContainer()->get('placeop');
         $apiKey = $this->getContainer()->getParameter('api_key');
-        $output->writeln($this->addPlaceReviews($apiKey, $placeop));
+        $id = $placeop->getLastPlaceId();
+        $output->writeln($this->addPlaceReviews($apiKey, $placeop, $id));
     }
 
     /**
      * recode ..
      */
-    function addPlaceReviews($apiKey, $placeop) {
+    function addPlaceReviews($apiKey, $placeop, $startId) {
 
-        $detailsRef = $placeop->getPlacesDetailsRef();
+        //$detailsRef = $placeop->getPlacesDetailsRef();
+        $nr=0;
+        $detailsRef = $placeop->getPlacesDetailsRefWithId($startId);
         foreach ($detailsRef as $place) {
             $placeId = $place['id'];
             $placeName = $place['slug'];
@@ -37,6 +40,21 @@ class InsertPlaceReviewsCommand extends ContainerAwareCommand {
             $url = "https://maps.googleapis.com/maps/api/place/details/json?reference=" . $detailsRef . "&sensor=true&key=" . $apiKey;
             $json = file_get_contents($url);
             $data = json_decode($json, TRUE);
+            $status = $data['status'];
+            if ($status =="REQUEST_DENIED"){
+                echo "er";
+                $mes = "Request denied while inserting the reviews for place: ". $placeId;
+                $placeop->logMessage($mes);
+                break;
+            }
+            if ($status =="NOT_FOUND"){
+                $mes = "Place: ". $placeId . " not found while inserting reviews";
+                $placeop->logMessage($mes);
+                continue;
+            }
+            if ($status !="OK"){
+                continue;
+            }
             $detailsResults = $data['result'];
             if( isset( $detailsResults['reviews'] ) ){
                 $reviews = $detailsResults['reviews'];
@@ -73,7 +91,10 @@ class InsertPlaceReviewsCommand extends ContainerAwareCommand {
                     echo "Review for: " . $placeName . " inserted ! \r\n";
                 }
             }
+            $nr++;
         }
+        $mes = "We have inserted reviews for: ". $nr . " places";
+        $placeop->logMessage($mes);
     }
 
 }

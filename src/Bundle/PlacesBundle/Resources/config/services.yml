@@ -17,10 +17,26 @@ parameters:
 services:
     test:
         class: Bundle\PlacesBundle\Service\Test
+    monolog.formatter.session_request:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            - "[%%datetime%%] [%%token%%] %%channel%%.%%level_name%%: %%message%%\n"    
     placeop:
         class: Bundle\PlacesBundle\Service\PlaceOperations
-        arguments: [@placeopDAO, @service_container]
+        arguments: [@placeopDAO, @service_container, @logger]
+        tags:
+            - { name: monolog.logger, channel: comm }
     placeopDAO:
         class: "%placeoperationDAO.class%"   
         arguments: [@doctrine.orm.entity_manager]
+        
+    search:
+        class: Bundle\PlacesBundle\Service\SearchWebService
+        arguments: [@searchDAO]
+        tags:
+            - { name: monolog.logger, channel: comm }
+    searchDAO:
+        class: Bundle\PlacesBundle\Service\SearchWebServiceDAO  
+        arguments: [@doctrine.orm.entity_manager]        
+        
         

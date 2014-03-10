@@ -23,7 +23,6 @@ Bundle\PlacesBundle\Entity\PlaceReviews:
             column: author_url
         review:
             type: string
-            length: 255
             fixed: false
             nullable: false
         ratingAspect:

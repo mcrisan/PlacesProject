@@ -77,6 +77,72 @@ class PlaceDetailsRepository extends EntityRepository {
 
          */
     }
+    
+    public function getPlacesNamesAndIdsByAddress($input) {
+
+        $em = $this->getEntityManager();
+
+        $query = $em
+                ->createQuery("
+                SELECT pd.placeId,pd.placeName,pd.placeRating, p.slug
+                FROM Bundle\PlacesBundle\Entity\PlaceDetails pd
+                ,Bundle\PlacesBundle\Entity\Places p
+                WHERE pd.placeId = p.id AND
+                pd.placeVicinity LIKE :address
+                order by pd.placeName asc
+                
+            ")
+                ->setParameter('address', '%' . $input . '%');
+
+        return $query->getResult();
+
+
+        /*
+          $qb = $this->createQueryBuilder('place')
+          ->select('place')
+          ->where('place.place_name LIKE :type')
+          ->setParameter('type', '%' . $input . '%')
+          ->setMaxResults(100);
+          return $qb->getQuery()->getResult();
+
+         */
+    }
+    
+    public function getPlacesNamesAndIdsByTag($input) {
+
+        $em = $this->getEntityManager();
+        
+        $qb = $em->createQueryBuilder()
+                ->select('pd.placeId,pd.placeName,pd.placeRating, p.slug, t.tag')
+                ->from('BundlePlacesBundle:PlaceDetails', 'pd')
+                ->innerJoin('BundlePlacesBundle:Places', 'p', 'WITH', 'pd.placeId = p.id')
+                ->innerJoin('BundlePlacesBundle:PlaceTags', 'pt', 'WITH', 'pd.placeId = pt.placeId')
+                ->innerJoin('BundlePlacesBundle:Tags', 't', 'WITH', 'pt.tagId = t.id')
+                ->where('t.tag= :tag')
+                ->setParameter('tag', $input)
+                ->getQuery()
+                ->getResult();
+
+        return $qb;
+    }
+    
+    public function getPlacesNamesByTagAndAddress($tag, $address) {
+
+        $em = $this->getEntityManager();
+        
+        $qb = $em->createQueryBuilder()
+                ->select('pd.placeId,pd.placeName,pd.placeRating, p.slug, t.tag')
+                ->from('BundlePlacesBundle:PlaceDetails', 'pd')
+                ->innerJoin('BundlePlacesBundle:Places', 'p', 'WITH', 'pd.placeId = p.id')
+                ->innerJoin('BundlePlacesBundle:PlaceTags', 'pt', 'WITH', 'pd.placeId = pt.placeId')
+                ->innerJoin('BundlePlacesBundle:Tags', 't', 'WITH', 'pt.tagId = t.id')
+                ->where('t.tag= :tag AND pd.placeVicinity LIKE :address')
+                ->setParameters(array('tag' => $tag, 'address' => '%' . $address . '%'))
+                ->getQuery()
+                ->getResult();
+
+        return $qb;
+    }
 
     // Get place id by name
     public function getPlaceIdByName($name) {

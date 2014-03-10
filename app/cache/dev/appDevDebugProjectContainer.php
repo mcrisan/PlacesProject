@@ -113,10 +113,13 @@ class appDevDebugProjectContainer extends Container
             'kernel' => 'getKernelService',
             'locale_listener' => 'getLocaleListenerService',
             'logger' => 'getLoggerService',
+            'monolog.formatter.session_request' => 'getMonolog_Formatter_SessionRequestService',
             'monolog.handler.chromephp' => 'getMonolog_Handler_ChromephpService',
+            'monolog.handler.com' => 'getMonolog_Handler_ComService',
             'monolog.handler.debug' => 'getMonolog_Handler_DebugService',
             'monolog.handler.firephp' => 'getMonolog_Handler_FirephpService',
             'monolog.handler.main' => 'getMonolog_Handler_MainService',
+            'monolog.logger.comm' => 'getMonolog_Logger_CommService',
             'monolog.logger.deprecation' => 'getMonolog_Logger_DeprecationService',
             'monolog.logger.doctrine' => 'getMonolog_Logger_DoctrineService',
             'monolog.logger.emergency' => 'getMonolog_Logger_EmergencyService',
@@ -137,6 +140,8 @@ class appDevDebugProjectContainer extends Container
             'router.request_context' => 'getRouter_RequestContextService',
             'router_listener' => 'getRouterListenerService',
             'routing.loader' => 'getRouting_LoaderService',
+            'search' => 'getSearchService',
+            'searchdao' => 'getSearchdaoService',
             'security.access.decision_manager' => 'getSecurity_Access_DecisionManagerService',
             'security.authentication.manager' => 'getSecurity_Authentication_ManagerService',
             'security.authentication.trust_resolver' => 'getSecurity_Authentication_TrustResolverService',
@@ -1346,6 +1351,20 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'monolog.formatter.session_request' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Monolog\Formatter\LineFormatter A Monolog\Formatter\LineFormatter instance.
+     */
+    protected function getMonolog_Formatter_SessionRequestService()
+    {
+        return $this->services['monolog.formatter.session_request'] = new \Monolog\Formatter\LineFormatter('[%datetime%] [%token%] %channel%.%level_name%: %message%
+');
+    }
+
+    /**
      * Gets the 'monolog.handler.chromephp' service.
      *
      * This service is shared.
@@ -1356,6 +1375,23 @@ class appDevDebugProjectContainer extends Container
     protected function getMonolog_Handler_ChromephpService()
     {
         return $this->services['monolog.handler.chromephp'] = new \Symfony\Bridge\Monolog\Handler\ChromePhpHandler(200, true);
+    }
+
+    /**
+     * Gets the 'monolog.handler.com' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Monolog\Handler\StreamHandler A Monolog\Handler\StreamHandler instance.
+     */
+    protected function getMonolog_Handler_ComService()
+    {
+        $this->services['monolog.handler.com'] = $instance = new \Monolog\Handler\StreamHandler('C:/wamp/www/PlacesProject/app/logs/com.log', 200, true);
+
+        $instance->setFormatter($this->get('monolog.formatter.session_request'));
+
+        return $instance;
     }
 
     /**
@@ -1395,6 +1431,26 @@ class appDevDebugProjectContainer extends Container
     protected function getMonolog_Handler_MainService()
     {
         return $this->services['monolog.handler.main'] = new \Monolog\Handler\StreamHandler('C:/wamp/www/PlacesProject/app/logs/dev.log', 100, true);
+    }
+
+    /**
+     * Gets the 'monolog.logger.comm' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Symfony\Bridge\Monolog\Logger A Symfony\Bridge\Monolog\Logger instance.
+     */
+    protected function getMonolog_Logger_CommService()
+    {
+        $this->services['monolog.logger.comm'] = $instance = new \Symfony\Bridge\Monolog\Logger('comm');
+
+        $instance->pushHandler($this->get('monolog.handler.chromephp'));
+        $instance->pushHandler($this->get('monolog.handler.firephp'));
+        $instance->pushHandler($this->get('monolog.handler.com'));
+        $instance->pushHandler($this->get('monolog.handler.debug'));
+
+        return $instance;
     }
 
     /**
@@ -1587,7 +1643,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getPlaceopService()
     {
-        return $this->services['placeop'] = new \Bundle\PlacesBundle\Service\PlaceOperations($this->get('placeopdao'), $this);
+        return $this->services['placeop'] = new \Bundle\PlacesBundle\Service\PlaceOperations($this->get('placeopdao'), $this, $this->get('monolog.logger.comm'));
     }
 
     /**
@@ -1756,6 +1812,32 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'search' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Bundle\PlacesBundle\Service\SearchWebService A Bundle\PlacesBundle\Service\SearchWebService instance.
+     */
+    protected function getSearchService()
+    {
+        return $this->services['search'] = new \Bundle\PlacesBundle\Service\SearchWebService($this->get('searchdao'));
+    }
+
+    /**
+     * Gets the 'searchdao' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Bundle\PlacesBundle\Service\SearchWebServiceDAO A Bundle\PlacesBundle\Service\SearchWebServiceDAO instance.
+     */
+    protected function getSearchdaoService()
+    {
+        return $this->services['searchdao'] = new \Bundle\PlacesBundle\Service\SearchWebServiceDAO($this->get('doctrine.orm.default_entity_manager'));
+    }
+
+    /**
      * Gets the 'security.context' service.
      *
      * This service is shared.
@@ -1831,7 +1913,7 @@ class appDevDebugProjectContainer extends Container
         $n = new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $g, new \Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy('migrate'), $j, 'admin_area', $m, new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler($f, $j, array('login_path' => 'login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path'), $a), array('check_path' => 'login_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $a, $d);
         $n->setRememberMeServices($k);
 
-        return $this->services['security.firewall.map.context.admin_area'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($i, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $c), 'admin_area', $a, $d), 2 => $l, 3 => $n, 4 => new \Symfony\Component\Security\Http\Firewall\RememberMeListener($b, $k, $g, $a, $d), 5 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '5315f8b75ddca', $a), 6 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $i, $g)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $j, 'admin_area', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($f, $j, 'login', false), NULL, NULL, $a));
+        return $this->services['security.firewall.map.context.admin_area'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($i, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $c), 'admin_area', $a, $d), 2 => $l, 3 => $n, 4 => new \Symfony\Component\Security\Http\Firewall\RememberMeListener($b, $k, $g, $a, $d), 5 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '53188a09e41d9', $a), 6 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $i, $g)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $j, 'admin_area', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($f, $j, 'login', false), NULL, NULL, $a));
     }
 
     /**
@@ -3152,7 +3234,7 @@ class appDevDebugProjectContainer extends Container
     {
         $a = new \Symfony\Component\Security\Core\User\UserChecker();
 
-        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('security.user.provider.concrete.administrators'), $a, 'admin_area', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\RememberMeAuthenticationProvider($a, '1ac7dc66bfe373ae669e58d597c1f28549dfd5d0', 'admin_area'), 2 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('5315f8b75ddca')), true);
+        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('security.user.provider.concrete.administrators'), $a, 'admin_area', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\RememberMeAuthenticationProvider($a, '1ac7dc66bfe373ae669e58d597c1f28549dfd5d0', 'admin_area'), 2 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('53188a09e41d9')), true);
 
         $instance->setEventDispatcher($this->get('event_dispatcher'));
 
@@ -3346,7 +3428,8 @@ class appDevDebugProjectContainer extends Container
             'mailer_password' => NULL,
             'locale' => 'en',
             'secret' => '1ac7dc66bfe373ae669e58d597c1f28549dfd5d0',
-            'api_key' => 'AIzaSyBGEQqVNDD_xkI7j4viU-5qMa-SYUOX_6g',
+            'api_key' => 'AIzaSyBcy7J0eaTaMSxAj7re31bLUKSr9W9EPYE',
+            'api_key2' => 'AIzaSyBGEQqVNDD_xkI7j4viU-5qMa-SYUOX_6g',
             'latlng' => '46.7592,23.5577',
             'controller_resolver.class' => 'Symfony\\Bundle\\FrameworkBundle\\Controller\\ControllerResolver',
             'controller_name_converter.class' => 'Symfony\\Bundle\\FrameworkBundle\\Controller\\ControllerNameParser',
@@ -3657,7 +3740,18 @@ class appDevDebugProjectContainer extends Container
             'monolog.handlers_to_channels' => array(
                 'monolog.handler.chromephp' => NULL,
                 'monolog.handler.firephp' => NULL,
-                'monolog.handler.main' => NULL,
+                'monolog.handler.com' => array(
+                    'type' => 'inclusive',
+                    'elements' => array(
+                        0 => 'comm',
+                    ),
+                ),
+                'monolog.handler.main' => array(
+                    'type' => 'exclusive',
+                    'elements' => array(
+                        0 => 'comm',
+                    ),
+                ),
             ),
             'swiftmailer.class' => 'Swift_Mailer',
             'swiftmailer.transport.sendmail.class' => 'Swift_Transport_SendmailTransport',
