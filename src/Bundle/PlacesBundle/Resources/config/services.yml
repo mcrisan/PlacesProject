@@ -20,7 +20,7 @@ services:
     monolog.formatter.session_request:
         class: Monolog\Formatter\LineFormatter
         arguments:
-            - "[%%datetime%%] [%%token%%] %%channel%%.%%level_name%%: %%message%%\n"    
+            - "[%%datetime%%] %%channel%%.%%level_name%%: %%message%%\n"    
     placeop:
         class: Bundle\PlacesBundle\Service\PlaceOperations
         arguments: [@placeopDAO, @service_container, @logger]
@@ -32,7 +32,7 @@ services:
         
     search:
         class: Bundle\PlacesBundle\Service\SearchWebService
-        arguments: [@searchDAO]
+        arguments: [@searchDAO, @service_container]
         tags:
             - { name: monolog.logger, channel: comm }
     searchDAO:

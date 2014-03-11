@@ -15,9 +15,7 @@ use Bundle\PlacesBundle\Entity\Tags;
 use Bundle\PlacesBundle\Entity\PlaceDetails;
 use Bundle\PlacesBundle\Entity\AppUsers;
 use Bundle\PlacesBundle\lib\UserIp;
-
 use Bundle\PlacesBundle\Service\PlaceOperations;
-
 
 class PageController extends Controller {
 
@@ -31,226 +29,7 @@ class PageController extends Controller {
     // Preload method - insert/update in/the users_ip table and redirect to homePage
     function preLoadAction() {
 
-
-        //$doctrineLogger = $this->get('monolog.logger.foo');
-        //$doctrineLogger->info('I just got the logger');
-        //$mailer->send('ryan@foobar.net', ...);
-        $placeop = $this->get('placeop');
-        //$placeop->logMessage("test");
-        $this->em = $this->getDoctrine()->getManager();
-//        $p1 = $this->em->getRepository('BundlePlacesBundle:AppUsers')
-//                ->find(1);
-//        $p1->setEmail("a");
-//        var_dump($p1);
-//////        $p2= new AppUsers();
-//        $validator = $this->get('validator');
-//       $errors = $validator->validate($p1, array('registration'));
-//////    $errors = $validator->validate($p2);
-//     var_dump($errors);
-////     
-//     $p2 = $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
-//                ->findOneBy(array('placeId'=> 1932));
-//     var_dump($p2);
-     //$errors = $validator->validate($p2);
-     //var_dump($errors);
-     $session = $this->get('session');
-     $placeop = $this->get('placeopDAO');
-    // $placeop->insertPlacePhotos($p2);
-    $detailsRef = $this->em->getRepository('BundlePlacesBundle:Places')->getPlacesDetailsRef();
-    //var_dump($detailsRef);
-    $apiKey = $this->container->getParameter('api_key');
-    var_dump($apiKey);
-    $det = $this->em->getRepository('BundlePlacesBundle:Places')->getLastPlaceId();
-    var_dump($det);
-    echo $det[0]['id'];
-    foreach($det as $d){
-        $id = $d['id'];
-    }
-    echo $id;
-    $detailsRef2 = $this->em->getRepository('BundlePlacesBundle:Places')->getPlacesDetailsRefWithId(1932);
-    echo count($detailsRef2);
-    
-     $search = $this->get('search');
-//     $res = $search->searchByName('BEST Cluj-Napoca');
-//     //var_dump($res);
-//     $data1 = json_decode($res, TRUE);
-     
-     $res = $search->searchByTag('food');
-     //var_dump($res);
-     $data1 = json_decode($res, TRUE);
-     //var_dump($data1['details']['places']);
-    $detailsRef = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')->getPlacesNamesByTagAndAddress("food", "Drumul Sfântul Ioan");
-    var_dump($detailsRef);
-    $str = "casa ardeleana";
-    echo urlencode ( $str );
-    echo urldecode(urlencode ( $str ));
-    
-
-    //var_dump($detailsRef2);
-//    //$detailsRef = $placeop->getPlacesDetailsRef();
-//        //loop in all places
-//        foreach ($detailsRef as $place) {
-//            $placeId = $place['id'];
-//            $placeName = $place['slug'];
-//            $detailsRef = $place['detailsRef'];
-//            $url = "https://maps.googleapis.com/maps/api/place/details/xml?reference=" . $detailsRef . "&sensor=true&key=" . $apiKey;
-//
-//            $placeDetails = simplexml_load_file($url);
-//            var_dump($placeDetails);
-//            $detailsResults = $placeDetails->result;
-//            var_dump($detailsResults);
-//            //var_dump($detailsResults);
-//            $url2 = "https://maps.googleapis.com/maps/api/place/details/json?reference=" . $detailsRef . "&sensor=true&key=" . $apiKey;
-//            $json = file_get_contents($url2);
-//            $data = json_decode($json, TRUE);
-//            //print_r($data);
-//            //$detailsResults2 = $data[0]->result;
-//            $detailsResults2 = $data['result'];
-//            echo "json";
-//            var_dump($detailsResults2);
-//            var_dump($data);
-//            
-//            echo "xml 2";
-//            foreach ($detailsResults as $detailResult) {
-//                    var_dump($detailResult);
-//                    $photos = $detailResult->review;
-//                    var_dump($photos);
-////                    foreach ($photos as $photo) {
-////                        $photoRef = $photo->photo_reference;
-////                        var_dump($photoRef);
-////                        echo $photoRef;
-////                    }
-//                }
-//                echo " ghgh tot json";
-//                //foreach ($detailsResults2 as $detailResult) {
-//                   // $type=$detailsResults2['types'];
-//                $types = $detailsResults2['types'];
-//                $geoGeometry = $detailsResults2['geometry'];
-//                $geoLocation = $geoGeometry['location'];
-//                $placeUrl = $detailsResults2['url'];;
-//
-//                // root->el
-//                $placeName = $detailsResults2['name'];
-//                $placeAddr = $detailsResults2['formatted_address'];
-//                $placePhoneNumber = $detailsResults2['formatted_phone_number'];
-//                if (isset($detailsResults2['rating'])) {
-//                $placeRating = $detailsResults2['rating'];
-//                }
-//                if (isset($detailsResults2['website'])) {
-//                $placeWebSite = $detailsResults2['website'];
-//                }
-//                $placeIcon = $detailsResults2['icon'];
-//                
-//                foreach ($types as $innerType) {
-//                    $tag = new Tags();
-//                    $tag->setTag($innerType);
-//                    echo $innerType;
-//                    //$placeop->checkTag($tag);
-//                }
-//                
-//                //foreach ($geoLocation as $loc) {
-//                    $placeLat = $geoLocation['lat'];
-//                    $placeLng = $geoLocation['lng'];
-//                    echo $placeLat . "si". $placeLng;
-//                //}
-//
-//               // }
-//            
-//        }
-//        $radius = 1011; // 1011 m
-//        $x = 46.7680370;
-//        $y = 23.5899400;
-//        $latLng = $x.','.$y;
-//        $type = 'establishment';
-//        $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
-//        echo $url;
-//        $places = simplexml_load_file($url);
-//        $placeItems = $places->result;
-//        var_dump($places);
-//        
-//        $pageToken = $places->next_page_token;
-//        var_dump($pageToken[0]);
-//        if ($pageToken[0] != "") {
-//            $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey . "&pagetoken=" . $pageToken[0];
-//        }
-//        $places = simplexml_load_file($url);
-//        $placeItems = $places->result;
-//        var_dump($placeItems);
-//        $pageToken = $places->next_page_token;
-        
-        
-//        echo "json";
-//        //$url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
-//        $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=harbour&sensor=false&key=AIzaSyBcy7J0eaTaMSxAj7re31bLUKSr9W9EPYE";
-//        $json = file_get_contents($url);
-//        $data = json_decode($json, TRUE);
-//        var_dump($data);
-//        $placeItems = $data['results'];
-//        var_dump($placeItems);
-//        if (isset($data['next_page_token'])) {
-//        $pageToken = $data['next_page_token'];
-//        var_dump($pageToken);
-//        echo $pageToken;
-//        }
-//        foreach ($placeItems as $item) {
-//            $extId = $item['id'];
-//            $name = $item['name'];
-//            //$slug = $this->gen_slug($name);
-//            $origin = "google";
-//            $detailsRef = $item['reference'];
-//            if (!empty($detailsRef)) {
-//                    $detailsRef = $item['reference'];
-//                } else {
-//                    $detailsRef = "no ref";
-//                }
-//               echo "$name \r\n";
-//        }
-//        
-//        echo "place";
-//        $extId = 'b8968c7ecf0926b7f8c13c3dabc898ed160b71ce';
-//        $place = $this->em->getRepository('BundlePlacesBundle:Places')
-//                ->findOneBy(array("extId" => $extId));
-//        var_dump($place);
-//        $place->setExtId("23");
-//        var_dump($place);
-        //var_dump($pageToken[0]);
- //   var_dump($p2);
-//         $p1 = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-//                ->find(2004); // return true or false
-//         var_dump($p1);
-//         $p2 = $this->em1->getRepository('BundlePlacesBundle:PlaceDetails');
-//                ->find(20040); // return true or false
-//                if($p2){
-//                echo "este";
-//    }else{
-//        echo "nu este";
-//    }
-//         var_dump($p2);
-//         
-//         if($p1==$p2){
-//             echo "egale";
-//         }else{
-//             echo "diferite";
-//         }
-        // sd
-//        try {
-//            file_put_contents( 'c:/er.txt', "as", FILE_APPEND);
-//            throw new \Exception("Value must be 1 or below");
- //       $this->em1->getRepository('BundlePlacesBundle:PlaceDetails');
-        
-//        
-//        }catch ( Exception $e ) {
-//       $this->error = $e->getMessage();
-//       echo "ex232323";
-//       // do your log writing stuff here
-//       file_put_contents( 'c:/er.txt', $error, FILE_APPEND); 
-//    }
-//        $p2 = $this->em->getRepository('BundlePlacesBundle:Places')
-//                ->find(2004);
-//        
-//        var_dump($p2->getPlaceDetails());
-      return $this->render("BundlePlacesBundle:About:about.html.twig");  
-  //      return $this->redirect($this->generateUrl('index'));
+             return $this->redirect($this->generateUrl('index'));
     }
 
     // Home page
@@ -345,33 +124,15 @@ class PageController extends Controller {
     public function indexAction() {
         $this->em = $this->getDoctrine()->getManager();
         //$request = $this->getRequest();
+        $search = $this->get('search');
         $request = Request::createFromGlobals();
+        $userDet = $search->getUserDetails();
+        $providerName = $userDet['providerName'];
+        $userName = $userDet['userName'];
+        $userId = $userDet['userId'];
+        $socialLogged = $userDet['socialLogged'];
 
-        $userIp = new GetUserIp();
-        $currentIp = $userIp->get_user_ip();
-
-        $providerName = "";
-        $userName = "";
-        $userId = "";
-        $socialLogged = false;
-
-        $userInfoFromSession = $this->getUserInfo();
-        if (!empty($userInfoFromSession)) {
-            $providerName = $userInfoFromSession['providerName'];
-            $userIdentifier = $userInfoFromSession['userIdentifier'];
-            $userName = $userInfoFromSession['userName'];
-            $userId = 1010;
-            $socialLogged = true;
-        } else {
-            // check if current user is logged and get info
-            $info = $this->getUser();
-            if (!empty($info)) {
-                $userName = $info->getUsername();
-                $userId = $info->getId();
-                //exit();
-            }
-        }
-        // set searchInput - show default results (" places containing 'a' ")
+        // set searchInput - show default results (" places containing 'ma' ")
         $searchInput = "ma";
         $searchInputVal = $request->query->get('input');
         if (!empty($searchInputVal)) {
@@ -386,91 +147,43 @@ class PageController extends Controller {
             $placeToShowId = 1595;
         }
 
-        // default place to show
-        // reviews
-        $getDefaultPlaceReviews = $this->em->getRepository('BundlePlacesBundle:Places')->find($placeToShowId);
-        $placeReviews = $this->em->getRepository('BundlePlacesBundle:PlaceReviews')
-                ->getReviews($getDefaultPlaceReviews->getId());
-
-        $getPlaceSlug = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                ->getPlacesSlug($placeToShowId);
-        $placeSlug = $getPlaceSlug[0]['slug'];
-
-        $place = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                ->getPlacesDetails($placeToShowId, 1); // start from place / with a limit of
-        $placePhotos = $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
-                ->getPlacePhotos($placeToShowId, 1);
-
-        $placeAllPhotos = $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
-                ->getPlacePhotos($placeToShowId);
-
-        $userStatus = $this->em->getRepository('BundlePlacesBundle:VoteStatus')
-                ->getUserStatus($placeToShowId, $currentIp);
-
-//        var_dump($userStatus);
-//        exit();
-        // place(s) ratings status
-
-        $totalVotesForPlace = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-                ->getCurrentCounts($placeToShowId);
-        $totalVotesAllTime = $this->em->getRepository('BundlePlacesBundle:VoteStatus')
-                ->getTotalVotes();
-        $total = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-                ->getCurrentVotes($placeToShowId);
-        $totalCounts = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-                ->getCurrentCounts($placeToShowId);
-
-//        print_r($placePhotos);
-//        exit();
         // If search input !empty
         if (!empty($searchInput) && is_string($searchInput)) {
             //output the results: place_id,place_name,places.slug;
             $places = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
                     ->getPlacesNamesAndIds($searchInput);
-//            var_dump($places);
-//            exit();
             if (!empty($places)) {
                 $showThisPlace = $places[0]['placeId']; // #1 place from search results..
-                $getPlaceSlug = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                        ->getPlacesSlug($showThisPlace);
-//                print_r($getPlaceSlug);
-//                exit();
-                $placeSlug = $getPlaceSlug[0]['slug'];
             } else {
                 $showThisPlace = $placeToShowId; // default place to show if the search return 0 results
             }
-
-            //show default place
-            $getDefaultPlaceReviews = $this->em->getRepository('BundlePlacesBundle:Places')->find($showThisPlace);
-
-            $placeReviews = $this->em->getRepository('BundlePlacesBundle:PlaceReviews')
-                    ->getReviews($getDefaultPlaceReviews->getId());
-
-            $place = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                    ->getPlacesDetails($showThisPlace, 1);
-            $placePhotos = $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
-                    ->getPlacePhotos($showThisPlace, 1);
-            $placeAllPhotos = $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
-                    ->getPlacePhotos($showThisPlace);
-            $userStatus = $this->em->getRepository('BundlePlacesBundle:VoteStatus')
-                    ->getUserStatus($showThisPlace, $currentIp);
-
             $totalResults = count($places);
-            if ($userStatus) { // if user voted for current store
+            $placeInfo = $search->getPlaceInfos($showThisPlace);
+
+            if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
+                $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
+            }
+            if (!isset($placeInfo['total'][0]['totalVotes'])) {
+                $placeInfo['total'][0]['totalVotes'] = 0;
+            }
+            if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
+                $placeInfo['totalCounts'][0]['votesCount'] = 1;
+            }
+            if ($placeInfo['userStatus']) { // if user voted for current store                
                 return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
                             'input' => $searchInput,
                             'places' => $places,
-                            'placeDetail' => $place,
-                            'placePhotos' => $placePhotos,
-                            'placeAllPhotos' => $placeAllPhotos,
-                            'totalVotesAllTime' => $totalVotesAllTime,
-                            'totalVotes' => $totalVotesForPlace[0]['votesCount'],
+                            'placeDetail' => array($placeInfo['place']),
+                            'placePhotos' => $placeInfo['placePhotos'],
+                            'placeAllPhotos' => $placeInfo['placeAllPhotos'],
+                            'totalVotesAllTime' => $placeInfo['totalVotesAllTime'],
+                            'totalVotes' => $placeInfo['totalVotesForPlace'][0]['votesCount'],
                             'usersRating' => round(
-                                    $total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2),
+                                    $placeInfo['total'][0]['totalVotes'] / $placeInfo['totalCounts'][0]['votesCount'], 2),
                             'bool' => true,
                             'totalResults' => $totalResults,
-                            'placeSlug' => $placeSlug,
-                            'reviews' => $placeReviews,
+                            'placeSlug' => $placeInfo['placeSlug'],
+                            'reviews' => $placeInfo['placeReviews'],
                             'userId' => $userId,
                             'userName' => $userName,
                             'socialLogged' => $socialLogged,
@@ -480,46 +193,49 @@ class PageController extends Controller {
             return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
                         'input' => $searchInput,
                         'places' => $places,
-                        'placeDetail' => $place,
-                        'placePhotos' => $placePhotos,
-                        'placeAllPhotos' => $placeAllPhotos,
+                        'placeDetail' => array($placeInfo['place']),
+                        'placePhotos' => $placeInfo['placePhotos'],
+                        'placeAllPhotos' => $placeInfo['placeAllPhotos'],
                         'totalResults' => $totalResults,
-                        'placeSlug' => $placeSlug,
-                        'reviews' => $placeReviews,
+                        'placeSlug' => $placeInfo['placeSlug'],
+                        'reviews' => $placeInfo['placeReviews'],
                         'userId' => $userId,
                         'userName' => $userName,
                         'socialLogged' => $socialLogged
             ));
-        }
+        } else {
 
-        if ($userStatus) {
+            $placeInfo = $search->getPlaceInfos($placeToShowId);
+
+            if ($placeInfo['userStatus']) {
+                return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
+                            'placeDetail' => array($placeInfo['place']),
+                            'placePhotos' => $placeInfo['placePhotos'],
+                            'placeAllPhotos' => $placeInfo['placeAllPhotos'],
+                            'totalVotesAllTime' => $placeInfo['totalVotesAllTime'],
+                            'totalVotes' => $placeInfo['totalVotesForPlace'][0]['votesCount'],
+                            'usersRating' => round(
+                                    $placeInfo['total'][0]['totalVotes'] / $placeInfo['totalCounts'][0]['votesCount'], 2),
+                            'bool' => true,
+                            'placeSlug' => $placeInfo['placeSlug'],
+                            'reviews' => $placeInfo['placeReviews'],
+                            'userId' => $userId,
+                            'userName' => $userName,
+                            'socialLogged' => $socialLogged
+                ));
+            }
+
             return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
-                        'placeDetail' => $place,
-                        'placePhotos' => $placePhotos,
-                        'placeAllPhotos' => $placeAllPhotos,
-                        'totalVotesAllTime' => $totalVotesAllTime,
-                        'totalVotes' => $totalVotesForPlace[0]['votesCount'],
-                        'usersRating' => round(
-                                $total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2),
-                        'bool' => true,
-                        'placeSlug' => $placeSlug,
-                        'reviews' => $placeReviews,
+                        'placeDetail' => array($placeInfo['place']),
+                        'placePhotos' => $placeInfo['placePhotos'],
+                        'placeAllPhotos' => $placeInfo['placeAllPhotos'],
+                        'placeSlug' => $placeInfo['placeSlug'],
+                        'reviews' => $placeInfo['placeReviews'],
                         'userId' => $userId,
                         'userName' => $userName,
                         'socialLogged' => $socialLogged
             ));
         }
-
-        return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
-                    'placeDetail' => $place,
-                    'placePhotos' => $placePhotos,
-                    'placeAllPhotos' => $placeAllPhotos,
-                    'placeSlug' => $placeSlug,
-                    'reviews' => $placeReviews,
-                    'userId' => $userId,
-                    'userName' => $userName,
-                    'socialLogged' => $socialLogged
-        ));
     }
 
 // index

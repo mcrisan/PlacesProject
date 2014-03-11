@@ -126,4 +126,17 @@ class PlacesRepository extends EntityRepository
             return false;
         }
     }
+    
+    public function deletePlace($id){
+        
+        $em = $this->getEntityManager();
+        $query = $em ->createQuery("
+                DELETE 
+                FROM Bundle\PlacesBundle\Entity\Places p
+                WHERE p.id = :id
+            ")
+        ->setParameter('id',$id)
+        ->execute();
+        return $query;
+    }
 }

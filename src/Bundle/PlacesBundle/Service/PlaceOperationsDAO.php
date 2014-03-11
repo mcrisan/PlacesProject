@@ -37,6 +37,12 @@ class PlaceOperationsDAO {
                 ->checkCurrentSlug($slug);
     }
     
+    public function checkPlaceDetailsByNameAndAddress($name, $address){
+        
+        return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
+                ->checkPlaceDetailsByNameAndAddress($name, $address);
+    }
+    
     public function getLastSlug($slug){
         
         return $this->em->getRepository('BundlePlacesBundle:Places') // last slug
@@ -157,5 +163,13 @@ class PlaceOperationsDAO {
         return $this->em->getRepository('BundlePlacesBundle:Places')
                             ->getPlacesDetailsRefWithId($startId);
     }
+    
+    public function deletePlace($id){
+
+        return $this->em->getRepository('BundlePlacesBundle:Places')
+                            ->deletePlace($id);
+    }
+    
+    
     
 }

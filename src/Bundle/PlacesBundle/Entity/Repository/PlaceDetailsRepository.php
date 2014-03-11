@@ -154,6 +154,24 @@ class PlaceDetailsRepository extends EntityRepository {
                 ->getResult();
         return $qb;
     }
+    
+    public function checkPlaceDetailsByNameAndAddress($name, $address) {
+        $em = $this->getEntityManager();
+        
+        $qb = $em->createQueryBuilder()
+                ->select('pd.placeId')
+                ->from('BundlePlacesBundle:PlaceDetails', 'pd')
+                ->where('pd.placeName= :name AND pd.placeVicinity LIKE :address')
+                ->setParameters(array('name' => $name, 'address' =>  $address ))
+                ->getQuery()
+                ->getResult();
+        $rows = count($qb);
+        if ($rows == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     // Get places details
     public function getPlacesDetails($start = null, $limit = null) {

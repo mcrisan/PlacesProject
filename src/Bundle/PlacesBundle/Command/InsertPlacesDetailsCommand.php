@@ -68,6 +68,14 @@ class InsertPlacesDetailsCommand extends ContainerAwareCommand {
             }else{
                 $placeAddr ="";
             }
+            //check if another place with the same name and address exists
+            $pl = $placeop->checkPlaceDetailsByNameAndAddress($placeName, $placeAddr);
+            if($pl){
+                $placeop->deletePlace($placeId);
+                $mes = "Place: ". $placeId . " was deleted because it already exists";
+                $placeop->logMessage($mes);
+                continue;
+            }
             if (isset($detailsResults['formatted_phone_number'])) {
                 $placePhoneNumber = $detailsResults['formatted_phone_number'];
             }else{

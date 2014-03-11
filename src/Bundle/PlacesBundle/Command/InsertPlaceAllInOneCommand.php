@@ -67,69 +67,35 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
         $type='establishment';
         $id = $placeop->getLastPlaceId();
         echo $id;
-        //$p2['x'] =46.71;
-        //$p1['x'] =46.71;
-        //$p2['x'] =46.72;
-        $p1['x'] =46.73;
-        $p2['x'] =46.735;
+
+        $p1['x'] =46.74;
+        $p2['x'] =46.745;
         $mes = "Inserting places from lat ".$p1['x'] ." to lat " .$p2['x'] ;
         $placeop->logMessage($mes);
         $mes = "Inserting places from long ".$p1['y'] ." to long " .$p1['y'] ;
         $placeop->logMessage($mes);
         for ($x = $p1['x']; $x <= $p2['x']; $x+=$step)
         {
-            //echo $x.','.$p1['y'];
-            //$x=46.701731;
             for ($y = $p1['y']; $y >= $p2['y']; $y-=$step)
             {
                 $nr++;
-                $run = $place->addPlaces($type, $apiKey, $x.','.$y, $radius, $placeop);
-            //    echo '.';
+                $place->addPlaces($type, $apiKey, $x.','.$y, $radius, $placeop);
             }
-          //  echo $y;
-          //  echo PHP_EOL;
         }
-//        $id2 = $placeop->getLastPlaceId();
-//        $nr_places = $id2 - $id;
-//        //$nr_places = 85;
+
         $mes = "We have made: ". $nr ." querys to search for places";
         $placeop->logMessage($mes);
-//        $mes = "We have inserted: ". $nr_places ." places";
-//        $placeop->logMessage($mes);
-       // $nr++;
-        //exit();        
-        //insert details
-//        $id=2018;
+
         $placeDetails = new InsertPlacesDetailsCommand();
         $placeDetails->addPlacesDetails($apiKey, $placeop, $id);
         
-        //$mes = "We have inserted details for: ". $nr_places ." places";
-        //$placeop->logMessage($mes);
-        //$nr++;
-
         //insert photos
         $placePhotos = new InsertPlacesPhotosCommand();
         $placePhotos->addPlacePhotos($apiKey, $placeop, $id);
         
-        //$mes = "We have inserted photos for: ". $nr_places ." places";
-        //$placeop->logMessage($mes);
-        //$nr++;
-        
-        //insert reviews - run this cmd only ones (truncate reviews table before import) or recode
-        // cmd is: app/console places:insert-place-reviews
         $placeReviews = new InsertPlaceReviewsCommand();
         $placeReviews->addPlaceReviews($apiKey, $placeop, $id);
-        
-        //$mes = "We have inserted reviews for: ". $nr_places ." places";
-        //$placeop->logMessage($mes);
-        
-        //$mes = "We have inserted: ". $nr_places ." places";
-        //$placeop->logMessage($mes);
-        //$nr++;
-        
-        //$mes = "We have made: ". $nr_places*nr ." querys";
-        //$placeop->logMessage($mes);
-        
+               
     }
 
 }

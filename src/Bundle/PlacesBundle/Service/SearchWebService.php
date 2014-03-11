@@ -10,6 +10,8 @@ namespace Bundle\PlacesBundle\Service;
 
 use Bundle\PlacesBundle\Entity\PlaceTags;
 use Symfony\Bridge\Monolog\Logger;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Bundle\PlacesBundle\lib\GetUserIp;
 
 /**
  * Description of SearchWebService
@@ -19,9 +21,11 @@ use Symfony\Bridge\Monolog\Logger;
 class SearchWebService {
 
     protected $searchDAO;
+    protected $container;
 
-    public function __construct(SearchWebServiceDAO $dao) {
+    public function __construct(SearchWebServiceDAO $dao, ContainerInterface $container) {
         $this->searchDAO = $dao;
+        $this->container = $container;
     }
 
     public function searchByName($name) {
@@ -83,7 +87,7 @@ class SearchWebService {
         }
         return $resp;
     }
-    
+
     public function searchByTagAndAddress($tag, $address) {
 
         $places = $this->searchDAO->getPlacesNamesByTagAndAddress($tag, $address);
@@ -113,27 +117,93 @@ class SearchWebService {
         $placeDet = $this->searchDAO->getPlacesDetails($placeId);
         // echo "place details";
         //var_dump($placeDet);
-        $placeInfo['place']['placeId'] = $placeDet[0]->getPlaceId();
-        $placeInfo['place']['placeName'] = $placeDet[0]->getPlaceName();
-        $placeInfo['place']['placePhonenumber'] = $placeDet[0]->getPlacePhonenumber();
-        $placeInfo['place']['placeVicinity'] = $placeDet[0]->getPlaceVicinity();
-        $placeInfo['place']['placeLat'] = $placeDet[0]->getPlaceLat();
-        $placeInfo['place']['placeLng'] = $placeDet[0]->getPlaceLng();
-        $placeInfo['place']['placeRating'] = $placeDet[0]->getPlaceRating();
-        $placeInfo['place']['placeIcon'] = $placeDet[0]->getPlaceIcon();
-        $placeInfo['place']['placeUrl'] = $placeDet[0]->getPlaceUrl();
-        $placeInfo['place']['placeWebsite'] = $placeDet[0]->getPlaceWebsite();
+        $placeInfo['place']['placeid'] = $placeDet[0]->getPlaceId();
+        $placeInfo['place']['placename'] = $placeDet[0]->getPlaceName();
+        $placeInfo['place']['placephonenumber'] = $placeDet[0]->getPlacePhonenumber();
+        $placeInfo['place']['placevicinity'] = $placeDet[0]->getPlaceVicinity();
+        $placeInfo['place']['placelat'] = $placeDet[0]->getPlaceLat();
+        $placeInfo['place']['placelng'] = $placeDet[0]->getPlaceLng();
+        $placeInfo['place']['placerating'] = $placeDet[0]->getPlaceRating();
+        $placeInfo['place']['placeicon'] = $placeDet[0]->getPlaceIcon();
+        $placeInfo['place']['placeurl'] = $placeDet[0]->getPlaceUrl();
+        $placeInfo['place']['placeWebSite'] = $placeDet[0]->getPlaceWebsite();
         //var_dump($placeInfo['place']);
         $placeInfo['placePhotos'] = $this->searchDAO->getPlacePhotos($placeId, 1);
         $placeInfo['placeAllPhotos'] = $this->searchDAO->getPlacePhotos($placeId);
-        $placeInfo['userStatus'] = $this->searchDAO->getPlacePhotos($placeId);
 
 
         $placeInfo['totalVotesForPlace'] = $this->searchDAO->getCurrentCounts($placeId);
         $placeInfo['totalVotesAllTime'] = $this->searchDAO->getTotalVotes();
         $placeInfo['total'] = $this->searchDAO->getCurrentVotes($placeId);
+        $placeInfo['totalCounts'] = $this->searchDAO->getCurrentCounts($placeId);
+        
+        $placeInfo['userStatus'] = $this->searchDAO->getUserStatus($placeId, $this->getIp());
 
         return $placeInfo;
+    }
+
+    public function getUserDetails() {
+        $currentIp = $this->getIp();
+
+        $providerName = "";
+        $userName = "";
+        $userId = "";
+        $socialLogged = false;
+
+        $userInfoFromSession = $this->getUserInfo();
+        if (!empty($userInfoFromSession)) {
+            $providerName = $userInfoFromSession['providerName'];
+            $userIdentifier = $userInfoFromSession['userIdentifier'];
+            $userName = $userInfoFromSession['userName'];
+            $userId = 1010;
+            $socialLogged = true;
+        } else {
+            // check if current user is logged and get info
+            $info = $this->getUser();
+            if (!empty($info)) {
+                $userName = $info->getUsername();
+                $userId = $info->getId();
+                //exit();
+            }
+        }
+
+        return array('currentIp' => $currentIp,
+            'providerName' => $providerName,
+            'userName' => $userName,
+            'userId' => $userId,
+            'socialLogged' => $socialLogged);
+    }
+
+    public function getIp() {
+        $userIp = new GetUserIp();
+        $currentIp = $userIp->get_user_ip();
+        return $currentIp;
+    }
+
+    public function getUserInfo() {
+        $session = $this->container->get('session');
+        if ($session->get('providerName')) {
+            return array(
+                'providerName' => $session->get('providerName'),
+                'userIdentifier' => $session->get('identifier'),
+                'userName' => $session->get('userName'),
+                'userEmail' => $session->get('userEmail')
+            );
+        }
+        return null;
+    }
+
+    public function getUser() {
+        if (!$this->container->has('security.context')) {
+            throw new \LogicException('The SecurityBundle is not registered in your application.');
+        }
+        if (null === $token = $this->container->get('security.context')->getToken()) {
+            return null;
+        }
+        if (!is_object($user = $token->getUser())) {
+            return false;
+        }
+        return $user;
     }
 
 }

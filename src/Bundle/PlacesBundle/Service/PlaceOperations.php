@@ -42,7 +42,7 @@ class PlaceOperations {
 
     public function insertPlace($place) {
 
-        
+        $i=1;
         $slug = $place->getSlug();
         $detailsRef = $place->getDetailsRef();
         $checkSlug = $this->opDAO->checkCurrentSlug($place->getSlug());
@@ -234,6 +234,16 @@ class PlaceOperations {
     public function getPlacesDetailsRefWithId($startId){
         
         return $this->opDAO->getPlacesDetailsRefWithId($startId);
+    }
+    
+    public function checkPlaceDetailsByNameAndAddress($name, $address){
+        
+        return $this->opDAO->checkPlaceDetailsByNameAndAddress($name, $address);
+    }
+    
+    public function deletePlace($id){
+        
+        return $this->opDAO->deletePlace($id);
     }
 
 }

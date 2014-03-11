@@ -35,6 +35,8 @@ class AppKernel extends Kernel {
         ini_set("log_errors", "1");
         ini_set("error_log", "c:/wamp/logs/php_error1.log");
         ini_set("display_errors", "0");
+
+        date_default_timezone_set( "Europe/Bucharest" );
         parent::init();
     }
 

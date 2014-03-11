@@ -23,7 +23,7 @@ Bundle\PlacesBundle\Entity\Places:
             nullable: false
         detailsRef:
             type: string
-            length: 300
+            #length: 300
             fixed: false
             nullable: false
             column: details_ref

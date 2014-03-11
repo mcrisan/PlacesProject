@@ -50,8 +50,8 @@ Bundle\PlacesBundle\Entity\Places:
                 max: 255
         detailsRef:
             - NotBlank: ~
-            - Length:
-                max: 300
+#            - Length:
+#                max: 300
         origin:
             - NotBlank: ~
             - Length:
