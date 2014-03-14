@@ -33,6 +33,7 @@ class InsertPlaceReviewsCommand extends ContainerAwareCommand {
         //$detailsRef = $placeop->getPlacesDetailsRef();
         $nr=0;
         $detailsRef = $placeop->getPlacesDetailsRefWithId($startId);
+        //$detailsRef = $placeop->getPlacesDetail(2247, 2277);
         foreach ($detailsRef as $place) {
             $placeId = $place['id'];
             $placeName = $place['slug'];

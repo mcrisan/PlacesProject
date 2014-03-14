@@ -28,8 +28,21 @@ class PageController extends Controller {
 
     // Preload method - insert/update in/the users_ip table and redirect to homePage
     function preLoadAction() {
+        $this->em = $this->getDoctrine()->getManager();
+        $name = "Insomn321";
+        echo $name;
+        $pl = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
+                ->getPlacesByNameOrAddressOrTag($name);
 
-             return $this->redirect($this->generateUrl('index'));
+        var_dump($pl);
+
+        $pl = $this->em->getRepository('BundlePlacesBundle:Places')
+                ->getPlacesDetail(2247, 2252);
+
+        //var_dump($pl);
+
+        return $this->render("BundlePlacesBundle:About:about.html.twig");
+        //  return $this->redirect($this->generateUrl('index'));
     }
 
     // Home page
@@ -120,122 +133,71 @@ class PageController extends Controller {
         return $this->render("BundlePlacesBundle:About:about.html.twig");
     }
 
+    
+    
     // Demo page - main (New homepage)
     public function indexAction() {
         $this->em = $this->getDoctrine()->getManager();
-        //$request = $this->getRequest();
-        $search = $this->get('search');
         $request = Request::createFromGlobals();
-        $userDet = $search->getUserDetails();
-        $providerName = $userDet['providerName'];
-        $userName = $userDet['userName'];
-        $userId = $userDet['userId'];
-        $socialLogged = $userDet['socialLogged'];
-
         // set searchInput - show default results (" places containing 'ma' ")
         $searchInput = "ma";
         $searchInputVal = $request->query->get('input');
         if (!empty($searchInputVal)) {
             $searchInput = $searchInputVal;
         }
-        $placeToShow = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-                ->getPlaceMaxRating();
-        if (!empty($placeToShow)) {
-            $placeToShowId = $placeToShow[0]['placeId'];
-        } else {
-            // default place to show if 0 votes - user a query to select first place in tb - id's may change..
-            $placeToShowId = 1595;
+        $name = urlencode($searchInput);
+        $url = "http://localhost/PlacesProject/web/app_dev.php/searchplace/$name";
+        $json = file_get_contents($url);
+        $data = json_decode($json, TRUE);
+        $places = $data['details']['places'];
+        $totalResults = count($places);
+        $placeInfo = $data['details']['placeInfos'];
+        $userDet = $data['details']['userInfos'];       
+
+        if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
+            $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
         }
-
-        // If search input !empty
-        if (!empty($searchInput) && is_string($searchInput)) {
-            //output the results: place_id,place_name,places.slug;
-            $places = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                    ->getPlacesNamesAndIds($searchInput);
-            if (!empty($places)) {
-                $showThisPlace = $places[0]['placeId']; // #1 place from search results..
-            } else {
-                $showThisPlace = $placeToShowId; // default place to show if the search return 0 results
-            }
-            $totalResults = count($places);
-            $placeInfo = $search->getPlaceInfos($showThisPlace);
-
-            if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
-                $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
-            }
-            if (!isset($placeInfo['total'][0]['totalVotes'])) {
-                $placeInfo['total'][0]['totalVotes'] = 0;
-            }
-            if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
-                $placeInfo['totalCounts'][0]['votesCount'] = 1;
-            }
-            if ($placeInfo['userStatus']) { // if user voted for current store                
-                return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
-                            'input' => $searchInput,
-                            'places' => $places,
-                            'placeDetail' => array($placeInfo['place']),
-                            'placePhotos' => $placeInfo['placePhotos'],
-                            'placeAllPhotos' => $placeInfo['placeAllPhotos'],
-                            'totalVotesAllTime' => $placeInfo['totalVotesAllTime'],
-                            'totalVotes' => $placeInfo['totalVotesForPlace'][0]['votesCount'],
-                            'usersRating' => round(
-                                    $placeInfo['total'][0]['totalVotes'] / $placeInfo['totalCounts'][0]['votesCount'], 2),
-                            'bool' => true,
-                            'totalResults' => $totalResults,
-                            'placeSlug' => $placeInfo['placeSlug'],
-                            'reviews' => $placeInfo['placeReviews'],
-                            'userId' => $userId,
-                            'userName' => $userName,
-                            'socialLogged' => $socialLogged,
-                            'providerName' => $providerName
-                ));
-            }
+        if (!isset($placeInfo['total'][0]['totalVotes'])) {
+            $placeInfo['total'][0]['totalVotes'] = 0;
+        }
+        if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
+            $placeInfo['totalCounts'][0]['votesCount'] = 1;
+        }
+        if ($placeInfo['userStatus']) { // if user voted for current store                
             return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
                         'input' => $searchInput,
                         'places' => $places,
                         'placeDetail' => array($placeInfo['place']),
                         'placePhotos' => $placeInfo['placePhotos'],
                         'placeAllPhotos' => $placeInfo['placeAllPhotos'],
+                        'totalVotesAllTime' => $placeInfo['totalVotesAllTime'],
+                        'totalVotes' => $placeInfo['totalVotesForPlace'][0]['votesCount'],
+                        'usersRating' => round(
+                                $placeInfo['total'][0]['totalVotes'] / $placeInfo['totalCounts'][0]['votesCount'], 2),
+                        'bool' => true,
                         'totalResults' => $totalResults,
                         'placeSlug' => $placeInfo['placeSlug'],
                         'reviews' => $placeInfo['placeReviews'],
-                        'userId' => $userId,
-                        'userName' => $userName,
-                        'socialLogged' => $socialLogged
-            ));
-        } else {
-
-            $placeInfo = $search->getPlaceInfos($placeToShowId);
-
-            if ($placeInfo['userStatus']) {
-                return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
-                            'placeDetail' => array($placeInfo['place']),
-                            'placePhotos' => $placeInfo['placePhotos'],
-                            'placeAllPhotos' => $placeInfo['placeAllPhotos'],
-                            'totalVotesAllTime' => $placeInfo['totalVotesAllTime'],
-                            'totalVotes' => $placeInfo['totalVotesForPlace'][0]['votesCount'],
-                            'usersRating' => round(
-                                    $placeInfo['total'][0]['totalVotes'] / $placeInfo['totalCounts'][0]['votesCount'], 2),
-                            'bool' => true,
-                            'placeSlug' => $placeInfo['placeSlug'],
-                            'reviews' => $placeInfo['placeReviews'],
-                            'userId' => $userId,
-                            'userName' => $userName,
-                            'socialLogged' => $socialLogged
-                ));
-            }
-
-            return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
-                        'placeDetail' => array($placeInfo['place']),
-                        'placePhotos' => $placeInfo['placePhotos'],
-                        'placeAllPhotos' => $placeInfo['placeAllPhotos'],
-                        'placeSlug' => $placeInfo['placeSlug'],
-                        'reviews' => $placeInfo['placeReviews'],
-                        'userId' => $userId,
-                        'userName' => $userName,
-                        'socialLogged' => $socialLogged
+                        'userId' => $userDet['userId'],
+                        'userName' => $userDet['userName'],
+                        'socialLogged' => $userDet['socialLogged'],
+                        'providerName' => $userDet['providerName']
             ));
         }
+        return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
+                    'input' => $searchInput,
+                    'places' => $places,
+                    'placeDetail' => array($placeInfo['place']),
+                    'placePhotos' => $placeInfo['placePhotos'],
+                    'placeAllPhotos' => $placeInfo['placeAllPhotos'],
+                    'totalResults' => $totalResults,
+                    'placeSlug' => $placeInfo['placeSlug'],
+                    'reviews' => $placeInfo['placeReviews'],
+                    'userId' => $userDet['userId'],
+                    'userName' => $userDet['userName'],
+                    'socialLogged' => $userDet['socialLogged']
+        ));
+
     }
 
 // index

@@ -51,6 +51,17 @@ class PlacesRepository extends EntityRepository
         return $qb;
     }
     
+    public function getPlacesDetail($startId, $stopId){
+        $qb = $this->createQueryBuilder('places')
+                ->select('places.id, places.detailsRef', 'places.slug')
+                ->where('places.id > :id AND places.id < :id2')
+                ->setParameter('id', $startId)
+                ->setParameter('id2', $stopId)
+                ->getQuery()
+                ->getResult();
+        return $qb;
+    }
+    
     // Get current id
     public function checkCurrentExtId($extId){
         $qb = $this->createQueryBuilder('place')

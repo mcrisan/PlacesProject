@@ -21,6 +21,12 @@ search_tag_addr:
     pattern: /searchtagaddr/{tag}/{address}
     defaults: { _controller: BundlePlacesBundle:Service:searchByTagAndAddress }
     requirements:
+      _method: GET  
+      
+search:
+    pattern: /searchplace/{input}
+    defaults: { _controller: BundlePlacesBundle:Service:search }
+    requirements:
       _method: GET       
       
 test_search_name:

@@ -68,8 +68,8 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
         $id = $placeop->getLastPlaceId();
         echo $id;
 
-        $p1['x'] =46.74;
-        $p2['x'] =46.745;
+        $p1['x'] =46.745;
+        $p2['x'] =46.75;
         $mes = "Inserting places from lat ".$p1['x'] ." to lat " .$p2['x'] ;
         $placeop->logMessage($mes);
         $mes = "Inserting places from long ".$p1['y'] ." to long " .$p1['y'] ;

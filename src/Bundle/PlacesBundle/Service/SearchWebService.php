@@ -107,6 +107,34 @@ class SearchWebService {
         }
         return $resp;
     }
+    
+    public function getPlacesByNameOrAddressOrTag($input){
+        
+        $places = $this->searchDAO->getPlacesByNameOrAddressOrTag($input);
+        if (!empty($places)) {
+            $placeId = $places[0]['placeId']; // #1 place from search results..
+            $placeInfo = $this->getPlaceInfos($placeId);
+            $userInfo = $this->getUserDetails();
+            $resp = json_encode(array(
+                'details' => array(
+                    'placeInfos' => $placeInfo,
+                    'places' => $places,
+                    'userInfos' => $userInfo),
+                'status' => 'OK'
+            ));
+        } else {
+            $placeInfo = $this->getPlaceInfos(1595);
+            $userInfo = $this->getUserDetails();
+            $resp = json_encode(array(
+                'details' => array(
+                    'placeInfos' => $placeInfo,
+                    'places' => $places,
+                    'userInfos' => $userInfo),
+                'status' => 'OK'
+            ));
+        }
+        return $resp;
+    }
 
     public function getPlaceInfos($placeId) {
 

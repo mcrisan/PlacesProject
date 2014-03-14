@@ -32,6 +32,7 @@ class InsertPlacesDetailsCommand extends ContainerAwareCommand {
         echo $startId;
         $nr=0;
         $detailsRef = $placeop->getPlacesDetailsRefWithId($startId);
+        //$detailsRef = $placeop->getPlacesDetail(2247, 2277);
         echo count($detailsRef);
         foreach ($detailsRef as $place) {
             $placeId = $place['id'];

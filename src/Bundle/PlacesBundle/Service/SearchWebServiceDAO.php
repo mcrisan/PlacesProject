@@ -40,6 +40,12 @@ class SearchWebServiceDAO {
                     ->getPlacesNamesByTagAndAddress($tag, $address);
     }
     
+    public function getPlacesByNameOrAddressOrTag($input){
+        
+        return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
+                    ->getPlacesByNameOrAddressOrTag($input);
+    }
+    
     public function getPlacesNamesAndIdsByTag($tag){
         
         return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')

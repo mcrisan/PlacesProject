@@ -35,7 +35,7 @@ class PlaceOperations {
 //        $session ->set("cas","tare");
 //        echo $session->get("cas");
 //        echo $session->getId();
-        echo $mes;
+ //       echo $mes;
         $this->logger->info($mes);
         
     }
@@ -244,6 +244,11 @@ class PlaceOperations {
     public function deletePlace($id){
         
         return $this->opDAO->deletePlace($id);
+    }
+    
+    public function getPlacesDetail($startId, $stopId){
+        
+        return $this->opDAO->getPlacesDetail($startId, $stopId);
     }
 
 }

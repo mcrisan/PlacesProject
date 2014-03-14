@@ -66,6 +66,17 @@ class ServiceController extends Controller {
        return $resp;
     }
     
+    function searchAction($input) {
+       $input= urldecode($input);
+       $search = $this->get('search');
+       $res = $search->getPlacesByNameOrAddressOrTag($input);
+       $resp = new Response($res, 200);      
+       $resp->headers->set('Content-Type', 'application/json');
+       
+       
+       return $resp;
+    }
+    
     function testServiceAction() {
         $name=urlencode("casa ardeleana");
         $url = "http://localhost/PlacesProject/web/app_dev.php/searchname/$name";

@@ -140,7 +140,7 @@ Bundle\PlacesBundle\Entity\PlaceDetails:
                 max: 255
        placePhonenumber: 
            - Length:
-                max: 13
+                max: 20
        placeVicinity:
            - NotBlank: ~
            - Length:

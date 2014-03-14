@@ -68,7 +68,7 @@ Bundle\PlacesBundle\Entity\PlaceDetails:
             targetEntity: Bundle\PlacesBundle\Entity\Places
             cascade: {  }
             mappedBy: null
-            inversedBy: null
+            inversedBy: placeDetails
             joinColumn:
                     name: place_id
                     referencedColumnName: id

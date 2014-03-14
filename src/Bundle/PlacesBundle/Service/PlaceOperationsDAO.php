@@ -170,6 +170,12 @@ class PlaceOperationsDAO {
                             ->deletePlace($id);
     }
     
+    public function getPlacesDetail($startId, $stopId){
+        
+        return $this->em->getRepository('BundlePlacesBundle:Places')
+                            ->getPlacesDetail($startId, $stopId);
+    }
+    
     
     
 }

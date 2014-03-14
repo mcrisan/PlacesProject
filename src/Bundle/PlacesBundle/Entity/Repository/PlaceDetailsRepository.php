@@ -143,6 +143,78 @@ class PlaceDetailsRepository extends EntityRepository {
 
         return $qb;
     }
+    
+    
+    
+//    public function getPlacesByNameOrAddressOrTag($input) {
+//
+//        $em = $this->getEntityManager();
+//        $qb = $em->createQueryBuilder()
+//                
+//                ->select('DISTINCT pd.placeId,pd.placeName,pd.placeRating, p.slug, t.tag')
+//                ->from('BundlePlacesBundle:PlaceDetails', 'pd')
+//                ->innerJoin('BundlePlacesBundle:Places', 'p', 'WITH', 'pd.placeId = p.id')
+//                ->innerJoin('BundlePlacesBundle:PlaceTags', 'pt', 'WITH', 'pd.placeId = pt.placeId')
+//                ->innerJoin('BundlePlacesBundle:Tags', 't', 'WITH', 'pt.tagId = t.id')
+//                ->where('pd.placeName LIKE :name OR t.tag LIKE :tag OR pd.placeVicinity LIKE :address')
+//                ->groupBy('pd.placeId')
+//                ->setParameters(array('name' => $input, 'tag' => $input, 'address' => '%' . $input . '%'))
+//                ->getQuery()
+//                ->getResult();
+//        //var_dump($qb);
+//        //die;
+//        return $qb;
+//    }
+    
+    public function getPlacesByNameOrAddressOrTag($input) {
+
+        $em = $this->getEntityManager();
+        $var = "CONCAT(%, pd.placeName)";
+        $qb = $em->createQueryBuilder()
+                
+                ->select('DISTINCT pd.placeId,pd.placeName,pd.placeRating, p.slug, t.tag')
+                ->from('BundlePlacesBundle:PlaceDetails', 'pd')
+                ->innerJoin('BundlePlacesBundle:Places', 'p', 'WITH', 'pd.placeId = p.id')
+                ->innerJoin('BundlePlacesBundle:PlaceTags', 'pt', 'WITH', 'pd.placeId = pt.placeId')
+                ->innerJoin('BundlePlacesBundle:Tags', 't', 'WITH', 'pt.tagId = t.id')
+                ->where(":name LIKE CONCAT(CONCAT(:a, pd.placeName), :a) OR pd.placeName LIKE :name OR t.tag LIKE :tag OR pd.placeVicinity LIKE :address OR :address LIKE CONCAT(CONCAT(:a, pd.placeVicinity), :a)")
+                ->groupBy('pd.placeId')
+                ->setParameters(array('name' => '%'.$input."%", 'tag' => $input, 'address' => '%' . $input . '%', 'a'=> '%'))
+                ->getQuery()
+                ->getResult();
+        //var_dump($qb);
+        //die;
+        return $qb;
+    }
+    
+//     public function getPlacesByNameOrAddressOrTag($input) {
+//
+//        $em = $this->getEntityManager();
+//
+////        $query = $em
+////                ->createQuery("
+////                SELECT pd.placeId,pd.placeName,pd.placeRating, p.slug
+////                FROM Bundle\PlacesBundle\Entity\PlaceDetails pd
+////                ,Bundle\PlacesBundle\Entity\Places p
+////                WHERE pd.placeId = p.id AND
+////                pd.placeVicinity LIKE :address
+////                order by pd.placeName asc
+////                
+////            ")
+////                ->setParameter('address', '%' . $input . '%');
+//        echo "here";
+//        $query = $em
+//                ->createQuery("
+//                SELECT pd FROM Bundle\PlacesBundle\Entity\PlaceDetails pd
+//                WHERE :v pd.placeName LIKE :v ")
+//                ->setParameter('v', $input );
+//                //->setParameter('v2', '1' );
+//        var_dump($query->getResult());
+//        return $query->getResult();
+//
+//    }
+    
+
 
     // Get place id by name
     public function getPlaceIdByName($name) {

@@ -32,6 +32,7 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
 
         //$detailsRef = $placeop->getPlacesDetailsRef();
         $detailsRef = $placeop->getPlacesDetailsRefWithId($startId);
+        //$detailsRef = $placeop->getPlacesDetail(2247, 2277);
         $nr=0;
         //loop in all places
         foreach ($detailsRef as $place) {
