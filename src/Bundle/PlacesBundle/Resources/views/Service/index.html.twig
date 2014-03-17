@@ -1,0 +1,46 @@
+<div class="content">
+<input type="text" class="search" id="searchh" placeholder="Search for people" />&nbsp; &nbsp; Ex:arunkumar, shanmu, vicky<br /> 
+<div style="max-height: 300px; overflow: auto" id="result"></div>
+</div>
+
+<script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/jquery-1.9.1.js') }}"></script>
+<script type="text/javascript">
+$(function(){
+$(".search").keyup(function() 
+{ 
+var searchid = $(this).val();
+var dataString = 'search='+ searchid;
+if(searchid!='')
+{
+    $.ajax({
+    type: "POST",
+    url: "autocomaction",
+    data: dataString,
+    cache: false,
+    success: function(html)
+    {
+    $("#result").html(html).show();
+    }
+    });
+}return false;    
+});
+
+jQuery("#result").on("click",function(e){ 
+    var $clicked = $(e.target);
+    var $name = $clicked.parent().find('.name').html();
+    alert($name);
+    var decoded = $("<div/>").html($name).text();
+    $('#searchh').val(decoded);
+});
+jQuery(document).on("click", function(e) { 
+    var $clicked = $(e.target);
+    if (! $clicked.hasClass("search")){
+    jQuery("#result").fadeOut(); 
+    }
+});
+$('#searchh').click(function(){
+    jQuery("#result").fadeIn();
+});
+});
+</script>
+

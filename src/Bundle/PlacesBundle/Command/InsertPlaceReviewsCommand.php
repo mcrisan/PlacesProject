@@ -97,5 +97,63 @@ class InsertPlaceReviewsCommand extends ContainerAwareCommand {
         $mes = "We have inserted reviews for: ". $nr . " places";
         $placeop->logMessage($mes);
     }
+    
+    function addPlaceReviews2($data, $place, $placeop) {
+
+
+            $placeId = $place['id'];
+            $placeName = $place['slug'];
+            $status = $data['status'];
+            if ($status =="REQUEST_DENIED"){
+              //  echo "er";
+                $mes = "Request denied while inserting the reviews for place: ". $placeId;
+                $placeop->logMessage($mes);
+                return;
+            }
+            if ($status =="NOT_FOUND"){
+                $mes = "Place: ". $placeId . " not found while inserting reviews";
+                $placeop->logMessage($mes);
+                return;
+            }
+            if ($status !="OK"){
+                return;
+            }
+            $detailsResults = $data['result'];
+            if( isset( $detailsResults['reviews'] ) ){
+                $reviews = $detailsResults['reviews'];
+                // delete existing reviews for place
+                $delete = $placeop->deletePlaceReviews($placeId);
+                if ($delete->execute()) {
+                 //   echo "Reviews deleted from place_reviews tb. \r\n";
+                }
+                //insert reviews for place
+                foreach ($reviews as $review) {
+                    $time = $review['time'];
+                    $text = $review['text'];
+                    $authorName = $review['author_name'];
+                    if( isset( $review['author_url'] ) ){
+                    $authorUrl = $review['author_url'];
+                    }else{
+                       $authorUrl=""; 
+                    }
+                    $aspects = $review['aspects'];
+                    foreach ($aspects as $aspect) {
+                        $aspectType = $aspect['type'];
+                        $aspectRating = $aspect['rating'];
+                    }
+                    $p = $placeop->getPlace($placeId);
+                    $placeReview = new PlaceReviews();
+                    $placeReview->setPlaces($p);
+                    $placeReview->setAuthor($authorName);
+                    $placeReview->setAuthorUrl($authorUrl);
+                    $placeReview->setReview($text);
+                    $placeReview->setRatingAspect($aspectType);
+                    $placeReview->setRating($aspectRating);
+                    $placeReview->setDate($time);
+                    $placeop->InsertPlaceReview($placeReview);
+               //     echo "Review for: " . $placeName . " inserted ! \r\n";
+                }
+            }
+    }
 
 }

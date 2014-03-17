@@ -29,18 +29,25 @@ class PageController extends Controller {
     // Preload method - insert/update in/the users_ip table and redirect to homePage
     function preLoadAction() {
         $this->em = $this->getDoctrine()->getManager();
-        $name = "Insomn321";
+        $name = "In";
         echo $name;
         $pl = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                ->getPlacesByNameOrAddressOrTag($name);
+                ->getPlacesNames($name);
 
-        var_dump($pl);
+        //var_dump($pl);
 
         $pl = $this->em->getRepository('BundlePlacesBundle:Places')
                 ->getPlacesDetail(2247, 2252);
 
         //var_dump($pl);
-
+        $search = $this->get('search');
+        $lat=46.7748701;
+        $long=23.601777;
+        $res = $search->getPlaces($lat, $long);
+//        echo $res;
+        var_dump($res);
+        //apc_store('pl', 12);
+       // phpinfo();
         return $this->render("BundlePlacesBundle:About:about.html.twig");
         //  return $this->redirect($this->generateUrl('index'));
     }
@@ -137,11 +144,30 @@ class PageController extends Controller {
     
     // Demo page - main (New homepage)
     public function indexAction() {
+        $session = $this->get('session');
         $this->em = $this->getDoctrine()->getManager();
         $request = Request::createFromGlobals();
         // set searchInput - show default results (" places containing 'ma' ")
         $searchInput = "ma";
         $searchInputVal = $request->query->get('input');
+        $placeOp = $this->get('placeop');
+        $placeOp->checkPlace($searchInputVal);
+//        if($session->has('search')){
+//            
+//            $search = $session->get('search');
+//            $data = $session->get($search);
+//            //echo "exista";
+//            var_dump($data['places']);
+//            foreach($data['places'] as $item){
+//                //var_dump($item);
+//               if ($item['placeName'] == $searchInputVal){
+//                   $place = $item['place'];
+//                   var_dump($place);
+//               }
+//            }
+//            //$placeName = $data['placeName'];
+//            //$places = $data['places'];
+//        }
         if (!empty($searchInputVal)) {
             $searchInput = $searchInputVal;
         }

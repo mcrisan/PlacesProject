@@ -100,6 +100,64 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
         $mes = "We have inserted photos for: ". $nr . " places";
         $placeop->logMessage($mes);
     }
+    
+    function addPlacePhotos2($data, $place, $placeop, $apiKey) {
+            $placeId = $place['id'];
+            $placeName = $place['slug'];
+            $status = $data['status'];
+            if ($status =="REQUEST_DENIED"){
+                $mes = "Request denied while inserting photos for place: ". $placeId;
+                $placeop->logMessage($mes);
+                return;
+            }
+            if ($status =="NOT_FOUND"){
+                $mes = "Place: ". $placeId . " not found while inserting photos";
+                $placeop->logMessage($mes);
+                return;
+            }
+            if ($status !="OK"){
+                return;
+            }
+            $detailsResults = $data['result'];
+            $isPhoto = $placeop->isPhoto($placeId);
+            if (isset($detailsResults['photos'])) {
+                if (!$isPhoto) { // if photos for place_id not inserted
+                    //insert photos for place    
+                    $photos = $detailsResults['photos'];
+                    foreach ($photos as $photo) {
+                        $photoRef = $photo['photo_reference'];
+                        $urlPicture = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoRef&sensor=true&key=" . $apiKey;
+                        $imgUrl = $this->getImgUrl($urlPicture);
+                        $placePhotos = new PlacePhotos();
+                        $placePhotos->setImgUrl($imgUrl);
+                        $placePhotos->setOrigin('google');
+                        $placePhotos->setPlaceId($placeId);
+                        $placePhotos->setImgRef($photoRef);
+                        $placeop->insertPlacePhotos($placePhotos);
+                    }
+                } else {
+                    //echo "place: '$placeName' contains photos \r\n";
+                    // if place contains other photos we save them to db
+                    $photos = $detailsResults['photos'];
+                    foreach ($photos as $photo) {
+                        $photoRef = $photo['photo_reference'];
+                        $urlPicture = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoRef&sensor=true&key=" . $apiKey;
+                        $imgUrl = $this->getImgUrl($urlPicture);
+                        $placePhotos = $placeop->getImageByPhotoRef($placeId, $imgUrl);
+                        if ($placePhotos) {
+                            $placePhotos = new PlacePhotos();
+                            $placePhotos->setImgUrl($imgUrl);
+                            $placePhotos->setOrigin('google');
+                            $placePhotos->setPlaceId($placeId);
+                            $placePhotos->setImgRef($photoRef);
+                            $placeop->insertPlacePhotos($placePhotos);
+                        }
+                    }
+                }
+            } else {
+                //echo "Place does not have photos";
+            }
+    }
 
     function getImgUrl($urlPicture) {
         $toCurl = curl_init($urlPicture);

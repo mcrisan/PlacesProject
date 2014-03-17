@@ -12,6 +12,7 @@ use Bundle\PlacesBundle\Entity\PlaceTags;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Bundle\PlacesBundle\lib\GetUserIp;
+use Bundle\PlacesBundle\Command\InsertPlacesCommand;
 
 /**
  * Description of SearchWebService
@@ -107,9 +108,9 @@ class SearchWebService {
         }
         return $resp;
     }
-    
-    public function getPlacesByNameOrAddressOrTag($input){
-        
+
+    public function getPlacesByNameOrAddressOrTag($input) {
+
         $places = $this->searchDAO->getPlacesByNameOrAddressOrTag($input);
         if (!empty($places)) {
             $placeId = $places[0]['placeId']; // #1 place from search results..
@@ -164,7 +165,7 @@ class SearchWebService {
         $placeInfo['totalVotesAllTime'] = $this->searchDAO->getTotalVotes();
         $placeInfo['total'] = $this->searchDAO->getCurrentVotes($placeId);
         $placeInfo['totalCounts'] = $this->searchDAO->getCurrentCounts($placeId);
-        
+
         $placeInfo['userStatus'] = $this->searchDAO->getUserStatus($placeId, $this->getIp());
 
         return $placeInfo;
@@ -233,5 +234,32 @@ class SearchWebService {
         }
         return $user;
     }
+
+    public function getPlaces($lat, $long) {
+
+        //$type = "food";
+        $type = "establishment";
+        //echo $type;
+//        if(apc_exists('pl')){
+//            $placeNames = apc_fetch('pl');
+//            echo "exista in cache";
+//            var_dump($placeNames);
+//        }else{
+        $apiKey = $this->container->getParameter('api_key');
+        $placeop = $this->container->get('placeop');
+        $radius = 100; // 1011 m
+        $placeNames = array();
+        //$placeNames[0]="as";
+        $place = new InsertPlacesCommand();
+        $place->addPlaces($type, $apiKey, $lat.','.$long, $radius, $placeop, $placeNames, 1);
+        //$placeop->addPlaces($type, $apiKey, $lat . ',' . $long, $radius, $placeop, $placeNames);
+        //echo("nu exista in cache");
+        //var_dump($placeNames);
+        return($placeNames);
+//        apc_store('pl', $place);
+//        }
+    }
+
+    
 
 }

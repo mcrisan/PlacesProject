@@ -11,6 +11,8 @@ namespace Bundle\PlacesBundle\Service;
 use Bundle\PlacesBundle\Entity\PlaceTags;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bridge\Monolog\Logger;
+use Bundle\PlacesBundle\Entity\Places;
+use Bundle\PlacesBundle\Command\InsertAllDetailsCommand;
 
 /**
  * Description of PlaceOperations
@@ -53,9 +55,9 @@ class PlaceOperations {
             if ($lastSlug) { // if the place 'has number-to-slug'
                 $lastSlugId = explode('-', $lastSlug[0]['slug']);
                 $allKeys = array_keys($lastSlugId);
-                echo $maxIndex = end($allKeys);
+                 $maxIndex = end($allKeys);
                 $nextNoToSlug = $lastSlugId[$maxIndex] + 1;
-                echo $slug .="-" . $nextNoToSlug;
+                 $slug .="-" . $nextNoToSlug;
             } else {
                 $slug .="-" . $i;
             }
@@ -71,13 +73,13 @@ class PlaceOperations {
             $errors = $validator->validate($place);
             $strerror = (string) $errors;
             if ($strerror) {
-                echo $strerror;
+              //  echo $strerror;
                 throw new \Exception($strerror);
             } else {
                 $this->opDAO->insertPlace($place);
             }
         } else { //update place
-            echo "place exists";
+          //  echo "place exists";
             $place2 = $this->opDAO->getPlaceByExtId($place->getExtId());
             $place2->setExtId($place->getExtId());
             $place2->setDetailsRef($detailsRef);
@@ -85,14 +87,14 @@ class PlaceOperations {
             $errors = $validator->validate($place);
             $strerror = (string) $errors;
             if ($strerror) {
-                echo $strerror;
+          //      echo $strerror;
                 throw new \Exception($strerror);
             } else {
                 $this->opDAO->insertPlace($place2);
             }
         }
 
-        echo $place->getSlug();
+       // echo $place->getSlug();
     }
 
     public function insertTag($tag) {
@@ -101,16 +103,16 @@ class PlaceOperations {
         $errors = $validator->validate($tag);
         $strerror = (string) $errors;
         if ($strerror) {
-            echo $strerror;
+         //   echo $strerror;
             throw new \Exception($strerror);
         } else {
             $isTag = $this->opDAO->isTag($tag->getTag());
             if (!$isTag) {
                 //insert tag to db
                 $this->opDAO->insertTag($tag);
-                echo "tag  inserted in tags table ! \r\n";
+          //      echo "tag  inserted in tags table ! \r\n";
             } else {
-                echo "tag already inserted in tags table ! \r\n";
+          //      echo "tag already inserted in tags table ! \r\n";
             };
         }
     }
@@ -143,12 +145,12 @@ class PlaceOperations {
                 $errors = $validator->validate($insertPlaceTypes);
                 $strerror = (string) $errors;
                 if ($strerror) {
-                    echo $strerror;
+             //       echo $strerror;
                     throw new \Exception($strerror);
                 } else {
                     $this->opDAO->insertPlaceTag($insertPlaceTypes);
-                    echo $inc;
-                    echo "Place name: '$typeValue'. Action: type inserted ! \r\n";
+             //       echo $inc;
+             //       echo "Place name: '$typeValue'. Action: type inserted ! \r\n";
                     $inc++;
                 }
             }
@@ -159,11 +161,12 @@ class PlaceOperations {
 
         $place2 = $this->opDAO->getPlace($place->getPlaceId());
         $place->setPlace($place2);
+        //var_dump($place2);
         $validator = $this->container->get('validator');
         $errors = $validator->validate($place);
         $strerror = (string) $errors;
         if ($strerror) {
-            echo $strerror;
+          //  echo $strerror;
             throw new \Exception($strerror);
         } else {
             $this->opDAO->insertPlaceDetails($place);
@@ -181,12 +184,12 @@ class PlaceOperations {
         $errors = $validator->validate($placePhotos);
         $strerror = (string) $errors;
         if ($strerror) {
-            echo $strerror;
+      //      echo $strerror;
             throw new \Exception($strerror);
         } else {
             $this->opDAO->insertPlacePhotos($placePhotos);
         }
-        echo "Photo inserted \r\n";
+     //   echo "Photo inserted \r\n";
     }
 
     public function insertPlaceReview($placeReview) {
@@ -195,12 +198,12 @@ class PlaceOperations {
         $errors = $validator->validate($placeReview);
         $strerror = (string) $errors;
         if ($strerror) {
-            echo $strerror;
+     //       echo $strerror;
             throw new \Exception($strerror);
         } else {
             $this->opDAO->insertPlaceReview($placeReview);
         }
-        echo "Photo inserted for \r\n";
+     //   echo "Photo inserted for \r\n";
     }
 
     public function getPlacesDetailsRef() {
@@ -251,4 +254,38 @@ class PlaceOperations {
         return $this->opDAO->getPlacesDetail($startId, $stopId);
     }
 
+    
+    public function checkPlace($input) {
+        $session = $this->container->get('session');
+        $apiKey = $this->container->getParameter('api_key');
+        //echo $apiKey;
+        //$placeop = $this->container->get('placeop');
+        if ($session->has('search')) {           
+            $search = $session->get('search');
+            $data = $session->get($search);
+            //echo "exista";
+            //var_dump($data['places']);
+            if("" != $data['places']){
+            foreach ($data['places'] as $item) {
+                //var_dump($item);
+                if ($item['placeName'] == $input) {
+                    $place = $item['place'];
+                    $detRef = $place->getDetailsRef();
+                    $isPlace = $this->opDAO->checkCurrentExtId($place->getExtId());
+                    if(!$isPlace){
+                        $this->insertPlace($place); 
+                        //echo "place-ul nu exista";
+                        $placeDetails = new InsertAllDetailsCommand();
+                        //$placeDetails->addAllPlacesDetails($apiKey, $this, $detRef);
+                        $placeDetails->addAllPlacesDetails($apiKey, $this, $place);
+                    }
+                    
+                    //var_dump($place);
+                }
+            }
+            }
+            //$placeName = $data['placeName'];
+            //$places = $data['places'];
+        }
+    }
 }

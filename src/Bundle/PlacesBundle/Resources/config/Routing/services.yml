@@ -34,3 +34,15 @@ test_search_name:
     defaults: { _controller: BundlePlacesBundle:Service:testService }
     requirements:
       _method: GET   
+      
+autocom:
+    pattern: /autocom
+    defaults: { _controller: BundlePlacesBundle:Service:autocom }
+    requirements:
+      _method: GET  
+      
+autocom_ac:
+    pattern: /autocomaction
+    defaults: { _controller: BundlePlacesBundle:Service:doAutocom }
+#    requirements:
+#      _method: POST      

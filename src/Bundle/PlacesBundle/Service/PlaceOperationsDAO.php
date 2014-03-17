@@ -85,14 +85,14 @@ class PlaceOperationsDAO {
         //exit();
 
         if ($delete->execute()) {
-            echo "Place name: Action: place deleted from place_tags tb. \r\n";
+           // echo "Place name: Action: place deleted from place_tags tb. \r\n";
         }
     }
     
     public function insertPlaceDetails($placeDetails){
         
-        echo $placeDetails->getPlaceId();
-        var_dump($placeDetails);
+       // echo $placeDetails->getPlaceId();
+       // var_dump($placeDetails);
         $this->em->persist($placeDetails);
         $this->em->flush();
     }
