@@ -41,8 +41,8 @@ autocom:
     requirements:
       _method: GET  
       
-autocom_ac:
-    pattern: /autocomaction
-    defaults: { _controller: BundlePlacesBundle:Service:doAutocom }
+#autocom_ac:
+#    pattern: /autocomaction
+#    defaults: { _controller: BundlePlacesBundle:Service:doAutocom }
 #    requirements:
 #      _method: POST      

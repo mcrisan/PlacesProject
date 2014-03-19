@@ -107,9 +107,14 @@ class ServiceController extends Controller {
         //$session->clear();
         //$input = $request->query->get('search');
         $session->set('search', $input);
-        if($session->has($input)){
+        $server = $this->container->getParameter('server');
+        $port = $this->container->getParameter('port');
+        $memcache = new \Memcache;
+        $memcache->connect($server, $port);
+        
+        if($memcache->get($input)){
             //echo "in sesiune";
-            $data = $session->get($input);
+            $data = $memcache->get($input);
             //echo "exista";
             //var_dump($data);
             $placeName = $data['placeName'];
@@ -141,11 +146,62 @@ class ServiceController extends Controller {
         }else{
             $places ="";
         }
-        $session->set($input, array('placeName' => $placeName, 'places' => $places));
+        $memcache->set($input, array('placeName' => $placeName, 'places' => $places), false, 0);
+        //$session->set($input, array('placeName' => $placeName, 'places' => $places));
         //echo "nu exista";
         }
         
         return $this->render("BundlePlacesBundle:Service:ind.html.twig", array('place' => $placeName, 'placesAdd' => $places));
     }
+    
+//    function doAutocomAction() {
+//        $session = $this->get('session');
+//        $search = $this->get('search');
+//        $em = $this->getDoctrine()->getManager();
+//        $request = Request::createFromGlobals();
+//        $input = $request->request->get('search');
+//        //$session->clear();
+//        //$input = $request->query->get('search');
+//        $session->set('search', $input);
+//        if($session->has($input)){
+//            //echo "in sesiune";
+//            $data = $session->get($input);
+//            //echo "exista";
+//            //var_dump($data);
+//            $placeName = $data['placeName'];
+//            $places = $data['places'];
+//        }else{
+//        //echo $input ."<br/>";
+//        $placeName = $em->getRepository('BundlePlacesBundle:PlaceDetails')
+//                ->getPlacesNames($input);
+//        //echo 23;
+//        //var_dump($placeName);
+//        //$b_name='<strong>'.$input.'</strong>';
+//        $add = $input.", Cluj-Napoca, Romania";
+//        //echo $add;
+//        $address = $add; // Google HQ
+//        $prepAddr = str_replace(' ','+',$address);
+//        $geocode=file_get_contents('http://maps.google.com/maps/api/geocode/json?address='.$prepAddr.'&sensor=false');
+//        $output= json_decode($geocode);
+//        $latitude = $output->results[0]->geometry->location->lat;
+//        $longitude = $output->results[0]->geometry->location->lng;
+//        //var_dump($output->results[0]);
+//        echo $latitude ."<br/>";
+//        echo $longitude."<br/>";
+//        if ($latitude == 46.777248 & $longitude = 23.5998899){
+//          //  echo "adresa nu e";
+//            $places ="";
+//        }else if(strlen($input)>3){
+//            $places = $search->getPlaces($latitude, $longitude);
+//            //$places ="";
+//        }else{
+//            $places ="";
+//        }
+//        $session->set($input, array('placeName' => $placeName, 'places' => $places));
+//        //echo "nu exista";
+//        }
+//        
+//        return $this->render("BundlePlacesBundle:Service:ind.html.twig", array('place' => $placeName, 'placesAdd' => $places));
+//    }
 
 }

@@ -53,7 +53,7 @@ class PlaceReviewsRepository extends EntityRepository
     public function deletePlceReviews($id){
         
         $em = $this->getEntityManager();
-        echo "in delete";
+        //echo "in delete";
         $query = $em
         ->createQuery("
                 DELETE 

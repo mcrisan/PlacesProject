@@ -12,6 +12,7 @@ use Bundle\PlacesBundle\Command\InsertPlacesCommand;
 use Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand;
 use Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand;
 use Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand;
+use Bundle\PlacesBundle\Command\InsertAllDetailsCommand;
 
 class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
 
@@ -85,16 +86,19 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
 
         $mes = "We have made: ". $nr ." querys to search for places";
         $placeop->logMessage($mes);
-
-        $placeDetails = new InsertPlacesDetailsCommand();
-        $placeDetails->addPlacesDetails($apiKey, $placeop, $id);
+//
+//        $placeDetails = new InsertPlacesDetailsCommand();
+//        $placeDetails->addPlacesDetails($apiKey, $placeop, $id);
+//        
+//        //insert photos
+//        $placePhotos = new InsertPlacesPhotosCommand();
+//        $placePhotos->addPlacePhotos($apiKey, $placeop, $id);
+//        
+//        $placeReviews = new InsertPlaceReviewsCommand();
+//        $placeReviews->addPlaceReviews($apiKey, $placeop, $id);
         
-        //insert photos
-        $placePhotos = new InsertPlacesPhotosCommand();
-        $placePhotos->addPlacePhotos($apiKey, $placeop, $id);
-        
-        $placeReviews = new InsertPlaceReviewsCommand();
-        $placeReviews->addPlaceReviews($apiKey, $placeop, $id);
+        $placeReviews = new InsertAllDetailsCommand();
+        $placeReviews->addAllPlacesDetails($apiKey, $placeop, $id );
                
     }
 

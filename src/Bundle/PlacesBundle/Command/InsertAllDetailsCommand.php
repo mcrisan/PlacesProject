@@ -32,9 +32,11 @@ class InsertAllDetailsCommand extends ContainerAwareCommand {
         $output->writeln($this->addAllPlacesDetails($apiKey, $placeop, $id));
     }
 
-    function addAllPlacesDetails($apiKey, $placeop, $place=null, $startId=null) {
+    function addAllPlacesDetails($apiKey, $placeop, $startId=null, $place=null ) {
         if(!$place){
         $detailsRef = $placeop->getPlacesDetailsRefWithId($startId);
+        //$stopId = 2711;
+        //$detailsRef = $placeop->getPlacesDetail($startId, $stopId);
         }else{
             //echo "place det";
         // var_dump($place);

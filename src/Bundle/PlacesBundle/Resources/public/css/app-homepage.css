@@ -39,12 +39,17 @@
     position: absolute;
     //z-index: 5000;
 }
+.ui-autocomplete-loading {
+    //background: white url('../bundles/bundleplaces/images/loader.png') right center no-repeat;
+    background: white url('http://localhost/PlacesProject/web/bundles/bundleproject/images/loader.gif') right center no-repeat !important;;
+    //background-image: url('http://localhost/PlacesProject/web/bundles/bundleproject/images/loader.gif');
+}
 .show{
     //background: none repeat scroll 0 0 #CCAABB;
     //border: 1px solid #000000;
     cursor: pointer;
     padding: 1px;
-    
+
 }
 .show:hover {
     color: white;

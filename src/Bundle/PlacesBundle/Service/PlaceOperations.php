@@ -31,20 +31,19 @@ class PlaceOperations {
         $this->container = $container;
         $this->logger = $logger;
     }
-    
+
     public function logMessage($mes) {
 //        $session = $this->container->get('session');
 //        $session ->set("cas","tare");
 //        echo $session->get("cas");
 //        echo $session->getId();
- //       echo $mes;
+        //       echo $mes;
         $this->logger->info($mes);
-        
     }
 
     public function insertPlace($place) {
 
-        $i=1;
+        $i = 1;
         $slug = $place->getSlug();
         $detailsRef = $place->getDetailsRef();
         $checkSlug = $this->opDAO->checkCurrentSlug($place->getSlug());
@@ -55,9 +54,9 @@ class PlaceOperations {
             if ($lastSlug) { // if the place 'has number-to-slug'
                 $lastSlugId = explode('-', $lastSlug[0]['slug']);
                 $allKeys = array_keys($lastSlugId);
-                 $maxIndex = end($allKeys);
+                $maxIndex = end($allKeys);
                 $nextNoToSlug = $lastSlugId[$maxIndex] + 1;
-                 $slug .="-" . $nextNoToSlug;
+                $slug .="-" . $nextNoToSlug;
             } else {
                 $slug .="-" . $i;
             }
@@ -73,13 +72,13 @@ class PlaceOperations {
             $errors = $validator->validate($place);
             $strerror = (string) $errors;
             if ($strerror) {
-              //  echo $strerror;
+                //  echo $strerror;
                 throw new \Exception($strerror);
             } else {
                 $this->opDAO->insertPlace($place);
             }
         } else { //update place
-          //  echo "place exists";
+            //  echo "place exists";
             $place2 = $this->opDAO->getPlaceByExtId($place->getExtId());
             $place2->setExtId($place->getExtId());
             $place2->setDetailsRef($detailsRef);
@@ -87,14 +86,14 @@ class PlaceOperations {
             $errors = $validator->validate($place);
             $strerror = (string) $errors;
             if ($strerror) {
-          //      echo $strerror;
+                //      echo $strerror;
                 throw new \Exception($strerror);
             } else {
                 $this->opDAO->insertPlace($place2);
             }
         }
 
-       // echo $place->getSlug();
+        // echo $place->getSlug();
     }
 
     public function insertTag($tag) {
@@ -103,16 +102,16 @@ class PlaceOperations {
         $errors = $validator->validate($tag);
         $strerror = (string) $errors;
         if ($strerror) {
-         //   echo $strerror;
+            //   echo $strerror;
             throw new \Exception($strerror);
         } else {
             $isTag = $this->opDAO->isTag($tag->getTag());
             if (!$isTag) {
                 //insert tag to db
                 $this->opDAO->insertTag($tag);
-          //      echo "tag  inserted in tags table ! \r\n";
+                //      echo "tag  inserted in tags table ! \r\n";
             } else {
-          //      echo "tag already inserted in tags table ! \r\n";
+                //      echo "tag already inserted in tags table ! \r\n";
             };
         }
     }
@@ -145,12 +144,12 @@ class PlaceOperations {
                 $errors = $validator->validate($insertPlaceTypes);
                 $strerror = (string) $errors;
                 if ($strerror) {
-             //       echo $strerror;
+                    //       echo $strerror;
                     throw new \Exception($strerror);
                 } else {
                     $this->opDAO->insertPlaceTag($insertPlaceTypes);
-             //       echo $inc;
-             //       echo "Place name: '$typeValue'. Action: type inserted ! \r\n";
+                    //       echo $inc;
+                    //       echo "Place name: '$typeValue'. Action: type inserted ! \r\n";
                     $inc++;
                 }
             }
@@ -166,7 +165,7 @@ class PlaceOperations {
         $errors = $validator->validate($place);
         $strerror = (string) $errors;
         if ($strerror) {
-          //  echo $strerror;
+            //  echo $strerror;
             throw new \Exception($strerror);
         } else {
             $this->opDAO->insertPlaceDetails($place);
@@ -184,12 +183,12 @@ class PlaceOperations {
         $errors = $validator->validate($placePhotos);
         $strerror = (string) $errors;
         if ($strerror) {
-      //      echo $strerror;
+            //      echo $strerror;
             throw new \Exception($strerror);
         } else {
             $this->opDAO->insertPlacePhotos($placePhotos);
         }
-     //   echo "Photo inserted \r\n";
+        //   echo "Photo inserted \r\n";
     }
 
     public function insertPlaceReview($placeReview) {
@@ -198,12 +197,12 @@ class PlaceOperations {
         $errors = $validator->validate($placeReview);
         $strerror = (string) $errors;
         if ($strerror) {
-     //       echo $strerror;
+            //       echo $strerror;
             throw new \Exception($strerror);
         } else {
             $this->opDAO->insertPlaceReview($placeReview);
         }
-     //   echo "Photo inserted for \r\n";
+        //   echo "Photo inserted for \r\n";
     }
 
     public function getPlacesDetailsRef() {
@@ -227,65 +226,54 @@ class PlaceOperations {
 
         return $this->opDAO->getImageByPhotoRef($placeId, $imgUrl);
     }
-    
-    public function getLastPlaceId(){
+
+    public function getLastPlaceId() {
 
         $id = $this->opDAO->getLastPlaceId();
         return $id[0]['id'];
     }
-    
-    public function getPlacesDetailsRefWithId($startId){
-        
+
+    public function getPlacesDetailsRefWithId($startId) {
+
         return $this->opDAO->getPlacesDetailsRefWithId($startId);
     }
-    
-    public function checkPlaceDetailsByNameAndAddress($name, $address){
-        
+
+    public function checkPlaceDetailsByNameAndAddress($name, $address) {
+
         return $this->opDAO->checkPlaceDetailsByNameAndAddress($name, $address);
     }
-    
-    public function deletePlace($id){
-        
+
+    public function deletePlace($id) {
+
         return $this->opDAO->deletePlace($id);
     }
-    
-    public function getPlacesDetail($startId, $stopId){
-        
+
+    public function getPlacesDetail($startId, $stopId) {
+
         return $this->opDAO->getPlacesDetail($startId, $stopId);
     }
 
-    
     public function checkPlace($input) {
         $session = $this->container->get('session');
         $apiKey = $this->container->getParameter('api_key');
-        //echo $apiKey;
-        //$placeop = $this->container->get('placeop');
-        if ($session->has('search')) {           
+        if ($session->has('search')) {
             $search = $session->get('search');
-            $data = $session->get($search);
-            //echo "exista";
-            //var_dump($data['places']);
-            if("" != $data['places']){
-            foreach ($data['places'] as $item) {
-                //var_dump($item);
-                if ($item['placeName'] == $input) {
-                    $place = $item['place'];
-                    $detRef = $place->getDetailsRef();
-                    $isPlace = $this->opDAO->checkCurrentExtId($place->getExtId());
-                    if(!$isPlace){
-                        $this->insertPlace($place); 
-                        //echo "place-ul nu exista";
-                        $placeDetails = new InsertAllDetailsCommand();
-                        //$placeDetails->addAllPlacesDetails($apiKey, $this, $detRef);
-                        $placeDetails->addAllPlacesDetails($apiKey, $this, $place);
+            $data = apc_fetch($search);
+            if ("" != $data['places']) {
+                foreach ($data['places'] as $item) {
+                    if ($item['placeName'] == $input) {
+                        $place = $item['place'];
+                        $detRef = $place->getDetailsRef();
+                        $isPlace = $this->opDAO->checkCurrentExtId($place->getExtId());
+                        if (!$isPlace) {
+                            $this->insertPlace($place);
+                            $placeDetails = new InsertAllDetailsCommand();
+                            $placeDetails->addAllPlacesDetails($apiKey, $this, null, $place);
+                        }
                     }
-                    
-                    //var_dump($place);
                 }
             }
-            }
-            //$placeName = $data['placeName'];
-            //$places = $data['places'];
         }
     }
+
 }

@@ -234,32 +234,4 @@ class SearchWebService {
         }
         return $user;
     }
-
-    public function getPlaces($lat, $long) {
-
-        //$type = "food";
-        $type = "establishment";
-        //echo $type;
-//        if(apc_exists('pl')){
-//            $placeNames = apc_fetch('pl');
-//            echo "exista in cache";
-//            var_dump($placeNames);
-//        }else{
-        $apiKey = $this->container->getParameter('api_key');
-        $placeop = $this->container->get('placeop');
-        $radius = 100; // 1011 m
-        $placeNames = array();
-        //$placeNames[0]="as";
-        $place = new InsertPlacesCommand();
-        $place->addPlaces($type, $apiKey, $lat.','.$long, $radius, $placeop, $placeNames, 1);
-        //$placeop->addPlaces($type, $apiKey, $lat . ',' . $long, $radius, $placeop, $placeNames);
-        //echo("nu exista in cache");
-        //var_dump($placeNames);
-        return($placeNames);
-//        apc_store('pl', $place);
-//        }
-    }
-
-    
-
 }

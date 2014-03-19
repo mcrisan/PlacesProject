@@ -37,6 +37,14 @@ services:
             - { name: monolog.logger, channel: comm }
     searchDAO:
         class: Bundle\PlacesBundle\Service\SearchWebServiceDAO  
-        arguments: [@doctrine.orm.entity_manager]        
+        arguments: [@doctrine.orm.entity_manager]    
+        
+    formsop:
+        class: Bundle\PlacesBundle\Service\FormsOperations  
+        arguments: [@formsdao, @service_container]
+  
+    formsdao:
+        class: Bundle\PlacesBundle\Service\FormsOperationsDAO  
+        arguments: [@doctrine.orm.entity_manager]
         
         

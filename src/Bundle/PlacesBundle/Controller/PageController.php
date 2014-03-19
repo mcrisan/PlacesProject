@@ -40,14 +40,24 @@ class PageController extends Controller {
                 ->getPlacesDetail(2247, 2252);
 
         //var_dump($pl);
-        $search = $this->get('search');
-        $lat=46.7748701;
-        $long=23.601777;
-        $res = $search->getPlaces($lat, $long);
+        //$search = $this->get('search');
+        //$lat=46.7748701;
+        //$long=23.601777;
+        //$res = $search->getPlaces($lat, $long);
 //        echo $res;
-        var_dump($res);
+        //var_dump($res);
         //apc_store('pl', 12);
-       // phpinfo();
+        // phpinfo();
+
+//        $bar = 'BAR';
+//        apc_add('foo', $bar);
+//        var_dump(apc_fetch('foo'));
+//        echo "\n";
+//        $bar = 'NEVER GETS SET';
+//        apc_add('foo', $bar);
+//        var_dump(apc_fetch('foo'));
+//        echo "\n";
+
         return $this->render("BundlePlacesBundle:About:about.html.twig");
         //  return $this->redirect($this->generateUrl('index'));
     }
@@ -140,8 +150,6 @@ class PageController extends Controller {
         return $this->render("BundlePlacesBundle:About:about.html.twig");
     }
 
-    
-    
     // Demo page - main (New homepage)
     public function indexAction() {
         $session = $this->get('session');
@@ -152,22 +160,7 @@ class PageController extends Controller {
         $searchInputVal = $request->query->get('input');
         $placeOp = $this->get('placeop');
         $placeOp->checkPlace($searchInputVal);
-//        if($session->has('search')){
-//            
-//            $search = $session->get('search');
-//            $data = $session->get($search);
-//            //echo "exista";
-//            var_dump($data['places']);
-//            foreach($data['places'] as $item){
-//                //var_dump($item);
-//               if ($item['placeName'] == $searchInputVal){
-//                   $place = $item['place'];
-//                   var_dump($place);
-//               }
-//            }
-//            //$placeName = $data['placeName'];
-//            //$places = $data['places'];
-//        }
+
         if (!empty($searchInputVal)) {
             $searchInput = $searchInputVal;
         }
@@ -178,7 +171,7 @@ class PageController extends Controller {
         $places = $data['details']['places'];
         $totalResults = count($places);
         $placeInfo = $data['details']['placeInfos'];
-        $userDet = $data['details']['userInfos'];       
+        $userDet = $data['details']['userInfos'];
 
         if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
             $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
@@ -223,7 +216,6 @@ class PageController extends Controller {
                     'userName' => $userDet['userName'],
                     'socialLogged' => $userDet['socialLogged']
         ));
-
     }
 
 // index
