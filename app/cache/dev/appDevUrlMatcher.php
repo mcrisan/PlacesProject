@@ -255,17 +255,6 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
         not_comment_create:
 
-        // search
-        if ($pathinfo === '/places/search') {
-            if ($this->context->getMethod() != 'POST') {
-                $allow[] = 'POST';
-                goto not_search;
-            }
-
-            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::searchAction',  '_route' => 'search',);
-        }
-        not_search:
-
         // votee
         if ($pathinfo === '/votee') {
             if ($this->context->getMethod() != 'POST') {
@@ -309,6 +298,11 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::demoSearchAction',  '_route' => 'demoSearch',);
         }
         not_demoSearch:
+
+        // autocom_ac
+        if ($pathinfo === '/autocomaction') {
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::doAutocomAction',  '_route' => 'autocom_ac',);
+        }
 
         if (0 === strpos($pathinfo, '/search')) {
             // search_name
@@ -358,6 +352,17 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
             }
 
+            // search
+            if (0 === strpos($pathinfo, '/searchplace') && preg_match('#^/searchplace/(?P<input>[^/]++)$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_search;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'search')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\ServiceController::searchAction',));
+            }
+            not_search:
+
         }
 
         // test_search_name
@@ -370,6 +375,17 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\ServiceController::testServiceAction',  '_route' => 'test_search_name',);
         }
         not_test_search_name:
+
+        // autocom
+        if ($pathinfo === '/autocom') {
+            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                $allow = array_merge($allow, array('GET', 'HEAD'));
+                goto not_autocom;
+            }
+
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\ServiceController::autocomAction',  '_route' => 'autocom',);
+        }
+        not_autocom:
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
     }

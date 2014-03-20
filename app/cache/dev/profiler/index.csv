@@ -1471,3 +1471,5 @@ d268df,127.0.0.1,GET,http://localhost/PlacesProject/web/app_dev.php/renderPlace/
 1ded3b,127.0.0.1,GET,http://localhost/PlacesProject/web/app_dev.php/home?input=lunch%20box,1394546123,
 3e91b5,127.0.0.1,GET,http://localhost/PlacesProject/web/app_dev.php/home,1394547180,
 bb118a,127.0.0.1,GET,http://localhost/PlacesProject/web/app_dev.php/searchtag/food,1394547188,
+d08be4,127.0.0.1,GET,http://localhost/PlacesProject/web/app_dev.php/searchplace/ma,1395320185,
+a4b65c,127.0.0.1,GET,http://localhost/PlacesProject/web/app_dev.php/home,1395320185,
