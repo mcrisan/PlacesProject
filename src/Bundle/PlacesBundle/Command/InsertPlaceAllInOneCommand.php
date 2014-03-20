@@ -3,19 +3,20 @@
 namespace Bundle\PlacesBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Bundle\PlacesBundle\Command\InsertPlacesCommand;
-use Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand;
-use Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand;
-use Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand;
-use Bundle\PlacesBundle\Command\InsertAllDetailsCommand;
 
 class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
 
+        private $placeop;
+        private $alldet;
+        
+//        public function __construct( PlaceOperations $placeop, InsertAllDetailsCommand $alldet) {
+//        $this->alldet = $alldet;
+//        $this->placeop = $placeop;
+//    }
     // use $em with persist & flush..
     protected function configure() {
         $this
@@ -35,12 +36,15 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
         $type = $input->getArgument('type');
         $apiKey = $this->getContainer()->getParameter('api_key');
         $placeop = $this->getContainer()->get('placeop');
+        $placeDet = $this->getContainer()->get('insertalldetails');
+        $place = $this->getContainer()->get('insertplace');
         //$placeop->test("vara");
         //$output->writeln($placeop->addAllPlaces($type, $apiKey));
-        $output->writeln($this->addAllPlaces($type, $placeop));
+        $output->writeln($this->addAllPlaces($type, $placeop, $placeDet, $place));
     }
 
-    private function addAllPlaces($type, $placeop) {
+    private function addAllPlaces($type, $placeop, $placeDet, $place) {
+        echo "23";
         $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
         $apiKey = $this->getContainer()->getParameter('api_key');
@@ -61,16 +65,16 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
         $step = 0.01; // 1/100 -> aprox. 1km 11m
         $radius = 1011; // 1011 m
         
-        $place = new InsertPlacesCommand();
-
+        //$place = new InsertPlacesCommand();
+        //$place = $this->getContainer()->get('insertplace');
         $x = 46.77461;
         $y = 23.59215;
         $type='establishment';
         $id = $placeop->getLastPlaceId();
         echo $id;
 
-        $p1['x'] =46.745;
-        $p2['x'] =46.75;
+        $p1['x'] =46.75;
+        $p2['x'] =46.755;
         $mes = "Inserting places from lat ".$p1['x'] ." to lat " .$p2['x'] ;
         $placeop->logMessage($mes);
         $mes = "Inserting places from long ".$p1['y'] ." to long " .$p1['y'] ;
@@ -80,25 +84,16 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
             for ($y = $p1['y']; $y >= $p2['y']; $y-=$step)
             {
                 $nr++;
-                $place->addPlaces($type, $apiKey, $x.','.$y, $radius, $placeop);
+                $place->addPlaces($type, $apiKey, $x.','.$y, $radius);
             }
         }
 
         $mes = "We have made: ". $nr ." querys to search for places";
         $placeop->logMessage($mes);
-//
-//        $placeDetails = new InsertPlacesDetailsCommand();
-//        $placeDetails->addPlacesDetails($apiKey, $placeop, $id);
-//        
-//        //insert photos
-//        $placePhotos = new InsertPlacesPhotosCommand();
-//        $placePhotos->addPlacePhotos($apiKey, $placeop, $id);
-//        
-//        $placeReviews = new InsertPlaceReviewsCommand();
-//        $placeReviews->addPlaceReviews($apiKey, $placeop, $id);
-        
-        $placeReviews = new InsertAllDetailsCommand();
-        $placeReviews->addAllPlacesDetails($apiKey, $placeop, $id );
+          //$id = 2879;
+        //$placeDet = new InsertAllDetailsCommand();
+        //$placeDet = $this->getContainer()->get('insertalldetails');
+        $placeDet->addAllPlacesDetails($apiKey, $id );
                
     }
 

@@ -10,6 +10,8 @@ namespace Bundle\PlacesBundle\Service;
 
 use Bundle\PlacesBundle\Command\InsertPlacesCommand;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Bundle\PlacesBundle\Command\InsertAllDetailsCommand;
+use Bundle\PlacesBundle\Service\PlaceOperations;
 
 /**
  * Description of FormsService
@@ -20,10 +22,18 @@ class FormsOperations {
 
     private $container;
     private $formDao;
+    private $alldet;
+    private $placeop;
+    private $opDAO;
+    private $insertPlaces;
 
-    public function __construct(FormsOperationsDAO $dao, ContainerInterface $container) {
+    public function __construct(FormsOperationsDAO $dao, ContainerInterface $container, InsertAllDetailsCommand $alldet, PlaceOperations $placeop, PlaceOperationsDAO $opdao, InsertPlacesCommand $insPlace) {
         $this->container = $container;
         $this->formDao = $dao;
+        $this->alldet = $alldet;
+        $this->placeop = $placeop;
+        $this->opDAO = $opdao;
+        $this->insertPlaces = $insPlace;
     }
 
     public function getPlaces($address) {
@@ -54,17 +64,37 @@ class FormsOperations {
 
         $type = "establishment";
         $apiKey = $this->container->getParameter('api_key');
-        $placeop = $this->container->get('placeop');
         $radius = 100; // 1011 m
         $placeNames = array();
-        $place = new InsertPlacesCommand();
-        $place->addPlaces($type, $apiKey, $lat . ',' . $long, $radius, $placeop, $placeNames, 1);
+        $this->insertPlaces->addPlaces($type, $apiKey, $lat . ',' . $long, $radius, $placeNames, 1);
         return($placeNames);
     }
 
     public function getPlacesNames($input) {
 
         return $this->formDao->getPlacesNames($input);
+    }
+    
+    public function checkPlace($input) {
+        $session = $this->container->get('session');
+        $apiKey = $this->container->getParameter('api_key');
+        if ($session->has('search')) {
+            $search = $session->get('search');
+            $data = apc_fetch($search);
+            if ("" != $data['places']) {
+                foreach ($data['places'] as $item) {
+                    if ($item['placeName'] == $input) {
+                        $place = $item['place'];
+                        $detRef = $place->getDetailsRef();
+                        $isPlace = $this->opDAO->checkCurrentExtId($place->getExtId());
+                        if (!$isPlace) {
+                            $this->placeop->insertPlace($place);
+                            $this->alldet->addAllPlacesDetails($apiKey, null, $place);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

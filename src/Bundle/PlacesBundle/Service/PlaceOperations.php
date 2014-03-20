@@ -251,29 +251,6 @@ class PlaceOperations {
     public function getPlacesDetail($startId, $stopId) {
 
         return $this->opDAO->getPlacesDetail($startId, $stopId);
-    }
-
-    public function checkPlace($input) {
-        $session = $this->container->get('session');
-        $apiKey = $this->container->getParameter('api_key');
-        if ($session->has('search')) {
-            $search = $session->get('search');
-            $data = apc_fetch($search);
-            if ("" != $data['places']) {
-                foreach ($data['places'] as $item) {
-                    if ($item['placeName'] == $input) {
-                        $place = $item['place'];
-                        $detRef = $place->getDetailsRef();
-                        $isPlace = $this->opDAO->checkCurrentExtId($place->getExtId());
-                        if (!$isPlace) {
-                            $this->insertPlace($place);
-                            $placeDetails = new InsertAllDetailsCommand();
-                            $placeDetails->addAllPlacesDetails($apiKey, $this, null, $place);
-                        }
-                    }
-                }
-            }
-        }
-    }
+    }   
 
 }

@@ -6,10 +6,16 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Bundle\PlacesBundle\Entity\PlacePhotos;
-
+use Bundle\PlacesBundle\Service\PlaceOperations;
 
 class InsertPlacesPhotosCommand extends ContainerAwareCommand {
 
+    private $placeop;
+
+    public function __construct(PlaceOperations $placeop) {
+        $this->placeop = $placeop;
+    }
+    
     protected function configure() {
         $this
                 ->setName('places:insert-photos')
@@ -17,10 +23,10 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $placeop = $this->getContainer()->get('placeop');
+        //$placeop = $this->getContainer()->get('placeop');
         $apiKey = $this->getContainer()->getParameter('api_key');
-        $id = $placeop->getLastPlaceId();
-        $output->writeln($this->addPlacePhotos($apiKey, $placeop, $id));
+        $id = $this->placeop->getLastPlaceId();
+        $output->writeln($this->addPlacePhotos($apiKey, $id));
     }
 
     /**
@@ -28,10 +34,10 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
      * Add all photos for all places in placesdb.places
      * 
      */
-    function addPlacePhotos($apiKey, $placeop ,$startId) {
+    function addPlacePhotos($apiKey ,$startId) {
 
         //$detailsRef = $placeop->getPlacesDetailsRef();
-        $detailsRef = $placeop->getPlacesDetailsRefWithId($startId);
+        $detailsRef = $this->placeop->getPlacesDetailsRefWithId($startId);
         //$detailsRef = $placeop->getPlacesDetail(2247, 2277);
         $nr=0;
         //loop in all places
@@ -45,19 +51,19 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
             $status = $data['status'];
             if ($status =="REQUEST_DENIED"){
                 $mes = "Request denied while inserting photos for place: ". $placeId;
-                $placeop->logMessage($mes);
+                $this->placeop->logMessage($mes);
                 break;
             }
             if ($status =="NOT_FOUND"){
                 $mes = "Place: ". $placeId . " not found while inserting photos";
-                $placeop->logMessage($mes);
+                $this->placeop->logMessage($mes);
                 continue;
             }
             if ($status !="OK"){
                 continue;
             }
             $detailsResults = $data['result'];
-            $isPhoto = $placeop->isPhoto($placeId);
+            $isPhoto = $this->placeop->isPhoto($placeId);
             if (isset($detailsResults['photos'])) {
                 if (!$isPhoto) { // if photos for place_id not inserted
                     //insert photos for place    
@@ -71,7 +77,7 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
                         $placePhotos->setOrigin('google');
                         $placePhotos->setPlaceId($placeId);
                         $placePhotos->setImgRef($photoRef);
-                        $placeop->insertPlacePhotos($placePhotos);
+                        $this->placeop->insertPlacePhotos($placePhotos);
                     }
                 } else {
                     echo "place: '$placeName' contains photos \r\n";
@@ -81,14 +87,14 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
                         $photoRef = $photo['photo_reference'];
                         $urlPicture = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoRef&sensor=true&key=" . $apiKey;
                         $imgUrl = $this->getImgUrl($urlPicture);
-                        $placePhotos = $placeop->getImageByPhotoRef($placeId, $imgUrl);
+                        $placePhotos = $this->placeop->getImageByPhotoRef($placeId, $imgUrl);
                         if ($placePhotos) {
                             $placePhotos = new PlacePhotos();
                             $placePhotos->setImgUrl($imgUrl);
                             $placePhotos->setOrigin('google');
                             $placePhotos->setPlaceId($placeId);
                             $placePhotos->setImgRef($photoRef);
-                            $placeop->insertPlacePhotos($placePhotos);
+                            $this->placeop->insertPlacePhotos($placePhotos);
                         }
                     }
                 }
@@ -98,28 +104,29 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
             $nr++;
         }
         $mes = "We have inserted photos for: ". $nr . " places";
-        $placeop->logMessage($mes);
+        $this->placeop->logMessage($mes);
     }
     
-    function addPlacePhotos2($data, $place, $placeop, $apiKey) {
+    function addPlacePhotos2($data, $place, $apiKey) {
+        
             $placeId = $place['id'];
             $placeName = $place['slug'];
             $status = $data['status'];
             if ($status =="REQUEST_DENIED"){
                 $mes = "Request denied while inserting photos for place: ". $placeId;
-                $placeop->logMessage($mes);
+                $this->placeop->logMessage($mes);
                 return;
             }
             if ($status =="NOT_FOUND"){
                 $mes = "Place: ". $placeId . " not found while inserting photos";
-                $placeop->logMessage($mes);
+                $this->placeop->logMessage($mes);
                 return;
             }
             if ($status !="OK"){
                 return;
             }
             $detailsResults = $data['result'];
-            $isPhoto = $placeop->isPhoto($placeId);
+            $isPhoto = $this->placeop->isPhoto($placeId);
             if (isset($detailsResults['photos'])) {
                 if (!$isPhoto) { // if photos for place_id not inserted
                     //insert photos for place    
@@ -133,7 +140,7 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
                         $placePhotos->setOrigin('google');
                         $placePhotos->setPlaceId($placeId);
                         $placePhotos->setImgRef($photoRef);
-                        $placeop->insertPlacePhotos($placePhotos);
+                        $this->placeop->insertPlacePhotos($placePhotos);
                     }
                 } else {
                     //echo "place: '$placeName' contains photos \r\n";
@@ -143,14 +150,14 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
                         $photoRef = $photo['photo_reference'];
                         $urlPicture = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoRef&sensor=true&key=" . $apiKey;
                         $imgUrl = $this->getImgUrl($urlPicture);
-                        $placePhotos = $placeop->getImageByPhotoRef($placeId, $imgUrl);
+                        $placePhotos = $this->placeop->getImageByPhotoRef($placeId, $imgUrl);
                         if ($placePhotos) {
                             $placePhotos = new PlacePhotos();
                             $placePhotos->setImgUrl($imgUrl);
                             $placePhotos->setOrigin('google');
                             $placePhotos->setPlaceId($placeId);
                             $placePhotos->setImgRef($photoRef);
-                            $placeop->insertPlacePhotos($placePhotos);
+                            $this->placeop->insertPlacePhotos($placePhotos);
                         }
                     }
                 }

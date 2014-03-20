@@ -17,6 +17,7 @@ parameters:
 services:
     test:
         class: Bundle\PlacesBundle\Service\Test
+        
     monolog.formatter.session_request:
         class: Monolog\Formatter\LineFormatter
         arguments:
@@ -41,10 +42,34 @@ services:
         
     formsop:
         class: Bundle\PlacesBundle\Service\FormsOperations  
-        arguments: [@formsdao, @service_container]
+        arguments: [@formsdao, @service_container, @insertalldetails, @placeop, @placeopDAO, @insertplace]
   
     formsdao:
         class: Bundle\PlacesBundle\Service\FormsOperationsDAO  
         arguments: [@doctrine.orm.entity_manager]
+        
+    insertalldetails:
+        class: Bundle\PlacesBundle\Command\InsertAllDetailsCommand 
+        arguments: [ @placeop, @insertphotos, @insertrev, @insertadet ]   
+        
+    insertadet:
+        class: Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand 
+        arguments: [ @placeop ] 
+        
+    insertrev:
+        class: Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand 
+        arguments: [ @placeop ] 
+        
+    insertphotos:
+        class: Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand 
+        arguments: [ @placeop ] 
+        
+    insertplace:
+        class: Bundle\PlacesBundle\Command\InsertPlacesCommand 
+        arguments: [ @placeop ]  
+        
+    insertallinone:
+        class: Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand
+        arguments: [ @placeop, @insertalldetails ]     
         
         

@@ -1,9 +1,12 @@
 $(function() {
                 $(".search").keyup(function()
                 {
-                    $( ".search" ).addClass( "ui-autocomplete-loading" );
+                    //$( ".search" ).addClass( "ui-autocomplete-loading" );
                     var searchid = $(this).val();
                     var dataString = 'search=' + searchid;
+                    if (searchid.length >0){
+                        $( ".search" ).addClass( "ui-autocomplete-loading" );
+                    }
                     if (searchid != '')
                     {
                         $.ajax({

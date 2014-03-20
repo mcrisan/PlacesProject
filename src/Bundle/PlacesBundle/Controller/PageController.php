@@ -16,6 +16,7 @@ use Bundle\PlacesBundle\Entity\PlaceDetails;
 use Bundle\PlacesBundle\Entity\AppUsers;
 use Bundle\PlacesBundle\lib\UserIp;
 use Bundle\PlacesBundle\Service\PlaceOperations;
+use Bundle\PlacesBundle\Command\InsertAllDetailsCommand;
 
 class PageController extends Controller {
 
@@ -28,38 +29,8 @@ class PageController extends Controller {
 
     // Preload method - insert/update in/the users_ip table and redirect to homePage
     function preLoadAction() {
-        $this->em = $this->getDoctrine()->getManager();
-        $name = "In";
-        echo $name;
-        $pl = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                ->getPlacesNames($name);
 
-        //var_dump($pl);
-
-        $pl = $this->em->getRepository('BundlePlacesBundle:Places')
-                ->getPlacesDetail(2247, 2252);
-
-        //var_dump($pl);
-        //$search = $this->get('search');
-        //$lat=46.7748701;
-        //$long=23.601777;
-        //$res = $search->getPlaces($lat, $long);
-//        echo $res;
-        //var_dump($res);
-        //apc_store('pl', 12);
-        // phpinfo();
-
-//        $bar = 'BAR';
-//        apc_add('foo', $bar);
-//        var_dump(apc_fetch('foo'));
-//        echo "\n";
-//        $bar = 'NEVER GETS SET';
-//        apc_add('foo', $bar);
-//        var_dump(apc_fetch('foo'));
-//        echo "\n";
-
-        return $this->render("BundlePlacesBundle:About:about.html.twig");
-        //  return $this->redirect($this->generateUrl('index'));
+          return $this->redirect($this->generateUrl('index'));
     }
 
     // Home page
@@ -158,8 +129,11 @@ class PageController extends Controller {
         // set searchInput - show default results (" places containing 'ma' ")
         $searchInput = "ma";
         $searchInputVal = $request->query->get('input');
-        $placeOp = $this->get('placeop');
-        $placeOp->checkPlace($searchInputVal);
+//        $placeOp = $this->get('placeop');
+//        $placeOp->checkPlace($searchInputVal);
+        
+        $formOp = $this->get('formsop');
+        $formOp->checkPlace($searchInputVal);
 
         if (!empty($searchInputVal)) {
             $searchInput = $searchInputVal;

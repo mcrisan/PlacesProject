@@ -8,8 +8,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Bundle\PlacesBundle\Entity\Places;
+use Bundle\PlacesBundle\Service\PlaceOperations;
 
 class InsertPlacesCommand extends ContainerAwareCommand {
+
+    private $placeop;
+
+    public function __construct(PlaceOperations $placeop) {
+        $this->placeop = $placeop;
+    }
 
     // use $em with persist & flush..
     protected function configure() {
@@ -26,88 +33,73 @@ class InsertPlacesCommand extends ContainerAwareCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $placeop = $this->getContainer()->get('placeop');
+        //$placeop = $this->getContainer()->get('placeop');
         $apiKey = $this->getContainer()->getParameter('api_key');
         $latLng = $this->getContainer()->getParameter('latLng');
         $radius = 5000;
         $type = $input->getArgument('type');
-        $output->writeln($this->addPlaces($type, $apiKey, $latLng, $radius, $placeop));
+        $output->writeln($this->addPlaces($type, $apiKey, $latLng, $radius));
     }
 
-    function addPlaces($type, $apiKey, $latLng, $radius, $placeop, &$placeNames=null, $s=null) {
+    function addPlaces($type, $apiKey, $latLng, $radius, &$placeNames = null, $s = null) {
         $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
-        //echo $s."este";
-       // $placeNames =array();
-        //echo $type; 
-        //var_dump($placeNames);
-        //$i=count($placeNames);
-        //$i++;
-        //$placeNames[$i]="bcr";
-        //var_dump($placeNames);
-        $this->addPlacesByUrl($url, $type, $apiKey, $latLng, $radius, $placeop, $placeNames, $s);
-       // return $placeNames;
-        //return '22';
+        $this->addPlacesByUrl($url, $type, $apiKey, $latLng, $radius, $placeNames, $s);
     }
 
-    private function addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius, $placeop, &$placeNames=null, $s=null) {
+    private function addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius, &$placeNames = null, $s = null) {
         sleep(3);
-        if(!$placeNames){
+        if (!$placeNames) {
             $placeNames = array();
-            $i=0;
-        }else{
+            $i = 0;
+        } else {
             $i = count($placeNames);
         }
         $json = file_get_contents($url);
         $data = json_decode($json, TRUE);
-        //var_dump($data);
         $status = $data['status'];
-            if ($status =="REQUEST_DENIED"){
-                //echo "er";
-                $mes = "Request denied while inserting places: ". $placeId;
-                $placeop->logMessage($mes);
-                return;
-            }
-            if ($status !="OK"){
-                return;
-            }
+        if ($status == "REQUEST_DENIED") {
+            $mes = "Request denied while inserting places ";
+            $this->placeop->logMessage($mes);
+            return;
+        }
+        if ($status != "OK") {
+            return;
+        }
         $placeItems = $data['results'];
         if (isset($data['next_page_token'])) {
-        $pageToken = $data['next_page_token'];
-        }else{
-            $pageToken="";
+            $pageToken = $data['next_page_token'];
+        } else {
+            $pageToken = "";
         }
         foreach ($placeItems as $item) {
-            $placeNames[$i]=array();
+            $placeNames[$i] = array();
             $extId = $item['id'];
             $name = $item['name'];
-            //$placeNames[$i]['placeName'] = $name;
-            //$i++;
             $slug = $this->gen_slug($name);
             $origin = "google";
             if (isset($item['reference'])) {
-            $detailsRef = $item['reference'];
-            }else{
+                $detailsRef = $item['reference'];
+            } else {
                 $detailsRef = "no ref";
-            }            
+            }
             $place = new Places();
             $place->setExtId($extId);
             $place->setSlug($slug);
             $place->setDetailsRef($detailsRef);
             $place->setOrigin($origin);
             $place->setHasOwner(0);
-            if($s){
-                //echo $s;
-            $placeNames[$i]['place'] = $place;
-            $placeNames[$i]['placeName'] = $name;
-            $i++;
-            }else{
-            $placeop->insertPlace($place);
-            $s=null;
+            if ($s) {
+                $placeNames[$i]['place'] = $place;
+                $placeNames[$i]['placeName'] = $name;
+                $i++;
+            } else {
+                $this->placeop->insertPlace($place);
+                $s = null;
             }
         }
         if ($pageToken != "") {
             $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" . $latLng . "&radius=" . $radius . "&types=" . $placeType . "&sensor=false&key=" . $apiKey . "&pagetoken=" . $pageToken;
-            $this->addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius, $placeop, $placeNames,$s);
+            $this->addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius, $placeNames, $s);
         }
     }
 
