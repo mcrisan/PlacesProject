@@ -144,38 +144,13 @@
                             <p><b>Total votes: </b>{{ totalVotesAllTime }} votes</p>
                             <p><b>Total votes for this place: </b>{{ totalVotes }} votes</p>
                             <p><b>Points / Stars:</b> <font color="green"><big>{{ usersRating }}</big></font></p>
-
-                            {% if usersRating < 2%}
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            {% elseif usersRating < 3 %}
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            {% elseif usersRating < 4 %}
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            {% elseif usersRating < 5 %}
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            {% elseif usersRating == 5 %}
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
-                            {% endif %}
+                            {% for i in 1..5%}
+                                {% if i <= usersRating %}
+                                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+                                {% endif%}
+                            {% endfor %}
                         {% else %} {# if client dose not vote #}
                             <p>Select a star</p>
                             <form>
@@ -267,45 +242,13 @@
         <a id="{{ place.placeId }}" class="list-group-item it1 {{ active }}" href="{{ path('renderPlace',{'param':place.slug}) }}">
             <p>{{ place.placeName }}</p>
             <p>
-                    {% if place.placeRating|length > 1 %}
-                    {% if place.placeRating < 2%}
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                {% elseif place.placeRating < 3 %}
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                {% elseif place.placeRating < 4 %}
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                {% elseif place.placeRating < 5 %}
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                {% elseif place.placeRating == 5 %}
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                {% endif %}
-             {% else %}
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />  
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />  
-             {% endif %}
+               {% for i in 1..5%}
+                    {% if i <= place.placeRating %}
+                        <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                    {% else %}
+                        <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                    {% endif%}
+                {% endfor %}
             </p>
         </a>
         {% endfor %}

@@ -29,8 +29,9 @@ class PageController extends Controller {
 
     // Preload method - insert/update in/the users_ip table and redirect to homePage
     function preLoadAction() {
-
-          return $this->redirect($this->generateUrl('index'));
+        return $this->render('BundlePlacesBundle:Page:home.html.twig', array(
+                    'places' => $places,
+        ));
     }
 
     // Home page

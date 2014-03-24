@@ -1571,7 +1571,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>532ae576212fc</argument>
+            <argument>532af19196de5</argument>
           </service>
         </argument>
       </argument>
@@ -1901,7 +1901,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>532ae576212fc</argument>
+            <argument>532af19196de5</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
           </service>
         </argument>
@@ -2440,9 +2440,35 @@
     <service id="formsop" class="Bundle\PlacesBundle\Service\FormsOperations">
       <argument type="service" id="formsdao"/>
       <argument type="service" id="service_container"/>
+      <argument type="service" id="insertalldetails"/>
+      <argument type="service" id="placeop"/>
+      <argument type="service" id="placeopdao"/>
+      <argument type="service" id="insertplace"/>
     </service>
     <service id="formsdao" class="Bundle\PlacesBundle\Service\FormsOperationsDAO">
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
+    </service>
+    <service id="insertalldetails" class="Bundle\PlacesBundle\Command\InsertAllDetailsCommand">
+      <argument type="service" id="placeop"/>
+      <argument type="service" id="insertphotos"/>
+      <argument type="service" id="insertrev"/>
+      <argument type="service" id="insertadet"/>
+    </service>
+    <service id="insertadet" class="Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand">
+      <argument type="service" id="placeop"/>
+    </service>
+    <service id="insertrev" class="Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand">
+      <argument type="service" id="placeop"/>
+    </service>
+    <service id="insertphotos" class="Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand">
+      <argument type="service" id="placeop"/>
+    </service>
+    <service id="insertplace" class="Bundle\PlacesBundle\Command\InsertPlacesCommand">
+      <argument type="service" id="placeop"/>
+    </service>
+    <service id="insertallinone" class="Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand">
+      <argument type="service" id="placeop"/>
+      <argument type="service" id="insertalldetails"/>
     </service>
     <service id="web_profiler.controller.profiler" class="Symfony\Bundle\WebProfilerBundle\Controller\ProfilerController">
       <argument type="service" id="router" on-invalid="null"/>

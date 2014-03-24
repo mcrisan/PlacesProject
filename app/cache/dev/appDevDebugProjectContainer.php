@@ -112,6 +112,12 @@ class appDevDebugProjectContainer extends Container
             'fragment.renderer.hinclude' => 'getFragment_Renderer_HincludeService',
             'fragment.renderer.inline' => 'getFragment_Renderer_InlineService',
             'http_kernel' => 'getHttpKernelService',
+            'insertadet' => 'getInsertadetService',
+            'insertalldetails' => 'getInsertalldetailsService',
+            'insertallinone' => 'getInsertallinoneService',
+            'insertphotos' => 'getInsertphotosService',
+            'insertplace' => 'getInsertplaceService',
+            'insertrev' => 'getInsertrevService',
             'kernel' => 'getKernelService',
             'locale_listener' => 'getLocaleListenerService',
             'logger' => 'getLoggerService',
@@ -1246,7 +1252,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getFormsopService()
     {
-        return $this->services['formsop'] = new \Bundle\PlacesBundle\Service\FormsOperations($this->get('formsdao'), $this);
+        return $this->services['formsop'] = new \Bundle\PlacesBundle\Service\FormsOperations($this->get('formsdao'), $this, $this->get('insertalldetails'), $this->get('placeop'), $this->get('placeopdao'), $this->get('insertplace'));
     }
 
     /**
@@ -1326,6 +1332,84 @@ class appDevDebugProjectContainer extends Container
     protected function getHttpKernelService()
     {
         return $this->services['http_kernel'] = new \Symfony\Component\HttpKernel\DependencyInjection\ContainerAwareHttpKernel($this->get('debug.event_dispatcher'), $this, $this->get('debug.controller_resolver'));
+    }
+
+    /**
+     * Gets the 'insertadet' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand A Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand instance.
+     */
+    protected function getInsertadetService()
+    {
+        return $this->services['insertadet'] = new \Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand($this->get('placeop'));
+    }
+
+    /**
+     * Gets the 'insertalldetails' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Bundle\PlacesBundle\Command\InsertAllDetailsCommand A Bundle\PlacesBundle\Command\InsertAllDetailsCommand instance.
+     */
+    protected function getInsertalldetailsService()
+    {
+        return $this->services['insertalldetails'] = new \Bundle\PlacesBundle\Command\InsertAllDetailsCommand($this->get('placeop'), $this->get('insertphotos'), $this->get('insertrev'), $this->get('insertadet'));
+    }
+
+    /**
+     * Gets the 'insertallinone' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand A Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand instance.
+     */
+    protected function getInsertallinoneService()
+    {
+        return $this->services['insertallinone'] = new \Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand($this->get('placeop'), $this->get('insertalldetails'));
+    }
+
+    /**
+     * Gets the 'insertphotos' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand A Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand instance.
+     */
+    protected function getInsertphotosService()
+    {
+        return $this->services['insertphotos'] = new \Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand($this->get('placeop'));
+    }
+
+    /**
+     * Gets the 'insertplace' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Bundle\PlacesBundle\Command\InsertPlacesCommand A Bundle\PlacesBundle\Command\InsertPlacesCommand instance.
+     */
+    protected function getInsertplaceService()
+    {
+        return $this->services['insertplace'] = new \Bundle\PlacesBundle\Command\InsertPlacesCommand($this->get('placeop'));
+    }
+
+    /**
+     * Gets the 'insertrev' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand A Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand instance.
+     */
+    protected function getInsertrevService()
+    {
+        return $this->services['insertrev'] = new \Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand($this->get('placeop'));
     }
 
     /**
@@ -1941,7 +2025,7 @@ class appDevDebugProjectContainer extends Container
         $n = new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $g, new \Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy('migrate'), $j, 'admin_area', $m, new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler($f, $j, array('login_path' => 'login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path'), $a), array('check_path' => 'login_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $a, $d);
         $n->setRememberMeServices($k);
 
-        return $this->services['security.firewall.map.context.admin_area'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($i, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $c), 'admin_area', $a, $d), 2 => $l, 3 => $n, 4 => new \Symfony\Component\Security\Http\Firewall\RememberMeListener($b, $k, $g, $a, $d), 5 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '532ae576212fc', $a), 6 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $i, $g)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $j, 'admin_area', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($f, $j, 'login', false), NULL, NULL, $a));
+        return $this->services['security.firewall.map.context.admin_area'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($i, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $c), 'admin_area', $a, $d), 2 => $l, 3 => $n, 4 => new \Symfony\Component\Security\Http\Firewall\RememberMeListener($b, $k, $g, $a, $d), 5 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '532af19196de5', $a), 6 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $i, $g)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $j, 'admin_area', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($f, $j, 'login', false), NULL, NULL, $a));
     }
 
     /**
@@ -3262,7 +3346,7 @@ class appDevDebugProjectContainer extends Container
     {
         $a = new \Symfony\Component\Security\Core\User\UserChecker();
 
-        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('security.user.provider.concrete.administrators'), $a, 'admin_area', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\RememberMeAuthenticationProvider($a, '1ac7dc66bfe373ae669e58d597c1f28549dfd5d0', 'admin_area'), 2 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('532ae576212fc')), true);
+        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('security.user.provider.concrete.administrators'), $a, 'admin_area', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\RememberMeAuthenticationProvider($a, '1ac7dc66bfe373ae669e58d597c1f28549dfd5d0', 'admin_area'), 2 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('532af19196de5')), true);
 
         $instance->setEventDispatcher($this->get('event_dispatcher'));
 
