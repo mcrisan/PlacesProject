@@ -217,9 +217,9 @@
                 </div>
             </div> 
         </div><!-- /.nested cols -->
-        
 
-        
+<div id="map" class="map"></div>
+
     </article>
 </div><!-- /#place-container -->
 
@@ -239,7 +239,7 @@
         {% for key,place in places %}
             {# set first result as active #}
             {% set active = (key == 0 ? 'active' : '') %}
-        <a id="{{ place.placeId }}" class="list-group-item it1 {{ active }}" href="{{ path('renderPlace',{'param':place.slug}) }}">
+        <a id="{{ place.placeId }}" class="list-group-item it1 {{ active }}" href="{{ path('renderPlace',{'param':place.slug, 'input': input}) }}">
             <p>{{ place.placeName }}</p>
             <p>
                {% for i in 1..5%}
@@ -273,7 +273,7 @@
 {% block javascript %} 
 <script type="text/javascript">
     $(document).ready(function() {
-        
+
         //var i = 1;
         var array = "";
         // store current places in list
@@ -296,8 +296,8 @@
                             //$('#gif-loader').hide();
 
                             $(".it2").on('click', function() {
-                                
-                                
+
+
                                 param = $(this).attr('href');
                                 //alert(param);
                                 $(this).addClass('active').siblings().removeClass('active');
@@ -313,7 +313,7 @@
                                         }
                                     }
                                 });
-                               // alert(param);
+                                // alert(param);
                                 return false;
                                 alert(22);
                                 event.preventDefault();
@@ -342,6 +342,7 @@
 <script src="{{ asset('bundles/bundleplaces/js/processingVote.js') }}"></script>
 
 <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/google-map-get-directions.js') }}"></script>
-<script src=" http://maps.google.com/?file=api&amp;v=2&amp;key=AIzaSyBcy7J0eaTaMSxAj7re31bLUKSr9W9EPYE" type="text/javascript"></script>
+{#<script src=" http://maps.google.com/?file=api&amp;v=2&amp;key=AIzaSyBcy7J0eaTaMSxAj7re31bLUKSr9W9EPYE" type="text/javascript"></script>#}
+
     {#<script src="{{ asset('bundles/bundleplaces/js/google-maps.js') }}"></script>#}
 {% endblock %}

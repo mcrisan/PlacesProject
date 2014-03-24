@@ -23,27 +23,98 @@ class SearchWebService {
 
     protected $searchDAO;
     protected $container;
+    protected $formsOP;
 
-    public function __construct(SearchWebServiceDAO $dao, ContainerInterface $container) {
+    public function __construct(SearchWebServiceDAO $dao, ContainerInterface $container, FormsOperations $formsOP) {
         $this->searchDAO = $dao;
         $this->container = $container;
+        $this->formsOP = $formsOP;
     }
 
     public function searchByName($name) {
+        //echo $name;
 
         $places = $this->searchDAO->getPlacesNamesAndIds($name);
+        //echo "search";
+        //var_dump($places);
+        if (empty($places)) {
+//            echo "in adresa 22";
+            $session = $this->container->get('session');
+//           if ($session->has('search')) {
+//            $input = $session->get('search');
+//            $data = apc_fetch($input);
+//            if ("" != $data['places']) {
+//            $places = $data['places'];
+            //$add = $name . ", Cluj-Napoca, Romania";
+//            $add = $name; // . ", Cluj-Napoca, Romania";
+//            $address = $add; // Google HQ
+//            $prepAddr = str_replace(' ', '+', $address);
+//            //echo $prepAddr;
+//            $geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address=' . $prepAddr . '&sensor=false');
+//            $output = json_decode($geocode);
+//            $latitude = $output->results[0]->geometry->location->lat;
+//            $longitude = $output->results[0]->geometry->location->lng;
+//           // echo $latitude .", ". $longitude;
+//            $places = $this->formsOP->searchPlaces($latitude, $longitude);
+//            if ($session->has('places')) { 
+//           $places = $session->get('places');
+//           //var_dump($places);
+//            }else{
+//               //echo "nu e sesiune"; 
+//            }
+            // $pl = $this->formsOP->searchPlaces($places['lat'], $places['long']);
+            //echo "all places";
+            //var_dump($places);
+            //die;
+            //echo $pl[0]['placeId'];
+            //}
+            //  }
+            if (apc_exists($name)) {
+                $places = apc_fetch($name);
+                //var_dump($places);
+            }
+        }
         if (!empty($places)) {
             $placeId = $places[0]['placeId']; // #1 place from search results..
+            //$placeId = 2014;
             $placeInfo = $this->getPlaceInfos($placeId);
+            $userInfo = $this->getUserDetails();
             $resp = json_encode(array(
                 'details' => array(
                     'placeInfos' => $placeInfo,
-                    'places' => $places),
+                    'places' => $places,
+                    'userInfos' => $userInfo),
+                'status' => 'OK'
+            ));
+        } else {
+            $placeInfo = $this->getPlaceInfos(1595);
+            $userInfo = $this->getUserDetails();
+            $resp = json_encode(array(
+                'details' => array(
+                    'placeInfos' => $placeInfo,
+                    'places' => $places,
+                    'userInfos' => $userInfo),
+                'status' => 'OK'
+            ));
+        }
+        return $resp;
+    }
+
+    public function homepagePlaces() {
+        //echo $name;
+        if (apc_exists("index")) {
+            $places = apc_fetch("index");
+            //var_dump($places);
+        }
+
+        if (!empty($places)) {
+            $resp = json_encode(array(
+                'places' => $places,
                 'status' => 'OK'
             ));
         } else {
             $resp = json_encode(array(
-                'status' => 'Place Not Found'
+                'status' => 'Places Not Found'
             ));
         }
         return $resp;
@@ -55,15 +126,23 @@ class SearchWebService {
         if (!empty($places)) {
             $placeId = $places[0]['placeId']; // #1 place from search results..
             $placeInfo = $this->getPlaceInfos($placeId);
+            $userInfo = $this->getUserDetails();
             $resp = json_encode(array(
                 'details' => array(
                     'placeInfos' => $placeInfo,
-                    'places' => $places),
+                    'places' => $places,
+                    'userInfos' => $userInfo),
                 'status' => 'OK'
             ));
         } else {
+            $placeInfo = $this->getPlaceInfos(1595);
+            $userInfo = $this->getUserDetails();
             $resp = json_encode(array(
-                'status' => 'Place Not Found'
+                'details' => array(
+                    'placeInfos' => $placeInfo,
+                    'places' => $places,
+                    'userInfos' => $userInfo),
+                'status' => 'OK'
             ));
         }
         return $resp;
@@ -75,15 +154,23 @@ class SearchWebService {
         if (!empty($places)) {
             $placeId = $places[0]['placeId']; // #1 place from search results..
             $placeInfo = $this->getPlaceInfos($placeId);
+            $userInfo = $this->getUserDetails();
             $resp = json_encode(array(
                 'details' => array(
                     'placeInfos' => $placeInfo,
-                    'places' => $places),
+                    'places' => $places,
+                    'userInfos' => $userInfo),
                 'status' => 'OK'
             ));
         } else {
+            $placeInfo = $this->getPlaceInfos(1595);
+            $userInfo = $this->getUserDetails();
             $resp = json_encode(array(
-                'status' => 'Place Not Found'
+                'details' => array(
+                    'placeInfos' => $placeInfo,
+                    'places' => $places,
+                    'userInfos' => $userInfo),
+                'status' => 'OK'
             ));
         }
         return $resp;
@@ -95,15 +182,23 @@ class SearchWebService {
         if (!empty($places)) {
             $placeId = $places[0]['placeId']; // #1 place from search results..
             $placeInfo = $this->getPlaceInfos($placeId);
+            $userInfo = $this->getUserDetails();
             $resp = json_encode(array(
                 'details' => array(
                     'placeInfos' => $placeInfo,
-                    'places' => $places),
+                    'places' => $places,
+                    'userInfos' => $userInfo),
                 'status' => 'OK'
             ));
         } else {
+            $placeInfo = $this->getPlaceInfos(1595);
+            $userInfo = $this->getUserDetails();
             $resp = json_encode(array(
-                'status' => 'Place Not Found'
+                'details' => array(
+                    'placeInfos' => $placeInfo,
+                    'places' => $places,
+                    'userInfos' => $userInfo),
+                'status' => 'OK'
             ));
         }
         return $resp;
@@ -234,4 +329,5 @@ class SearchWebService {
         }
         return $user;
     }
+
 }

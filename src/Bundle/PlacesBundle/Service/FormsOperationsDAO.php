@@ -28,5 +28,11 @@ class FormsOperationsDAO {
         return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
                     ->getPlacesNames($input);
     }
+    
+    public function getAllPlacesNames() {
+
+        return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
+                    ->getAllPlacesNames();
+    }
 
 }

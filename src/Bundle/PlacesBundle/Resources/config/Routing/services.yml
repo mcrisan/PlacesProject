@@ -27,6 +27,18 @@ search:
     pattern: /searchplace/{input}
     defaults: { _controller: BundlePlacesBundle:Service:search }
     requirements:
+      _method: GET  
+      
+homepage_places:
+    pattern: /homeplace
+    defaults: { _controller: BundlePlacesBundle:Service:homepagePlaces }
+    requirements:
+      _method: GET       
+      
+search_add:
+    pattern: /searchaddress/{input}
+    defaults: { _controller: BundlePlacesBundle:Service:searchAddress }
+    requirements:
       _method: GET       
       
 test_search_name:

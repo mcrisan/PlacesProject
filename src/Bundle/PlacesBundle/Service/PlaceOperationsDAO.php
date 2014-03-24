@@ -29,6 +29,7 @@ class PlaceOperationsDAO {
     public function insertPlace($place){
         $this->em->persist($place);
         $this->em->flush();
+        return $place;
     }
     
     public function checkCurrentSlug($slug){
@@ -42,6 +43,7 @@ class PlaceOperationsDAO {
         return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
                 ->checkPlaceDetailsByNameAndAddress($name, $address);
     }
+    
     
     public function getLastSlug($slug){
         

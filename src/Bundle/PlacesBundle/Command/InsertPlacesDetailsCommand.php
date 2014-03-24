@@ -171,13 +171,13 @@ class InsertPlacesDetailsCommand extends ContainerAwareCommand {
             $placeAddr = "";
         }
         //check if another place with the same name and address exists
-        $pl = $this->placeop->checkPlaceDetailsByNameAndAddress($placeName, $placeAddr);
-        if ($pl) {
-            $this->placeop->deletePlace($placeId);
-            $mes = "Place: " . $placeId . " was deleted because it already exists";
-            $this->placeop->logMessage($mes);
-            return;
-        }
+//        $pl = $this->placeop->checkPlaceDetailsByNameAndAddress($placeName, $placeAddr);
+//        if ($pl) {
+//            $this->placeop->deletePlace($placeId);
+//            $mes = "Place: " . $placeId . " was deleted because it already exists";
+//            $this->placeop->logMessage($mes);
+//            return;
+//        }
         if (isset($detailsResults['formatted_phone_number'])) {
             $placePhoneNumber = $detailsResults['formatted_phone_number'];
         } else {
