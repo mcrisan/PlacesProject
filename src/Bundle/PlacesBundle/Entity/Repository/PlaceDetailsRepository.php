@@ -118,6 +118,21 @@ class PlaceDetailsRepository extends EntityRepository {
                 ->from('BundlePlacesBundle:PlaceDetails', 'pd')
                 ->where('pd.placeName LIKE :name')
                 ->setParameter('name', '%' . $input . '%')
+                ->setMaxResults(15)
+                ->getQuery()
+                ->getResult();
+
+        return $qb;
+    }
+    
+    public function getAllPlacesNames() {
+        
+        
+        $em = $this->getEntityManager();
+
+        $qb = $em->createQueryBuilder()
+                ->select('pd.placeName')
+                ->from('BundlePlacesBundle:PlaceDetails', 'pd')
                 ->getQuery()
                 ->getResult();
 

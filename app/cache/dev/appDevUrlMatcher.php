@@ -234,13 +234,13 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         // renderPlace
-        if (0 === strpos($pathinfo, '/renderPlace') && preg_match('#^/renderPlace/(?P<param>[^/]++)$#s', $pathinfo, $matches)) {
+        if (0 === strpos($pathinfo, '/renderPlace') && preg_match('#^/renderPlace/(?P<param>[^/]++)(?:/(?P<search>[^/]++))?$#s', $pathinfo, $matches)) {
             if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                 $allow = array_merge($allow, array('GET', 'HEAD'));
                 goto not_renderPlace;
             }
 
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'renderPlace')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::renderPlaceAction',));
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'renderPlace')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::renderPlaceAction',  'search' => 'ma',));
         }
         not_renderPlace:
 
@@ -299,9 +299,19 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
         not_demoSearch:
 
-        // autocom_ac
-        if ($pathinfo === '/autocomaction') {
-            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::doAutocomAction',  '_route' => 'autocom_ac',);
+        // autocom_places
+        if ($pathinfo === '/placesnames') {
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::getPlacesNamesAction',  '_route' => 'autocom_places',);
+        }
+
+        // insert_places
+        if ($pathinfo === '/insertplaces') {
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::insertPlacesAction',  '_route' => 'insert_places',);
+        }
+
+        // insert_homepage_places
+        if ($pathinfo === '/homepageplaces') {
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::homepagePlacesAction',  '_route' => 'insert_homepage_places',);
         }
 
         if (0 === strpos($pathinfo, '/search')) {
@@ -364,6 +374,28 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             not_search:
 
         }
+
+        // homepage_places
+        if ($pathinfo === '/homeplace') {
+            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                $allow = array_merge($allow, array('GET', 'HEAD'));
+                goto not_homepage_places;
+            }
+
+            return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\ServiceController::homepagePlacesAction',  '_route' => 'homepage_places',);
+        }
+        not_homepage_places:
+
+        // search_add
+        if (0 === strpos($pathinfo, '/searchaddress') && preg_match('#^/searchaddress/(?P<input>[^/]++)$#s', $pathinfo, $matches)) {
+            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                $allow = array_merge($allow, array('GET', 'HEAD'));
+                goto not_search_add;
+            }
+
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'search_add')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\ServiceController::searchAddressAction',));
+        }
+        not_search_add:
 
         // test_search_name
         if ($pathinfo === '/testsearchname') {

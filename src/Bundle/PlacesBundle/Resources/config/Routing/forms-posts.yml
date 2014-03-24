@@ -38,8 +38,20 @@ demoSearch:
     requirements:
         _method:  POST|GET
         
-autocom_ac:
-    pattern: /autocomaction
-    defaults: { _controller: BundlePlacesBundle:Forms:doAutocom }
+#autocom_ac:
+#    pattern: /autocomaction
+#    defaults: { _controller: BundlePlacesBundle:Forms:doAutocom }
+    
+autocom_places:
+    pattern: /placesnames
+    defaults: { _controller: BundlePlacesBundle:Forms:getPlacesNames } 
+    
+insert_places:
+    pattern: /insertplaces
+    defaults: { _controller: BundlePlacesBundle:Forms:insertPlaces }   
+    
+insert_homepage_places:
+    pattern: /homepageplaces
+    defaults: { _controller: BundlePlacesBundle:Forms:homepagePlaces }    
 #    requirements:
 #      _method: POST         

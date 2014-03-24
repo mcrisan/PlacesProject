@@ -2,7 +2,7 @@
 
 # Render place
 renderPlace:
-    pattern:  /renderPlace/{param}
-    defaults: { _controller: BundlePlacesBundle:Forms:renderPlace }
+    pattern:  /renderPlace/{param}/{search}
+    defaults: { _controller: BundlePlacesBundle:Forms:renderPlace, search: ma }
     requirements:
         _method:  GET

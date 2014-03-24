@@ -33,6 +33,15 @@ class ServiceController extends Controller {
        return $resp;
     }
     
+    function homepagePlacesAction() {
+       $search = $this->get('search');
+       $res = $search->homepagePlaces();
+       $resp = new Response($res, 200);      
+       $resp->headers->set('Content-Type', 'application/json');
+             
+       return $resp;
+    }
+    
     function searchByAddressAction($address) {
        $address= urldecode($address);
        $search = $this->get('search');
@@ -70,7 +79,20 @@ class ServiceController extends Controller {
     function searchAction($input) {
        $input= urldecode($input);
        $search = $this->get('search');
-       $res = $search->getPlacesByNameOrAddressOrTag($input);
+       //$res = $search->getPlacesByNameOrAddressOrTag($input);
+       $res = $search->searchByName($input);
+       $resp = new Response($res, 200);      
+       $resp->headers->set('Content-Type', 'application/json');
+       
+       
+       return $resp;
+    }
+    
+    function searchAddressAction($input) {
+       $input= urldecode($input);
+       $search = $this->get('search');
+       //$res = $search->getPlacesByNameOrAddressOrTag($input);
+       $res = $search->searchByAddress($input);
        $resp = new Response($res, 200);      
        $resp->headers->set('Content-Type', 'application/json');
        

@@ -33,7 +33,7 @@ services:
         
     search:
         class: Bundle\PlacesBundle\Service\SearchWebService
-        arguments: [@searchDAO, @service_container]
+        arguments: [@searchDAO, @service_container, @formsop]
         tags:
             - { name: monolog.logger, channel: comm }
     searchDAO:

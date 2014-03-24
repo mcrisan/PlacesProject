@@ -6,6 +6,7 @@ namespace Bundle\PlacesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Bundle\PlacesBundle\lib\UserIp;
 use Bundle\PlacesBundle\lib\GetUserIp;
 
@@ -20,6 +21,11 @@ class FormsController extends Controller {
     // Render place page
     public function renderPlaceAction($param) {
         $placeName = $this->gen_slug($param);
+        $request = Request::createFromGlobals();
+        $searchInputVal = $request->query->get('input');
+        
+        $formsop = $this->get('formsop');
+        $formsop->checkPlaceBySlug($placeName, $searchInputVal);
         //$placeName = $this->$this->getRequest()->get('param');
 
         $this->em = $this->getDoctrine()->getManager();
@@ -273,24 +279,59 @@ class FormsController extends Controller {
         return strtolower(preg_replace(array('/[^a-zA-Z0-9 -]/', '/[ -]+/', '/^-|-$/'), array('', '-', ''), str_replace($a, $b, $str)));
     }
 
-    function doAutocomAction() {
-        $session = $this->get('session');
+//    function doAutocomAction() {
+//        $session = $this->get('session');
+//        $formsop = $this->get('formsop');
+//        $em = $this->getDoctrine()->getManager();
+//        $request = Request::createFromGlobals();
+//        $input = $request->request->get('search');
+//        //$input = $request->query->get('search');
+//        $session->set('search', $input);
+////        if (apc_exists($input)) {
+////            $data = apc_fetch($input);
+////            $placeName = $data['placeName'];
+////            $places = $data['places'];
+////        } else {
+//            $placeName = $formsop->getPlacesNames($input);
+//            //$places = $formsop->getPlaces2($input);
+//            $places ="";
+//         //   apc_store($input, array('placeName' => $placeName, 'places' => $places));
+//       // }
+//
+//        return $this->render("BundlePlacesBundle:Places:autocomplete.html.twig", array('place' => $placeName, 'placesAdd' => $places));
+//    }
+    
+    function getPlacesNamesAction(){
         $formsop = $this->get('formsop');
-        $em = $this->getDoctrine()->getManager();
+        $placeName = $formsop->getAllPlacesNames();
+        
+        $res = json_encode($placeName);
+        $resp = new Response($res, 200);      
+       $resp->headers->set('Content-Type', 'application/json');
+       
+       
+       return $resp;
+    }
+    
+    function insertPlacesAction(){
         $request = Request::createFromGlobals();
         $input = $request->request->get('search');
-        $session->set('search', $input);
-        if (apc_exists($input)) {
-            $data = apc_fetch($input);
-            $placeName = $data['placeName'];
-            $places = $data['places'];
-        } else {
-            $placeName = $formsop->getPlacesNames($input);
-            $places = $formsop->getPlaces($input);
-            apc_store($input, array('placeName' => $placeName, 'places' => $places));
-        }
-
-        return $this->render("BundlePlacesBundle:Places:autocomplete.html.twig", array('place' => $placeName, 'placesAdd' => $places));
+        $address = $request->request->get('address');
+        //$input = $request->query->get('search');
+        $formsop = $this->get('formsop');
+        $formsop->insertPlaces($input, $address);
+        
+        return $this->render("BundlePlacesBundle:About:about.html.twig");
+    }
+    
+    function homepagePlacesAction(){
+        $request = Request::createFromGlobals();
+        $input = $request->request->get('search');
+        //$input = $request->query->get('search');
+        $formsop = $this->get('formsop');
+        $formsop->insertHomepagePlaces($input);
+        
+        return $this->render("BundlePlacesBundle:About:about.html.twig");
     }
 }
 

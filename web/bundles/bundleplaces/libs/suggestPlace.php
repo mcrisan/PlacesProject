@@ -8,7 +8,7 @@ if (!$_REQUEST['term']) {
 $input = ($_REQUEST['term']);
 
 
-$conn = mysql_connect("localhost", "root", "root");
+$conn = mysql_connect("localhost", "root", null);
 $db = mysql_select_db("placesdb");
 
 //if ($stars != "") {

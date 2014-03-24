@@ -43,6 +43,7 @@ class InsertPlacesCommand extends ContainerAwareCommand {
 
     function addPlaces($type, $apiKey, $latLng, $radius, &$placeNames = null, $s = null) {
         $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
+        //$url = "https://maps.googleapis.com/maps/api/js/PlaceService.FindPlaces?1m6&1m2&1d46.7524711471588&2d23.577259023485567&2m2&1d46.77043745284119&2d23.60348577651439&2sen-US&4sbar&callback=_xdc_._jxbr54&token=60012";
         $this->addPlacesByUrl($url, $type, $apiKey, $latLng, $radius, $placeNames, $s);
     }
 
@@ -66,6 +67,8 @@ class InsertPlacesCommand extends ContainerAwareCommand {
             return;
         }
         $placeItems = $data['results'];
+        //echo "place items";
+        //var_dump($placeItems);
         if (isset($data['next_page_token'])) {
             $pageToken = $data['next_page_token'];
         } else {
@@ -82,6 +85,11 @@ class InsertPlacesCommand extends ContainerAwareCommand {
             } else {
                 $detailsRef = "no ref";
             }
+            if (isset($item['rating'])) {
+                $rating = $item['rating'];
+            }else{
+                $rating="";
+            }
             $place = new Places();
             $place->setExtId($extId);
             $place->setSlug($slug);
@@ -89,11 +97,19 @@ class InsertPlacesCommand extends ContainerAwareCommand {
             $place->setOrigin($origin);
             $place->setHasOwner(0);
             if ($s) {
+                //$placeNames[$i]['placeId'] = $place;
                 $placeNames[$i]['place'] = $place;
                 $placeNames[$i]['placeName'] = $name;
                 $i++;
             } else {
-                $this->placeop->insertPlace($place);
+                $newPlace = $this->placeop->insertPlace($place);
+                //var_dump($newPlace);
+                //$placeNames[$i]['place'] = $newPlace;
+                $placeNames[$i]['placeId'] = $newPlace->getId();
+                $placeNames[$i]['placeName'] = $name;
+                $placeNames[$i]['placeRating'] = $rating;
+                $placeNames[$i]['slug'] = $newPlace->getSlug();
+                $i++;
                 $s = null;
             }
         }
