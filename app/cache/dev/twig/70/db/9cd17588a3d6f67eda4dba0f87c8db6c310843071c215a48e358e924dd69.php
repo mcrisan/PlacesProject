@@ -375,6 +375,8 @@ class __TwigTemplate_70db9cd17588a3d6f67eda4dba0f87c8db6c310843071c215a48e358e92
                     });
                     if (pagination.hasNextPage) {
                         //alert(\"pag\");
+                        // setTimeout('pagination.nextPage()',2000);
+                        //sleep:2;
                         //pagination.nextPage();
                     }
                 }
@@ -384,7 +386,7 @@ class __TwigTemplate_70db9cd17588a3d6f67eda4dba0f87c8db6c310843071c215a48e358e92
 
 
         ";
-        // line 406
+        // line 408
         echo "
         
         <script>
@@ -514,7 +516,7 @@ class __TwigTemplate_70db9cd17588a3d6f67eda4dba0f87c8db6c310843071c215a48e358e92
                     window.janrain.settings = {};
 
                 janrain.settings.tokenUrl = 'http://proiecte";
-        // line 534
+        // line 536
         echo $this->env->getExtension('routing')->getPath("testToken");
         echo "';
                 function isReady() {
@@ -543,42 +545,42 @@ class __TwigTemplate_70db9cd17588a3d6f67eda4dba0f87c8db6c310843071c215a48e358e92
         </script>
 
         ";
-        // line 560
+        // line 562
         $this->displayBlock('javascript', $context, $blocks);
-        // line 563
+        // line 565
         echo "    </body>
 </html>
 
                             ";
-        // line 567
+        // line 569
         echo "                                ";
         if (array_key_exists("userIp", $context)) {
-            // line 568
+            // line 570
             echo "<p>Adddr: ";
             echo twig_escape_filter($this->env, $this->getContext($context, "userIp"), "html", null, true);
             echo ".</p>
                                 ";
         }
-        // line 570
+        // line 572
         echo "
                                 ";
-        // line 571
+        // line 573
         if (array_key_exists("userSiteHits", $context)) {
-            // line 572
+            // line 574
             echo "<p>You visit this site <b>";
             echo twig_escape_filter($this->env, $this->getContext($context, "userSiteHits"), "html", null, true);
             echo "</b> time(s).</p>
                                 ";
         }
-        // line 574
+        // line 576
         echo "
                                 ";
-        // line 575
+        // line 577
         if (array_key_exists("browserName", $context)) {
-            // line 576
+            // line 578
             echo "                                    ";
             if (array_key_exists("browserVers", $context)) {
-                // line 577
+                // line 579
                 echo "<p>Browser Name: ";
                 echo twig_escape_filter($this->env, twig_capitalize_string_filter($this->env, $this->getContext($context, "browserName")), "html", null, true);
                 echo " <b>v.</b> ";
@@ -586,15 +588,15 @@ class __TwigTemplate_70db9cd17588a3d6f67eda4dba0f87c8db6c310843071c215a48e358e92
                 echo "</p>
                                     ";
             }
-            // line 579
+            // line 581
             echo "                                ";
         }
-        // line 580
+        // line 582
         echo "
                                 ";
-        // line 581
+        // line 583
         if (array_key_exists("allTimeUsers", $context)) {
-            // line 582
+            // line 584
             echo "<p>Trafic: <b>";
             echo twig_escape_filter($this->env, $this->getContext($context, "allTimeUsers"), "html", null, true);
             echo "</b> unique users all time.</p>
@@ -796,12 +798,12 @@ class __TwigTemplate_70db9cd17588a3d6f67eda4dba0f87c8db6c310843071c215a48e358e92
                     ";
     }
 
-    // line 560
+    // line 562
     public function block_javascript($context, array $blocks = array())
     {
         echo " 
             ";
-        // line 562
+        // line 564
         echo "        ";
     }
 
@@ -817,6 +819,6 @@ class __TwigTemplate_70db9cd17588a3d6f67eda4dba0f87c8db6c310843071c215a48e358e92
 
     public function getDebugInfo()
     {
-        return array (  805 => 562,  800 => 560,  774 => 136,  771 => 135,  765 => 126,  759 => 122,  753 => 118,  733 => 95,  727 => 91,  718 => 85,  714 => 84,  710 => 82,  708 => 81,  703 => 78,  697 => 76,  691 => 74,  689 => 73,  684 => 71,  677 => 67,  674 => 66,  668 => 64,  662 => 62,  660 => 61,  653 => 58,  651 => 57,  649 => 56,  642 => 52,  635 => 47,  621 => 32,  618 => 31,  612 => 22,  606 => 8,  598 => 582,  596 => 581,  593 => 580,  590 => 579,  582 => 577,  579 => 576,  577 => 575,  574 => 574,  568 => 572,  566 => 571,  563 => 570,  557 => 568,  554 => 567,  549 => 563,  547 => 560,  518 => 534,  388 => 406,  292 => 311,  164 => 184,  159 => 178,  154 => 175,  150 => 174,  144 => 171,  140 => 170,  134 => 167,  130 => 166,  121 => 159,  119 => 135,  109 => 127,  107 => 126,  102 => 123,  100 => 122,  95 => 119,  93 => 118,  84 => 111,  82 => 31,  72 => 23,  70 => 22,  63 => 18,  57 => 15,  53 => 14,  49 => 13,  45 => 12,  38 => 8,  32 => 5,  27 => 2,);
+        return array (  807 => 564,  802 => 562,  776 => 136,  773 => 135,  767 => 126,  761 => 122,  755 => 118,  735 => 95,  729 => 91,  720 => 85,  716 => 84,  712 => 82,  710 => 81,  705 => 78,  699 => 76,  693 => 74,  691 => 73,  686 => 71,  679 => 67,  676 => 66,  670 => 64,  664 => 62,  662 => 61,  655 => 58,  653 => 57,  651 => 56,  644 => 52,  637 => 47,  623 => 32,  620 => 31,  614 => 22,  608 => 8,  600 => 584,  598 => 583,  595 => 582,  592 => 581,  584 => 579,  581 => 578,  579 => 577,  576 => 576,  570 => 574,  568 => 573,  565 => 572,  559 => 570,  556 => 569,  551 => 565,  549 => 562,  520 => 536,  390 => 408,  292 => 311,  164 => 184,  159 => 178,  154 => 175,  150 => 174,  144 => 171,  140 => 170,  134 => 167,  130 => 166,  121 => 159,  119 => 135,  109 => 127,  107 => 126,  102 => 123,  100 => 122,  95 => 119,  93 => 118,  84 => 111,  82 => 31,  72 => 23,  70 => 22,  63 => 18,  57 => 15,  53 => 14,  49 => 13,  45 => 12,  38 => 8,  32 => 5,  27 => 2,);
     }
 }
