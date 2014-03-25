@@ -1,0 +1,31 @@
+{% extends 'BundlePlacesBundle::base1.html.twig' %}
+{% block content %} 
+	{% set counter = 0 %}
+	{% for i in 0..6 %}
+
+		<div>
+		 	{% for j in 0..6 %}
+			 	{% if counter > 19 %}
+			 		{% set counter = 0 %}
+			 	{% else %}
+			 		{% set counter = counter+1 %}
+			 	{% endif %}
+		 		{% if i == 3%}
+		 			<img id="{{counter}}" class="no-hovering" src="{{ asset('bundles/bundleplaces/images/fast-food.jpg') }}"/>
+	 			{% else %}
+			 		<img id="{{counter}}" src="{{ asset('bundles/bundleplaces/images/fast-food.jpg') }}"/>
+			 	{% endif %}
+	    	{% endfor %}
+    	</div>
+    {% endfor %}
+{% endblock %}	
+
+{% block javascript %}
+	<script>
+    	var places = {{ places|json_encode|raw }};
+	</script>
+{% endblock %}
+
+{% block stylesheets %}
+     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/home.css') }}" />
+{% endblock %}

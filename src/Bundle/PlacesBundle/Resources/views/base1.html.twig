@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="shortcut icon" href="{{ asset('bundles/bundleplaces/images/icons/glyph-icons-gradient/magnifying-glass.png') }}" type="image/x-icon">
+        <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Places App | {% block title %}  {% endblock %}</title>
+
+        <!-- Stylesheets -->
+        <!-- App css -->
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/style.css') }}" />
+<!--         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/app-homepage.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/app-typehead-styles.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/app-slide-navigation.css') }}" /> -->
+
+        <!-- Bootstrap css -->
+        <!--<link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/bootstrap.min.css') }}" />-->
+        <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.1/css/bootstrap.css" />
+
+        <!-- Append css -->
+        {% block stylesheets %} {% endblock %}
+    </head>
+    <body>
+        <header id="header-section">
+            {% block header %}
+                <div id ="search" class="search-bar">
+                    <div class="search-bar-header">
+                        <label>Yummy</label>
+                        <ul class="social-bar">
+                            <li><a href="#"></a></li>
+                            <li><a href="#"></a></li>
+                            <li><a href="#"></a></li>
+                        </ul>
+                        <ul class="menu-bar">
+                            <li class="menu-button">
+                                <a href="#">CONTACT</a>
+                            </li>
+                            <li class="menu-button">
+                                <a href="#">ABOUT</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="search-input">
+                        <div class="divider"></div>
+                        <input value="la haleala prin cluj"></input>
+                        <button></button>
+                    </div>
+                    <div class="search-bar-footer">
+                        <ul class="search-filters">
+                            <li>
+                                <input type="checkbox" class="css-checkbox" name="sex-checkbox" id="sex-checkbox"></input>
+                                <label for="sex-checkbox" class="css-label">SEX</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="css-checkbox" name="drink-checkbox" id="drink-checkbox"></input>
+                                <label for="drink-checkbox" class="css-label">DRINK</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="css-checkbox" name="food-checkbox" id="food-checkbox"></input>
+                                <label for="food-checkbox" class="css-label">FOOD</label>
+                            </li>
+                        </ul>
+                    </div>              
+            </div><!--end search bar--> 
+            {% endblock %}
+        </header>
+        <section id="main-container">
+            {% block content %} {% endblock %}
+            {% block sidebar %} {% endblock %}
+        </section>
+        <footer class="footer">
+            <div class="container" style="border-top:1px solid #ccc;">
+                {% block footer %}
+                {% endblock %}
+            </div>
+        </footer>
+
+        <!-- Javascripts -->
+        <!-- jQuery -->
+        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/jquery-1.9.1.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/jquery-ui.js') }}"></script>
+
+        <!-- Bootstrap js -->
+        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/bootstrap.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/typeahead.js')  }}"></script>
+
+        <!-- App js -->
+        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/image-hover.js') }}"></script>
+        <!-- for autocomplete -->
+        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/searchautocomplete.js') }}"></script>
+        {% block javascript %} 
+            {# private js - overwrite in view if needed #}
+        {% endblock %}
+    </body>
+</html>

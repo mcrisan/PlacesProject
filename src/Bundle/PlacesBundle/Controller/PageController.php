@@ -33,9 +33,9 @@ class PageController extends Controller {
         $url = "http://localhost/PlacesProject/web/app_dev.php/homeplace";
         $json = file_get_contents($url);
         $data = json_decode($json, TRUE);
-        var_dump($data);
+        //var_dump($data);
 
-        return $this->render("BundlePlacesBundle:About:about.html.twig");
+        return $this->render("BundlePlacesBundle:Page:home.html.twig", $data);
 
         //return $this->redirect($this->generateUrl('index'));
     }
