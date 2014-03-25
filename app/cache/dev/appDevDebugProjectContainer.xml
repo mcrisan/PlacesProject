@@ -38,6 +38,9 @@
     <parameter key="api_key">AIzaSyBcy7J0eaTaMSxAj7re31bLUKSr9W9EPYE</parameter>
     <parameter key="api_key2">AIzaSyBGEQqVNDD_xkI7j4viU-5qMa-SYUOX_6g</parameter>
     <parameter key="latlng">46.7592,23.5577</parameter>
+    <parameter key="server">localhost</parameter>
+    <parameter key="port">11211</parameter>
+    <parameter key="distance">0.5</parameter>
     <parameter key="controller_resolver.class">Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver</parameter>
     <parameter key="controller_name_converter.class">Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser</parameter>
     <parameter key="response_listener.class">Symfony\Component\HttpKernel\EventListener\ResponseListener</parameter>
@@ -1571,7 +1574,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>532b083bc42fd</argument>
+            <argument>533178c06cfbd</argument>
           </service>
         </argument>
       </argument>
@@ -1901,7 +1904,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>532b083bc42fd</argument>
+            <argument>533178c06cfbd</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
           </service>
         </argument>

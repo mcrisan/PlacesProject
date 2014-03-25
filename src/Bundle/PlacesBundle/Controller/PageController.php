@@ -30,11 +30,26 @@ class PageController extends Controller {
     // Preload method - insert/update in/the users_ip table and redirect to homePage
     function preLoadAction() {
 
-        $url = "http://localhost/PlacesProject/web/app_dev.php/homeplace";
-        $json = file_get_contents($url);
-        $data = json_decode($json, TRUE);
-        var_dump($data);
+        //$url = "http://localhost/PlacesProject/web/app_dev.php/homeplace";
+        //$json = file_get_contents($url);
+        //$data = json_decode($json, TRUE);
+        //var_dump($data);
 
+        $this->em = $this->getDoctrine()->getManager();
+        $lat = 46.7741560;
+        $lng = 23.5937320;
+        $dist = 0.1;
+        $name = "Casa De Insolvenţă Transilvania";
+        $places = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
+                ->getPlacesByDistance($name, $lat, $lng, $dist);
+        
+        //var_dump($places);
+        //$name = "Casa De Insolvenţă Transilvania";
+        $search = $this->get('search');
+        $json = $search->searchByName($name);
+        $data = json_decode($json);
+        var_dump($data->details);
+        
         return $this->render("BundlePlacesBundle:About:about.html.twig");
 
         //return $this->redirect($this->generateUrl('index'));
@@ -144,11 +159,11 @@ class PageController extends Controller {
         $url = "http://localhost/PlacesProject/web/app_dev.php/searchplace/$name";
         $json = file_get_contents($url);
         $data = json_decode($json, TRUE);
-        if ($session->has('places')) {
-            $places = $session->get('places');
-        }else{
-            echo "nu e sesiune";
-        }
+        //if ($session->has('places')) {
+        //    $places = $session->get('places');
+        //}else{
+            //echo "nu e sesiune";
+        //}
         $places = $data['details']['places'];
         $totalResults = count($places);
         $placeInfo = $data['details']['placeInfos'];

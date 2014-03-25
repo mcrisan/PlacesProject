@@ -28,6 +28,12 @@ class SearchWebServiceDAO {
                     ->getPlacesNamesAndIds($name);
     }
     
+    public function getPlacesByDistance($name, $lat, $lng, $dist){
+        
+        return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
+                    ->getPlacesByDistance($name, $lat, $lng, $dist);
+    }
+    
      public function getPlacesNamesAndIdsByAddress($address){
         
         return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
