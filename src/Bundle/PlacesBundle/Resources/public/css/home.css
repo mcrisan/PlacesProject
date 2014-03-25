@@ -98,8 +98,8 @@ body {
     width: 60%;
     background-color: white;
     position: absolute;
-    margin-left: 28px;
-	border-left: solid 25px rgb(238,238,238);
+    margin-left: 50px;
+	border: solid 2px rgb(238,238,238);
 	padding-left: 5px;    
 }
 .ui-autocomplete-loading {
@@ -108,11 +108,29 @@ body {
     //background-image: url('http://localhost/PlacesProject/web/bundles/bundleproject/images/loader.gif');
 }
 
+#autocomplete-result .restaurant-icon{
+	background: url('../images/restaurant-icon.png') no-repeat;
+	width: 50px;
+	height: 50px;
+	margin-left: 135px;
+	margin-top: 10px;
+}
+
+#autocomplete-result .address-icon{
+	background: url('../images/address-icon.png') no-repeat;
+	width: 35px;
+	height: 56px;
+	margin-left: 143px;
+	margin-top: 10px;
+}
+
 .show{
     //background: none repeat scroll 0 0 #CCAABB;
     //border: 1px solid #000000;
     cursor: pointer;
     padding: 1px;
+    font-size: 18px;
+    padding-left: 20px;
 
 }
 .show:hover {
