@@ -21,11 +21,11 @@ class FormsController extends Controller {
     // Render place page
     public function renderPlaceAction($param) {
         $placeName = $this->gen_slug($param);
-        $request = Request::createFromGlobals();
-        $searchInputVal = $request->query->get('input');
+        //$request = Request::createFromGlobals();
+        //$searchInputVal = $request->query->get('input');
         
-        $formsop = $this->get('formsop');
-        $formsop->checkPlaceBySlug($placeName, $searchInputVal);
+        //$formsop = $this->get('formsop');
+        //$formsop->checkPlaceBySlug($placeName, $searchInputVal);
         //$placeName = $this->$this->getRequest()->get('param');
 
         $this->em = $this->getDoctrine()->getManager();
@@ -278,29 +278,7 @@ class FormsController extends Controller {
         $b = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 's', 'a', 'a', 'a', 'a', 'a', 'a', 'ae', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'D', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'IJ', 'ij', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'l', 'l', 'N', 'n', 'N', 'n', 'N', 'n', 'n', 'O', 'o', 'O', 'o', 'O', 'o', 'OE', 'oe', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'S', 's', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 'y', 'Y', 'Z', 'z', 'Z', 'z', 'Z', 'z', 's', 'f', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i', 'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'A', 'a', 'AE', 'ae', 'O', 'o');
         return strtolower(preg_replace(array('/[^a-zA-Z0-9 -]/', '/[ -]+/', '/^-|-$/'), array('', '-', ''), str_replace($a, $b, $str)));
     }
-
-   function doAutocomAction() {
-       $session = $this->get('session');
-       $formsop = $this->get('formsop');
-       $em = $this->getDoctrine()->getManager();
-       $request = Request::createFromGlobals();
-       $input = $request->request->get('search');
-       //$input = $request->query->get('search');
-       $session->set('search', $input);
-//        if (apc_exists($input)) {
-//            $data = apc_fetch($input);
-//            $placeName = $data['placeName'];
-//            $places = $data['places'];
-//        } else {
-           $placeName = $formsop->getPlacesNames($input);
-           //$places = $formsop->getPlaces2($input);
-           $places ="";
-        //   apc_store($input, array('placeName' => $placeName, 'places' => $places));
-      // }
-
-       return $this->render("BundlePlacesBundle:Places:autocomplete.html.twig", array('place' => $placeName, 'placesAdd' => $places));
-   }
-    
+   
     function getPlacesNamesAction(){
         $formsop = $this->get('formsop');
         $placeName = $formsop->getAllPlacesNames();
@@ -312,27 +290,7 @@ class FormsController extends Controller {
        
        return $resp;
     }
-    
-    function insertPlacesAction(){
-        $request = Request::createFromGlobals();
-        $input = $request->request->get('search');
-        $address = $request->request->get('address');
-        //$input = $request->query->get('search');
-        $formsop = $this->get('formsop');
-        $formsop->insertPlaces($input, $address);
-        
-        return $this->render("BundlePlacesBundle:About:about.html.twig");
-    }
-    
-    function homepagePlacesAction(){
-        $request = Request::createFromGlobals();
-        $input = $request->request->get('search');
-        //$input = $request->query->get('search');
-        $formsop = $this->get('formsop');
-        $formsop->insertHomepagePlaces($input);
-        
-        return $this->render("BundlePlacesBundle:About:about.html.twig");
-    }
+
 }
 
 ?>

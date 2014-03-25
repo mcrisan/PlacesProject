@@ -234,13 +234,13 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         // renderPlace
-        if (0 === strpos($pathinfo, '/renderPlace') && preg_match('#^/renderPlace/(?P<param>[^/]++)(?:/(?P<search>[^/]++))?$#s', $pathinfo, $matches)) {
+        if (0 === strpos($pathinfo, '/renderPlace') && preg_match('#^/renderPlace/(?P<param>[^/]++)$#s', $pathinfo, $matches)) {
             if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                 $allow = array_merge($allow, array('GET', 'HEAD'));
                 goto not_renderPlace;
             }
 
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'renderPlace')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::renderPlaceAction',  'search' => 'ma',));
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'renderPlace')), array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::renderPlaceAction',));
         }
         not_renderPlace:
 

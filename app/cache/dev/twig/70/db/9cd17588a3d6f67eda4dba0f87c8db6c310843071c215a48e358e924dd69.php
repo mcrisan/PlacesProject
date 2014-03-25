@@ -154,431 +154,54 @@ class __TwigTemplate_70db9cd17588a3d6f67eda4dba0f87c8db6c310843071c215a48e358e92
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/js/app-core.js"), "html", null, true);
         echo "\"></script>
         <!-- for autocomplete -->
-        ";
-        // line 178
-        echo "
+        <script type=\"text/javascript\" src=\"";
+        // line 177
+        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/js/searchautocomplete.js"), "html", null, true);
+        echo "\"></script>
+
 
 
         ";
         // line 184
-        echo "        <script>
-            \$(function() {
-                var geocoder = new google.maps.Geocoder();
-                var data2;
-
-                \$.ajax({
-                    type: \"POST\",
-                    url: \"placesnames\",
-                    cache: false,
-                    dataType: 'json',
-                    success: function(data)
-                    {
-                        data2 = data;
-                        //console.log(data[0].placeName);
-                    }
-                });
-
-                // \$(\"#searchh\").autocomplete({
-                //     source: availableTags
-                // });
-
-
-
-
-
-
-                \$(\".search\").keyup(function()
-                {
-                    //\$( \".search\" ).addClass( \"ui-autocomplete-loading\" );
-                    \$(\"#autocomplete-result\").empty();
-                    \$(\"#autocomplete-result\").append(\"<b>Places:</b> <br/>\");
-                    var searchid = \$(this).val();
-                    var dataString = 'search=' + searchid;
-                    if (searchid.length > 0) {
-                        //\$(\".search\").addClass(\"ui-autocomplete-loading\");
-                    }
-                    if (searchid != '')
-                    {
-                        // console.log(data2[0].placeName);
-                        var nr = 0;
-                        for (var i = 0; i < data2.length; i++) {
-                            if (data2[i].placeName.toLowerCase().indexOf(searchid) != -1) {
-                                nr++;
-                                var span = \$('<span/>', {
-                                    class: \"name\",
-                                    text: data2[i].placeName
-                                });
-                                var div = \$('<div/>', {
-                                    class: \"show\",
-                                    align: \"left\",
-                                    text: nr + \". \"
-                                });
-                                \$(div).append(span);
-                                //var image = \$('<span/>', {class: \"bigimg\", text: \"s\"});
-                                \$(\"#autocomplete-result\").append(div);
-                                //\$(\"#autocomplete-result\").append(\"<br/>\" );
-                                //console.log(data2[i].placeName);
-                            }
-
-
-                        }
-                        getAddress(searchid);
-                    }
-                    return false;
-                });
-
-                function getAddress(name) {
-                    \$(\"#autocomplete-result\").append(\"<b>Address:</b> <br/>\");
-                    address = name + \" Cluj Napoca, Romania\";
-                    var nr = 0;
-                    geocoder.geocode({'address': address}, function(results, status) {
-                        if (status == google.maps.GeocoderStatus.OK) {
-                            for (var i = 0; i < results.length; i++) {
-                                nr++;
-                                latitude = results[0].geometry.location.lat();
-                                longitude = results[0].geometry.location.lng();
-                                \$(\"#search-lat\").val(latitude);
-                                \$(\"#search-lng\").val(longitude);
-                                var addr = results[i].formatted_address;
-                                //console.log(\"Geocode: \" + addr);
-                                var span = \$('<span/>', {
-                                    class: \"name\",
-                                    text: addr
-                                });
-                                var div = \$('<div/>', {
-                                    class: \"show\",
-                                    align: \"left\",
-                                    text: nr + \". \"
-                                });
-                                \$(div).append(span);
-                                //var image = \$('<span/>', {class: \"bigimg\", text: \"s\"});
-                                \$(\"#autocomplete-result\").append(div);
-
-                            }
-                        }
-                    });
-                }
-
-                jQuery(\"#autocomplete-result\").on(\"click\", function(e) {
-                    var \$clicked = \$(e.target);
-                    //var \$name = \$clicked.parent().find('.name').html();
-                    //alert(\$name);
-                    var \$name = \$clicked.find('.name').html();
-                    if (typeof \$name == 'undefined') {
-                        \$name = \$clicked.parent().find('.name').html();
-                    }
-                    //alert(\$name);
-                    var decoded = \$(\"<div/>\").html(\$name).text();
-                    \$('#searchh').val(decoded);
-                });
-                jQuery(document).on(\"click\", function(e) {
-                    var \$clicked = \$(e.target);
-                    if (!\$clicked.hasClass(\"search\")) {
-                        jQuery(\"#autocomplete-result\").fadeOut();
-                    }
-                });
-                \$('#searchh').click(function() {
-                    jQuery(\"#autocomplete-result\").fadeIn();
-                });
-
-                
-            });
-        </script>
-
-        <script src=\"https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places\"></script>
+        echo "       <script src=\"https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places\"></script>
 
         ";
-        // line 311
-        echo "        <script>
-            \$(function() {
-                var geocoder = new google.maps.Geocoder();
-                var address = \" Cluj Napoca, Romania\";
-                geocoder.geocode({'address': address}, function(results, status) {
-                        if (status == google.maps.GeocoderStatus.OK) {
-                            for (var i = 0; i < results.length; i++) {                               
-                                latitude = results[0].geometry.location.lat();
-                                longitude = results[0].geometry.location.lng();
-                                \$(\"#search-lat\").val(latitude);
-                                \$(\"#search-lng\").val(longitude);
-                                
-
-                            }
-                        }
-                    });
-                //getAddress(\"traian\");
-                latitude = \$(\"#search-lat\").val();
-                longitude = \$(\"#search-lng\").val();
-                //console.log(address);
-               //console.log(\"11lat: \" + latitude + \" long: \" + longitude);
-            });
-            
-            function initialize_index() {
-                    latitude = \$(\"#search-lat\").val();
-                    longitude = \$(\"#search-lng\").val();
-                    var pyrmont = new google.maps.LatLng(latitude, longitude);
-                    map = new google.maps.Map(document.getElementById('map-canvas'), {
-                        center: pyrmont,
-                        zoom: 15
-                    });
-                    var request = {
-                        location: pyrmont,
-                        radius: 500,
-                        types: ['store']
-                    };
-                    infowindow = new google.maps.InfoWindow();
-                    var service = new google.maps.places.PlacesService(map);
-                    service.nearbySearch(request, callback_index);
-
-                    //event.preventDefault();
-                //})
-            }
-
-            function callback_index(results, status, pagination) {
-                //alert(\"call\");
-                var result = [];
-                var name;
-                var extId;
-                var detref;
-                var rating;
-                var tags;
-                var address;
-                if (status != google.maps.places.PlacesServiceStatus.OK) {
-                    return;
-                } else {
-                    for (var i = 0; i < results.length; i++) {
-                        name = results[i].name;
-                        extId = results[i].id;
-                        detref = results[i].reference;
-                        tags = results[i].types;
-                        address = results[i].vicinity;
-                        if (typeof results[i].rating !== 'undefined') {
-                            rating = results[i].rating;
-                            //console.log(rating);
-                        } else {
-                            rating = \"\";
-                        }
-                        //console.log(i + \" name: \" + name);
-                        result[i] = {\"name\": name, \"extId\": extId, \"detref\": detref, \"rating\": rating, \"tags\": tags, \"address\": address};
-                    }
-                    var jsonString = JSON.stringify(result);
-                    //alert(result[0][\"extId\"]);
-                    \$.ajax({
-                        type: \"POST\",
-                        url: \"homepageplaces\",
-                        data: 'search=' + jsonString,
-                        cache: false,
-                        success: function(html)
-                        {
-                            //\$(\"#autocomplete-result\").html(html).show();
-                            //\$( \".search\" ).removeClass( \"ui-autocomplete-loading\" );
-                        }
-                    });
-                    if (pagination.hasNextPage) {
-                        //alert(\"pag\");
-                        //pagination.nextPage();
-                    }
-                }
-            }
-            google.maps.event.addDomListener(window, 'load', initialize_index);
-        </script>
-
-
-        ";
-        // line 406
-        echo "
-        
-        <script>
-            var map;
-            var infowindow;
-            var geocoder2 = new google.maps.Geocoder();
-            var address = \"cluj napoca\";
-            var latitude;
-            var longitude;
-
-            function initialize() {
-                //\$(\"#sbutton\").on('click', function(event) {
-                \$(\"#autocomplete-result\").on('click', function(event) {
-                    event.preventDefault();
-                    address = \$(\"#searchh\").val();
-                    latitude = \$(\"#search-lat\").val();
-                    longitude = \$(\"#search-lng\").val();
-                    console.log(address);
-                    console.log(\"lat: \" + latitude + \" long: \" + longitude);
-                    var pyrmont = new google.maps.LatLng(latitude, longitude);
-                    //console.log(\"Geocode: \" + latitude);
-                    map = new google.maps.Map(document.getElementById('map-canvas'), {
-                        center: pyrmont,
-                        zoom: 15
-                    });
-                    var request = {
-                        location: pyrmont,
-                        radius: 500,
-                        types: ['store']
-                    };
-                    infowindow = new google.maps.InfoWindow();
-                    var service = new google.maps.places.PlacesService(map);
-                    service.nearbySearch(request, callback);
-
-                    //event.preventDefault();
-                })
-            }
-
-            function callback(results, status, pagination) {
-                //alert(\"call\");
-                var result = [];
-                var name;
-                var extId;
-                var detref;
-                var rating;
-                if (status != google.maps.places.PlacesServiceStatus.OK) {
-                    return;
-                } else {
-                    for (var i = 0; i < results.length; i++) {
-                        name = results[i].name;
-                        extId = results[i].id;
-                        detref = results[i].reference;
-                        if (typeof results[i].rating !== 'undefined') {
-                            rating = results[i].rating;
-                            console.log(rating);
-                        } else {
-                            rating = \"\";
-                        }
-                        console.log(i + \" name: \" + name);
-                        result[i] = {\"name\": name, \"extId\": extId, \"detref\": detref, \"rating\": rating};
-                    }
-                    var jsonString = JSON.stringify(result);
-                    //alert(result[0][\"extId\"]);
-                    \$.ajax({
-                        type: \"POST\",
-                        url: \"insertplaces\",
-                        data: 'search=' + jsonString + '&address=' + address,
-                        cache: false,
-                        success: function(html)
-                        {
-                            //\$(\"#autocomplete-result\").html(html).show();
-                            //\$( \".search\" ).removeClass( \"ui-autocomplete-loading\" );
-                        }
-                    });
-                    for (var i = 0; i < results.length; i++) {
-                        //createMarker(results[i]);
-                    }
-                    if (pagination.hasNextPage) {
-                        pagination.nextPage();
-                    }
-                }
-            }
-            
-            function placeDetails(reference) {
-                var request = {
-                    reference: 'CnRkAAAAGnBVNFDeQoOQHzgdOpOqJNV7K9-c5IQrWFUYD9TNhUmz5-aHhfqyKH0zmAcUlkqVCrpaKcV8ZjGQKzB6GXxtzUYcP-muHafGsmW-1CwjTPBCmK43AZpAwW0FRtQDQADj3H2bzwwHVIXlQAiccm7r4xIQmjt_Oqm2FejWpBxLWs3L_RoUbharABi5FMnKnzmRL2TGju6UA4k'
-                };
-
-                service = new google.maps.places.PlacesService(map);
-                service.getDetails(request, callback);
-
-                function callback(place, status) {
-                    if (status == google.maps.places.PlacesServiceStatus.OK) {
-                        createMarker(place);
-                    }
-                }
-            }
-            function createMarker(place) {
-                var result = [];
-                var name = place.name;
-                var extId = place.id;
-                var detref = place.reference;
-                //alert(name);
-                var placeLoc = place.geometry.location;
-                var marker = new google.maps.Marker({
-                    map: map,
-                    position: place.geometry.location
-                });
-
-                google.maps.event.addListener(marker, 'click', function() {
-                    infowindow.setContent(place.name);
-                    infowindow.open(map, this);
-                });
-            }
-
-            google.maps.event.addDomListener(window, 'load', initialize);
-
-        </script>
-
-
-        <!-- Social sign-in plugin -->
-        <script type=\"text/javascript\">
-            (function() {
-                if (typeof window.janrain !== 'object')
-                    window.janrain = {};
-                if (typeof window.janrain.settings !== 'object')
-                    window.janrain.settings = {};
-
-                janrain.settings.tokenUrl = 'http://proiecte";
-        // line 534
-        echo $this->env->getExtension('routing')->getPath("testToken");
-        echo "';
-                function isReady() {
-                    janrain.ready = true;
-                }
-                ;
-                if (document.addEventListener) {
-                    document.addEventListener(\"DOMContentLoaded\", isReady, false);
-                } else {
-                    window.attachEvent('onload', isReady);
-                }
-
-                var e = document.createElement('script');
-                e.type = 'text/javascript';
-                e.id = 'janrainAuthWidget';
-
-                if (document.location.protocol === 'https:') {
-                    e.src = 'https://rpxnow.com/js/lib/placeapp/engage.js';
-                } else {
-                    e.src = 'http://widget-cdn.rpxnow.com/js/lib/placeapp/engage.js';
-                }
-
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(e, s);
-            })();
-        </script>
-
-        ";
-        // line 560
+        // line 186
         $this->displayBlock('javascript', $context, $blocks);
-        // line 563
+        // line 189
         echo "    </body>
 </html>
 
                             ";
-        // line 567
+        // line 193
         echo "                                ";
         if (array_key_exists("userIp", $context)) {
-            // line 568
+            // line 194
             echo "<p>Adddr: ";
             echo twig_escape_filter($this->env, $this->getContext($context, "userIp"), "html", null, true);
             echo ".</p>
                                 ";
         }
-        // line 570
+        // line 196
         echo "
                                 ";
-        // line 571
+        // line 197
         if (array_key_exists("userSiteHits", $context)) {
-            // line 572
+            // line 198
             echo "<p>You visit this site <b>";
             echo twig_escape_filter($this->env, $this->getContext($context, "userSiteHits"), "html", null, true);
             echo "</b> time(s).</p>
                                 ";
         }
-        // line 574
+        // line 200
         echo "
                                 ";
-        // line 575
+        // line 201
         if (array_key_exists("browserName", $context)) {
-            // line 576
+            // line 202
             echo "                                    ";
             if (array_key_exists("browserVers", $context)) {
-                // line 577
+                // line 203
                 echo "<p>Browser Name: ";
                 echo twig_escape_filter($this->env, twig_capitalize_string_filter($this->env, $this->getContext($context, "browserName")), "html", null, true);
                 echo " <b>v.</b> ";
@@ -586,15 +209,15 @@ class __TwigTemplate_70db9cd17588a3d6f67eda4dba0f87c8db6c310843071c215a48e358e92
                 echo "</p>
                                     ";
             }
-            // line 579
+            // line 205
             echo "                                ";
         }
-        // line 580
+        // line 206
         echo "
                                 ";
-        // line 581
+        // line 207
         if (array_key_exists("allTimeUsers", $context)) {
-            // line 582
+            // line 208
             echo "<p>Trafic: <b>";
             echo twig_escape_filter($this->env, $this->getContext($context, "allTimeUsers"), "html", null, true);
             echo "</b> unique users all time.</p>
@@ -796,12 +419,12 @@ class __TwigTemplate_70db9cd17588a3d6f67eda4dba0f87c8db6c310843071c215a48e358e92
                     ";
     }
 
-    // line 560
+    // line 186
     public function block_javascript($context, array $blocks = array())
     {
         echo " 
             ";
-        // line 562
+        // line 188
         echo "        ";
     }
 
@@ -817,6 +440,6 @@ class __TwigTemplate_70db9cd17588a3d6f67eda4dba0f87c8db6c310843071c215a48e358e92
 
     public function getDebugInfo()
     {
-        return array (  805 => 562,  800 => 560,  774 => 136,  771 => 135,  765 => 126,  759 => 122,  753 => 118,  733 => 95,  727 => 91,  718 => 85,  714 => 84,  710 => 82,  708 => 81,  703 => 78,  697 => 76,  691 => 74,  689 => 73,  684 => 71,  677 => 67,  674 => 66,  668 => 64,  662 => 62,  660 => 61,  653 => 58,  651 => 57,  649 => 56,  642 => 52,  635 => 47,  621 => 32,  618 => 31,  612 => 22,  606 => 8,  598 => 582,  596 => 581,  593 => 580,  590 => 579,  582 => 577,  579 => 576,  577 => 575,  574 => 574,  568 => 572,  566 => 571,  563 => 570,  557 => 568,  554 => 567,  549 => 563,  547 => 560,  518 => 534,  388 => 406,  292 => 311,  164 => 184,  159 => 178,  154 => 175,  150 => 174,  144 => 171,  140 => 170,  134 => 167,  130 => 166,  121 => 159,  119 => 135,  109 => 127,  107 => 126,  102 => 123,  100 => 122,  95 => 119,  93 => 118,  84 => 111,  82 => 31,  72 => 23,  70 => 22,  63 => 18,  57 => 15,  53 => 14,  49 => 13,  45 => 12,  38 => 8,  32 => 5,  27 => 2,);
+        return array (  423 => 186,  397 => 136,  394 => 135,  388 => 126,  376 => 118,  356 => 95,  350 => 91,  341 => 85,  337 => 84,  333 => 82,  331 => 81,  326 => 78,  314 => 74,  312 => 73,  307 => 71,  297 => 66,  291 => 64,  285 => 62,  283 => 61,  276 => 58,  272 => 56,  265 => 52,  241 => 31,  235 => 22,  216 => 206,  213 => 205,  205 => 203,  202 => 202,  200 => 201,  197 => 200,  191 => 198,  189 => 197,  177 => 193,  172 => 189,  170 => 186,  166 => 184,  159 => 177,  144 => 171,  140 => 170,  134 => 167,  130 => 166,  121 => 159,  119 => 135,  109 => 127,  107 => 126,  102 => 123,  95 => 119,  93 => 118,  84 => 111,  82 => 31,  72 => 23,  70 => 22,  63 => 18,  57 => 15,  53 => 14,  49 => 13,  45 => 12,  38 => 8,  32 => 5,  27 => 2,  871 => 403,  867 => 401,  862 => 399,  857 => 398,  851 => 393,  785 => 330,  778 => 321,  772 => 317,  766 => 313,  763 => 312,  755 => 309,  750 => 307,  746 => 306,  742 => 305,  738 => 304,  733 => 303,  730 => 302,  725 => 300,  721 => 299,  717 => 298,  713 => 297,  708 => 296,  703 => 294,  699 => 293,  695 => 292,  691 => 291,  686 => 290,  681 => 288,  677 => 287,  673 => 286,  669 => 285,  664 => 284,  659 => 282,  655 => 281,  651 => 280,  647 => 279,  642 => 278,  637 => 276,  633 => 275,  629 => 274,  625 => 273,  620 => 272,  617 => 271,  615 => 270,  610 => 268,  601 => 267,  598 => 266,  596 => 265,  592 => 264,  585 => 260,  580 => 258,  576 => 256,  573 => 255,  570 => 254,  548 => 236,  545 => 235,  541 => 234,  536 => 231,  533 => 229,  514 => 202,  494 => 195,  492 => 194,  488 => 193,  482 => 189,  476 => 186,  472 => 185,  468 => 184,  464 => 183,  460 => 182,  456 => 180,  452 => 179,  444 => 173,  436 => 167,  428 => 188,  420 => 155,  412 => 149,  410 => 148,  405 => 146,  401 => 145,  396 => 144,  393 => 143,  389 => 142,  382 => 122,  377 => 135,  374 => 133,  371 => 132,  368 => 131,  355 => 128,  347 => 126,  334 => 115,  327 => 113,  320 => 76,  317 => 109,  313 => 107,  310 => 106,  303 => 102,  300 => 67,  296 => 99,  293 => 98,  290 => 97,  286 => 96,  280 => 92,  274 => 57,  268 => 89,  263 => 87,  258 => 47,  254 => 85,  249 => 82,  246 => 81,  244 => 32,  238 => 77,  233 => 74,  229 => 8,  221 => 208,  219 => 207,  211 => 67,  207 => 65,  201 => 63,  199 => 62,  194 => 60,  190 => 58,  186 => 196,  180 => 194,  178 => 54,  171 => 52,  165 => 51,  161 => 50,  154 => 175,  150 => 174,  147 => 46,  136 => 44,  131 => 43,  129 => 42,  125 => 41,  120 => 39,  116 => 38,  112 => 37,  108 => 36,  103 => 35,  100 => 122,  97 => 32,  80 => 31,  64 => 17,  61 => 16,  50 => 9,  46 => 8,  43 => 7,  40 => 6,  34 => 3,  29 => 14,);
     }
 }

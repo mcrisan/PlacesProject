@@ -16,3 +16,6 @@ parameters:
     api_key : AIzaSyBcy7J0eaTaMSxAj7re31bLUKSr9W9EPYE
     api_key2 : AIzaSyBGEQqVNDD_xkI7j4viU-5qMa-SYUOX_6g
     latLng : 46.7592,23.5577
+    server: localhost
+    port: 11211
+    distance: 0.5

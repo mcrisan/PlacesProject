@@ -603,7 +603,7 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                 echo "\" class=\"list-group-item it1 ";
                 echo twig_escape_filter($this->env, $this->getContext($context, "active"), "html", null, true);
                 echo "\" href=\"";
-                echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("renderPlace", array("param" => $this->getAttribute($this->getContext($context, "place"), "slug"), "input" => $this->getContext($context, "input"))), "html", null, true);
+                echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("renderPlace", array("param" => $this->getAttribute($this->getContext($context, "place"), "slug"))), "html", null, true);
                 echo "\">
             <p>";
                 // line 268
@@ -869,6 +869,7 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
 ";
         // line 403
         echo "
+
     ";
     }
 

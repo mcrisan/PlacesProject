@@ -3,19 +3,68 @@ var gdir;
 var geocoder = null;
 var addressMarker;
 var setBool = false;
-function initialize(from, to) {
-    //alert(1);
-    if (GBrowserIsCompatible()) {
-        map = new GMap2(document.getElementById("googleMap"));
-        gdir = new GDirections(map, document.getElementById("directions"));
-        GEvent.addListener(gdir, "addoverlay", onGDirectionsLoad);
-        GEvent.addListener(gdir, "error", handleErrors);
 
-        setDirections(from, to);
-    } else {
-        alert(0);
+var directionsDisplay;
+var directionsService = new google.maps.DirectionsService();
+var map;
+
+
+function initialize(from, to, tolat, tolng) {
+    //alert(1);
+    //if (GBrowserIsCompatible()) {
+    //map = new GMap2(document.getElementById("googleMap"));
+    //alert(tolat +"  "+ tolng);
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    var coord = new google.maps.LatLng (tolat, tolng);
+    var myOptions = {
+        zoom: 15,
+        center: coord
+        //mapTypeId: google.maps.MapTypeId.ROADMAP
     }
+    map = new google.maps.Map(document.getElementById("googleMap"), myOptions);
+    directionsDisplay.setMap(map);
+    directionsDisplay.setPanel(document.getElementById('directions'));
+    calcRoute(from, to);
+//    gdir = new GDirections(map, document.getElementById("directions"));
+//    GEvent.addListener(gdir, "addoverlay", onGDirectionsLoad);
+//    GEvent.addListener(gdir, "error", handleErrors);
+//
+//    setDirections(from, to);
+    // } else {
+    //      alert(0);
+    //  }
 }
+
+function calcRoute(from, to) {
+//alert(from);
+  var request = {
+    origin: from,
+    destination: to,
+    //waypoints:[{location: 'Bourke, NSW'}, {location: 'Broken Hill, NSW'}],
+    travelMode: google.maps.TravelMode.DRIVING
+  };
+  directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+    }
+  });
+}
+
+
+//function calcRoute(fromAddress, toAddress) {
+//  //var start = document.getElementById('start').value;
+//  //var end = document.getElementById('end').value;
+//  var request = {
+//      origin:fromAddress,
+//      destination:toAddress,
+//      travelMode: google.maps.TravelMode.DRIVING
+//  };
+//  directionsService.route(request, function(response, status) {
+//    if (status == google.maps.DirectionsStatus.OK) {
+//      directionsDisplay.setDirections(response);
+//    }
+//  });
+//}
 
 function setDirections(fromAddress, toAddress) {
     //alert("Loading map ...");
@@ -23,7 +72,7 @@ function setDirections(fromAddress, toAddress) {
     //alert(toAddress);
     //gdir.load("from 46.7697930 23.5937010 to 46.766988 23.586917" ,{locale:"en_US"});
     if ("" !== fromAddress) {
-       // handleErrors();
+        // handleErrors();
         gdir.load("from: " + fromAddress + " to: " + toAddress, {"locale": "en_US"});
     } else {
         alert("An error occurred ! Please insert location address and try again !");
@@ -94,17 +143,18 @@ function addImg(url, id) {
 }
 
 $(function() {
-    
+
     var toAddrLatLng = $("#lat").val() + " " + $("#lng").val();
     var fromAddr = $("#fromAddress").val();
+    //alert(fromAddr);
     var toAddr = $("#toAddress").val();
     //alert(toAddrLatLng);
     if ("" !== toAddr) {
-        initialize(fromAddr, toAddrLatLng);
+        initialize(fromAddr, toAddrLatLng, $("#lat").val(), $("#lng").val());
     } else {
-        initialize(fromAddr, toAddrLatLng);
+        initialize(fromAddr, toAddrLatLng, $("#lat").val(), $("#lng").val());
     }
-    
+
     //alert(1);
 
     $("#from-link").click(function(event) {

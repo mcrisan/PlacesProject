@@ -34,49 +34,25 @@ class SearchWebService {
     public function searchByName($name) {
         //echo $name;
 
-        $places = $this->searchDAO->getPlacesNamesAndIds($name);
-        //echo "search";
-        //var_dump($places);
-        if (empty($places)) {
-//            echo "in adresa 22";
-            $session = $this->container->get('session');
-//           if ($session->has('search')) {
-//            $input = $session->get('search');
-//            $data = apc_fetch($input);
-//            if ("" != $data['places']) {
-//            $places = $data['places'];
-            //$add = $name . ", Cluj-Napoca, Romania";
-//            $add = $name; // . ", Cluj-Napoca, Romania";
-//            $address = $add; // Google HQ
-//            $prepAddr = str_replace(' ', '+', $address);
-//            //echo $prepAddr;
-//            $geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address=' . $prepAddr . '&sensor=false');
-//            $output = json_decode($geocode);
-//            $latitude = $output->results[0]->geometry->location->lat;
-//            $longitude = $output->results[0]->geometry->location->lng;
-//           // echo $latitude .", ". $longitude;
-//            $places = $this->formsOP->searchPlaces($latitude, $longitude);
-//            if ($session->has('places')) { 
-//           $places = $session->get('places');
-//           //var_dump($places);
-//            }else{
-//               //echo "nu e sesiune"; 
-//            }
-            // $pl = $this->formsOP->searchPlaces($places['lat'], $places['long']);
-            //echo "all places";
-            //var_dump($places);
-            //die;
-            //echo $pl[0]['placeId'];
-            //}
-            //  }
-            if (apc_exists($name)) {
-                $places = apc_fetch($name);
-                //var_dump($places);
-            }
+        $places1 = $this->searchDAO->getPlacesNamesAndIds($name);
+        $distance = $this->container->getParameter('distance');
+        if (empty($places1)) {  
+            $name = urlencode($name);
+            $geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address=' .$name. '&sensor=false');
+            $output = json_decode($geocode);
+            $latitude = $output->results[0]->geometry->location->lat;
+            $longitude = $output->results[0]->geometry->location->lng; 
+            $places = $this->searchDAO->getPlacesByDistance($name, $latitude, $longitude, $distance);
+        }else{
+            $placeId = $places1[0]['placeId'];
+            $placeInfo = $this->getPlaceInfos($placeId);
+            $latitude = $placeInfo['place']['placelat'];
+            $longitude = $placeInfo['place']['placelng']; 
+            $places = $this->searchDAO->getPlacesByDistance($name, $latitude, $longitude, $distance);
+            array_unshift($places, $places1[0]);
         }
         if (!empty($places)) {
             $placeId = $places[0]['placeId']; // #1 place from search results..
-            //$placeId = 2014;
             $placeInfo = $this->getPlaceInfos($placeId);
             $userInfo = $this->getUserDetails();
             $resp = json_encode(array(
@@ -239,8 +215,6 @@ class SearchWebService {
         $placeInfo['placeSlug'] = $getPlaceSlug[0]['slug'];
         $placeInfo['placeReviews'] = $this->searchDAO->getDefaultPlaceReviews($placeId);
         $placeDet = $this->searchDAO->getPlacesDetails($placeId);
-        // echo "place details";
-        //var_dump($placeDet);
         $placeInfo['place']['placeid'] = $placeDet[0]->getPlaceId();
         $placeInfo['place']['placename'] = $placeDet[0]->getPlaceName();
         $placeInfo['place']['placephonenumber'] = $placeDet[0]->getPlacePhonenumber();
@@ -251,7 +225,6 @@ class SearchWebService {
         $placeInfo['place']['placeicon'] = $placeDet[0]->getPlaceIcon();
         $placeInfo['place']['placeurl'] = $placeDet[0]->getPlaceUrl();
         $placeInfo['place']['placeWebSite'] = $placeDet[0]->getPlaceWebsite();
-        //var_dump($placeInfo['place']);
         $placeInfo['placePhotos'] = $this->searchDAO->getPlacePhotos($placeId, 1);
         $placeInfo['placeAllPhotos'] = $this->searchDAO->getPlacePhotos($placeId);
 
