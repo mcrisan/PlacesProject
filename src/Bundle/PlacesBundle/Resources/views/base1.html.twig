@@ -40,17 +40,18 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="search-input">
-                        <div class="divider"></div>
-                        <input value="la haleala prin cluj"></input>
-                        <button></button>
+                    <div class="search-input">                        
+                        <form action="{{ path('demoSearch') }}" method="post">
+                            <div class="divider"></div>
+                            <input id="searchh" class="search typeahead1" type="text" name="input" placeholder="Search.." autocomplete="off" />
+                            <input id="search-lat" type="hidden" name="input-lat" />
+                            <input id="search-lng" type="hidden" name="input-lng" />                            
+                            <button type="submit"></button>
+                            <div id="autocomplete-result"></div>
+                        </form>                          
                     </div>
                     <div class="search-bar-footer">
                         <ul class="search-filters">
-                            <li>
-                                <input type="checkbox" class="css-checkbox" name="sex-checkbox" id="sex-checkbox"></input>
-                                <label for="sex-checkbox" class="css-label">SEX</label>
-                            </li>
                             <li>
                                 <input type="checkbox" class="css-checkbox" name="drink-checkbox" id="drink-checkbox"></input>
                                 <label for="drink-checkbox" class="css-label">DRINK</label>

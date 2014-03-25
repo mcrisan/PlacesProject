@@ -1,5 +1,11 @@
 body {
 	overflow: hidden;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 @media all and (max-width: 780px){
@@ -17,6 +23,10 @@ body {
 	height: 179px;
 	width: 252px;
 	margin: 3px 4px;
+}
+
+*:focus {
+    outline: none;
 }
 
 #main-container {
@@ -45,6 +55,7 @@ body {
 	background: rgb(236,35,39);
 	color: white;
 	z-index: 8;
+	cursor: pointer;
 }
 
 .hover-image *{
@@ -78,4 +89,33 @@ body {
 
 .hover-image ul li.active{
 	background: url('../images/white-star.png') no-repeat;
+}
+
+#autocomplete-result{
+    max-height: 141px; 
+    max-width: 700px;
+    overflow: auto;
+    width: 60%;
+    background-color: white;
+    position: absolute;
+    margin-left: 28px;
+	border-left: solid 25px rgb(238,238,238);
+	padding-left: 5px;    
+}
+.ui-autocomplete-loading {
+    //background: white url('../bundles/bundleplaces/images/loader.png') right center no-repeat;
+    background: white url('http://localhost/PlacesProject/web/bundles/bundleproject/images/loader.gif') right center no-repeat !important;;
+    //background-image: url('http://localhost/PlacesProject/web/bundles/bundleproject/images/loader.gif');
+}
+
+.show{
+    //background: none repeat scroll 0 0 #CCAABB;
+    //border: 1px solid #000000;
+    cursor: pointer;
+    padding: 1px;
+
+}
+.show:hover {
+    color: white;
+    background-color: red;
 }

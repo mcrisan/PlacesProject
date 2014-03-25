@@ -279,27 +279,27 @@ class FormsController extends Controller {
         return strtolower(preg_replace(array('/[^a-zA-Z0-9 -]/', '/[ -]+/', '/^-|-$/'), array('', '-', ''), str_replace($a, $b, $str)));
     }
 
-//    function doAutocomAction() {
-//        $session = $this->get('session');
-//        $formsop = $this->get('formsop');
-//        $em = $this->getDoctrine()->getManager();
-//        $request = Request::createFromGlobals();
-//        $input = $request->request->get('search');
-//        //$input = $request->query->get('search');
-//        $session->set('search', $input);
-////        if (apc_exists($input)) {
-////            $data = apc_fetch($input);
-////            $placeName = $data['placeName'];
-////            $places = $data['places'];
-////        } else {
-//            $placeName = $formsop->getPlacesNames($input);
-//            //$places = $formsop->getPlaces2($input);
-//            $places ="";
-//         //   apc_store($input, array('placeName' => $placeName, 'places' => $places));
-//       // }
-//
-//        return $this->render("BundlePlacesBundle:Places:autocomplete.html.twig", array('place' => $placeName, 'placesAdd' => $places));
-//    }
+   function doAutocomAction() {
+       $session = $this->get('session');
+       $formsop = $this->get('formsop');
+       $em = $this->getDoctrine()->getManager();
+       $request = Request::createFromGlobals();
+       $input = $request->request->get('search');
+       //$input = $request->query->get('search');
+       $session->set('search', $input);
+//        if (apc_exists($input)) {
+//            $data = apc_fetch($input);
+//            $placeName = $data['placeName'];
+//            $places = $data['places'];
+//        } else {
+           $placeName = $formsop->getPlacesNames($input);
+           //$places = $formsop->getPlaces2($input);
+           $places ="";
+        //   apc_store($input, array('placeName' => $placeName, 'places' => $places));
+      // }
+
+       return $this->render("BundlePlacesBundle:Places:autocomplete.html.twig", array('place' => $placeName, 'placesAdd' => $places));
+   }
     
     function getPlacesNamesAction(){
         $formsop = $this->get('formsop');
