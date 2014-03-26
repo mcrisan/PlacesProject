@@ -19,3 +19,4 @@ parameters:
     server: localhost
     port: 11211
     distance: 0.5
+    limit: 20

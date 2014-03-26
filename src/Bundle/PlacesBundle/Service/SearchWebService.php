@@ -36,20 +36,26 @@ class SearchWebService {
 
         $places1 = $this->searchDAO->getPlacesNamesAndIds($name);
         $distance = $this->container->getParameter('distance');
+        $limit = $this->container->getParameter('limit');
         if (empty($places1)) {  
-            $name = urlencode($name);
-            $geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address=' .$name. '&sensor=false');
+            $name_enc = urlencode($name);
+            $geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address=' .$name_enc. '&sensor=false');
             $output = json_decode($geocode);
             $latitude = $output->results[0]->geometry->location->lat;
             $longitude = $output->results[0]->geometry->location->lng; 
-            $places = $this->searchDAO->getPlacesByDistance($name, $latitude, $longitude, $distance);
+            $coord= array("lat" => $latitude, "lng" => $longitude);
+            apc_store($name, $coord);
+            $places = $this->searchDAO->getPlacesByDistance($name, $latitude, $longitude, $distance, $limit);
         }else{
             $placeId = $places1[0]['placeId'];
             $placeInfo = $this->getPlaceInfos($placeId);
             $latitude = $placeInfo['place']['placelat'];
             $longitude = $placeInfo['place']['placelng']; 
-            $places = $this->searchDAO->getPlacesByDistance($name, $latitude, $longitude, $distance);
+            $coord= array("lat" => $latitude, "lng" => $longitude);
+            apc_store($name, $coord);
+            $places = $this->searchDAO->getPlacesByDistance($name, $latitude, $longitude, $distance, $limit);
             array_unshift($places, $places1[0]);
+            array_pop($places);
         }
         if (!empty($places)) {
             $placeId = $places[0]['placeId']; // #1 place from search results..

@@ -279,14 +279,8 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
         // morePlacesRequest
         if ($pathinfo === '/morePlacesRequest') {
-            if ($this->context->getMethod() != 'POST') {
-                $allow[] = 'POST';
-                goto not_morePlacesRequest;
-            }
-
             return array (  '_controller' => 'Bundle\\PlacesBundle\\Controller\\FormsController::morePlacesRequestAction',  '_route' => 'morePlacesRequest',);
         }
-        not_morePlacesRequest:
 
         // demoSearch
         if ($pathinfo === '/demoSearch') {

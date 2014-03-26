@@ -108,7 +108,7 @@ class PlaceDetailsRepository extends EntityRepository {
          */
     }
     
-    public function getPlacesByDistance($name, $lat, $lng, $dist) {
+    public function getPlacesByDistance($name, $lat, $lng, $dist, $limit = null, $pag = null) {
         
         $this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('acos', 'DoctrineExtensions\Query\Mysql\Acos');
         $this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('sin', 'DoctrineExtensions\Query\Mysql\Sin');
@@ -131,12 +131,18 @@ class PlaceDetailsRepository extends EntityRepository {
                 ->setParameter('lat',  $lat)
                 ->setParameter('lng',  $lng)
                 ->setParameter('dist',  $dist)
-                ->setParameter('name',  $name)
-                ->setMaxResults(20)
-                ->getQuery()
-                ->getResult();
+                ->setParameter('name',  $name);
+                //->setFirstResult(15)
+                //->setMaxResults(20)
+                //->getQuery()
+                //->getResult();
 
-        return $qb;
+        $q = $qb->getQuery();
+        //$firstResult = $limit*$pag;
+        $q->setFirstResult($limit*$pag);
+        $q->setMaxResults($limit);
+        $places = $q->getResult();
+        return $places;
     }
     
     public function getPlacesNames($input) {

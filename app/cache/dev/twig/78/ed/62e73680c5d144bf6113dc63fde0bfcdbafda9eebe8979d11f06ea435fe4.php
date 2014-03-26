@@ -103,36 +103,40 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
             echo "                        <input id=\"name\" type=\"hidden\" value=\"";
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placename"), "html", null, true);
             echo "\" />
-                        <input id=\"lat\" type=\"hidden\" value=\"";
+                        <input id=\"searchvalue\" type=\"hidden\" value=\"";
             // line 36
+            echo twig_escape_filter($this->env, $this->getContext($context, "input"), "html", null, true);
+            echo "\" />
+                        <input id=\"lat\" type=\"hidden\" value=\"";
+            // line 37
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placelat"), "html", null, true);
             echo "\" />
                         <input id=\"lng\" type=\"hidden\" value=\"";
-            // line 37
+            // line 38
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placelng"), "html", null, true);
             echo "\" />
                         <input id=\"placeId\" type=\"hidden\" value=\"";
-            // line 38
+            // line 39
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placeid"), "html", null, true);
             echo "\" />
                         <input id=\"placeAddress\" type=\"hidden\" value=\"";
-            // line 39
+            // line 40
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placevicinity"), "html", null, true);
             echo "\" />
 
                         <h1>";
-            // line 41
+            // line 42
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placename"), "html", null, true);
             echo "</h1>
                     ";
-            // line 42
+            // line 43
             if ((!twig_test_empty($this->getContext($context, "placePhotos")))) {
-                // line 43
+                // line 44
                 echo "                        ";
                 $context['_parent'] = (array) $context;
                 $context['_seq'] = twig_ensure_traversable($this->getContext($context, "placePhotos"));
                 foreach ($context['_seq'] as $context["_key"] => $context["photo"]) {
-                    // line 44
+                    // line 45
                     echo "                        <img src=\"";
                     echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "photo"), "imgUrl"), "html", null, true);
                     echo "\" title=\"";
@@ -143,71 +147,71 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                 $_parent = $context['_parent'];
                 unset($context['_seq'], $context['_iterated'], $context['_key'], $context['photo'], $context['_parent'], $context['loop']);
                 $context = array_intersect_key($context, $_parent) + $_parent;
-                // line 46
+                // line 47
                 echo "                    ";
             } else {
-                // line 47
+                // line 48
                 echo "                        <span class=\"glyphicon glyphicon-picture icon-font-size-verylarge\"></span>
                     ";
             }
-            // line 49
+            // line 50
             echo "                        <a href=\"";
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placeurl"), "html", null, true);
             echo "\" target=\"_blank\" title=\"";
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placename"), "html", null, true);
             echo "\">
                             <img src=\"";
-            // line 50
+            // line 51
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placeicon"), "html", null, true);
             echo "\"/></a>
                         <p><a href=\"";
-            // line 51
+            // line 52
             echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("index_indexShowPlace", array("name" => $this->getContext($context, "placeSlug"))), "html", null, true);
             echo "\">";
             echo twig_escape_filter($this->env, twig_capitalize_string_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placename")), "html", null, true);
             echo "</a></p>
                         <p><a href=\"";
-            // line 52
+            // line 53
             echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("index_placeDetails", array("name" => $this->getContext($context, "placeSlug"))), "html", null, true);
             echo "\">New - ";
             echo twig_escape_filter($this->env, twig_capitalize_string_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placename")), "html", null, true);
             echo "</a></p>
 
                     ";
-            // line 54
+            // line 55
             if ((twig_length_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placephonenumber")) > 1)) {
-                // line 55
+                // line 56
                 echo "                        <p><b>Phone: </b>";
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placephonenumber"), "html", null, true);
                 echo "</p>
                     ";
             } else {
-                // line 57
+                // line 58
                 echo "                        <p><b>Phone: </b>number not avaiable.</p>
                     ";
             }
-            // line 58
+            // line 59
             echo "   
                         <p><b>Type: </b>type - recode querys</p>
                         <p><b>Address: </b>";
-            // line 60
+            // line 61
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placevicinity"), "html", null, true);
             echo "</p>
 
                     ";
-            // line 62
+            // line 63
             if ((twig_length_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placerating")) != 0)) {
-                // line 63
+                // line 64
                 echo "                        <p><b>Ratings: <big><font color=\"green\">";
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placerating"), "html", null, true);
                 echo "</font></b></big> / 5 points.</p>
                     ";
             } else {
-                // line 65
+                // line 66
                 echo "                        <p><b>Ratings: </b> Ratings are not available for this place.</p>
                     ";
             }
-            // line 67
+            // line 68
             echo "                        <p><b>Geo Location: </b><u>Lat. </u>";
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placelat"), "html", null, true);
             echo ". <u>Lng.</u>";
@@ -215,9 +219,9 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
             echo ".</p>  
 
                     ";
-            // line 69
+            // line 70
             if ($this->getAttribute($this->getContext($context, "place"), "placeWebSite")) {
-                // line 70
+                // line 71
                 echo "                        <p><b>WebSite: </b> <a href=\"";
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placeWebSite"), "html", null, true);
                 echo "\" target=\"_blank\"/>";
@@ -225,112 +229,112 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                 echo "</a></p>
                     ";
             } else {
-                // line 72
+                // line 73
                 echo "                        <p><b>WebSite: </b>website not avaiable</p>    
                     ";
             }
-            // line 74
+            // line 75
             echo "                    </div><!-- /.panel1 -->
 
                     <div id=\"pane2\" class=\"tab-pane active\">
                         <h1>";
-            // line 77
+            // line 78
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placename"), "html", null, true);
             echo "</h1>
 
                         <!-- SlideShow -->
                     ";
-            // line 80
+            // line 81
             if ((!twig_test_empty($this->getContext($context, "placeAllPhotos")))) {
-                // line 81
+                // line 82
                 echo "                        ";
                 if ((twig_length_filter($this->env, $this->getContext($context, "placeAllPhotos")) > 1)) {
-                    // line 82
+                    // line 83
                     echo "                        <div id=\"carousel-example-generic\" class=\"carousel slide\" data-ride=\"carousel\">
                             <!-- Indicators -->
                             <ol class=\"carousel-indicators\">
                                 ";
-                    // line 85
+                    // line 86
                     $context['_parent'] = (array) $context;
                     $context['_seq'] = twig_ensure_traversable($this->getContext($context, "placeAllPhotos"));
                     foreach ($context['_seq'] as $context["key"] => $context["value"]) {
-                        // line 86
+                        // line 87
                         echo "                                    ";
                         if (($this->getContext($context, "key") == 0)) {
                             echo " 
                                 <li data-target=\"#carousel-example-generic\" data-slide-to=\"";
-                            // line 87
+                            // line 88
                             echo twig_escape_filter($this->env, $this->getContext($context, "key"), "html", null, true);
                             echo "\" class=\"active\"></li>
                                     ";
                         } else {
-                            // line 89
+                            // line 90
                             echo "                                <li data-target=\"#carousel-example-generic\" data-slide-to=\"";
                             echo twig_escape_filter($this->env, $this->getContext($context, "key"), "html", null, true);
                             echo "\"></li>
                                     ";
                         }
-                        // line 91
+                        // line 92
                         echo "                                ";
                     }
                     $_parent = $context['_parent'];
                     unset($context['_seq'], $context['_iterated'], $context['key'], $context['value'], $context['_parent'], $context['loop']);
                     $context = array_intersect_key($context, $_parent) + $_parent;
-                    // line 92
+                    // line 93
                     echo "                            </ol>
 
                             <!-- Wrapper for slide -->
                             <div class=\"carousel-inner\">
                             ";
-                    // line 96
+                    // line 97
                     $context['_parent'] = (array) $context;
                     $context['_seq'] = twig_ensure_traversable($this->getContext($context, "placeAllPhotos"));
                     foreach ($context['_seq'] as $context["key"] => $context["photo"]) {
-                        // line 97
+                        // line 98
                         echo "                                ";
                         if (($this->getContext($context, "key") == 0)) {
-                            // line 98
+                            // line 99
                             echo "                                <div class=\"item active\" style=\"border:0px solid blue; height:350px;width:100%\">
                                     <img src=\"";
-                            // line 99
+                            // line 100
                             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "photo"), "imgUrl"), "html", null, true);
                             echo "\" width=\"100%\"/>
                                         ";
-                            // line 101
+                            // line 102
                             echo "                                    <div class=\"carousel-caption\">
                                         Slide ";
-                            // line 102
+                            // line 103
                             echo twig_escape_filter($this->env, $this->getContext($context, "key"), "html", null, true);
                             echo "
                                     </div>
                                 </div>
                                 ";
                         } else {
-                            // line 106
+                            // line 107
                             echo "                                <div class=\"item\" style=\"border:0px solid blue;height:350px;width:100%\">
                                     <img src=\"";
-                            // line 107
+                            // line 108
                             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "photo"), "imgUrl"), "html", null, true);
                             echo "\" width=\"100%\"/>
                                         ";
-                            // line 109
+                            // line 110
                             echo "                                    <div class=\"carousel-caption\">
                                         Slide ";
-                            // line 110
+                            // line 111
                             echo twig_escape_filter($this->env, $this->getContext($context, "key"), "html", null, true);
                             echo "
                                     </div>
                                 </div>
                                 ";
                         }
-                        // line 113
+                        // line 114
                         echo "    
                             ";
                     }
                     $_parent = $context['_parent'];
                     unset($context['_seq'], $context['_iterated'], $context['key'], $context['photo'], $context['_parent'], $context['loop']);
                     $context = array_intersect_key($context, $_parent) + $_parent;
-                    // line 115
+                    // line 116
                     echo "                            </div><!-- /carousel-inner -->
 
                             <!-- Controls -->
@@ -343,7 +347,7 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                         </div><!-- /carousel-example-generic -->
                         ";
                 } else {
-                    // line 126
+                    // line 127
                     echo "                            ";
                     $context['_parent'] = (array) $context;
                     $context['_seq'] = twig_ensure_traversable($this->getContext($context, "placePhotos"));
@@ -351,7 +355,7 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                         echo " 
                         <div class=\"item\" style=\"border:0px solid blue; width:100%;height:350px;\" >
                             <a href=\"";
-                        // line 128
+                        // line 129
                         echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "photo"), "imgUrl"), "html", null, true);
                         echo "\" target=\"_blank\"><img src=\"";
                         echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "photo"), "imgUrl"), "html", null, true);
@@ -364,51 +368,51 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                     $_parent = $context['_parent'];
                     unset($context['_seq'], $context['_iterated'], $context['_key'], $context['photo'], $context['_parent'], $context['loop']);
                     $context = array_intersect_key($context, $_parent) + $_parent;
-                    // line 131
+                    // line 132
                     echo "                        ";
                 }
-                // line 132
+                // line 133
                 echo "                    ";
             } else {
-                // line 133
+                // line 134
                 echo "                        <center>
                             ";
-                // line 135
+                // line 136
                 echo "                            <span class=\"glyphicon glyphicon-picture icon-font-size-verylarge\" title=\"Image not found !\"></span>
                         </center>
                     ";
             }
-            // line 137
+            // line 138
             echo "           
                     </div><!-- /.panel2 -->
 
                     <div id=\"pane3\" class=\"tab-pane\">
                         <div id=\"voteSection\"> 
                             <h1>";
-            // line 142
+            // line 143
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placename"), "html", null, true);
             echo "</h1>
                         ";
-            // line 143
+            // line 144
             if (array_key_exists("bool", $context)) {
                 echo " ";
-                // line 144
+                // line 145
                 echo "                            <p><b>Total votes: </b>";
                 echo twig_escape_filter($this->env, $this->getContext($context, "totalVotesAllTime"), "html", null, true);
                 echo " votes</p>
                             <p><b>Total votes for this place: </b>";
-                // line 145
+                // line 146
                 echo twig_escape_filter($this->env, $this->getContext($context, "totalVotes"), "html", null, true);
                 echo " votes</p>
                             <p><b>Points / Stars:</b> <font color=\"green\"><big>";
-                // line 146
+                // line 147
                 echo twig_escape_filter($this->env, $this->getContext($context, "usersRating"), "html", null, true);
                 echo "</big></font></p>
 
                             ";
-                // line 148
+                // line 149
                 if (($this->getContext($context, "usersRating") < 2)) {
-                    // line 149
+                    // line 150
                     echo "                            <span class=\"glyphicon glyphicon-star icon-font-size-large\"></span>
                             <span class=\"glyphicon glyphicon-star-empty icon-font-size-large\"></span>
                             <span class=\"glyphicon glyphicon-star-empty icon-font-size-large\"></span>
@@ -416,7 +420,7 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                             <span class=\"glyphicon glyphicon-star-empty icon-font-size-large\"></span>
                             ";
                 } elseif (($this->getContext($context, "usersRating") < 3)) {
-                    // line 155
+                    // line 156
                     echo "                            <span class=\"glyphicon glyphicon-star icon-font-size-large\"></span>
                             <span class=\"glyphicon glyphicon-star icon-font-size-large\"></span>
                             <span class=\"glyphicon glyphicon-star-empty icon-font-size-large\"></span>
@@ -424,7 +428,7 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                             <span class=\"glyphicon glyphicon-star-empty icon-font-size-large\"></span>
                             ";
                 } elseif (($this->getContext($context, "usersRating") < 4)) {
-                    // line 161
+                    // line 162
                     echo "                            <span class=\"glyphicon glyphicon-star icon-font-size-large\"></span>
                             <span class=\"glyphicon glyphicon-star icon-font-size-large\"></span>
                             <span class=\"glyphicon glyphicon-star icon-font-size-large\"></span>
@@ -432,7 +436,7 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                             <span class=\"glyphicon glyphicon-star-empty icon-font-size-large\"></span>
                             ";
                 } elseif (($this->getContext($context, "usersRating") < 5)) {
-                    // line 167
+                    // line 168
                     echo "                            <span class=\"glyphicon glyphicon-star icon-font-size-large\"></span>
                             <span class=\"glyphicon glyphicon-star icon-font-size-large\"></span>
                             <span class=\"glyphicon glyphicon-star icon-font-size-large\"></span>
@@ -440,7 +444,7 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                             <span class=\"glyphicon glyphicon-star-empty icon-font-size-large\"></span>
                             ";
                 } elseif (($this->getContext($context, "usersRating") == 5)) {
-                    // line 173
+                    // line 174
                     echo "                            <span class=\"glyphicon glyphicon-star icon-font-size-large\"></span> 
                             <span class=\"glyphicon glyphicon-star icon-font-size-large\"></span> 
                             <span class=\"glyphicon glyphicon-star icon-font-size-large\"></span> 
@@ -448,49 +452,49 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                             <span class=\"glyphicon glyphicon-star icon-font-size-large\"></span> 
                             ";
                 }
-                // line 179
+                // line 180
                 echo "                        ";
             } else {
                 echo " ";
-                // line 180
+                // line 181
                 echo "                            <p>Select a star</p>
                             <form>
                                 <br />1<input type=\"radio\" name=\"vote\" value=\"1\" onclick=\"setVote(this.value, '";
-                // line 182
+                // line 183
                 echo $this->env->getExtension('routing')->getPath("setVote");
                 echo "');\")>
                                 2<input type=\"radio\" name=\"vote\" value=\"2\" onclick=\"setVote(this.value, '";
-                // line 183
-                echo $this->env->getExtension('routing')->getPath("setVote");
-                echo "');\">
-                                3<input type=\"radio\" name=\"vote\" value=\"3\" onclick=\"setVote(this.value, '";
                 // line 184
                 echo $this->env->getExtension('routing')->getPath("setVote");
                 echo "');\">
-                                4<input type=\"radio\" name=\"vote\" value=\"4\" onclick=\"setVote(this.value, '";
+                                3<input type=\"radio\" name=\"vote\" value=\"3\" onclick=\"setVote(this.value, '";
                 // line 185
                 echo $this->env->getExtension('routing')->getPath("setVote");
                 echo "');\">
-                                5<input type=\"radio\" name=\"vote\" value=\"5\" onclick=\"setVote(this.value, '";
+                                4<input type=\"radio\" name=\"vote\" value=\"4\" onclick=\"setVote(this.value, '";
                 // line 186
+                echo $this->env->getExtension('routing')->getPath("setVote");
+                echo "');\">
+                                5<input type=\"radio\" name=\"vote\" value=\"5\" onclick=\"setVote(this.value, '";
+                // line 187
                 echo $this->env->getExtension('routing')->getPath("setVote");
                 echo "');\">
                             </form>
                         ";
             }
-            // line 189
+            // line 190
             echo "                        </div><!-- /.voteSection -->
                     </div><!-- /.panel3 -->
 
                     <div id=\"pane4\" class=\"tab-pane\">
                         <h1>";
-            // line 193
+            // line 194
             echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placename"), "html", null, true);
             echo "</h1>
                      ";
-            // line 194
-            $this->env->loadTemplate("BundlePlacesBundle:Reviews:index.html.twig")->display(array_merge($context, array("reviews" => $this->getContext($context, "reviews"))));
             // line 195
+            $this->env->loadTemplate("BundlePlacesBundle:Reviews:index.html.twig")->display(array_merge($context, array("reviews" => $this->getContext($context, "reviews"))));
+            // line 196
             echo "                    </div><!-- /.panel4 -->
 
                     <div id=\"pane5\" class=\"tab-pane\">
@@ -510,7 +514,7 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['place'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 202
+        // line 203
         echo "                </div><!-- /.tab-content -->
             </div><!-- /.tabbable -->
         </div><!-- /.tabs-div -->
@@ -529,22 +533,22 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                 <h1>Directions</h1>
                 <div class=\"form-group\">
                     ";
-        // line 229
+        // line 230
         echo "
                     ";
-        // line 231
+        // line 232
         echo "                    <form action=\"#\" onsubmit=\"setDirections(this.from.value, this.to.value);
                             return false;\">
                         <input class=\"form-control\" type=\"text\" size=\"25\" id=\"fromAddress\" name=\"from\" value=\"Cluj-Napoca,Romania\" placeholder=\"location address\"/>
                         <a id=\"from-link\" href=\"#\">Get current position</a><img class=\"loader\" style=\"display:none;padding-left: 5px;\"src=\"";
-        // line 234
+        // line 235
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/load.gif"), "html", null, true);
         echo "\"/>
                         <input class=\"form-control\" type=\"text\" size=\"25\" id=\"toAddress\" name=\"to\" value=\"";
-        // line 235
+        // line 236
         echo "\" placeholder=\"destination address\"/>                               
                         <button class=\"btn btn-default\" type=\"submit\" style=\"width:100px;margin-top: 2px;\"><img src=\"";
-        // line 236
+        // line 237
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/icons/arrow_branch.png"), "html", null, true);
         echo "\" title=\"Get Directions\" alt=\"accept\" /></button>  <img src=\"";
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/icons/car.png"), "html", null, true);
@@ -558,7 +562,7 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
             </div> 
         </div><!-- /.nested cols -->
 
-<div id=\"map\" class=\"map\"></div>
+        <div id=\"map\" class=\"map\"></div>
 
     </article>
 </div><!-- /#place-container -->
@@ -566,63 +570,59 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
 ";
     }
 
-    // line 254
+    // line 255
     public function block_aside($context, array $blocks = array())
     {
-        // line 255
+        // line 256
         echo "    ";
         if (array_key_exists("input", $context)) {
-            // line 256
+            // line 257
             echo "
 <p class=\"results-header-msg\">
     Total results: ";
-            // line 258
+            // line 259
             echo twig_escape_filter($this->env, $this->getContext($context, "totalResults"), "html", null, true);
             echo "
     <br/>
     Search value: ";
-            // line 260
+            // line 261
             echo twig_escape_filter($this->env, $this->getContext($context, "input"), "html", null, true);
             echo "
 </p>
 <div class=\"row app-results-wrapper\"> 
     <div class=\"app-aside-div\">
         ";
-            // line 264
+            // line 265
             $context['_parent'] = (array) $context;
             $context['_seq'] = twig_ensure_traversable($this->getContext($context, "places"));
             foreach ($context['_seq'] as $context["key"] => $context["place"]) {
-                // line 265
-                echo "            ";
                 // line 266
                 echo "            ";
-                $context["active"] = ((($this->getContext($context, "key") == 0)) ? ("active") : (""));
                 // line 267
+                echo "            ";
+                $context["active"] = ((($this->getContext($context, "key") == 0)) ? ("active") : (""));
+                // line 268
                 echo "        <a id=\"";
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placeId"), "html", null, true);
-                echo "\" class=\"list-group-item it1 ";
+                echo "\" class=\"list-group-item it ";
                 echo twig_escape_filter($this->env, $this->getContext($context, "active"), "html", null, true);
                 echo "\" href=\"";
                 echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("renderPlace", array("param" => $this->getAttribute($this->getContext($context, "place"), "slug"))), "html", null, true);
                 echo "\">
             <p>";
-                // line 268
+                // line 269
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placeName"), "html", null, true);
                 echo "</p>
             <p>
                     ";
-                // line 270
+                // line 271
                 if ((twig_length_filter($this->env, $this->getAttribute($this->getContext($context, "place"), "placeRating")) > 1)) {
-                    // line 271
+                    // line 272
                     echo "                    ";
                     if (($this->getAttribute($this->getContext($context, "place"), "placeRating") < 2)) {
-                        // line 272
+                        // line 273
                         echo "                <img src=\"";
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
-                        echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
-                        // line 273
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
                         // line 274
@@ -636,19 +636,19 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                         // line 276
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
+                <img src=\"";
+                        // line 277
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
+                        echo "\" width=\"15\" height=\"15\" />
                 ";
                     } elseif (($this->getAttribute($this->getContext($context, "place"), "placeRating") < 3)) {
-                        // line 278
+                        // line 279
                         echo "                <img src=\"";
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
-                        // line 279
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
-                        echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
                         // line 280
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
                         // line 281
@@ -658,14 +658,14 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                         // line 282
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
+                <img src=\"";
+                        // line 283
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
+                        echo "\" width=\"15\" height=\"15\" />
                 ";
                     } elseif (($this->getAttribute($this->getContext($context, "place"), "placeRating") < 4)) {
-                        // line 284
-                        echo "                <img src=\"";
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
-                        echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
                         // line 285
+                        echo "                <img src=\"";
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
@@ -674,20 +674,20 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
                         // line 287
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
                         // line 288
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
+                <img src=\"";
+                        // line 289
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
+                        echo "\" width=\"15\" height=\"15\" />
                 ";
                     } elseif (($this->getAttribute($this->getContext($context, "place"), "placeRating") < 5)) {
-                        // line 290
-                        echo "                <img src=\"";
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
-                        echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
                         // line 291
+                        echo "                <img src=\"";
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
@@ -700,16 +700,16 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
                         // line 294
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
+                        echo "\" width=\"15\" height=\"15\" />
+                <img src=\"";
+                        // line 295
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 ";
                     } elseif (($this->getAttribute($this->getContext($context, "place"), "placeRating") == 5)) {
-                        // line 296
-                        echo "                <img src=\"";
-                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
-                        echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
                         // line 297
+                        echo "                <img src=\"";
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
@@ -724,17 +724,17 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                         // line 300
                         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
                         echo "\" width=\"15\" height=\"15\" />
+                <img src=\"";
+                        // line 301
+                        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/star.png"), "html", null, true);
+                        echo "\" width=\"15\" height=\"15\" />
                 ";
                     }
-                    // line 302
+                    // line 303
                     echo "             ";
                 } else {
-                    // line 303
-                    echo "                <img src=\"";
-                    echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
-                    echo "\" width=\"15\" height=\"15\" />
-                <img src=\"";
                     // line 304
+                    echo "                <img src=\"";
                     echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                     echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
@@ -744,14 +744,18 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                 <img src=\"";
                     // line 306
                     echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
-                    echo "\" width=\"15\" height=\"15\" />  
+                    echo "\" width=\"15\" height=\"15\" />
                 <img src=\"";
                     // line 307
                     echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
                     echo "\" width=\"15\" height=\"15\" />  
+                <img src=\"";
+                    // line 308
+                    echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/blank_star.png"), "html", null, true);
+                    echo "\" width=\"15\" height=\"15\" />  
              ";
                 }
-                // line 309
+                // line 310
                 echo "            </p>
         </a>
         ";
@@ -759,29 +763,29 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_iterated'], $context['key'], $context['place'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 312
+            // line 313
             echo "    ";
         } else {
-            // line 313
+            // line 314
             echo "        <p class=\"results-header-msg\" style=\"padding-left:10px;\">
             Invalid search input
         </p>
     ";
         }
-        // line 317
+        // line 318
         echo "    </div>
 
 </div>
 <div id=\"gif-loader\" style=\"display:none;width:100%\">
     <center><img src=\"";
-        // line 321
+        // line 322
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/images/load.gif"), "html", null, true);
         echo "\"></center>
 </div>
 ";
     }
 
-    // line 330
+    // line 331
     public function block_javascript($context, array $blocks = array())
     {
         echo " 
@@ -790,6 +794,9 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
 
         //var i = 1;
         var array = \"\";
+        var i = 0;
+        var searchvalue = \$(\"#searchvalue\").val();
+        var nrplaces;
         // store current places in list
         \$('.app-aside-div').children('a').each(function() {
             var arrHref = (\$(this).attr('id'));
@@ -797,19 +804,24 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
         });
         \$('.app-results-wrapper').scroll(function() {
             if (\$(this)[0].scrollHeight - \$(this).scrollTop() == \$(this).outerHeight()) {
+                i++;
+                console.log(i);
+                console.log(searchvalue);
                 \$.ajax({
-                    url: \"/PlacesProject/web/app_dev.php/morePlacesRequest\",
+                    url: \"morePlacesRequest\",
                     type: \"POST\",
-                    data: 'input=1643',
+                    data: 'pag=' + i + '&searchval=' + searchvalue,
                     success: function(data) {
 //                alert(data);
                         if (data) {
                             \$('#gif-loader').hide();
-                            console.log(data);
+                            //console.log(data);
                             \$('.app-aside-div').append(data);
+                            nrplaces = \$(\"#nrplaces\").val();
+                            console.log(nrplaces);
                             //\$('#gif-loader').hide();
-
-                            \$(\".it2\").on('click', function() {
+                           // alert(i);
+                            \$(\".it\"+i).on('click', function() {
 
 
                                 param = \$(this).attr('href');
@@ -829,10 +841,12 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                                 });
                                 // alert(param);
                                 return false;
-                                alert(22);
+                                //alert(22);
                                 event.preventDefault();
 
                             });
+
+
 
 
 
@@ -846,28 +860,27 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
                     }
 
                 });
-";
-        // line 393
-        echo "            }
+            }
         });
+
     });
 </script>
     ";
-        // line 398
+        // line 409
         echo "<script src=\"";
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/js/renderPlace.js"), "html", null, true);
         echo "\"></script>
 <script src=\"";
-        // line 399
+        // line 410
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/js/processingVote.js"), "html", null, true);
         echo "\"></script>
-
+<script src=\"https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places\"></script>
 <script type=\"text/javascript\" src=\"";
-        // line 401
+        // line 412
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/bundleplaces/js/google-map-get-directions.js"), "html", null, true);
         echo "\"></script>
 ";
-        // line 403
+        // line 414
         echo "
 
     ";
@@ -885,6 +898,6 @@ class __TwigTemplate_78ed62e73680c5d144bf6113dc63fde0bfcdbafda9eebe8979d11f06ea4
 
     public function getDebugInfo()
     {
-        return array (  871 => 403,  867 => 401,  862 => 399,  857 => 398,  851 => 393,  785 => 330,  778 => 321,  772 => 317,  766 => 313,  763 => 312,  755 => 309,  750 => 307,  746 => 306,  742 => 305,  738 => 304,  733 => 303,  730 => 302,  725 => 300,  721 => 299,  717 => 298,  713 => 297,  708 => 296,  703 => 294,  699 => 293,  695 => 292,  691 => 291,  686 => 290,  681 => 288,  677 => 287,  673 => 286,  669 => 285,  664 => 284,  659 => 282,  655 => 281,  651 => 280,  647 => 279,  642 => 278,  637 => 276,  633 => 275,  629 => 274,  625 => 273,  620 => 272,  617 => 271,  615 => 270,  610 => 268,  601 => 267,  598 => 266,  596 => 265,  592 => 264,  585 => 260,  580 => 258,  576 => 256,  573 => 255,  570 => 254,  548 => 236,  545 => 235,  541 => 234,  536 => 231,  533 => 229,  514 => 202,  494 => 195,  492 => 194,  488 => 193,  482 => 189,  476 => 186,  472 => 185,  468 => 184,  464 => 183,  460 => 182,  456 => 180,  452 => 179,  444 => 173,  436 => 167,  428 => 161,  420 => 155,  412 => 149,  410 => 148,  405 => 146,  401 => 145,  396 => 144,  393 => 143,  389 => 142,  382 => 137,  377 => 135,  374 => 133,  371 => 132,  368 => 131,  355 => 128,  347 => 126,  334 => 115,  327 => 113,  320 => 110,  317 => 109,  313 => 107,  310 => 106,  303 => 102,  300 => 101,  296 => 99,  293 => 98,  290 => 97,  286 => 96,  280 => 92,  274 => 91,  268 => 89,  263 => 87,  258 => 86,  254 => 85,  249 => 82,  246 => 81,  244 => 80,  238 => 77,  233 => 74,  229 => 72,  221 => 70,  219 => 69,  211 => 67,  207 => 65,  201 => 63,  199 => 62,  194 => 60,  190 => 58,  186 => 57,  180 => 55,  178 => 54,  171 => 52,  165 => 51,  161 => 50,  154 => 49,  150 => 47,  147 => 46,  136 => 44,  131 => 43,  129 => 42,  125 => 41,  120 => 39,  116 => 38,  112 => 37,  108 => 36,  103 => 35,  100 => 33,  97 => 32,  80 => 31,  64 => 17,  61 => 16,  50 => 9,  46 => 8,  43 => 7,  40 => 6,  34 => 3,  29 => 14,);
+        return array (  884 => 414,  880 => 412,  875 => 410,  870 => 409,  789 => 331,  782 => 322,  776 => 318,  770 => 314,  767 => 313,  759 => 310,  754 => 308,  750 => 307,  746 => 306,  742 => 305,  737 => 304,  734 => 303,  729 => 301,  725 => 300,  721 => 299,  717 => 298,  712 => 297,  707 => 295,  703 => 294,  699 => 293,  695 => 292,  690 => 291,  685 => 289,  681 => 288,  677 => 287,  673 => 286,  668 => 285,  663 => 283,  659 => 282,  655 => 281,  651 => 280,  646 => 279,  641 => 277,  637 => 276,  633 => 275,  629 => 274,  624 => 273,  621 => 272,  619 => 271,  614 => 269,  605 => 268,  602 => 267,  600 => 266,  596 => 265,  589 => 261,  584 => 259,  580 => 257,  577 => 256,  574 => 255,  552 => 237,  549 => 236,  545 => 235,  540 => 232,  537 => 230,  518 => 203,  498 => 196,  496 => 195,  492 => 194,  486 => 190,  480 => 187,  476 => 186,  472 => 185,  468 => 184,  464 => 183,  460 => 181,  456 => 180,  448 => 174,  440 => 168,  432 => 162,  424 => 156,  416 => 150,  414 => 149,  409 => 147,  405 => 146,  400 => 145,  397 => 144,  393 => 143,  386 => 138,  381 => 136,  378 => 134,  375 => 133,  372 => 132,  359 => 129,  351 => 127,  338 => 116,  331 => 114,  324 => 111,  321 => 110,  317 => 108,  314 => 107,  307 => 103,  304 => 102,  300 => 100,  297 => 99,  294 => 98,  290 => 97,  284 => 93,  278 => 92,  272 => 90,  267 => 88,  262 => 87,  258 => 86,  253 => 83,  250 => 82,  248 => 81,  242 => 78,  237 => 75,  233 => 73,  225 => 71,  223 => 70,  215 => 68,  211 => 66,  205 => 64,  203 => 63,  198 => 61,  194 => 59,  190 => 58,  184 => 56,  182 => 55,  175 => 53,  169 => 52,  165 => 51,  158 => 50,  154 => 48,  151 => 47,  140 => 45,  135 => 44,  133 => 43,  129 => 42,  124 => 40,  120 => 39,  116 => 38,  112 => 37,  108 => 36,  103 => 35,  100 => 33,  97 => 32,  80 => 31,  64 => 17,  61 => 16,  50 => 9,  46 => 8,  43 => 7,  40 => 6,  34 => 3,  29 => 14,);
     }
 }

@@ -101,25 +101,27 @@ class FormsController extends Controller {
 
     // Get more places
     public function morePlacesRequestAction() {
-        $notLike = $this->getRequest()->get('input');
-        $arr = explode(',', $notLike);
-        //echo "<pre>";
-        //print_r($arr);echo "</pre>";
-        //var_dump($notLike);//exit();
-        //echo "$notLike";
-
-
+        $request = Request::createFromGlobals();
+        $pag = $request->request->get('pag');
+        $name = $request->request->get('searchval');
+        $limit = $this->container->getParameter('limit');
+        $dist = $this->container->getParameter('distance');
+        if(apc_exists($name)){
+            $coord = apc_fetch($name);
+            $lat = $coord['lat'];
+            $lng = $coord['lng'];
+        }else{
+            $lat =0;
+            $lng =0;
+        }
+        $search = $this->get('searchDAO');
+        $places = $search->getPlacesByDistance($name, $lat, $lng, $dist, $limit, $pag);
         $this->em = $this->getDoctrine()->getManager();
-
-        $places = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                ->getMorePlaces($notLike);
-//         $this->em->clear($places); 
-        //exit();
-//        $this->em->refresh($places); 
-        //echo "<pre>";print_r($places);//exit();
-        //echo "<pre>";print_r($places);exit();
+        $nrplaces = count($places);
         return $this->render('BundlePlacesBundle:Places:morePlaces.html.twig', array(
-                    'places' => $places
+                    'places' => $places,
+                    'nrplaces' => $nrplaces,
+                    'pag'      => $pag
         ));
     }
 
