@@ -30,8 +30,8 @@ setVote:
 morePlacesRequest:
     pattern:  /morePlacesRequest
     defaults: { _controller: BundlePlacesBundle:Forms:morePlacesRequest }
-    requirements:
-        _method:  POST       
+#    requirements:
+#        _method:  POST       
 demoSearch:
     pattern:  /demoSearch
     defaults: { _controller: BundlePlacesBundle:Forms:demoSearch }
