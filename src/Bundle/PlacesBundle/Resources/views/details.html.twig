@@ -1,0 +1,96 @@
+{% block stylesheets %}
+     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/details.css') }}" />
+{% endblock %}
+
+{% block content %}
+	<div class="left-container">
+		<section class="top">
+			{% block details-section %}
+		    {% endblock %}
+		</section><!--end top section-->
+		<section class="map">
+			{% block map-section%}
+			<div class="header">
+				<div class="address" ng-controller="TypeaheadCtrl">
+					<div class="marker"></div>
+					<label>Dorobantilor 48, CLUJ NAPOCA</label>			
+					<input ng-model="asyncSelected" value="" typeahead = "address for address in getLocation($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations"></input>
+				</div>
+				<button class="location-button">
+					<label>Change Location</label>
+					<div class="pen-icon"></div>
+				</button>
+			</div>
+			<div id="map-canvas">
+			</div>
+			{% endblock %}
+		</section><!--end map-canvas section-->
+	</div><!--end left container-->
+{% endblock%}
+{% block sidebar %}
+	<aside class="right-container">
+		<ul class="restaurant-list">
+			<li>
+				<section>
+					<header><a href="">La matusica</a></header>
+					<ul class="rating-stars">
+						<li></li>
+						<li></li>
+						<li class='red'></li>
+						<li class='red'></li>
+						<li class='red'></li>
+					</ul>
+				</section>
+			</li>
+			<li class="selected">
+				<section>
+					<header><a href="">La matusica</a></header>
+					<ul class="rating-stars">
+						<li></li>
+						<li></li>
+						<li class='red'></li>
+						<li class='red'></li>
+						<li class='red'></li>
+					</ul>
+				</section>
+			</li>
+			<li>
+				<section>
+					<header><a href="">La matusica</a></header>
+					<ul class="rating-stars">
+						<li></li>
+						<li></li>
+						<li class='red'></li>
+						<li class='red'></li>
+						<li class='red'></li>
+					</ul>
+				</section>
+			</li>
+			<li>
+				<section>
+					<header><a href="">La matusica</a></header>
+					<ul class="rating-stars">
+						<li></li>
+						<li></li>
+						<li class='red'></li>
+						<li class='red'></li>
+						<li class='red'></li>
+					</ul>
+				</section>
+			</li>
+			<li>
+				<section>
+					<header><a href="">La matusica</a></header>
+					<ul class="rating-stars">
+						<li></li>
+						<li></li>
+						<li class='red'></li>
+						<li class='red'></li>
+						<li class='red'></li>
+					</ul>
+				</section>
+			</li>
+		</ul>
+	</aside><!--end right container-->
+{% endblock%}
+

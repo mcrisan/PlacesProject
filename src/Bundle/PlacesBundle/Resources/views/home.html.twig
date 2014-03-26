@@ -1,0 +1,18 @@
+{% extends 'BundlePlacesBundle::base.html.twig' %}
+{% block content %} 
+	{% for i in 0..6 %}
+		<div>
+		 	{% for place in places %}
+		 		{% if i == 3%}
+		 			<img class="no-hovering" src="images/fast-food.jpg"/>
+	 			{% else %}
+			 		<img src="images/fast-food.jpg"/>
+			 	{% endif %}
+	    	{% endfor %}
+    	</div>
+    {% endfor %}
+{% endblock %}	
+
+{% block javascripts %}
+
+{% endblock %}

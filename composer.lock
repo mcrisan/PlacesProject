@@ -3,8 +3,34 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "8a722459691f8aeeb50f3af86ee591dc",
+    "hash": "ba71db7ef70c8b030e4039ffb2f60b4d",
     "packages": [
+        {
+            "name": "beberlei/DoctrineExtensions",
+            "version": "v0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beberlei/DoctrineExtensions.git",
+                "reference": "d38b081dbf826960bd9aad9d7dabed5164d3e7d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/beberlei/DoctrineExtensions/zipball/d38b081dbf826960bd9aad9d7dabed5164d3e7d3",
+                "reference": "d38b081dbf826960bd9aad9d7dabed5164d3e7d3",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "DoctrineExtensions": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2012-05-16 07:04:34"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.1.2",

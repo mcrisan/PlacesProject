@@ -1,5 +1,8 @@
+
+<input id="nrplaces" type="hidden" value="{{ nrplaces }}" />
+<input id="pagplaces" type="hidden" value="{{ pag }}" />
 {% for place in places %}
-<a id="{{ place.placeId }}" class="list-group-item it2" href="{{ path('renderPlace',{'param':place.placeName}) }}">
+<a id="{{ place.placeId }}" class="list-group-item it{{pag}}" href="{{ path('renderPlace',{'param':place.placeName}) }}">
                 <p>{{ place.placeName }}</p>
                 <p>
                     {% if place.placeRating|length > 1 %}
@@ -125,3 +128,4 @@
      {% endif %}
     </div>
 {% endfor %} #} 
+

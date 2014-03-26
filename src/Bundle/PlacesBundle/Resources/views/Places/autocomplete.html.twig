@@ -1,3 +1,4 @@
+
 <b>Places:</b>
 {% if place is empty %}
     -
@@ -10,8 +11,7 @@
 {% endfor %}
 {% endif %} 
 <b>Address:</b>
-{% for item in placesAdd %}
+
 <div class="show" align="left">
-{{loop.index}}.&nbsp;<span class="name">{{item.placeName}}</span><br/>
+{#<span class="name">{{placesAdd.name}}</span><br/>#}
 </div>
-{% endfor %}

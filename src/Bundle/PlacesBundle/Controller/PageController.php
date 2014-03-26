@@ -30,7 +30,25 @@ class PageController extends Controller {
     // Preload method - insert/update in/the users_ip table and redirect to homePage
     function preLoadAction() {
 
-          return $this->redirect($this->generateUrl('index'));
+        //$url = "http://localhost/PlacesProject/web/app_dev.php/homeplace";
+        //$json = file_get_contents($url);
+        //$data = json_decode($json, TRUE);
+        //var_dump($data);
+        $url = "http://localhost/PlacesProject/web/app_dev.php/homeplace";
+        $json = file_get_contents($url);
+        $data = json_decode($json, TRUE);
+        $places = array();
+        if(array_key_exists('places', $data)){
+            $places = $data['places'];
+        }        
+        //var_dump($data);
+
+        return $this->render("BundlePlacesBundle:Page:home.html.twig", array(
+                    "places" => $places            
+                )
+            );
+
+        //return $this->redirect($this->generateUrl('index'));
     }
 
     // Home page
@@ -129,11 +147,6 @@ class PageController extends Controller {
         // set searchInput - show default results (" places containing 'ma' ")
         $searchInput = "ma";
         $searchInputVal = $request->query->get('input');
-//        $placeOp = $this->get('placeop');
-//        $placeOp->checkPlace($searchInputVal);
-        
-        $formOp = $this->get('formsop');
-        $formOp->checkPlace($searchInputVal);
 
         if (!empty($searchInputVal)) {
             $searchInput = $searchInputVal;
@@ -142,11 +155,16 @@ class PageController extends Controller {
         $url = "http://localhost/PlacesProject/web/app_dev.php/searchplace/$name";
         $json = file_get_contents($url);
         $data = json_decode($json, TRUE);
+        //if ($session->has('places')) {
+        //    $places = $session->get('places');
+        //}else{
+            //echo "nu e sesiune";
+        //}
         $places = $data['details']['places'];
         $totalResults = count($places);
         $placeInfo = $data['details']['placeInfos'];
         $userDet = $data['details']['userInfos'];
-
+        //die;
         if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
             $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
         }

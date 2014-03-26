@@ -62,7 +62,7 @@ class PlaceDetailsRepository extends EntityRepository {
                 order by pd.placeName asc
                 
             ")
-                ->setParameter('name', '%' . $input . '%');
+                ->setParameter('name',  $input );
 
         return $query->getResult();
 
@@ -108,6 +108,43 @@ class PlaceDetailsRepository extends EntityRepository {
          */
     }
     
+    public function getPlacesByDistance($name, $lat, $lng, $dist, $limit = null, $pag = null) {
+        
+        $this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('acos', 'DoctrineExtensions\Query\Mysql\Acos');
+        $this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('sin', 'DoctrineExtensions\Query\Mysql\Sin');
+        $this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('cos', 'DoctrineExtensions\Query\Mysql\Cos');
+        $this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('pi', 'DoctrineExtensions\Query\Mysql\Pi');
+        $em = $this->getEntityManager();
+
+        $qb = $em->createQueryBuilder()
+                ->select('pd.placeId,pd.placeName,pd.placeRating, p.slug, '
+                        . '(((acos(sin((:lat *pi()/180)) * 
+            sin((pd.placeLat * pi()/180))+cos((:lat * pi()/180)) * 
+            cos((pd.placeLat * pi()/180)) * cos(((:lng - pd.placeLng)* 
+            pi()/180))))*180/pi())*60*1.1515
+        ) as distance ')
+                ->from('BundlePlacesBundle:PlaceDetails', 'pd')
+                ->innerJoin('BundlePlacesBundle:Places', 'p', 'WITH', 'pd.placeId = p.id')
+                ->add('orderBy', 'distance ASC')
+                ->where('pd.placeName NOT LIKE :name')
+                ->having('distance <= :dist')
+                ->setParameter('lat',  $lat)
+                ->setParameter('lng',  $lng)
+                ->setParameter('dist',  $dist)
+                ->setParameter('name',  $name);
+                //->setFirstResult(15)
+                //->setMaxResults(20)
+                //->getQuery()
+                //->getResult();
+
+        $q = $qb->getQuery();
+        //$firstResult = $limit*$pag;
+        $q->setFirstResult($limit*$pag);
+        $q->setMaxResults($limit);
+        $places = $q->getResult();
+        return $places;
+    }
+    
     public function getPlacesNames($input) {
         
         
@@ -118,6 +155,21 @@ class PlaceDetailsRepository extends EntityRepository {
                 ->from('BundlePlacesBundle:PlaceDetails', 'pd')
                 ->where('pd.placeName LIKE :name')
                 ->setParameter('name', '%' . $input . '%')
+                ->setMaxResults(15)
+                ->getQuery()
+                ->getResult();
+
+        return $qb;
+    }
+    
+    public function getAllPlacesNames() {
+        
+        
+        $em = $this->getEntityManager();
+
+        $qb = $em->createQueryBuilder()
+                ->select('pd.placeName')
+                ->from('BundlePlacesBundle:PlaceDetails', 'pd')
                 ->getQuery()
                 ->getResult();
 

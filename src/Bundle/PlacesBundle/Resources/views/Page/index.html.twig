@@ -33,6 +33,7 @@
                     <div id="pane1" class="tab-pane">
                     {# hide some values - used to load map #}
                         <input id="name" type="hidden" value="{{ place.placename }}" />
+                        <input id="searchvalue" type="hidden" value="{{ input }}" />
                         <input id="lat" type="hidden" value="{{ place.placelat }}" />
                         <input id="lng" type="hidden" value="{{ place.placelng }}" />
                         <input id="placeId" type="hidden" value="{{ place.placeid }}" />
@@ -144,38 +145,13 @@
                             <p><b>Total votes: </b>{{ totalVotesAllTime }} votes</p>
                             <p><b>Total votes for this place: </b>{{ totalVotes }} votes</p>
                             <p><b>Points / Stars:</b> <font color="green"><big>{{ usersRating }}</big></font></p>
-
-                            {% if usersRating < 2%}
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            {% elseif usersRating < 3 %}
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            {% elseif usersRating < 4 %}
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            {% elseif usersRating < 5 %}
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                            <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                            {% elseif usersRating == 5 %}
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
-                            <span class="glyphicon glyphicon-star icon-font-size-large"></span> 
-                            {% endif %}
+                            {% for i in 1..5%}
+                                {% if i <= usersRating %}
+                                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+                                {% endif%}
+                            {% endfor %}
                         {% else %} {# if client dose not vote #}
                             <p>Select a star</p>
                             <form>
@@ -242,9 +218,9 @@
                 </div>
             </div> 
         </div><!-- /.nested cols -->
-        
 
-        
+        <div id="map" class="map"></div>
+
     </article>
 </div><!-- /#place-container -->
 
@@ -264,48 +240,16 @@
         {% for key,place in places %}
             {# set first result as active #}
             {% set active = (key == 0 ? 'active' : '') %}
-        <a id="{{ place.placeId }}" class="list-group-item it1 {{ active }}" href="{{ path('renderPlace',{'param':place.slug}) }}">
+        <a id="{{ place.placeId }}" class="list-group-item it {{ active }}" href="{{ path('renderPlace',{'param':place.slug}) }}">
             <p>{{ place.placeName }}</p>
             <p>
-                    {% if place.placeRating|length > 1 %}
-                    {% if place.placeRating < 2%}
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                {% elseif place.placeRating < 3 %}
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                {% elseif place.placeRating < 4 %}
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                {% elseif place.placeRating < 5 %}
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                {% elseif place.placeRating == 5 %}
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
-                {% endif %}
-             {% else %}
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />  
-                <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />  
-             {% endif %}
+               {% for i in 1..5%}
+                    {% if i <= place.placeRating %}
+                        <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                    {% else %}
+                        <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                    {% endif%}
+                {% endfor %}
             </p>
         </a>
         {% endfor %}
@@ -330,9 +274,12 @@
 {% block javascript %} 
 <script type="text/javascript">
     $(document).ready(function() {
-        
+
         //var i = 1;
         var array = "";
+        var i = 0;
+        var searchvalue = $("#searchvalue").val();
+        var nrplaces;
         // store current places in list
         $('.app-aside-div').children('a').each(function() {
             var arrHref = ($(this).attr('id'));
@@ -340,21 +287,26 @@
         });
         $('.app-results-wrapper').scroll(function() {
             if ($(this)[0].scrollHeight - $(this).scrollTop() == $(this).outerHeight()) {
+                i++;
+                console.log(i);
+                console.log(searchvalue);
                 $.ajax({
-                    url: "/PlacesProject/web/app_dev.php/morePlacesRequest",
+                    url: "morePlacesRequest",
                     type: "POST",
-                    data: 'input=1643',
+                    data: 'pag=' + i + '&searchval=' + searchvalue,
                     success: function(data) {
 //                alert(data);
                         if (data) {
                             $('#gif-loader').hide();
-                            console.log(data);
+                            //console.log(data);
                             $('.app-aside-div').append(data);
+                            nrplaces = $("#nrplaces").val();
+                            console.log(nrplaces);
                             //$('#gif-loader').hide();
+                           // alert(i);
+                            $(".it"+i).on('click', function() {
 
-                            $(".it2").on('click', function() {
-                                
-                                
+
                                 param = $(this).attr('href');
                                 //alert(param);
                                 $(this).addClass('active').siblings().removeClass('active');
@@ -370,12 +322,14 @@
                                         }
                                     }
                                 });
-                               // alert(param);
+                                // alert(param);
                                 return false;
-                                alert(22);
+                                //alert(22);
                                 event.preventDefault();
 
                             });
+
+
 
 
 
@@ -389,16 +343,18 @@
                     }
 
                 });
-{#                        alert(1111);#}
             }
         });
+
     });
 </script>
     {#<script src="{{ asset('bundles/bundleplaces/js/loadMap.js') }}"></script>#}
 <script src="{{ asset('bundles/bundleplaces/js/renderPlace.js') }}"></script>
 <script src="{{ asset('bundles/bundleplaces/js/processingVote.js') }}"></script>
-
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
 <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/google-map-get-directions.js') }}"></script>
-<script src=" http://maps.google.com/?file=api&amp;v=2&amp;key=AIzaSyBcy7J0eaTaMSxAj7re31bLUKSr9W9EPYE" type="text/javascript"></script>
+{#<script src=" http://maps.google.com/?file=api&amp;v=2&amp;key=AIzaSyBcy7J0eaTaMSxAj7re31bLUKSr9W9EPYE" type="text/javascript"></script>#}
+
+
     {#<script src="{{ asset('bundles/bundleplaces/js/google-maps.js') }}"></script>#}
 {% endblock %}

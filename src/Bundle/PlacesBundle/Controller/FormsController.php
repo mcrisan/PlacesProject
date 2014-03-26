@@ -6,6 +6,7 @@ namespace Bundle\PlacesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Bundle\PlacesBundle\lib\UserIp;
 use Bundle\PlacesBundle\lib\GetUserIp;
 
@@ -20,6 +21,11 @@ class FormsController extends Controller {
     // Render place page
     public function renderPlaceAction($param) {
         $placeName = $this->gen_slug($param);
+        //$request = Request::createFromGlobals();
+        //$searchInputVal = $request->query->get('input');
+        
+        //$formsop = $this->get('formsop');
+        //$formsop->checkPlaceBySlug($placeName, $searchInputVal);
         //$placeName = $this->$this->getRequest()->get('param');
 
         $this->em = $this->getDoctrine()->getManager();
@@ -95,25 +101,27 @@ class FormsController extends Controller {
 
     // Get more places
     public function morePlacesRequestAction() {
-        $notLike = $this->getRequest()->get('input');
-        $arr = explode(',', $notLike);
-        //echo "<pre>";
-        //print_r($arr);echo "</pre>";
-        //var_dump($notLike);//exit();
-        //echo "$notLike";
-
-
+        $request = Request::createFromGlobals();
+        $pag = $request->request->get('pag');
+        $name = $request->request->get('searchval');
+        $limit = $this->container->getParameter('limit');
+        $dist = $this->container->getParameter('distance');
+        if(apc_exists($name)){
+            $coord = apc_fetch($name);
+            $lat = $coord['lat'];
+            $lng = $coord['lng'];
+        }else{
+            $lat =0;
+            $lng =0;
+        }
+        $search = $this->get('searchDAO');
+        $places = $search->getPlacesByDistance($name, $lat, $lng, $dist, $limit, $pag);
         $this->em = $this->getDoctrine()->getManager();
-
-        $places = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                ->getMorePlaces($notLike);
-//         $this->em->clear($places); 
-        //exit();
-//        $this->em->refresh($places); 
-        //echo "<pre>";print_r($places);//exit();
-        //echo "<pre>";print_r($places);exit();
+        $nrplaces = count($places);
         return $this->render('BundlePlacesBundle:Places:morePlaces.html.twig', array(
-                    'places' => $places
+                    'places' => $places,
+                    'nrplaces' => $nrplaces,
+                    'pag'      => $pag
         ));
     }
 
@@ -272,26 +280,19 @@ class FormsController extends Controller {
         $b = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 's', 'a', 'a', 'a', 'a', 'a', 'a', 'ae', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'D', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'IJ', 'ij', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'l', 'l', 'N', 'n', 'N', 'n', 'N', 'n', 'n', 'O', 'o', 'O', 'o', 'O', 'o', 'OE', 'oe', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'S', 's', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 'y', 'Y', 'Z', 'z', 'Z', 'z', 'Z', 'z', 's', 'f', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i', 'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'A', 'a', 'AE', 'ae', 'O', 'o');
         return strtolower(preg_replace(array('/[^a-zA-Z0-9 -]/', '/[ -]+/', '/^-|-$/'), array('', '-', ''), str_replace($a, $b, $str)));
     }
-
-    function doAutocomAction() {
-        $session = $this->get('session');
+   
+    function getPlacesNamesAction(){
         $formsop = $this->get('formsop');
-        $em = $this->getDoctrine()->getManager();
-        $request = Request::createFromGlobals();
-        $input = $request->request->get('search');
-        $session->set('search', $input);
-        if (apc_exists($input)) {
-            $data = apc_fetch($input);
-            $placeName = $data['placeName'];
-            $places = $data['places'];
-        } else {
-            $placeName = $formsop->getPlacesNames($input);
-            $places = $formsop->getPlaces($input);
-            apc_store($input, array('placeName' => $placeName, 'places' => $places));
-        }
-
-        return $this->render("BundlePlacesBundle:Places:autocomplete.html.twig", array('place' => $placeName, 'placesAdd' => $places));
+        $placeName = $formsop->getAllPlacesNames();
+        
+        $res = json_encode($placeName);
+        $resp = new Response($res, 200);      
+       $resp->headers->set('Content-Type', 'application/json');
+       
+       
+       return $resp;
     }
+
 }
 
 ?>

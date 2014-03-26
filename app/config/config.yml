@@ -57,6 +57,10 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
+        #dql:
+         #     ACOS: DoctrineExtensions\Query\Mysql\Acos
+          #    COS: DoctrineExtensions\Query\Mysql\Cos
+           #   SIN: DoctrineExtensions\Query\Mysql\Sin
 
 # Swiftmailer Configuration
 swiftmailer:
