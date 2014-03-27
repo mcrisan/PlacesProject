@@ -70,6 +70,10 @@ services:
         
     insertallinone:
         class: Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand
-        arguments: [ @placeop, @insertalldetails ]     
+        arguments: [ @placeop, @insertalldetails ] 
+        
+    insertcat:
+        class: Bundle\PlacesBundle\Command\InsertCategoriesCommand
+        arguments: [ @placeop ]    
         
         

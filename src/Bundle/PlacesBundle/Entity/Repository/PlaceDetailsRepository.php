@@ -110,10 +110,10 @@ class PlaceDetailsRepository extends EntityRepository {
     
     public function getPlacesByDistance($name, $lat, $lng, $dist, $limit = null, $pag = null) {
         
-        $this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('acos', 'DoctrineExtensions\Query\Mysql\Acos');
-        $this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('sin', 'DoctrineExtensions\Query\Mysql\Sin');
-        $this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('cos', 'DoctrineExtensions\Query\Mysql\Cos');
-        $this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('pi', 'DoctrineExtensions\Query\Mysql\Pi');
+        //$this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('acos', 'DoctrineExtensions\Query\Mysql\Acos');
+        //$this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('sin', 'DoctrineExtensions\Query\Mysql\Sin');
+        //$this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('cos', 'DoctrineExtensions\Query\Mysql\Cos');
+        //$this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('pi', 'DoctrineExtensions\Query\Mysql\Pi');
         $em = $this->getEntityManager();
 
         $qb = $em->createQueryBuilder()
@@ -164,12 +164,15 @@ class PlaceDetailsRepository extends EntityRepository {
     
     public function getAllPlacesNames() {
         
-        
+        //$this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('GROUP_CONCAT', 'DoctrineExtensions\Query\Mysql\GroupConcat');
         $em = $this->getEntityManager();
 
         $qb = $em->createQueryBuilder()
-                ->select('pd.placeName')
+                ->select('pd.placeName, GROUP_CONCAT(c.category) as category')
                 ->from('BundlePlacesBundle:PlaceDetails', 'pd')
+                ->innerJoin('BundlePlacesBundle:PlaceCategories', 'pc', 'WITH', 'pc.placeId = pd.placeId')
+                ->innerJoin('BundlePlacesBundle:Categories', 'c', 'WITH', 'pc.categoryId = c.id')
+                ->groupBy("pc.placeId")
                 ->getQuery()
                 ->getResult();
 

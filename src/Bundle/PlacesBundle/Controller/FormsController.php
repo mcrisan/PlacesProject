@@ -258,6 +258,9 @@ class FormsController extends Controller {
         $request = Request::createFromGlobals();
         //var_dump($request);
         //echo "si";
+        $check = $request->request->get('drink-checkbox');
+        //echo $check;
+        //die;
         $this->em = $this->getDoctrine()->getManager();
         if ($request->getMethod() == "POST") {
             $searchInput = $request->get('input');

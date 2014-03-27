@@ -1,0 +1,23 @@
+<?php
+
+namespace Bundle\PlacesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Description of Categories
+ *
+ * @author mcrisan
+ */
+class Categories {
+    
+    /**
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $category;
+}

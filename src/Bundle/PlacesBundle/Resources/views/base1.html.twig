@@ -23,32 +23,33 @@
     <body>
         <header id="header-section">
             {% block header %}
-                <div id ="search" class="search-bar">
-                    <div class="search-bar-header">
-                        <label>Yummy</label>
-                        <ul class="social-bar">
-                            <li><a href="#"></a></li>
-                            <li><a href="#"></a></li>
-                            <li><a href="#"></a></li>
-                        </ul>
-                        <ul class="menu-bar">
-                            <li class="menu-button">
-                                <a href="#">CONTACT</a>
-                            </li>
-                            <li class="menu-button">
-                                <a href="#">ABOUT</a>
-                            </li>
-                        </ul>
-                    </div>
+            <div id ="search" class="search-bar">
+                <div class="search-bar-header">
+                    <label>Yummy</label>
+                    <ul class="social-bar">
+                        <li><a href="#"></a></li>
+                        <li><a href="#"></a></li>
+                        <li><a href="#"></a></li>
+                    </ul>
+                    <ul class="menu-bar">
+                        <li class="menu-button">
+                            <a href="#">CONTACT</a>
+                        </li>
+                        <li class="menu-button">
+                            <a href="#">ABOUT</a>
+                        </li>
+                    </ul>
+                </div>
+                <form action="{{ path('demoSearch') }}" method="post">
                     <div class="search-input">                        
-                        <form action="{{ path('demoSearch') }}" method="post">
-                            <div class="divider"></div>
-                            <input id="searchh" class="search typeahead1" type="text" name="input" placeholder="Search.." autocomplete="off" />
-                            <input id="search-lat" type="hidden" name="input-lat" />
-                            <input id="search-lng" type="hidden" name="input-lng" />                            
-                            <button type="submit"></button>
-                            <div id="autocomplete-result"></div>
-                        </form>                          
+                       {# <form action="{{ path('demoSearch') }}" method="post">#}
+                        <div class="divider"></div>
+                        <input id="searchh" class="search typeahead1" type="text" name="input" placeholder="Search.." autocomplete="off" />
+                        <input id="search-lat" type="hidden" name="input-lat" />
+                        <input id="search-lng" type="hidden" name="input-lng" />                            
+                        <button type="submit"></button>
+                        <div id="autocomplete-result"></div>
+                       {# </form> #}                         
                     </div>
                     <div class="search-bar-footer">
                         <ul class="search-filters">
@@ -61,7 +62,8 @@
                                 <label for="food-checkbox" class="css-label">FOOD</label>
                             </li>
                         </ul>
-                    </div>              
+                    </div> 
+                </form>
             </div><!--end search bar--> 
             {% endblock %}
         </header>

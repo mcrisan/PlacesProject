@@ -178,6 +178,29 @@ class PlaceOperationsDAO {
                             ->getPlacesDetail($startId, $stopId);
     }
     
+    public function getTags($placeid){
+        
+        return $this->em->getRepository('BundlePlacesBundle:PlaceTags')
+                            ->getTagName($placeid);
+    }
+    
+    public function getPlaces(){
+        
+        return $this->em->getRepository('BundlePlacesBundle:Places')
+                            ->findAll();
+    }
+    
+    public function insertCategory($placeCat){
+        $placeCat1 = $this->em->getRepository('BundlePlacesBundle:PlaceCategories')
+                            ->findBy(array("placeId" => $placeCat->getPlaceId(), "categoryId" => $placeCat->getCategoryId()));
+        if(!$placeCat1){
+        $this->em->persist($placeCat);
+        $this->em->flush();
+        }else{
+            //echo "exista";
+        }
+    }
+    
     
     
 }

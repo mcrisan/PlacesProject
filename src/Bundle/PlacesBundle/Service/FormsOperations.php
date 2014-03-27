@@ -44,8 +44,19 @@ class FormsOperations {
 
     public function getAllPlacesNames() {
 
-        return $this->formDao->getAllPlacesNames();
+        $places = $this->formDao->getAllPlacesNames();
+        //var_dump($places);
+        foreach ($places as $key => $place) {
+            $cat = $place['category'];
+            //echo $cat;
+            if (strpos($cat, ',') !== FALSE) {
+                //echo "are";
+                $places[$key]['category'] = 'FoodDrink';
+            }
+        }
+        //var_dump($places);
+        //die;
+        return $places;
     }
-
 
 }

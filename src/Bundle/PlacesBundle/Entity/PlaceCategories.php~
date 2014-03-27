@@ -1,0 +1,26 @@
+<?php
+
+namespace Bundle\PlacesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * PlaceCategories
+ */
+class PlaceCategories {
+    
+    /**
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var integer
+     */
+    private $placeId;
+
+    /**
+     * @var integer
+     */
+    private $categoryId;
+}

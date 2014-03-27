@@ -1,0 +1,18 @@
+Bundle\PlacesBundle\Entity\Categories:
+    type: entity
+    table: categories
+    repositoryClass: Bundle\PlacesBundle\Entity\Repository\CategoriesRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        category:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+    lifecycleCallbacks: {  }

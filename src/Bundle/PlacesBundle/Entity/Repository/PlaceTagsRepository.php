@@ -47,6 +47,21 @@ class PlaceTagsRepository extends EntityRepository
         }
     }
     
+    public function getTagName($placeid){
+        //echo "234";
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder()
+                ->select('pt.placeId, t.tag')
+                ->from('BundlePlacesBundle:PlaceTags', 'pt')
+                ->innerJoin('BundlePlacesBundle:Tags', 't', 'WITH', 'pt.tagId = t.id')
+                ->where('pt.placeId= :id')
+                ->setParameter('id', $placeid)
+                ->getQuery()
+                ->getResult();
+        
+        return $qb;
+    }
+    
     // Delete places from place_tags
     public function deletePlaces($id){
         

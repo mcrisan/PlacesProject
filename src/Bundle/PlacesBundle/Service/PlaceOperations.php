@@ -12,6 +12,7 @@ use Bundle\PlacesBundle\Entity\PlaceTags;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bridge\Monolog\Logger;
 use Bundle\PlacesBundle\Entity\Places;
+use Bundle\PlacesBundle\Entity\PlaceCategories;
 use Bundle\PlacesBundle\Command\InsertAllDetailsCommand;
 
 /**
@@ -263,6 +264,64 @@ class PlaceOperations {
     public function checkPlaceBySlug($slug){
         
         return $this->opDAO->checkCurrentSlug($slug);
+    }
+    
+    public function insertCategories(){
+        
+        $places =  $this->opDAO->getPlaces();
+        $food = array( "restaurant", "bakery", "meal_delivery");
+        $drinks = array("cafe", "bar", "night_club");
+        $i=0;
+        foreach($places as $place){
+            $i++;
+//            if($i==100){
+//                break;
+//            }
+            $id = $place->getId();
+            $tags = $this->opDAO->getTags($id);
+            //var_dump($tags);
+            $ok_f = false;
+            $ok_d = false;
+            foreach ($tags as $tag){
+                $t_name = $tag['tag'];
+                //echo "<br/>cat ".$t_name. "<br/>";
+                if (in_array($t_name, $food)){
+                   $ok_f =true; 
+                }
+                if (in_array($t_name, $drinks)){
+                   $ok_d =true; 
+                }
+            }
+            //echo " <br/>food =".$ok_f. "drink =".$ok_d."<br/> ";
+//            if((!$ok_f)&(!$ok_d)){
+//                $placeCat = new PlaceCategories();
+//                $placeCat->setCategoryId(3);
+//                $placeCat->setPlaceId($id);
+//                $this->opDAO->insertCategory($placeCat);
+//            }
+            if($ok_f){
+                $placeCat = new PlaceCategories();
+                $placeCat->setCategoryId(1);
+                $placeCat->setPlaceId($id);
+                $this->opDAO->insertCategory($placeCat);
+            }
+            if($ok_d){
+                $placeCat = new PlaceCategories();
+                $placeCat->setCategoryId(2);
+                $placeCat->setPlaceId($id);
+                $this->opDAO->insertCategory($placeCat);
+                continue;
+            }
+                $placeCat = new PlaceCategories();
+                $placeCat->setCategoryId(3);
+                $placeCat->setPlaceId($id);
+                $this->opDAO->insertCategory($placeCat);
+            
+            //echo "<br/>am ajuns la:". $i."<br/> ";
+            
+            echo "". $i." ";
+        }
+        echo "done";
     }
 
 }

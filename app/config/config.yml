@@ -53,11 +53,23 @@ doctrine:
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: %kernel.root_dir%/data/data.db3
         # path:     %database_path%
+    #orm:
+        #dql:
+           # string_functions:
+               # GROUP_CONCAT: DoctrineExtensions\Query\Mysql\GroupConcat
+               # second_string: Acme\HelloBundle\DQL\SecondStringFunction
+
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
-        #dql:
+        dql:
+            string_functions:
+                GROUP_CONCAT: DoctrineExtensions\Query\Mysql\GroupConcat
+                acos: DoctrineExtensions\Query\Mysql\Acos
+                sin: DoctrineExtensions\Query\Mysql\Sin
+                cos: DoctrineExtensions\Query\Mysql\Cos
+                pi: DoctrineExtensions\Query\Mysql\Pi
          #     ACOS: DoctrineExtensions\Query\Mysql\Acos
           #    COS: DoctrineExtensions\Query\Mysql\Cos
            #   SIN: DoctrineExtensions\Query\Mysql\Sin

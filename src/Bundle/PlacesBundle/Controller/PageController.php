@@ -136,8 +136,11 @@ class PageController extends Controller {
                         'providerName' => $providerName
             ));
         }
+       
         return $this->render("BundlePlacesBundle:About:about.html.twig");
     }
+    
+    
 
     // Demo page - main (New homepage)
     public function indexAction() {
@@ -361,6 +364,22 @@ class PageController extends Controller {
             );
         }
         return null;
+    }
+    
+    
+    function testAction() {
+        $this->em = $this->getDoctrine()->getManager();
+
+        
+        //echo "taguri";
+        $tags = $this->em->getRepository('BundlePlacesBundle:PlaceTags')
+                            ->getTagName(1667);
+        
+        //var_dump($tags);
+        
+        $placeop = $this->get("placeop");
+        $placeop->insertCategories();
+        return $this->render("BundlePlacesBundle:About:about.html.twig");
     }
 
 }
