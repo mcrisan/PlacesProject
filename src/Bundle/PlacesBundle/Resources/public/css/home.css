@@ -131,9 +131,41 @@ body {
     padding: 1px;
     font-size: 18px;
     padding-left: 20px;
-
+    float: left;
+    width: 100%;
 }
 .show:hover {
     color: white;
     background-color: red;
+}
+
+.category {
+	width: 25px;
+	height: 25px;
+	float: left;
+	margin-right: 4px;
+	margin-left: -3px;
+}
+
+.food{
+	background: url('../images/food-category.png') no-repeat;
+}
+
+.drink{
+	background: url('../images/drink-category.png') no-repeat;
+}
+
+.foodDrink{
+	background: url('../images/food-drink-category.png') no-repeat;
+}
+
+.other{
+	background: url('../images/other-category.png') no-repeat;
+}
+
+.address-marker{
+	width: 25px;
+	height: 30px;
+	float: left;
+	background: url('../images/address-marker.png') no-repeat;
 }

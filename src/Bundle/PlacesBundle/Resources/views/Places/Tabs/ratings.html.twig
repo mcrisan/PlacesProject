@@ -1,0 +1,47 @@
+<h1>{{ place.placeName }}</h1>
+{% if bool is defined %} {# client already voted ! #}
+    <p><b>Total votes: </b>{{ totalVotesAllTime }} votes</p>
+    <p><b>Total votes for this place: </b>{{ totalVotes }} votes</p>
+    <p><b>Points / Stars:</b> <font color="green"><big>{{ usersRating }}</big></font></p>
+
+    {% if usersRating < 2%}
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+    {% elseif usersRating < 3 %}
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+    {% elseif usersRating < 4 %}
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+    {% elseif usersRating < 5 %}
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
+    {% elseif usersRating == 5 %}
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+        <span class="glyphicon glyphicon-star icon-font-size-large"></span>
+    {% endif %}
+{% else %} {# if client dose not vote #}
+<p>Select a star</p>
+    <form>
+        <br />1<input type="radio" name="vote" value="1" onclick="setVote(this.value,'{{ path('setVote') }}');">
+        2<input type="radio" name="vote" value="2" onclick="setVote(this.value,'{{ path('setVote') }}');">
+        3<input type="radio" name="vote" value="3" onclick="setVote(this.value,'{{ path('setVote') }}');">
+        4<input type="radio" name="vote" value="4" onclick="setVote(this.value,'{{ path('setVote') }}');">
+        5<input type="radio" name="vote" value="5" onclick="setVote(this.value,'{{ path('setVote') }}');">
+    </form>
+{% endif %}

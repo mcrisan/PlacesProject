@@ -1,184 +1,27 @@
 <tabset class="menu-bar">
     <tab heading="PRESENTATION">
         <article>
-            <div class="images"></div>
-            <header>{{ place.placeName }}</header>
-            <p>Place id: {{ place.placeId }}</p>
-            <aside class="element-bar">
-                <ul class="rating-stars">
-                    <li></li>
-                    <li></li>
-                    <li class='red'></li>
-                    <li class='red'></li>
-                    <li class='red'></li>
-                </ul>
-                <ul class="social-bar">
-                    <li><a href="#"></a></li>
-                    <li><a href="#"></a></li>
-                    <li><a href="#"></a></li>
-                    <li><a href="#"></a></li>
-                </ul>
-            </aside>
-            <p>                        
-                {% if placePhotos is not empty %}
-                    {% for photo in placePhotos %}
-                        <img src="{{ photo.imgUrl }}" title="{{ place.placeName }}" width="160" height="140"/>
-                    {% endfor %}
-                {% else %}
-                      <span class="glyphicon glyphicon-picture icon-font-size-verylarge"></span>
-                {% endif %}
-                <a href="{{ place.placeUrl }}" target="_blank" title="{{ place.placeName }}">
-                <img src="{{ place.placeIcon }}"/></a>
-                <p><a href="{{ path('index_indexShowPlace',{'name':placeSlug}) }}">{{ place.placeName|capitalize }}</a></p>
-                <p><a href="{{ path('index_placeDetails',{'name':placeSlug}) }}">New - {{ place.placeName|capitalize }}</a></p>
-
-                {% if place.placePhonenumber|length > 1 %}
-                    <p><b>Phone: </b>{{ place.placePhonenumber }}</p>
-                {% else %}
-                    <p><b>Phone: </b>number not avaiable.</p>
-                {% endif %}
-
-                <p><b>Type: </b>type - recode querys</p>
-                <p><b>Address: </b>{{ place.placeVicinity }}</p>
-
-                {% if place.placeRating|length != 0 %}
-                    <p><b>Ratings: <big><font color="green">{{ place.placeRating }}</font></b></big> / 5 points.</p>
-                {% else %}
-                    <p><b>Ratings: </b> Ratings are not available for this place.</p>
-                {% endif %}
-                <p><b>Geo Location: </b><u>Lat. </u>{{ place.placeLat }}. <u>Lng.</u>{{ place.placeLng }}.</p>  
-
-                {% if place.placeWebsite %}
-                    <p><b>WebSite: </b>{{ place.placeWebsite }}</p>
-                {% else %}
-                    <p><b>WebSite: </b>website not avaiable</p>    
-                {% endif %}
-            </p>
+         {% include 'BundlePlacesBundle:Places:Tabs:presentation.html.twig' with {'reviews':reviews} %}            
         </article><!--end article -->
     </tab>
     <tab heading="PHOTOS">
         <article>
-            <h1>{{ place.placeName }}</h1>
-            <!-- SlideShow -->
-            {% if placeAllPhotos is not empty %}
-                {% if placeAllPhotos|length > 1 %}
-                    <div id="carousel-example-generic" class="carousel slide">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-                        {% for key,value in placeAllPhotos %}
-                            {% if key == 0 %}
-                                <li data-target="#carousel-example-generic" data-slide-to="{{ key }}" class="active"></li>
-                            {% else %}
-                                 <li data-target="#carousel-example-generic" data-slide-to="{{ key }}"></li>
-                            {% endif %}
-                        {% endfor %}
-                    </ol>
-
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner">
-                    {% for key,photo in placeAllPhotos %}
-                        {% if key == 0 %}
-                            <div class="item active" style="border:0px solid blue; height: 350px; width:100%">
-                            <img src="{{ photo.imgUrl }}" width="100%"/>
-                                <div class="carousel-caption">
-                                    Slide {{ key }}
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="item" style="border:0px solid blue; height: 350px; width:100%">
-                                <img src="{{ photo.imgUrl }}" width="100%"/>
-                                {#<img src="http://upload.wikimedia.org/wikipedia/commons/a/a2/BadHogastein-Winter.jpg" alt="First slide">#}
-                                <div class="carousel-caption">
-                                    Slide {{ key }}
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                    </div><!-- /carousel-inner -->
-
-                    <!-- Controls -->
-                    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                    </a>
-                    <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                    </a>
-                </div><!-- /carousel-example-generic -->
-                {% else %}
-                    {% for photo in placePhotos %}
-                        <div class="item" style="border:0px solid blue; width:100%;height:350px;" >
-                            <a href="{{ photo.imgUrl }}" target="_blank"><img src="{{ photo.imgUrl }}" width="100%" height="100%" title="{{ place.placeName }}"/></a>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% else %}
-                <center>
-                    {#<p>Image not found !</p>#}
-                    <span class="glyphicon glyphicon-picture icon-font-size-verylarge" title="Image not found !"></span>
-                </center>
+         {% include 'BundlePlacesBundle:Places:Tabs:photos.html.twig' with {'reviews':reviews} %}     
         </article><!--end article -->
     </tab>
     <tab heading="RATINGS">
         <article>
-           <h1>{{ place.placeName }}</h1>
-            {% if bool is defined %} {# client already voted ! #}
-                <p><b>Total votes: </b>{{ totalVotesAllTime }} votes</p>
-                <p><b>Total votes for this place: </b>{{ totalVotes }} votes</p>
-                <p><b>Points / Stars:</b> <font color="green"><big>{{ usersRating }}</big></font></p>
-
-                {% if usersRating < 2%}
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                {% elseif usersRating < 3 %}
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                {% elseif usersRating < 4 %}
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                {% elseif usersRating < 5 %}
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star-empty icon-font-size-large"></span>
-                {% elseif usersRating == 5 %}
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                    <span class="glyphicon glyphicon-star icon-font-size-large"></span>
-                {% endif %}
-            {% else %} {# if client dose not vote #}
-            <p>Select a star</p>
-                <form>
-                    <br />1<input type="radio" name="vote" value="1" onclick="setVote(this.value,'{{ path('setVote') }}');">
-                    2<input type="radio" name="vote" value="2" onclick="setVote(this.value,'{{ path('setVote') }}');">
-                    3<input type="radio" name="vote" value="3" onclick="setVote(this.value,'{{ path('setVote') }}');">
-                    4<input type="radio" name="vote" value="4" onclick="setVote(this.value,'{{ path('setVote') }}');">
-                    5<input type="radio" name="vote" value="5" onclick="setVote(this.value,'{{ path('setVote') }}');">
-                </form>
-            {% endif %}
+        {% include 'BundlePlacesBundle:Places:Tabs:ratings.html.twig' with {'reviews':reviews} %}  
         </article><!--end article -->
     </tab>
     <tab heading="REVIEWS">
-        <article>
-           <h1>{{ place.placeName }}</h1>
-             {% include 'BundlePlacesBundle:Reviews:index.html.twig' with {'reviews':reviews} %}
+        <article>           
+         {% include 'BundlePlacesBundle:Places:Tabs:reviews.html.twig' with {'reviews':reviews} %}
         </article><!--end article -->
     </tab>
     <tab heading="PROMOTIONS">
         <article>
-           <h1>Promotions</h1>
-            <p>reviews</p>
+         {% include 'BundlePlacesBundle:Places:Tabs:promotions.html.twig' with {'reviews':reviews} %}
         </article><!--end article -->
     </tab>
 </tabset>

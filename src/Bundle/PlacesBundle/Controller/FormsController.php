@@ -20,27 +20,28 @@ class FormsController extends Controller {
 
     // Render place page
     public function renderPlaceAction($param) {
-        $placeName = $this->gen_slug($param);
-        //$request = Request::createFromGlobals();
-        //$searchInputVal = $request->query->get('input');
-        
-        //$formsop = $this->get('formsop');
-        //$formsop->checkPlaceBySlug($placeName, $searchInputVal);
-        //$placeName = $this->$this->getRequest()->get('param');
-
         $this->em = $this->getDoctrine()->getManager();
+        //ex hotel-agape
+        $placeSlug = $this->gen_slug($param); 
+
+        // array containing placeName, id, phone, website, lat, long etc
         $placeDetails = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
                 ->getPlaceDetailsBySlug($placeName);
+        $placeId = $placeDetails[0]['placeId'];
+        $place = $this->em->getRepository('BundlePlacesBundle:Places')->find($placeId);
 
         if (!$placeDetails) {
             return $this->render('BundlePlacesBundle:Error:error.html.twig');
             //throw $this->createNotFoundException('Error msg.');
-        }
-//        var_dump($placeDetails);
-//        exit();
-        $placeId = $placeDetails[0]['placeId'];
-        //var_dump($place_id);
-        //exit();
+        }        
+
+        //get all photos
+        $placeAllPhotos = $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
+                ->getPlacePhotos($placeId);
+        // reviews        
+        $placeReviews = $this->em->getRepository('BundlePlacesBundle:PlaceReviews')
+                ->getReviews($getDefaultPlaceReviews->getId());
+        
         $user = new GetUserIp();
         $currentIp = $user->get_user_ip();
 
@@ -55,48 +56,23 @@ class FormsController extends Controller {
                 ->getCurrentVotes($placeId);
         $totalCounts = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
                 ->getCurrentCounts($placeId);
-        $placePhotos = $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
-                ->getPlacePhotos($placeId, 1);
 
-        //get all photos
-        $placeAllPhotos = $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
-                ->getPlacePhotos($placeId);
-        // reviews
-        $getDefaultPlaceReviews = $this->em->getRepository('BundlePlacesBundle:Places')->find($placeId);
-
-
-        $placeReviews = $this->em->getRepository('BundlePlacesBundle:PlaceReviews')
-                ->getReviews($getDefaultPlaceReviews->getId());
-//        var_dump($placeReviews);
-//        exit();
-        //if user voted
-        //echo "si";
         if ($userStatus) {
             return $this->render('BundlePlacesBundle:Places:renderPlace.html.twig', array(
                         'placeDetails' => $placeDetails,
                         'placePhotos' => $placePhotos,
                         'placeAllPhotos' => $placeAllPhotos,
                         'ip' => $currentIp,
+                        'placeSlug' => $placeName,
+                        'placeid' => $placeId,
+                        'reviews' => $placeReviews,
                         'totalVotesAllTime' => $totalVotesAllTime,
                         'totalVotes' => $totalVotesForPlace[0]['votesCount'],
                         'usersRating' => round(
                                 $total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2),
-                        'bool' => true,
-                        'placeSlug' => $placeName,
-                        'placeid' => $placeId,
-                        'reviews' => $placeReviews
+                        'bool' => true
             ));
         }
-
-        return $this->render('BundlePlacesBundle:Places:renderPlace.html.twig', array(
-                    'placeDetails' => $placeDetails,
-                    'placePhotos' => $placePhotos,
-                    'placeAllPhotos' => $placeAllPhotos,
-                    'ip' => $currentIp,
-                    'placeSlug' => $placeName,
-                    'placeid' => $placeId,
-                    'reviews' => $placeReviews
-        ));
     }
 
     // Get more places
