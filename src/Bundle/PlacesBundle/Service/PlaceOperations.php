@@ -304,6 +304,7 @@ class PlaceOperations {
                 $placeCat->setCategoryId(1);
                 $placeCat->setPlaceId($id);
                 $this->opDAO->insertCategory($placeCat);
+                continue;
             }
             if($ok_d){
                 $placeCat = new PlaceCategories();
