@@ -23,8 +23,18 @@ $(function() {
     });    
 
     function getPlaces(name){
+        var checkedFood = $("#food-checkbox").is(":checked");
+        var checkedDrink = $("#drink-checkbox").is(":checked");
+        var checkedAll = checkedFood ^ checkedDrink;
         for (var i = 0; i < data2.length; i++) {
             if (data2[i].placeName.toLowerCase().indexOf(name) != -1) {
+                var category = data2[i].category.toLowerCase();
+                if(checkedFood && category != "food" && checkedAll){                    
+                    continue;
+                } 
+                if(checkedDrink && category != "drink" && checkedAll){                    
+                    continue;
+                }
                 var div = $('<div/>', {
                     class: "show",
                     align: "left"
