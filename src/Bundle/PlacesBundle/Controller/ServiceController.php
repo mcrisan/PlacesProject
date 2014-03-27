@@ -76,11 +76,11 @@ class ServiceController extends Controller {
        return $resp;
     }
     
-    function searchAction($input) {
+    function searchAction($input, $food, $drink) {
        $input= urldecode($input);
        $search = $this->get('search');
        //$res = $search->getPlacesByNameOrAddressOrTag($input);
-       $res = $search->searchByName($input);
+       $res = $search->searchByName($input, $food, $drink);
        $resp = new Response($res, 200);      
        $resp->headers->set('Content-Type', 'application/json');
        

@@ -7,22 +7,22 @@ $(function() {
         url: "placesnames",
         cache: false,
         dataType: 'json',
-        success: function(data){
+        success: function(data) {
             data2 = data;
-            $(".search").keyup(function(){
+            $(".search").keyup(function() {
                 //$( ".search" ).addClass( "ui-autocomplete-loading" );
                 $("#autocomplete-result").empty();
                 var searchid = $(this).val();
-                if (searchid != ''){    
-                    getPlaces(searchid);        
+                if (searchid != '') {
+                    getPlaces(searchid);
                     getAddress(searchid);
                 }
                 return false;
             });
         }
-    });    
+    });
 
-    function getPlaces(name){
+    function getPlaces(name) {
         for (var i = 0; i < data2.length; i++) {
             if (data2[i].placeName.toLowerCase().indexOf(name) != -1) {
                 var div = $('<div/>', {
@@ -33,7 +33,7 @@ $(function() {
                     class: "name",
                     text: data2[i].placeName
                 });
-                var category = data2[i].category?data2[i].category:"food";
+                var category = data2[i].category ? data2[i].category : "food";
                 var icon = $('<div/>', {
                     class: category.toLowerCase() + " category",
                 });
@@ -49,38 +49,28 @@ $(function() {
             id: "addr-auto"
         });
         $("#autocomplete-result").append(addr);
-        address = name + " Cluj Napoca, Romania";
+        address = name + ", Cluj Napoca, Romania";
         geocoder.geocode({'address': address}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-                res = results[0].formatted_address;
-                for (var i = 0; i < results.length; i++) {
-                    latitude = results[0].geometry.location.lat();
-                    longitude = results[0].geometry.location.lng();
-                    $("#search-lat").val(latitude);
-                    $("#search-lng").val(longitude);
-                    var addr = results[i].formatted_address;
-                    if (i > 0) {
-                        res2 = results[i].formatted_address;
-                    } else {
-                        res2 = "";
-                    }
-                    if (res != res2) {
-                        var span = $('<span/>', {
-                            class: "name",
-                            text: addr
-                        });
-                        var div = $('<div/>', {
-                            class: "show",
-                            align: "left",
-                        });
-                        var icon = $('<div/>', {
-                            class: "address-marker",
-                        });
-                        $(div).append(icon);
-                        $(div).append(span);
-                        $("#addr-auto").append(div);
-                    }
-                }
+                latitude = results[0].geometry.location.lat();
+                longitude = results[0].geometry.location.lng();
+                $("#search-lat").val(latitude);
+                $("#search-lng").val(longitude);
+                var addr = results[0].formatted_address;
+                var span = $('<span/>', {
+                    class: "name",
+                    text: addr
+                });
+                var div = $('<div/>', {
+                    class: "show",
+                    align: "left",
+                });
+                var icon = $('<div/>', {
+                    class: "address-marker",
+                });
+                $(div).append(icon);
+                $(div).append(span);
+                $("#addr-auto").append(div);
             }
         });
 

@@ -24,8 +24,8 @@ search_tag_addr:
       _method: GET  
       
 search:
-    pattern: /searchplace/{input}
-    defaults: { _controller: BundlePlacesBundle:Service:search }
+    pattern: /searchplace/{input}/{food}/{drink}
+    defaults: { _controller: BundlePlacesBundle:Service:search, food:off, drink:off }
     requirements:
       _method: GET  
       

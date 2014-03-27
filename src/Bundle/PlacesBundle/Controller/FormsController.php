@@ -82,6 +82,16 @@ class FormsController extends Controller {
         $name = $request->request->get('searchval');
         $limit = $this->container->getParameter('limit');
         $dist = $this->container->getParameter('distance');
+        $session = $this->get('session');
+        if($session->has("cat")){
+            $cat = $session->get("cat");
+            $food = $cat['food'];
+            $drink = $cat['drink'];
+        }else{
+            $food="";
+            $drink="";
+        }
+        echo $food. " si ".$drink; 
         if(apc_exists($name)){
             $coord = apc_fetch($name);
             $lat = $coord['lat'];
@@ -91,7 +101,7 @@ class FormsController extends Controller {
             $lng =0;
         }
         $search = $this->get('searchDAO');
-        $places = $search->getPlacesByDistance($name, $lat, $lng, $dist, $limit, $pag);
+        $places = $search->getPlacesByDistance($name, $food, $drink, $lat, $lng, $dist, $limit, $pag);
         $this->em = $this->getDoctrine()->getManager();
         $nrplaces = count($places);
         return $this->render('BundlePlacesBundle:Places:morePlaces.html.twig', array(
@@ -234,16 +244,24 @@ class FormsController extends Controller {
         $request = Request::createFromGlobals();
         //var_dump($request);
         //echo "si";
-        $check = $request->request->get('drink-checkbox');
-        //echo $check;
+        
+        //echo $drink_check ." si ".$food_check ;
+        
         //die;
         $this->em = $this->getDoctrine()->getManager();
         if ($request->getMethod() == "POST") {
             $searchInput = $request->get('input');
+            $drink_check = $request->request->get('drink-checkbox');
+            $food_check = $request->request->get('food-checkbox');
+            $cat = array("food" => $food_check, "drink" => $drink_check);
+            $session = $this->get('session');
+            $session->set("cat", $cat);
             if (!empty($searchInput)) {
-                echo "a";
+               // echo "a";
                 return $this->redirect($this->generateUrl('index', array(
-                                    'input' => $searchInput
+                                    'input' => $searchInput, 
+                                    'food' => $food_check,
+                                    'drink' => $drink_check
                 )));
             } else {
                 return $this->redirect($this->generateUrl('index'));

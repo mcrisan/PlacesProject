@@ -93,7 +93,7 @@ class PlaceOperations {
                 $newPlace = $this->opDAO->insertPlace($place2);
             }
         }
-            return $newPlace;
+        return $newPlace;
         // echo $place->getSlug();
     }
 
@@ -252,77 +252,73 @@ class PlaceOperations {
     public function getPlacesDetail($startId, $stopId) {
 
         return $this->opDAO->getPlacesDetail($startId, $stopId);
-    }   
-    
+    }
+
     public function gen_slug($str) {
         # special accents
         $a = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'ß', 'à', 'á', 'â', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'Ð', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', '?', '?', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l', '?', '?', 'L', 'l', 'N', 'n', 'N', 'n', 'N', 'n', '?', 'O', 'o', 'O', 'o', 'O', 'o', 'Œ', 'œ', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'Š', 'š', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 'y', 'Ÿ', 'Z', 'z', 'Z', 'z', 'Ž', 'ž', '?', 'ƒ', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i', 'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', '?', '?', '?', '?', '?', '?');
         $b = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 's', 'a', 'a', 'a', 'a', 'a', 'a', 'ae', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'D', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'IJ', 'ij', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'l', 'l', 'N', 'n', 'N', 'n', 'N', 'n', 'n', 'O', 'o', 'O', 'o', 'O', 'o', 'OE', 'oe', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'S', 's', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 'y', 'Y', 'Z', 'z', 'Z', 'z', 'Z', 'z', 's', 'f', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i', 'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'A', 'a', 'AE', 'ae', 'O', 'o');
         return strtolower(preg_replace(array('/[^a-zA-Z0-9 -]/', '/[ -]+/', '/^-|-$/'), array('', '-', ''), str_replace($a, $b, $str)));
     }
-    
-    public function checkPlaceBySlug($slug){
-        
+
+    public function checkPlaceBySlug($slug) {
+
         return $this->opDAO->checkCurrentSlug($slug);
     }
-    
-    public function insertCategories(){
-        
-        $places =  $this->opDAO->getPlaces();
-        $food = array( "restaurant", "bakery", "meal_delivery");
-        $drinks = array("cafe", "bar", "night_club");
-        $i=0;
-        foreach($places as $place){
+
+    public function insertCategories() {
+        $places = $this->opDAO->getPlaces();
+        $i = 0;
+        foreach ($places as $place) {
             $i++;
-//            if($i==100){
-//                break;
-//            }
             $id = $place->getId();
             $tags = $this->opDAO->getTags($id);
-            //var_dump($tags);
-            $ok_f = false;
-            $ok_d = false;
-            foreach ($tags as $tag){
-                $t_name = $tag['tag'];
-                //echo "<br/>cat ".$t_name. "<br/>";
-                if (in_array($t_name, $food)){
-                   $ok_f =true; 
-                }
-                if (in_array($t_name, $drinks)){
-                   $ok_d =true; 
-                }
-            }
-            //echo " <br/>food =".$ok_f. "drink =".$ok_d."<br/> ";
-//            if((!$ok_f)&(!$ok_d)){
-//                $placeCat = new PlaceCategories();
-//                $placeCat->setCategoryId(3);
-//                $placeCat->setPlaceId($id);
-//                $this->opDAO->insertCategory($placeCat);
-//            }
-            if($ok_f){
-                $placeCat = new PlaceCategories();
-                $placeCat->setCategoryId(1);
-                $placeCat->setPlaceId($id);
-                $this->opDAO->insertCategory($placeCat);
-                continue;
-            }
-            if($ok_d){
-                $placeCat = new PlaceCategories();
-                $placeCat->setCategoryId(2);
-                $placeCat->setPlaceId($id);
-                $this->opDAO->insertCategory($placeCat);
-                continue;
-            }
-                $placeCat = new PlaceCategories();
-                $placeCat->setCategoryId(3);
-                $placeCat->setPlaceId($id);
-                $this->opDAO->insertCategory($placeCat);
-            
-            //echo "<br/>am ajuns la:". $i."<br/> ";
-            
-            echo "". $i." ";
+            $this->createCategory($id, $tags);
+            echo "" . $i . " ";
         }
         echo "done";
+    }
+
+    public function createCategory($id, $tags, $command = null) {
+        $food = array("restaurant", "bakery", "meal_delivery");
+        $drinks = array("cafe", "bar", "night_club");
+        $ok_f = false;
+        $ok_d = false;
+        var_dump($tags);
+        foreach ($tags as $tag) {
+            if (!$command) {
+                $t_name = $tag['tag'];
+            } else {
+                $t_name = $tag;
+                echo "numele: ".$t_name;
+            }
+            //echo "<br/>cat ".$t_name. "<br/>";
+            if (in_array($t_name, $food)) {
+                $ok_f = true;
+            }
+            if (in_array($t_name, $drinks)) {
+                $ok_d = true;
+            }
+        }
+
+        if ($ok_f) {
+            $placeCat = new PlaceCategories();
+            $placeCat->setCategoryId(1);
+            $placeCat->setPlaceId($id);
+            $this->opDAO->insertCategory($placeCat);
+            return;
+        }
+        if ($ok_d) {
+            $placeCat = new PlaceCategories();
+            $placeCat->setCategoryId(2);
+            $placeCat->setPlaceId($id);
+            $this->opDAO->insertCategory($placeCat);
+            return;
+        }
+        $placeCat = new PlaceCategories();
+        $placeCat->setCategoryId(3);
+        $placeCat->setPlaceId($id);
+        $this->opDAO->insertCategory($placeCat);
     }
 
 }

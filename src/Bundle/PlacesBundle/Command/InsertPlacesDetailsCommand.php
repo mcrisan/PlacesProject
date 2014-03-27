@@ -110,6 +110,7 @@ class InsertPlacesDetailsCommand extends ContainerAwareCommand {
                 $tag->setTag($innerType);
                 $this->placeop->insertTag($tag);
             }
+
             //place_tag
             $this->placeop->insertPlaceTag($types, $placeId);
             $placeLat = $geoLocation['lat'];
@@ -204,6 +205,8 @@ class InsertPlacesDetailsCommand extends ContainerAwareCommand {
             $tag->setTag($innerType);
             $this->placeop->insertTag($tag);
         }
+        //create category
+        $this->placeop->createCategory($placeId, $types, $command=1);
         //place_tag
         $this->placeop->insertPlaceTag($types, $placeId);
         $placeLat = $geoLocation['lat'];
