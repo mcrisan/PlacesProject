@@ -35,7 +35,7 @@ $(function() {
                 });
                 var category = data2[i].category?data2[i].category:"food";
                 var icon = $('<div/>', {
-                    class: category + " category",
+                    class: category.toLowerCase() + " category",
                 });
                 $(div).append(icon);
                 $(div).append(span);
