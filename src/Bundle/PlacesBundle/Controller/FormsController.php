@@ -91,7 +91,7 @@ class FormsController extends Controller {
             $food="";
             $drink="";
         }
-        echo $food. " si ".$drink; 
+        //echo $food. " si ".$drink; 
         if(apc_exists($name)){
             $coord = apc_fetch($name);
             $lat = $coord['lat'];
