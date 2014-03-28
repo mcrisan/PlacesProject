@@ -74,6 +74,9 @@ services:
         
     insertcat:
         class: Bundle\PlacesBundle\Command\InsertCategoriesCommand
-        arguments: [ @placeop ]    
+        arguments: [ @placeop ]  
+        
+    placeDto:
+        class: Bundle\PlacesBundle\Service\PlaceDTO    
         
         
