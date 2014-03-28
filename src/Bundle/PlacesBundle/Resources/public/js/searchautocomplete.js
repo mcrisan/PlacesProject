@@ -63,18 +63,18 @@ $(function() {
         geocoder.geocode({'address': address}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 res = results[0].formatted_address;
-                for (var i = 0; i < results.length; i++) {
+                //for (var i = 0; i < results.length; i++) {
                     latitude = results[0].geometry.location.lat();
                     longitude = results[0].geometry.location.lng();
                     $("#search-lat").val(latitude);
                     $("#search-lng").val(longitude);
-                    var addr = results[i].formatted_address;
-                    if (i > 0) {
-                        res2 = results[i].formatted_address;
-                    } else {
-                        res2 = "";
-                    }
-                    if (res != res2) {
+                    var addr = results[0].formatted_address;
+//                    if (i > 0) {
+//                        res2 = results[i].formatted_address;
+//                    } else {
+//                        res2 = "";
+//                    }
+//                    if (res != res2) {
                         var span = $('<span/>', {
                             class: "name",
                             text: addr
@@ -89,8 +89,8 @@ $(function() {
                         $(div).append(icon);
                         $(div).append(span);
                         $("#addr-auto").append(div);
-                    }
-                }
+                   // }
+              //  }
             }
         });
 
