@@ -106,6 +106,11 @@ class SearchWebServiceDAO {
                     ->getCurrentVotes($placeId);
     }
     
+    public function getPlacesIdBySlug($slug){
+       return $this->em->getRepository('BundlePlacesBundle:Places')
+                    ->getPlaceIdBySlug($slug); 
+    }
+    
     
 
 }

@@ -250,6 +250,17 @@ class SearchWebService {
 
         return $placeInfo;
     }
+    
+    public function getPlaceInfosBySlug($slug) {
+
+        $placeId = $this->searchDAO->getPlacesIdBySlug($slug);
+        //var_dump($placeId);
+        $id = $placeId[0]['id'];
+        $details = $this ->getPlaceInfos($placeId);
+        $userInfo = $this->getUserDetails();     
+        //var_dump($details);
+        return array("details" => $details, "userInfo" => $userInfo );
+    }
 
     public function getUserDetails() {
         $currentIp = $this->getIp();

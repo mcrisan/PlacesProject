@@ -288,114 +288,53 @@ class FormsController extends Controller {
     }
 
     public function renderPlaceAction($param) {
-        $placeName = $this->gen_slug($param);
-        //$placeName = $this->$this->getRequest()->get('param');
-
-        $this->em = $this->getDoctrine()->getManager();
-        $placeDetails = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                ->getPlaceDetailsBySlug($placeName);
-
-        if (!$placeDetails) {
-            return $this->render('BundlePlacesBundle:Error:error.html.twig');
-            //throw $this->createNotFoundException('Error msg.');
-        }
-//        var_dump($placeDetails);
-//        exit();
-        $placeId = $placeDetails[0]['placeId'];
-        //var_dump($place_id);
-        //exit();
-        $user = new GetUserIp();
-        $currentIp = $user->get_user_ip();
-
-        //place ratings value & status
-        $userStatus = $this->em->getRepository('BundlePlacesBundle:VoteStatus')
-                ->getUserStatus($placeId, $currentIp);
-        $totalVotesForPlace = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-                ->getCurrentCounts($placeId);
-        $totalVotesAllTime = $this->em->getRepository('BundlePlacesBundle:VoteStatus')
-                ->getTotalVotes();
-        $total = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-                ->getCurrentVotes($placeId);
-        $totalCounts = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-                ->getCurrentCounts($placeId);
-        $placePhotos = $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
-                ->getPlacePhotos($placeId, 1);
-
-        //get all photos
-        $placeAllPhotos = $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
-                ->getPlacePhotos($placeId);
-        // reviews
-        $getDefaultPlaceReviews = $this->em->getRepository('BundlePlacesBundle:Places')->find($placeId);
-
-
-        $placeReviews = $this->em->getRepository('BundlePlacesBundle:PlaceReviews')
-                ->getReviews($getDefaultPlaceReviews->getId());
-//        var_dump($placeReviews);
-//        exit();
-        //if user voted
-        //echo "si";
-        if ($userStatus) {
+        $placeSlug = $this->gen_slug($param);    
+        $slug = urlencode($placeSlug);
+        $url = "http://localhost/PlacesProject/web/app_dev.php/renderplaceserice/$slug";
+        $jsonData = file_get_contents($url);
+        $info = json_decode($jsonData, TRUE);
+        
+//        $placeop = $this->get("search");
+//        $info = $placeop->getPlaceInfosBySlug($placeSlug);
+        $placeInfo = $info['details'];
+        $userInfo = $info['userInfo'];
+               
+        if ($placeInfo['userStatus']) {
             $userVoted = true;
         } else {
             $userVoted = false;          
         }
         
-        if (!isset($totalVotesForPlace[0]['votesCount'])) {
-            $totalVotesForPlace[0]['votesCount'] = 0;
+        if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
+            $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
         }
         if (!isset($placeInfo['total'][0]['totalVotes'])) {
-            $total[0]['totalVotes'] = 0;
+            $placeInfo['total'][0]['totalVotes'] = 0;
         }
         if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
-            $totalCounts[0]['votesCount'] = 1;
+            $placeInfo['totalCounts'][0]['votesCount'] = 1;
         }
-        //var_dump($totalVotesForPlace);
-        //die;
+        
         $placeDto = $this->get("placeDto");
-        $placeDto->setPlaceDetails($placeDetails);
-        $placeDto->setFirstPhoto($placePhotos);
-        $placeDto->setPlaceAllPhotos($placeAllPhotos);
-        $placeDto->setUserIp($currentIp);
-        $placeDto->setPlaceSlug($placeName);
-        $placeDto->setPlaceId($placeId);
-        $placeDto->setReviews($placeReviews);
-        $placeDto->setTotalVotesAllPlaces($totalVotesAllTime);
-        $rate = round($total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2);
+        $placeDto->setPlaceDetails($placeInfo['place']);
+        $placeDto->setFirstPhoto($placeInfo['placePhotos']);
+        $placeDto->setPlaceAllPhotos($placeInfo['placeAllPhotos']);
+        $placeDto->setUserIp($userInfo['currentIp']);
+        $placeDto->setPlaceSlug($placeInfo['placeSlug']);
+        $placeDto->setPlaceId($placeInfo['place']['placeid']);
+        $placeDto->setReviews($placeInfo['placeReviews']);
+        $placeDto->setTotalVotesAllPlaces($placeInfo['totalVotesAllTime']);
+        $rate = round($placeInfo['total'][0]['totalVotes'] / $placeInfo['totalCounts'][0]['votesCount'], 2);
         $placeDto->setUsersRating($rate);
-        $placeDto->setTotalVotesForPlace($totalVotesForPlace[0]['votesCount']);
+        $placeDto->setTotalVotesForPlace($placeInfo['totalVotesForPlace'][0]['votesCount']);
         $placeDto->setUserVoted($userVoted);
+
         $data = $placeDto->jsonSerialize();
         $json = json_encode($data);
         $resp = new Response($json, 200);
         $resp->headers->set('Content-Type', 'application/json');
         return $resp;
 
-//        if ($userStatus) {
-//            return $this->render('BundlePlacesBundle:Places:renderPlace.html.twig', array(
-//                        'placeDetails' => $placeDetails,
-//                        'placePhotos' => $placePhotos,
-//                        'placeAllPhotos' => $placeAllPhotos,
-//                        'ip' => $currentIp,
-//                        'totalVotesAllTime' => $totalVotesAllTime,
-//                        'totalVotes' => $totalVotesForPlace[0]['votesCount'],
-//                        'usersRating' => round(
-//                                $total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2),
-//                        'bool' => true,
-//                        'placeSlug' => $placeName,
-//                        'placeid' => $placeId,
-//                        'reviews' => $placeReviews
-//            ));
-//        }
-//
-//        return $this->render('BundlePlacesBundle:Places:renderPlace.html.twig', array(
-//                    'placeDetails' => $placeDetails,
-//                    'placePhotos' => $placePhotos,
-//                    'placeAllPhotos' => $placeAllPhotos,
-//                    'ip' => $currentIp,
-//                    'placeSlug' => $placeName,
-//                    'placeid' => $placeId,
-//                    'reviews' => $placeReviews
-//        ));
     }
 
 }

@@ -378,14 +378,11 @@ class PageController extends Controller {
         $this->em = $this->getDoctrine()->getManager();
 
         
-        //echo "taguri";
-        $tags = $this->em->getRepository('BundlePlacesBundle:PlaceTags')
-                            ->getTagName(1667);
         
         //var_dump($tags);
         
-        $placeop = $this->get("placeop");
-        $placeop->insertCategories();
+        $placeop = $this->get("search");
+        $placeop->getPlaceInfosBySlug("restaurant-havana");
         return $this->render("BundlePlacesBundle:About:about.html.twig");
     }
 

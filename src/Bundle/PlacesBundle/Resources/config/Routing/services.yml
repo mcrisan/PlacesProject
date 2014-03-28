@@ -53,6 +53,12 @@ autocom:
     requirements:
       _method: GET  
       
+renderplace:
+    pattern: /renderplaceserice/{slug}
+    defaults: { _controller: BundlePlacesBundle:Service:renderPlace }
+    requirements:
+      _method: GET        
+      
 #autocom_ac:
 #    pattern: /autocomaction
 #    defaults: { _controller: BundlePlacesBundle:Service:doAutocom }
