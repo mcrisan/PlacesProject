@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html >
     <head>
         <link rel="shortcut icon" href="{{ asset('bundles/bundleplaces/images/icons/glyph-icons-gradient/magnifying-glass.png') }}" type="image/x-icon">
         <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
@@ -9,12 +9,6 @@
         <!-- Stylesheets -->
         <!-- App css -->
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/style.css') }}" />
-<!--    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/app-homepage.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/app-typehead-styles.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/app-slide-navigation.css') }}" /> -->
-
-        <!-- Bootstrap css -->
-        <!--<link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/bootstrap.min.css') }}" />-->
         <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.1/css/bootstrap.css" />
 
         <!-- Append css -->
@@ -40,11 +34,11 @@
                         </li>
                     </ul>
                 </div>
-                <form action="{{ path('demoSearch') }}" method="post">
+                <form id="search-form"action="{{ path('demoSearch') }}" method="post">
                     <div class="search-input">                        
                        {# <form action="{{ path('demoSearch') }}" method="post">#}
                         <div class="divider"></div>
-                        <input id="searchh" class="search typeahead1" type="text" name="input" placeholder="Search.." autocomplete="off" />
+                        <input id="searchh" class="search typeahead1" type="text" name="input" placeholder="Enter name or address..." autocomplete="off" />
                         <input id="search-lat" type="hidden" name="input-lat" />
                         <input id="search-lng" type="hidden" name="input-lng" />                            
                         <button type="submit"></button>
@@ -72,10 +66,8 @@
             {% block sidebar %} {% endblock %}
         </section>
         <footer class="footer">
-            <div class="container" style="border-top:1px solid #ccc;">
-                {% block footer %}
-                {% endblock %}
-            </div>
+            {% block footer %}
+            {% endblock %}
         </footer>
 
         <!-- Javascripts -->

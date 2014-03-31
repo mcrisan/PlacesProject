@@ -1,0 +1,28 @@
+<article>
+    <div class="images"></div>
+    <header>{{ place.placeName }}</header>
+    <p>Place id: {{ place.placeId }}</p>
+    <a href="{{ place.placeUrl }}" target="_blank" title="{{ place.placeName }}">
+    <aside class="element-bar">
+        <ul class="rating-stars">
+            <li></li>
+            <li></li>
+            <li class='red'></li>
+            <li class='red'></li>
+            <li class='red'></li>
+        </ul>
+        <ul class="social-bar">
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+        </ul>
+    </aside>
+    <p>
+        <p><b>Phone: </b>{{ place.placePhonenumber }}</p>
+        <p><b>Address: </b>{{ place.placeVicinity }}</p>
+        <p><b>Ratings: <big><font color="green">{{ place.placeRating }}</font></b></big> / 5 points.</p>
+        <p><b>Geo Location: </b><u>Lat. </u>{{ place.placeLat }}. <u>Lng.</u>{{ place.placeLng }}.</p>  
+        <p><b>WebSite: </b>{{ place.placeWebsite }}</p>
+    </p>
+</article><!--end article -->  

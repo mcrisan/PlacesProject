@@ -1,53 +1,41 @@
-<div class="images"></div>
-<header>{{ place.placeName }}</header>
-<p>Place id: {{ place.placeId }}</p>
-<aside class="element-bar">
-    <ul class="rating-stars">
-        <li></li>
-        <li></li>
-        <li class='red'></li>
-        <li class='red'></li>
-        <li class='red'></li>
-    </ul>
-    <ul class="social-bar">
-        <li><a href="#"></a></li>
-        <li><a href="#"></a></li>
-        <li><a href="#"></a></li>
-        <li><a href="#"></a></li>
-    </ul>
-</aside>
-<p>                        
-    {% if placePhotos is not empty %}
-        {% for photo in placePhotos %}
-            <img src="{{ photo.imgUrl }}" title="{{ place.placeName }}" width="160" height="140"/>
-        {% endfor %}
-    {% else %}
-          <span class="glyphicon glyphicon-picture icon-font-size-verylarge"></span>
-    {% endif %}
-    <a href="{{ place.placeUrl }}" target="_blank" title="{{ place.placeName }}">
-    <img src="{{ place.placeIcon }}"/></a>
-    <p><a href="{{ path('index_indexShowPlace',{'name':placeSlug}) }}">{{ place.placeName|capitalize }}</a></p>
-    <p><a href="{{ path('index_placeDetails',{'name':placeSlug}) }}">New - {{ place.placeName|capitalize }}</a></p>
-
-    {% if place.placePhonenumber|length > 1 %}
-        <p><b>Phone: </b>{{ place.placePhonenumber }}</p>
-    {% else %}
-        <p><b>Phone: </b>number not avaiable.</p>
-    {% endif %}
-
-    <p><b>Type: </b>type - recode querys</p>
-    <p><b>Address: </b>{{ place.placeVicinity }}</p>
-
-    {% if place.placeRating|length != 0 %}
-        <p><b>Ratings: <big><font color="green">{{ place.placeRating }}</font></b></big> / 5 points.</p>
-    {% else %}
-        <p><b>Ratings: </b> Ratings are not available for this place.</p>
-    {% endif %}
-    <p><b>Geo Location: </b><u>Lat. </u>{{ place.placeLat }}. <u>Lng.</u>{{ place.placeLng }}.</p>  
-
-    {% if place.placeWebsite %}
-        <p><b>WebSite: </b>{{ place.placeWebsite }}</p>
-    {% else %}
-        <p><b>WebSite: </b>website not avaiable</p>    
-    {% endif %}
-</p>
+<article>
+    <input id="lat" type="hidden" value="{{ place.placelat }}" />
+    <input id="lng" type="hidden" value="{{ place.placelng }}" /> 
+    <input type="hidden" id="toAddress" name="to" value="{#{{ placeAddress }}#}" placeholder="destination address"/>
+    <div id="directions" style="display:none;"></div>
+    <div class="images">
+        {% if placePhotos is not empty %}
+                <img src="{{ placePhotos[0].imgUrl }}" title="{{ place.placename }}"/>
+        {% else %}
+              <span class="glyphicon glyphicon-picture icon-font-size-verylarge"></span>
+        {% endif %}
+    </div>
+    <header><a href="{{ place.placeurl }}" target="_blank" title="{{ place.placename }}">{{ place.placename }}</a></header>
+    
+    <aside class="element-bar">
+        <ul class="rating-stars">                
+           {% for i in 1..5%}
+                {% if i <= place.placerating %}
+                    <li></li>               
+                {% else %}
+                    <li class='red'></li>
+                {% endif%}
+            {% endfor %}
+        </ul>
+        <ul class="social-bar">
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+        </ul>
+    </aside>
+    <p>
+        <p><b>Phone: </b>{{ place.placephonenumber }}</p>
+        <p><b>Address: </b>{{ place.placevicinity }}</p>
+        <p><b>Geo Location: </b>
+            Lat.{{ place.placelat }}. 
+            Lng.{{ place.placelng }}.
+        </p>  
+        <p><b>WebSite: </b>{{ place.placeWebSite }}</p>
+    </p>
+</article><!--end article -->  

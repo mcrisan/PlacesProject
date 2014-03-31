@@ -29,6 +29,8 @@ $(function() {
         for (var i = 0; i < data2.length; i++) {
             if (data2[i].placeName.toLowerCase().indexOf(name) != -1) {
                 var category = data2[i].category.toLowerCase();
+                var placeName = data2[i].placeName;
+                //filters
                 if(checkedFood && category != "food" && checkedAll){                    
                     continue;
                 } 
@@ -41,11 +43,10 @@ $(function() {
                 });
                 var span = $('<span/>', {
                     class: "name",
-                    text: data2[i].placeName
+                    text: placeName
                 });
-                var category = data2[i].category?data2[i].category:"food";
                 var icon = $('<div/>', {
-                    class: category.toLowerCase() + " category",
+                    class: category + " category",
                 });
                 $(div).append(icon);
                 $(div).append(span);
@@ -59,8 +60,8 @@ $(function() {
             id: "addr-auto"
         });
         $("#autocomplete-result").append(addr);
-        address = name + " Cluj Napoca, Romania";
-        geocoder.geocode({'address': address}, function(results, status) {
+        address = "Cluj Napoca, " + name;
+        geocoder.geocode({'address': address, 'region':'RO'}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 res = results[0].formatted_address;
                 for (var i = 0; i < results.length; i++) {
@@ -98,8 +99,6 @@ $(function() {
 
     jQuery("#autocomplete-result").on("click", function(e) {
         var $clicked = $(e.target);
-        //var $name = $clicked.parent().find('.name').html();
-        //alert($name);
         var $name = $clicked.find('.name').html();
         if (typeof $name == 'undefined') {
             $name = $clicked.parent().find('.name').html();
@@ -107,6 +106,7 @@ $(function() {
         //alert($name);
         var decoded = $("<div/>").html($name).text();
         $('#searchh').val(decoded);
+        $('#search-form').submit();
     });
     jQuery(document).on("click", function(e) {
         var $clicked = $(e.target);
