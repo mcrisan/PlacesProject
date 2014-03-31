@@ -13,14 +13,14 @@ $(function() {
                 //$( ".search" ).addClass( "ui-autocomplete-loading" );
                 $("#autocomplete-result").empty();
                 var searchid = $(this).val();
-                if (searchid != ''){    
-                    getPlaces(searchid);        
+                if (searchid != ''){
+                    getPlaces(searchid);
                     getAddress(searchid);
                 }
                 return false;
             });
         }
-    });    
+    });
 
     function getPlaces(name){
         var checkedFood = $("#food-checkbox").is(":checked");
@@ -31,10 +31,10 @@ $(function() {
                 var category = data2[i].category.toLowerCase();
                 var placeName = data2[i].placeName;
                 //filters
-                if(checkedFood && category != "food" && checkedAll){                    
+                if(checkedFood && category != "food" && checkedAll){
                     continue;
-                } 
-                if(checkedDrink && category != "drink" && checkedAll){                    
+                }
+                if(checkedDrink && category != "drink" && checkedAll){
                     continue;
                 }
                 var div = $('<div/>', {
@@ -64,18 +64,18 @@ $(function() {
         geocoder.geocode({'address': address, 'region':'RO'}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 res = results[0].formatted_address;
-                for (var i = 0; i < results.length; i++) {
+                //for (var i = 0; i < results.length; i++) {
                     latitude = results[0].geometry.location.lat();
                     longitude = results[0].geometry.location.lng();
                     $("#search-lat").val(latitude);
                     $("#search-lng").val(longitude);
-                    var addr = results[i].formatted_address;
-                    if (i > 0) {
-                        res2 = results[i].formatted_address;
-                    } else {
-                        res2 = "";
-                    }
-                    if (res != res2) {
+                    var addr = results[0].formatted_address;
+//                    if (i > 0) {
+//                        res2 = results[i].formatted_address;
+//                    } else {
+//                        res2 = "";
+//                    }
+//                    if (res != res2) {
                         var span = $('<span/>', {
                             class: "name",
                             text: addr
@@ -90,8 +90,8 @@ $(function() {
                         $(div).append(icon);
                         $(div).append(span);
                         $("#addr-auto").append(div);
-                    }
-                }
+                   // }
+              //  }
             }
         });
 

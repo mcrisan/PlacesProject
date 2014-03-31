@@ -52,19 +52,30 @@ class PlaceDetailsRepository extends EntityRepository {
 
         $em = $this->getEntityManager();
 
-        $query = $em
-                ->createQuery("
-                SELECT pd.placeId,pd.placeName,pd.placeRating, p.slug
-                FROM Bundle\PlacesBundle\Entity\PlaceDetails pd
-                ,Bundle\PlacesBundle\Entity\Places p
-                WHERE pd.placeId = p.id AND
-                pd.placeName LIKE :name
-                order by pd.placeName asc
-                
-            ")
-                ->setParameter('name',  $input );
+        $qb = $em->createQueryBuilder()
+                ->select('pd.placeId,pd.placeName,pd.placeRating, p.slug, GROUP_CONCAT(c.category) as category')
+                ->from('BundlePlacesBundle:PlaceDetails', 'pd')
+                ->innerJoin('BundlePlacesBundle:Places', 'p', 'WITH', 'p.id = pd.placeId')
+                ->innerJoin('BundlePlacesBundle:PlaceCategories', 'pc', 'WITH', 'pc.placeId = pd.placeId')
+                ->innerJoin('BundlePlacesBundle:Categories', 'c', 'WITH', 'pc.categoryId = c.id')
+                ->where('pd.placeName LIKE :name')
+                ->groupBy("pc.placeId")
+                ->setParameter('name', $input)
+                ->getQuery()
+                ->getResult();
+//        $query = $em
+//                ->createQuery("
+//                SELECT pd.placeId,pd.placeName,pd.placeRating, p.slug
+//                FROM Bundle\PlacesBundle\Entity\PlaceDetails pd
+//                ,Bundle\PlacesBundle\Entity\Places p
+//                WHERE pd.placeId = p.id AND
+//                pd.placeName LIKE :name
+//                order by pd.placeName asc
+//                
+//            ")
+//                ->setParameter('name', $input);
 
-        return $query->getResult();
+        return $qb;
 
 
         /*
@@ -81,7 +92,7 @@ class PlaceDetailsRepository extends EntityRepository {
     public function getPlacesNamesAndIdsByAddress($input) {
 
         $em = $this->getEntityManager();
-
+                    
         $query = $em
                 ->createQuery("
                 SELECT pd.placeId,pd.placeName,pd.placeRating, p.slug
@@ -107,47 +118,62 @@ class PlaceDetailsRepository extends EntityRepository {
 
          */
     }
-    
-    public function getPlacesByDistance($name, $lat, $lng, $dist, $limit = null, $pag = null) {
-        
-        //$this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('acos', 'DoctrineExtensions\Query\Mysql\Acos');
-        //$this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('sin', 'DoctrineExtensions\Query\Mysql\Sin');
-        //$this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('cos', 'DoctrineExtensions\Query\Mysql\Cos');
-        //$this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('pi', 'DoctrineExtensions\Query\Mysql\Pi');
+
+    public function getPlacesByDistance($name, $food, $drink, $lat, $lng, $dist, $limit = null, $pag = null) {
+
         $em = $this->getEntityManager();
+
+        if (("on" != $food & "on" != $drink) || ("on" == $food & "on" == $drink)) {
+            $str = '(pd.placeName NOT LIKE :name) and (c.category = :food or c.category = :drink)';
+        }
+        if ("on" == $food & "on" != $drink) {
+            $str = '(pd.placeName NOT LIKE :name)and (c.category = :food)';
+        }
+        if ("on" != $food & "on" == $drink) {
+            $str = '(pd.placeName NOT LIKE :name) and (c.category = :drink)';
+        }
 
         $qb = $em->createQueryBuilder()
                 ->select('pd.placeId,pd.placeName,pd.placeRating, p.slug, '
                         . '(((acos(sin((:lat *pi()/180)) * 
-            sin((pd.placeLat * pi()/180))+cos((:lat * pi()/180)) * 
-            cos((pd.placeLat * pi()/180)) * cos(((:lng - pd.placeLng)* 
-            pi()/180))))*180/pi())*60*1.1515
-        ) as distance ')
+                        sin((pd.placeLat * pi()/180))+cos((:lat * pi()/180)) * 
+                        cos((pd.placeLat * pi()/180)) * cos(((:lng - pd.placeLng)* 
+                        pi()/180))))*180/pi())*60*1.1515
+                        ) as distance ')
                 ->from('BundlePlacesBundle:PlaceDetails', 'pd')
                 ->innerJoin('BundlePlacesBundle:Places', 'p', 'WITH', 'pd.placeId = p.id')
+                ->innerJoin('BundlePlacesBundle:PlaceCategories', 'pc', 'WITH', 'pd.placeId = pc.placeId')
+                ->innerJoin('BundlePlacesBundle:Categories', 'c', 'WITH', 'pc.categoryId = c.id')
                 ->add('orderBy', 'distance ASC')
-                ->where('pd.placeName NOT LIKE :name')
+                ->where($str)
                 ->having('distance <= :dist')
-                ->setParameter('lat',  $lat)
-                ->setParameter('lng',  $lng)
-                ->setParameter('dist',  $dist)
-                ->setParameter('name',  $name);
-                //->setFirstResult(15)
-                //->setMaxResults(20)
-                //->getQuery()
-                //->getResult();
+                ->groupBy('pc.placeId')
+                ->setParameter('lat', $lat)
+                ->setParameter('lng', $lng)
+                ->setParameter('dist', $dist)
+                ->setParameter('name', $name);
+
 
         $q = $qb->getQuery();
-        //$firstResult = $limit*$pag;
-        $q->setFirstResult($limit*$pag);
+        if (("on" != $food & "on" != $drink) || ("on" == $food & "on" == $drink)) {
+            $q->setParameter('food', "Food");
+            $q->setParameter('drink', "Drink");
+        }
+        if ("on" == $food & "on" != $drink) {
+            $q->setParameter('food', "Food");
+        }
+        if ("on" != $food & "on" == $drink) {
+            $q->setParameter('drink', "Drink");
+        }
+        $q->setFirstResult($limit * $pag);
         $q->setMaxResults($limit);
         $places = $q->getResult();
         return $places;
     }
-    
+
     public function getPlacesNames($input) {
-        
-        
+
+
         $em = $this->getEntityManager();
 
         $qb = $em->createQueryBuilder()
@@ -161,9 +187,9 @@ class PlaceDetailsRepository extends EntityRepository {
 
         return $qb;
     }
-    
+
     public function getAllPlacesNames() {
-        
+
         //$this->getEntityManager()->getConfiguration()->addCustomDatetimeFunction('GROUP_CONCAT', 'DoctrineExtensions\Query\Mysql\GroupConcat');
         $em = $this->getEntityManager();
 
@@ -274,7 +300,6 @@ class PlaceDetailsRepository extends EntityRepository {
 //        //die;
 //        return $qb;
 //    }
-
     // Get place id by name
     public function getPlaceIdByName($name) {
         $qb = $this->createQueryBuilder('place')

@@ -150,4 +150,17 @@ class PlacesRepository extends EntityRepository
         ->execute();
         return $query;
     }
+    
+    public function getPlaceIdBySlug($slug){
+        
+        $em = $this->getEntityManager();
+        $qb = $this->createQueryBuilder('place')
+                ->select('place.id')
+                ->where('place.slug LIKE :slug')
+                ->setParameter('slug', $slug)
+                ->getQuery()
+                ->getResult();
+        
+        return $qb;
+    }
 }

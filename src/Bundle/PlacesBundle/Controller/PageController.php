@@ -150,12 +150,19 @@ class PageController extends Controller {
         // set searchInput - show default results (" places containing 'ma' ")
         $searchInput = "ma";
         $searchInputVal = $request->query->get('input');
-
+        $food = $request->query->get('food');
+        if(!$food){
+            $food="off";
+        }
+        $drink = $request->query->get('drink');
+        if(!$drink){
+            $drink="off";
+        }
         if (!empty($searchInputVal)) {
             $searchInput = $searchInputVal;
         }
         $name = urlencode($searchInput);
-        $url = "http://localhost/PlacesProject/web/app_dev.php/searchplace/$name";
+        $url = "http://localhost/PlacesProject/web/app_dev.php/searchplace/$name/$food/$drink";
         $json = file_get_contents($url);
         $data = json_decode($json, TRUE);
         //if ($session->has('places')) {
@@ -371,14 +378,11 @@ class PageController extends Controller {
         $this->em = $this->getDoctrine()->getManager();
 
         
-        //echo "taguri";
-        $tags = $this->em->getRepository('BundlePlacesBundle:PlaceTags')
-                            ->getTagName(1667);
         
         //var_dump($tags);
         
-        $placeop = $this->get("placeop");
-        $placeop->insertCategories();
+        $placeop = $this->get("search");
+        $placeop->getPlaceInfosBySlug("restaurant-havana");
         return $this->render("BundlePlacesBundle:About:about.html.twig");
     }
 

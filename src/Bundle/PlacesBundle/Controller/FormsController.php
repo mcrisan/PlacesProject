@@ -19,62 +19,61 @@ class FormsController extends Controller {
     }
 
     // Render place page
-    public function renderPlaceAction($param) {
-        $this->em = $this->getDoctrine()->getManager();
-        //ex hotel-agape
-        $placeSlug = $this->gen_slug($param); 
-
-        // array containing placeName, id, phone, website, lat, long etc
-        $placeDetails = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                ->getPlaceDetailsBySlug($placeName);
-        $placeId = $placeDetails[0]['placeId'];
-        $place = $this->em->getRepository('BundlePlacesBundle:Places')->find($placeId);
-
-        if (!$placeDetails) {
-            return $this->render('BundlePlacesBundle:Error:error.html.twig');
-            //throw $this->createNotFoundException('Error msg.');
-        }        
-
-        //get all photos
-        $placeAllPhotos = $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
-                ->getPlacePhotos($placeId);
-        // reviews        
-        $placeReviews = $this->em->getRepository('BundlePlacesBundle:PlaceReviews')
-                ->getReviews($getDefaultPlaceReviews->getId());
-        
-        $user = new GetUserIp();
-        $currentIp = $user->get_user_ip();
-
-        //place ratings value & status
-        $userStatus = $this->em->getRepository('BundlePlacesBundle:VoteStatus')
-                ->getUserStatus($placeId, $currentIp);
-        $totalVotesForPlace = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-                ->getCurrentCounts($placeId);
-        $totalVotesAllTime = $this->em->getRepository('BundlePlacesBundle:VoteStatus')
-                ->getTotalVotes();
-        $total = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-                ->getCurrentVotes($placeId);
-        $totalCounts = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-                ->getCurrentCounts($placeId);
-
-        if ($userStatus) {
-            return $this->render('BundlePlacesBundle:Places:renderPlace.html.twig', array(
-                        'placeDetails' => $placeDetails,
-                        'placePhotos' => $placePhotos,
-                        'placeAllPhotos' => $placeAllPhotos,
-                        'ip' => $currentIp,
-                        'placeSlug' => $placeName,
-                        'placeid' => $placeId,
-                        'reviews' => $placeReviews,
-                        'totalVotesAllTime' => $totalVotesAllTime,
-                        'totalVotes' => $totalVotesForPlace[0]['votesCount'],
-                        'usersRating' => round(
-                                $total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2),
-                        'bool' => true
-            ));
-        }
-    }
-
+//    public function renderPlaceAction($param) {
+//        $this->em = $this->getDoctrine()->getManager();
+//        //ex hotel-agape
+//        $placeSlug = $this->gen_slug($param); 
+//
+//        // array containing placeName, id, phone, website, lat, long etc
+//        $placeDetails = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
+//                ->getPlaceDetailsBySlug($placeName);
+//        $placeId = $placeDetails[0]['placeId'];
+//        $place = $this->em->getRepository('BundlePlacesBundle:Places')->find($placeId);
+//
+//        if (!$placeDetails) {
+//            return $this->render('BundlePlacesBundle:Error:error.html.twig');
+//            //throw $this->createNotFoundException('Error msg.');
+//        }        
+//
+//        //get all photos
+//        $placeAllPhotos = $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
+//                ->getPlacePhotos($placeId);
+//        // reviews        
+//        $placeReviews = $this->em->getRepository('BundlePlacesBundle:PlaceReviews')
+//                ->getReviews($getDefaultPlaceReviews->getId());
+//        
+//        $user = new GetUserIp();
+//        $currentIp = $user->get_user_ip();
+//
+//        //place ratings value & status
+//        $userStatus = $this->em->getRepository('BundlePlacesBundle:VoteStatus')
+//                ->getUserStatus($placeId, $currentIp);
+//        $totalVotesForPlace = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
+//                ->getCurrentCounts($placeId);
+//        $totalVotesAllTime = $this->em->getRepository('BundlePlacesBundle:VoteStatus')
+//                ->getTotalVotes();
+//        $total = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
+//                ->getCurrentVotes($placeId);
+//        $totalCounts = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
+//                ->getCurrentCounts($placeId);
+//
+//        if ($userStatus) {
+//            return $this->render('BundlePlacesBundle:Places:renderPlace.html.twig', array(
+//                        'placeDetails' => $placeDetails,
+//                        'placePhotos' => $placePhotos,
+//                        'placeAllPhotos' => $placeAllPhotos,
+//                        'ip' => $currentIp,
+//                        'placeSlug' => $placeName,
+//                        'placeid' => $placeId,
+//                        'reviews' => $placeReviews,
+//                        'totalVotesAllTime' => $totalVotesAllTime,
+//                        'totalVotes' => $totalVotesForPlace[0]['votesCount'],
+//                        'usersRating' => round(
+//                                $total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2),
+//                        'bool' => true
+//            ));
+//        }
+//    }
     // Get more places
     public function morePlacesRequestAction() {
         $request = Request::createFromGlobals();
@@ -82,22 +81,32 @@ class FormsController extends Controller {
         $name = $request->request->get('searchval');
         $limit = $this->container->getParameter('limit');
         $dist = $this->container->getParameter('distance');
-        if(apc_exists($name)){
+        $session = $this->get('session');
+        if ($session->has("cat")) {
+            $cat = $session->get("cat");
+            $food = $cat['food'];
+            $drink = $cat['drink'];
+        } else {
+            $food = "";
+            $drink = "";
+        }
+        //echo $food. " si ".$drink; 
+        if (apc_exists($name)) {
             $coord = apc_fetch($name);
             $lat = $coord['lat'];
             $lng = $coord['lng'];
-        }else{
-            $lat =0;
-            $lng =0;
+        } else {
+            $lat = 0;
+            $lng = 0;
         }
         $search = $this->get('searchDAO');
-        $places = $search->getPlacesByDistance($name, $lat, $lng, $dist, $limit, $pag);
+        $places = $search->getPlacesByDistance($name, $food, $drink, $lat, $lng, $dist, $limit, $pag);
         $this->em = $this->getDoctrine()->getManager();
         $nrplaces = count($places);
         return $this->render('BundlePlacesBundle:Places:morePlaces.html.twig', array(
                     'places' => $places,
                     'nrplaces' => $nrplaces,
-                    'pag'      => $pag
+                    'pag' => $pag
         ));
     }
 
@@ -234,16 +243,22 @@ class FormsController extends Controller {
         $request = Request::createFromGlobals();
         //var_dump($request);
         //echo "si";
-        $check = $request->request->get('drink-checkbox');
-        //echo $check;
+        //echo $drink_check ." si ".$food_check ;
         //die;
         $this->em = $this->getDoctrine()->getManager();
         if ($request->getMethod() == "POST") {
             $searchInput = $request->get('input');
+            $drink_check = $request->request->get('drink-checkbox');
+            $food_check = $request->request->get('food-checkbox');
+            $cat = array("food" => $food_check, "drink" => $drink_check);
+            $session = $this->get('session');
+            $session->set("cat", $cat);
             if (!empty($searchInput)) {
-                echo "a";
+                // echo "a";
                 return $this->redirect($this->generateUrl('index', array(
-                                    'input' => $searchInput
+                                    'input' => $searchInput,
+                                    'food' => $food_check,
+                                    'drink' => $drink_check
                 )));
             } else {
                 return $this->redirect($this->generateUrl('index'));
@@ -259,17 +274,67 @@ class FormsController extends Controller {
         $b = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 's', 'a', 'a', 'a', 'a', 'a', 'a', 'ae', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'D', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'IJ', 'ij', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'l', 'l', 'N', 'n', 'N', 'n', 'N', 'n', 'n', 'O', 'o', 'O', 'o', 'O', 'o', 'OE', 'oe', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'S', 's', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 'y', 'Y', 'Z', 'z', 'Z', 'z', 'Z', 'z', 's', 'f', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i', 'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'A', 'a', 'AE', 'ae', 'O', 'o');
         return strtolower(preg_replace(array('/[^a-zA-Z0-9 -]/', '/[ -]+/', '/^-|-$/'), array('', '-', ''), str_replace($a, $b, $str)));
     }
-   
-    function getPlacesNamesAction(){
+
+    function getPlacesNamesAction() {
         $formsop = $this->get('formsop');
         $placeName = $formsop->getAllPlacesNames();
-        
+
         $res = json_encode($placeName);
-        $resp = new Response($res, 200);      
-       $resp->headers->set('Content-Type', 'application/json');
-       
-       
-       return $resp;
+        $resp = new Response($res, 200);
+        $resp->headers->set('Content-Type', 'application/json');
+
+
+        return $resp;
+    }
+
+    public function renderPlaceAction($param) {
+        $placeSlug = $this->gen_slug($param);    
+        $slug = urlencode($placeSlug);
+        $url = "http://localhost/PlacesProject/web/app_dev.php/renderplaceserice/$slug";
+        $jsonData = file_get_contents($url);
+        $info = json_decode($jsonData, TRUE);
+        
+//        $placeop = $this->get("search");
+//        $info = $placeop->getPlaceInfosBySlug($placeSlug);
+        $placeInfo = $info['details'];
+        $userInfo = $info['userInfo'];
+               
+        if ($placeInfo['userStatus']) {
+            $userVoted = true;
+        } else {
+            $userVoted = false;          
+        }
+        
+        if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
+            $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
+        }
+        if (!isset($placeInfo['total'][0]['totalVotes'])) {
+            $placeInfo['total'][0]['totalVotes'] = 0;
+        }
+        if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
+            $placeInfo['totalCounts'][0]['votesCount'] = 1;
+        }
+        
+        $placeDto = $this->get("placeDto");
+        $placeDto->setPlaceDetails($placeInfo['place']);
+        $placeDto->setFirstPhoto($placeInfo['placePhotos']);
+        $placeDto->setPlaceAllPhotos($placeInfo['placeAllPhotos']);
+        $placeDto->setUserIp($userInfo['currentIp']);
+        $placeDto->setPlaceSlug($placeInfo['placeSlug']);
+        $placeDto->setPlaceId($placeInfo['place']['placeid']);
+        $placeDto->setReviews($placeInfo['placeReviews']);
+        $placeDto->setTotalVotesAllPlaces($placeInfo['totalVotesAllTime']);
+        $rate = round($placeInfo['total'][0]['totalVotes'] / $placeInfo['totalCounts'][0]['votesCount'], 2);
+        $placeDto->setUsersRating($rate);
+        $placeDto->setTotalVotesForPlace($placeInfo['totalVotesForPlace'][0]['votesCount']);
+        $placeDto->setUserVoted($userVoted);
+
+        $data = $placeDto->jsonSerialize();
+        $json = json_encode($data);
+        $resp = new Response($json, 200);
+        $resp->headers->set('Content-Type', 'application/json');
+        return $resp;
+
     }
 
 }

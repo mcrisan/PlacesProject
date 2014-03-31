@@ -24,8 +24,8 @@ search_tag_addr:
       _method: GET  
       
 search:
-    pattern: /searchplace/{input}
-    defaults: { _controller: BundlePlacesBundle:Service:search }
+    pattern: /searchplace/{input}/{food}/{drink}
+    defaults: { _controller: BundlePlacesBundle:Service:search, food:off, drink:off }
     requirements:
       _method: GET  
       
@@ -52,6 +52,12 @@ autocom:
     defaults: { _controller: BundlePlacesBundle:Service:autocom }
     requirements:
       _method: GET  
+      
+renderplace:
+    pattern: /renderplaceserice/{slug}
+    defaults: { _controller: BundlePlacesBundle:Service:renderPlace }
+    requirements:
+      _method: GET        
       
 #autocom_ac:
 #    pattern: /autocomaction

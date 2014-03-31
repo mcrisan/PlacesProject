@@ -73,8 +73,8 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
         $id = $placeop->getLastPlaceId();
         echo $id;
 
-        $p1['x'] =46.75;
-        $p2['x'] =46.755;
+        $p1['x'] =46.755;
+        $p2['x'] =46.76;
         $mes = "Inserting places from lat ".$p1['x'] ." to lat " .$p2['x'] ;
         $placeop->logMessage($mes);
         $mes = "Inserting places from long ".$p1['y'] ." to long " .$p1['y'] ;
@@ -93,6 +93,7 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
           //$id = 2879;
         //$placeDet = new InsertAllDetailsCommand();
         //$placeDet = $this->getContainer()->get('insertalldetails');
+        //$id=3102;
         $placeDet->addAllPlacesDetails($apiKey, $id );
                
     }

@@ -31,31 +31,36 @@ class SearchWebService {
         $this->formsOP = $formsOP;
     }
 
-    public function searchByName($name) {
+    public function searchByName($name, $food, $drink) {
         //echo $name;
 
         $places1 = $this->searchDAO->getPlacesNamesAndIds($name);
         $distance = $this->container->getParameter('distance');
         $limit = $this->container->getParameter('limit');
-        if (empty($places1)) {  
+        if (empty($places1)) {
             $name_enc = urlencode($name);
-            $geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address=' .$name_enc. '&sensor=false');
+            $geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address=' . $name_enc . '&sensor=false');
             $output = json_decode($geocode);
-            $latitude = $output->results[0]->geometry->location->lat;
-            $longitude = $output->results[0]->geometry->location->lng; 
-            $coord= array("lat" => $latitude, "lng" => $longitude);
-            apc_store($name, $coord);
-            $places = $this->searchDAO->getPlacesByDistance($name, $latitude, $longitude, $distance, $limit);
-        }else{
+            if (isset($output->results[0])) {
+                $latitude = $output->results[0]->geometry->location->lat;
+                $longitude = $output->results[0]->geometry->location->lng;
+                $coord = array("lat" => $latitude, "lng" => $longitude);
+                apc_store($name, $coord);
+                $places = $this->searchDAO->getPlacesByDistance($name, $food, $drink, $latitude, $longitude, $distance, $limit);
+            }
+        } else {
             $placeId = $places1[0]['placeId'];
             $placeInfo = $this->getPlaceInfos($placeId);
             $latitude = $placeInfo['place']['placelat'];
-            $longitude = $placeInfo['place']['placelng']; 
-            $coord= array("lat" => $latitude, "lng" => $longitude);
+            $longitude = $placeInfo['place']['placelng'];
+            $coord = array("lat" => $latitude, "lng" => $longitude);
             apc_store($name, $coord);
-            $places = $this->searchDAO->getPlacesByDistance($name, $latitude, $longitude, $distance, $limit);
-            array_unshift($places, $places1[0]);
-            array_pop($places);
+            $places = $this->searchDAO->getPlacesByDistance($name, $food, $drink, $latitude, $longitude, $distance, $limit);
+            $cat = $places1[0]['category'];
+            if ((("on" == $food) & (strpos($cat, 'Food') !== FALSE)) || (("on" == $drink) & (strpos($cat, 'Drink') !== FALSE))) {
+                array_unshift($places, $places1[0]);
+                array_pop($places);
+            }
         }
         if (!empty($places)) {
             $placeId = $places[0]['placeId']; // #1 place from search results..
@@ -70,6 +75,7 @@ class SearchWebService {
             ));
         } else {
             $placeInfo = $this->getPlaceInfos(1595);
+            $places = $this->searchDAO->getPlacesNamesAndIds("Restaurant Havana");
             $userInfo = $this->getUserDetails();
             $resp = json_encode(array(
                 'details' => array(
@@ -243,6 +249,17 @@ class SearchWebService {
         $placeInfo['userStatus'] = $this->searchDAO->getUserStatus($placeId, $this->getIp());
 
         return $placeInfo;
+    }
+    
+    public function getPlaceInfosBySlug($slug) {
+
+        $placeId = $this->searchDAO->getPlacesIdBySlug($slug);
+        //var_dump($placeId);
+        $id = $placeId[0]['id'];
+        $details = $this ->getPlaceInfos($placeId);
+        $userInfo = $this->getUserDetails();     
+        //var_dump($details);
+        return array("details" => $details, "userInfo" => $userInfo );
     }
 
     public function getUserDetails() {
