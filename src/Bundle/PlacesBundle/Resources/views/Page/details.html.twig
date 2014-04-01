@@ -1,0 +1,62 @@
+{% extends 'BundlePlacesBundle::base1.html.twig' %}
+{% block content %} 
+    <input id="searchvalue" type="hidden" value="{{ input }}" />
+    {% include 'BundlePlacesBundle:Page:renderPlaceDetails.html.twig' with {'place':place} %}  
+{% endblock %}  
+
+{# sidebar #}
+{% block sidebar %}
+    <aside class="right-container">
+        <ul class="restaurant-list">
+        {% if input is defined %}
+            {% for key,place in places %}
+                <li>
+                    <section>
+                        {# set first result as active #}
+                        {% set active = (key == 0 ? 'active' : '') %}
+                        <a id="{{ place.placeId }}" class="it {{ active }}" href="{{ path('renderPlace',{'param':place.slug}) }}">
+                            <header>{{ place.placeName }}</header>
+                            <ul class="rating-stars">                
+                               {% for i in 1..5%}
+                                    {% if i <= place.placeRating %}
+                                        <li></li>               
+                                    {% else %}
+                                        <li class='red'></li>
+                                    {% endif%}
+                                {% endfor %}
+                            </ul>
+                        </a>
+                    </section>
+                </li>
+            {% endfor %}
+        {% else %}
+            <p class="results-header-msg" style="padding-left:10px;">
+                Invalid search input
+            </p>
+        {% endif %}
+    </ul>
+    </aside>
+{% endblock %}
+
+{% block javascript %}
+    <!-- Js to load map and directions -->
+    <script src="{{ asset('bundles/bundleplaces/js/sidebar.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/google-map-get-directions.js') }}"></script>
+    <script src="{{ asset('bundles/bundleplaces/js/renderPlace.js') }}"></script>
+    <script src="{{ asset('bundles/bundleplaces/js/processingVote.js') }}"></script>
+    <script src="{{ asset('bundles/bundleplaces/js/angular/angular.js') }}"></script>
+    <script src="{{ asset('bundles/bundleplaces/js/angular/angular-route.js') }}"></script>
+    <script src="{{ asset('bundles/bundleplaces/js/ui-bootstrap-tpls-0.10.0.js') }}"></script>
+    <script src="{{ asset('bundles/bundleplaces/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('bundles/bundleplaces/js/app/app.js') }}"></script>
+    <script src="{{ asset('bundles/bundleplaces/js/app/services.js') }}"></script>
+    <script src="{{ asset('bundles/bundleplaces/js/app/controllers.js') }}"></script>
+    <script src="{{ asset('bundles/bundleplaces/js/app/filters.js') }}"></script>
+    <script src="{{ asset('bundles/bundleplaces/js/app/directives.js') }}"></script>  
+{% endblock %}
+
+{% block stylesheets %}
+     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/details.css') }}" />
+{% endblock %}
+
+

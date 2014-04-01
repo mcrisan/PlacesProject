@@ -1,0 +1,203 @@
+{% extends 'BundlePlacesBundle::base1.html.twig' %}
+{% block content %} 
+    <tabset class="menu-bar">
+        <tab heading="PRESENTATION">
+            <article>          
+            </article><!--end article -->
+        </tab>
+        <tab heading="PHOTOS">
+            <article>
+            </article><!--end article -->
+        </tab>
+        <tab heading="RATINGS">
+            <article>
+            </article><!--end article -->
+        </tab>
+        <tab heading="REVIEWS">
+            <article>           
+            </article><!--end article -->
+        </tab>
+        <tab heading="PROMOTIONS">
+            <article>
+            </article><!--end article -->
+        </tab>
+    </tabset>
+
+     <!-- Map and directions (nested) -->
+    <article class="row" style="border:1px solid red;">
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="padding:2px;border:0px solid black;margin-bottom: 2px;">
+            <!--col-xs-12 col-sm-8 col-md-8 col-lg-8<br/>-->
+            <div id="googleMap" class="place-map"></div>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="padding:2px;border:0px solid black;">
+            <!--col-xs-12 col-sm,md,lg-4 <br />-->
+            <div class="get-directions">
+                <h1>Directions</h1>
+                <div class="form-group">
+                    {# Method one
+                        <form id="calculate-route" name="calculate-route" action="#" method="get">
+                            <input class="form-control" type="text" id="from" name="from" required="required" placeholder="From A" size="15" />
+                            <a id="from-link" href="#">Get current position</a>
+                            <br />
+                            <input class="form-control" type="text" id="to" name="to" required="required" placeholder="To B" size="15" value="{{ placeAddress }}"/>
+                            <a id="to-link" href="#">Get current position</a>
+                            <br />
+                            <button class="btn btn-default" type="submit"><b>Get directions</b></button>
+                        </form>#}
+                            
+                    {#Metdod #2 with txt-directions #}
+                    <form action="#" onsubmit="setDirections(this.from.value, this.to.value); return false;">
+                        <input class="form-control" type="text" size="25" id="fromAddress" name="from" value="Cluj-Napoca,Romania" placeholder="location address"/>
+                        <a id="from-link" href="#">Get current position</a><img class="loader" style="display:none;padding-left: 5px;"src="{{ asset('bundles/bundleplaces/images/load.gif') }}"/>
+                        <input class="form-control" type="text" size="25" id="toAddress" name="to" value="{#{{ placeAddress }}#}" placeholder="destination address"/>                               
+                        <button class="btn btn-default" type="submit" style="width:100px;margin-top: 2px;"><img src="{{ asset('bundles/bundleplaces/images/icons/arrow_branch.png') }}" title="Get Directions" alt="accept" /></button>  <img src="{{ asset('bundles/bundleplaces/images/icons/car.png') }}" title="By car" alt="accept" />
+                    </form>
+                </div><!-- /.form-group -->
+                
+                <div id="directions" style="height: 310px;overflow: scroll;overflow-x: hidden;padding-top: 0px;padding-right: 3px;" class="scroll-style11">
+                    <p><small>Directions</small></p>
+                </div>
+            </div> 
+        </div><!-- /.nested cols -->
+    </article><!-- /.map-directions-div --> 
+{% endblock %}  
+
+{# overwrite aside block #}
+{% block aside %}
+    {% if input is defined %}
+
+<p class="results-header-msg">
+    Total results: {{ totalResults }}
+    <br/>
+    Search value: {{ input }}
+</p>
+<div class="row app-results-wrapper"> 
+    <div class="app-aside-div">
+        {% for key,place in places %}
+            {# set first result as active #}
+            {% set active = (key == 0 ? 'active' : '') %}
+        <a id="{{ place.placeId }}" class="list-group-item it {{ active }}" href="{{ path('renderPlace',{'param':place.slug}) }}">
+            <p>{{ place.placeName }}</p>
+            <p>
+               {% for i in 1..5%}
+                    {% if i <= place.placeRating %}
+                        <img src="{{ asset('bundles/bundleplaces/images/star.png') }}" width="15" height="15" />
+                    {% else %}
+                        <img src="{{ asset('bundles/bundleplaces/images/blank_star.png') }}" width="15" height="15" />
+                    {% endif%}
+                {% endfor %}
+            </p>
+        </a>
+        {% endfor %}
+    {% else %}
+        <p class="results-header-msg" style="padding-left:10px;">
+            Invalid search input
+        </p>
+    {% endif %}
+    </div>
+
+</div>
+<div id="gif-loader" style="display:none;width:100%">
+    <center><img src="{{ asset('bundles/bundleplaces/images/load.gif') }}"></center>
+</div>
+{% endblock %}
+
+{# js #}
+{# jquery libs for the map & autocomplete function
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+#}
+{% block javascript %} 
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        //var i = 1;
+        var array = "";
+        var i = 0;
+        var searchvalue = $("#searchvalue").val();
+        var nrplaces;
+        // store current places in list
+        $('.app-aside-div').children('a').each(function() {
+            var arrHref = ($(this).attr('id'));
+            array += arrHref + ',';
+        });
+        $('.app-results-wrapper').scroll(function() {
+            if ($(this)[0].scrollHeight - $(this).scrollTop() == $(this).outerHeight()) {
+                i++;
+                console.log(i);
+                console.log(searchvalue);
+                $.ajax({
+                    url: "morePlacesRequest",
+                    type: "POST",
+                    data: 'pag=' + i + '&searchval=' + searchvalue,
+                    success: function(data) {
+//                alert(data);
+                        if (data) {
+                            $('#gif-loader').hide();
+                            //console.log(data);
+                            $('.app-aside-div').append(data);
+                            nrplaces = $("#nrplaces").val();
+                            console.log(nrplaces);
+                            //$('#gif-loader').hide();
+                           // alert(i);
+                            $(".it"+i).on('click', function() {
+
+
+                                param = $(this).attr('href');
+                                //alert(param);
+                                $(this).addClass('active').siblings().removeClass('active');
+                                $.ajax({
+//            url: "/MyProject/web/app_dev.php/renderPlace/" + param,
+                                    url: param,
+                                    type: "GET",
+                                    success: function(data) {
+//                alert(data);
+                                        if (data) {
+                                            console.log('1');
+                                            $('#place-container').html(data);
+                                        }
+                                    }
+                                });
+                                // alert(param);
+                                return false;
+                                //alert(22);
+                                event.preventDefault();
+
+                            });
+
+
+
+
+
+                        }
+                    },
+                    beforeSend: function() {
+                        $('#gif-loader').show();
+                    },
+                    complete: function() {
+                        $('#gif-loader').hide();
+                    }
+
+                });
+            }
+        });
+
+    });
+</script>
+    {#<script src="{{ asset('bundles/bundleplaces/js/loadMap.js') }}"></script>#}
+<script src="{{ asset('bundles/bundleplaces/js/renderPlace.js') }}"></script>
+<script src="{{ asset('bundles/bundleplaces/js/processingVote.js') }}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+<script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/google-map-get-directions.js') }}"></script>
+{#<script src=" http://maps.google.com/?file=api&amp;v=2&amp;key=AIzaSyBcy7J0eaTaMSxAj7re31bLUKSr9W9EPYE" type="text/javascript"></script>#}
+
+
+    {#<script src="{{ asset('bundles/bundleplaces/js/google-maps.js') }}"></script>#}
+{% endblock %}
+
+{% block javascripts %}
+    <!-- Js to load map and directions -->
+    <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/google-map-get-directions.js') }}"></script>
+{% endblock %}
+
+

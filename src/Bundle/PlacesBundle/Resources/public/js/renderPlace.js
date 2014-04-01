@@ -1,5 +1,5 @@
 $(document).ready(function(event) {
-    //$(".list-group-item").on('click', function() {   
+/*    //$(".list-group-item").on('click', function() {   
     $(".it").on('click', function() {
         param = $(this).attr('href');
         //alert (param);
@@ -21,5 +21,5 @@ $(document).ready(function(event) {
         //alert(22);
         event.preventDefault();
 
-    });
+    });*/
 });

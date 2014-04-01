@@ -189,8 +189,12 @@ class PageController extends Controller {
                 $isowner = '0';
             }
            
-        $userDet = $data['details']['userInfos'];
         //die;
+        if ($placeInfo['userStatus']) {
+            $userVoted = true;
+        } else {
+            $userVoted = false;          
+        }
         if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
             $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
         }
@@ -200,42 +204,54 @@ class PageController extends Controller {
         if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
             $placeInfo['totalCounts'][0]['votesCount'] = 1;
         }
+
+        $placeDto = $this->get("placeDto");
+        $placeDto->setPlaceDetails($placeInfo['place']);
+        $placeDto->setFirstPhoto($placeInfo['placePhotos']);
+        $placeDto->setPlaceAllPhotos($placeInfo['placeAllPhotos']);
+        $placeDto->setUserIp($userInfo['currentIp']);
+        $placeDto->setPlaceSlug($placeInfo['placeSlug']);
+        $placeDto->setPlaceId($placeInfo['place']['placeid']);
+        $placeDto->setReviews($placeInfo['placeReviews']);
+        $placeDto->setTotalVotesAllPlaces($placeInfo['totalVotesAllTime']);
+        $rate = round($placeInfo['total'][0]['totalVotes'] / $placeInfo['totalCounts'][0]['votesCount'], 2);
+        $placeDto->setUsersRating($rate);
+        $placeDto->setTotalVotesForPlace($placeInfo['totalVotesForPlace'][0]['votesCount']);
+        $placeDto->setUserVoted($userVoted);
+
         if ($placeInfo['userStatus']) { // if user voted for current store                
-            return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
+            return $this->render('BundlePlacesBundle:Page:details.html.twig', array(
                         'input' => $searchInput,
                         'places' => $places,
-                        'placeDetail' => array($placeInfo['place']),
-                        'placePhotos' => $placeInfo['placePhotos'],
-                        'placeAllPhotos' => $placeInfo['placeAllPhotos'],
-                        'totalVotesAllTime' => $placeInfo['totalVotesAllTime'],
-                        'totalVotes' => $placeInfo['totalVotesForPlace'][0]['votesCount'],
-                        'usersRating' => round(
-                                $placeInfo['total'][0]['totalVotes'] / $placeInfo['totalCounts'][0]['votesCount'], 2),
-                        'bool' => true,
+                        'place'  => $placeDto,
+                        //'placeDetails' => $placeInfo['place'],
+                        //'placePhotos' => $placeInfo['placePhotos'],
+                        //'placeAllPhotos' => $placeInfo['placeAllPhotos'],
+                        //'totalVotesAllTime' => $placeInfo['totalVotesAllTime'],
+                        //'totalVotes' => $placeInfo['totalVotesForPlace'][0]['votesCount'],
+                        //'usersRating' => round(
+                        //        $placeInfo['total'][0]['totalVotes'] / $placeInfo['totalCounts'][0]['votesCount'], 2),
+                        //'bool' => true,
                         'totalResults' => $totalResults,
-                        'placeSlug' => $placeInfo['placeSlug'],
-                        'reviews' => $placeInfo['placeReviews'],
-                        'userId' => $userDet['userId'],
-                        'userName' => $userDet['userName'],
-                        'socialLogged' => $userDet['socialLogged'],
+                        //'placeSlug' => $placeInfo['placeSlug'],
+                        //'reviews' => $placeInfo['placeReviews'],
+                        'userId' => $userInfo['userId'],
+                        'userName' => $userInfo['userName'],
+                        'socialLogged' => $userInfo['socialLogged'],
                         'providerName' => $userDet['providerName'],
                         'isowner' =>   $isowner
             ));
         } 
+        return $this->render('BundlePlacesBundle:Page:details.html.twig', array(
         
         
-        
-        return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
                     'input' => $searchInput,
+                    //'place' => $places,
                     'places' => $places,
-                    'placeDetail' => array($placeInfo['place']),
-                    'placePhotos' => $placeInfo['placePhotos'],
-                    'placeAllPhotos' => $placeInfo['placeAllPhotos'],
-                    'totalResults' => $totalResults,
-                    'placeSlug' => $placeInfo['placeSlug'],
-                    'reviews' => $placeInfo['placeReviews'],
-                    'userId' => $userDet['userId'],
-                    'userName' => $userDet['userName'],
+                    'place'  => $placeDto,
+                    'userId' => $userInfo['userId'],
+                    'userName' => $userInfo['userName'],
+                    'socialLogged' => $userInfo['socialLogged']
                     'socialLogged' => $userDet['socialLogged'],
                     'isowner' =>   $isowner
         ));

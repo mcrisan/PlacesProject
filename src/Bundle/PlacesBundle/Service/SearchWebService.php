@@ -55,12 +55,21 @@ class SearchWebService {
             $longitude = $placeInfo['place']['placelng'];
             $coord = array("lat" => $latitude, "lng" => $longitude);
             apc_store($name, $coord);
-            $places = $this->searchDAO->getPlacesByDistance($name, $food, $drink, $latitude, $longitude, $distance, $limit);
             $cat = $places1[0]['category'];
-            if ((("on" == $food) & (strpos($cat, 'Food') !== FALSE)) || (("on" == $drink) & (strpos($cat, 'Drink') !== FALSE))) {
+            if($food == "off" & $drink == "off"){
+            if(strpos($cat, 'Food') !== FALSE){
+                $food = "on";
+            }
+            if(strpos($cat, 'Drink') !== FALSE){
+                $drink = "on";
+            }
+            }
+            $places = $this->searchDAO->getPlacesByDistance($name, $food, $drink, $latitude, $longitude, $distance, $limit);
+            
+            //if ((("on" == $food) & (strpos($cat, 'Food') !== FALSE)) || (("on" == $drink) & (strpos($cat, 'Drink') !== FALSE))) {
                 array_unshift($places, $places1[0]);
                 array_pop($places);
-            }
+            //}
         }
         if (!empty($places)) {
             $placeId = $places[0]['placeId']; // #1 place from search results..
