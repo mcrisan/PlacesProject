@@ -105,6 +105,8 @@ $(function() {
         });
         $("#autocomplete-result").append(addr);
 
+          var autocomplete = new google.maps.places.AutocompleteService();
+
         var request = {
             input: name ,
             //bounds: defaultBounds,
