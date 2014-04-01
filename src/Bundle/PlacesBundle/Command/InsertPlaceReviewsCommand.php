@@ -7,14 +7,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Bundle\PlacesBundle\Entity\PlaceReviews;
 use Bundle\PlacesBundle\Entity\Places;
-use Bundle\PlacesBundle\Entity\PlacesRepository;
-use Bundle\PlacesBundle\Service\PlaceOperations;
+use Bundle\PlacesBundle\Service\Places;
 
 class InsertPlaceReviewsCommand extends ContainerAwareCommand {
 
     private $placeop;
 
-    public function __construct(PlaceOperations $placeop) {
+    public function __construct(Places $placeop) {
         $this->placeop = $placeop;
     }
     
@@ -25,92 +24,17 @@ class InsertPlaceReviewsCommand extends ContainerAwareCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        //$placeop = $this->getContainer()->get('placeop');
         $apiKey = $this->getContainer()->getParameter('api_key');
         $id = $this->placeop->getLastPlaceId();
-        $output->writeln($this->addPlaceReviews($apiKey, $id));
+        $output->writeln();
     }
-
-    /**
-     * recode ..
-     */
-    function addPlaceReviews($apiKey, $startId) {
-
-        //$detailsRef = $placeop->getPlacesDetailsRef();
-        $nr=0;
-        $detailsRef = $this->placeop->getPlacesDetailsRefWithId($startId);
-        //$detailsRef = $placeop->getPlacesDetail(2247, 2277);
-        foreach ($detailsRef as $place) {
-            $placeId = $place['id'];
-            $placeName = $place['slug'];
-            $detailsRef = $place['detailsRef'];
-            $url = "https://maps.googleapis.com/maps/api/place/details/json?reference=" . $detailsRef . "&sensor=true&key=" . $apiKey;
-            $json = file_get_contents($url);
-            $data = json_decode($json, TRUE);
-            $status = $data['status'];
-            if ($status =="REQUEST_DENIED"){
-                echo "er";
-                $mes = "Request denied while inserting the reviews for place: ". $placeId;
-                $this->placeop->logMessage($mes);
-                break;
-            }
-            if ($status =="NOT_FOUND"){
-                $mes = "Place: ". $placeId . " not found while inserting reviews";
-                $this->placeop->logMessage($mes);
-                continue;
-            }
-            if ($status !="OK"){
-                continue;
-            }
-            $detailsResults = $data['result'];
-            if( isset( $detailsResults['reviews'] ) ){
-                $reviews = $detailsResults['reviews'];
-                // delete existing reviews for place
-                $delete = $this->placeop->deletePlaceReviews($placeId);
-                if ($delete->execute()) {
-                    echo "Reviews deleted from place_reviews tb. \r\n";
-                }
-                //insert reviews for place
-                foreach ($reviews as $review) {
-                    $time = $review['time'];
-                    $text = $review['text'];
-                    $authorName = $review['author_name'];
-                    if( isset( $review['author_url'] ) ){
-                    $authorUrl = $review['author_url'];
-                    }else{
-                       $authorUrl=""; 
-                    }
-                    $aspects = $review['aspects'];
-                    foreach ($aspects as $aspect) {
-                        $aspectType = $aspect['type'];
-                        $aspectRating = $aspect['rating'];
-                    }
-                    $p = $this->placeop->getPlace($placeId);
-                    $placeReview = new PlaceReviews();
-                    $placeReview->setPlaces($p);
-                    $placeReview->setAuthor($authorName);
-                    $placeReview->setAuthorUrl($authorUrl);
-                    $placeReview->setReview($text);
-                    $placeReview->setRatingAspect($aspectType);
-                    $placeReview->setRating($aspectRating);
-                    $placeReview->setDate($time);
-                    $this->placeop->InsertPlaceReview($placeReview);
-                    echo "Review for: " . $placeName . " inserted ! \r\n";
-                }
-            }
-            $nr++;
-        }
-        $mes = "We have inserted reviews for: ". $nr . " places";
-        $this->placeop->logMessage($mes);
-    }
+   
     
-    function addPlaceReviews2($data, $place) {
+    function addPlaceReviews($data, $place) {
 
             $placeId = $place['id'];
-            $placeName = $place['slug'];
             $status = $data['status'];
             if ($status =="REQUEST_DENIED"){
-              //  echo "er";
                 $mes = "Request denied while inserting the reviews for place: ". $placeId;
                 $this->placeop->logMessage($mes);
                 return;
@@ -156,7 +80,6 @@ class InsertPlaceReviewsCommand extends ContainerAwareCommand {
                     $placeReview->setRating($aspectRating);
                     $placeReview->setDate($time);
                     $this->placeop->InsertPlaceReview($placeReview);
-               //     echo "Review for: " . $placeName . " inserted ! \r\n";
                 }
             }
     }

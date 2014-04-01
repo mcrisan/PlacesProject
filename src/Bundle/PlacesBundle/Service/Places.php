@@ -8,37 +8,33 @@
 
 namespace Bundle\PlacesBundle\Service;
 
-use Bundle\PlacesBundle\Entity\PlaceTags;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bridge\Monolog\Logger;
-use Bundle\PlacesBundle\Entity\Places;
+use Bundle\PlacesBundle\Entity\PlaceTags;
 use Bundle\PlacesBundle\Entity\PlaceCategories;
-use Bundle\PlacesBundle\Command\InsertAllDetailsCommand;
+use Bundle\PlacesBundle\Service\PlacesDAO;
+use Bundle\PlacesBundle\Service\UserOperation;
 
 /**
- * Description of PlaceOperations
+ * Description of Places
  *
  * @author mcrisan
  */
-class PlaceOperations {
+class Places {
 
-    //put your code here
     protected $opDAO;
     private $container;
     private $logger;
+    private $userop;
 
-    public function __construct(PlaceOperationsDAO $dao, ContainerInterface $container, Logger $logger) {
-        $this->opDAO = $dao;
+    public function __construct(PlacesDAO $placesdao, UserOperation $userop, ContainerInterface $container, Logger $logger) {
+        $this->opDAO = $placesdao;
         $this->container = $container;
         $this->logger = $logger;
+        $this->userop = $userop;
     }
 
     public function logMessage($mes) {
-//        $session = $this->container->get('session');
-//        $session ->set("cas","tare");
-//        echo $session->get("cas");
-//        echo $session->getId();
-        //       echo $mes;
         $this->logger->info($mes);
     }
 
@@ -50,7 +46,6 @@ class PlaceOperations {
         $checkSlug = $this->opDAO->checkCurrentSlug($place->getSlug());
         $lastSlug = $this->opDAO->getLastSlug($place->getSlug() . '-'); // last slug
         $isPlace = $this->opDAO->checkCurrentExtId($place->getExtId());
-        $extId = $place->getExtId();
         if ($checkSlug) {
             if ($lastSlug) { // if the place 'has number-to-slug'
                 $lastSlugId = explode('-', $lastSlug[0]['slug']);
@@ -73,13 +68,11 @@ class PlaceOperations {
             $errors = $validator->validate($place);
             $strerror = (string) $errors;
             if ($strerror) {
-                //  echo $strerror;
                 throw new \Exception($strerror);
             } else {
                 $newPlace = $this->opDAO->insertPlace($place);
             }
         } else { //update place
-            //  echo "place exists";
             $place2 = $this->opDAO->getPlaceByExtId($place->getExtId());
             $place2->setExtId($place->getExtId());
             $place2->setDetailsRef($detailsRef);
@@ -87,14 +80,12 @@ class PlaceOperations {
             $errors = $validator->validate($place);
             $strerror = (string) $errors;
             if ($strerror) {
-                //      echo $strerror;
                 throw new \Exception($strerror);
             } else {
                 $newPlace = $this->opDAO->insertPlace($place2);
             }
         }
         return $newPlace;
-        // echo $place->getSlug();
     }
 
     public function insertTag($tag) {
@@ -103,17 +94,12 @@ class PlaceOperations {
         $errors = $validator->validate($tag);
         $strerror = (string) $errors;
         if ($strerror) {
-            //   echo $strerror;
             throw new \Exception($strerror);
         } else {
             $isTag = $this->opDAO->isTag($tag->getTag());
             if (!$isTag) {
-                //insert tag to db
                 $this->opDAO->insertTag($tag);
-                //      echo "tag  inserted in tags table ! \r\n";
-            } else {
-                //      echo "tag already inserted in tags table ! \r\n";
-            };
+            }
         }
     }
 
@@ -122,17 +108,13 @@ class PlaceOperations {
 
         $allTypes = $this->opDAO->getAllTags();
         $currentTypes = json_decode(json_encode($tag), TRUE);
-        // delete all tags in tb. 'place_tags' for current place
         $this->opDAO->deletePlaceTag($placeId);
-        // run query's & insert details in place_tags
         // on first run set main = true
         $inc = 0;
         foreach ($allTypes as $typeInfo) {
             $typeId = $typeInfo['id'];
             $typeValue = $typeInfo['tag'];
-
             if (in_array($typeValue, $currentTypes)) {
-                //echo "Current place_id: ".$placeId;
                 $insertPlaceTypes = new PlaceTags();
                 $insertPlaceTypes->setPlaceId($placeId);
                 $insertPlaceTypes->setTagId($typeId);
@@ -145,12 +127,9 @@ class PlaceOperations {
                 $errors = $validator->validate($insertPlaceTypes);
                 $strerror = (string) $errors;
                 if ($strerror) {
-                    //       echo $strerror;
                     throw new \Exception($strerror);
                 } else {
                     $this->opDAO->insertPlaceTag($insertPlaceTypes);
-                    //       echo $inc;
-                    //       echo "Place name: '$typeValue'. Action: type inserted ! \r\n";
                     $inc++;
                 }
             }
@@ -161,12 +140,10 @@ class PlaceOperations {
 
         $place2 = $this->opDAO->getPlace($place->getPlaceId());
         $place->setPlace($place2);
-        //var_dump($place2);
         $validator = $this->container->get('validator');
         $errors = $validator->validate($place);
         $strerror = (string) $errors;
         if ($strerror) {
-            //  echo $strerror;
             throw new \Exception($strerror);
         } else {
             $this->opDAO->insertPlaceDetails($place);
@@ -184,12 +161,10 @@ class PlaceOperations {
         $errors = $validator->validate($placePhotos);
         $strerror = (string) $errors;
         if ($strerror) {
-            //      echo $strerror;
             throw new \Exception($strerror);
         } else {
             $this->opDAO->insertPlacePhotos($placePhotos);
         }
-        //   echo "Photo inserted \r\n";
     }
 
     public function insertPlaceReview($placeReview) {
@@ -198,12 +173,10 @@ class PlaceOperations {
         $errors = $validator->validate($placeReview);
         $strerror = (string) $errors;
         if ($strerror) {
-            //       echo $strerror;
             throw new \Exception($strerror);
         } else {
             $this->opDAO->insertPlaceReview($placeReview);
         }
-        //   echo "Photo inserted for \r\n";
     }
 
     public function getPlacesDetailsRef() {
@@ -284,15 +257,12 @@ class PlaceOperations {
         $drinks = array("cafe", "bar", "night_club");
         $ok_f = false;
         $ok_d = false;
-        var_dump($tags);
         foreach ($tags as $tag) {
             if (!$command) {
                 $t_name = $tag['tag'];
             } else {
                 $t_name = $tag;
-                echo "numele: ".$t_name;
             }
-            //echo "<br/>cat ".$t_name. "<br/>";
             if (in_array($t_name, $food)) {
                 $ok_f = true;
             }
@@ -300,13 +270,11 @@ class PlaceOperations {
                 $ok_d = true;
             }
         }
-
         if ($ok_f) {
             $placeCat = new PlaceCategories();
             $placeCat->setCategoryId(1);
             $placeCat->setPlaceId($id);
             $this->opDAO->insertCategory($placeCat);
-            return;
         }
         if ($ok_d) {
             $placeCat = new PlaceCategories();
@@ -319,6 +287,125 @@ class PlaceOperations {
         $placeCat->setCategoryId(3);
         $placeCat->setPlaceId($id);
         $this->opDAO->insertCategory($placeCat);
+    }
+    
+    public function getPlacesNames($input) {
+
+        return $this->opDAO->getPlacesNames($input);
+    }
+
+    public function getAllPlacesNames() {
+
+        $places = $this->opDAO->getAllPlacesNames();
+        foreach ($places as $key => $place) {
+            $cat = $place['category'];
+            if (strpos($cat, ',') !== FALSE) {
+                $places[$key]['category'] = 'FoodDrink';
+            }
+        }
+        return $places;
+    }
+    
+    public function searchByName($name, $food, $drink) {
+
+        $places1 = $this->opDAO->getPlacesNamesAndIds($name);
+        $distance = $this->container->getParameter('distance');
+        $limit = $this->container->getParameter('limit');
+        if (empty($places1)) {
+            $name_enc = urlencode($name);
+            $geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address=' . $name_enc . '&sensor=false');
+            $output = json_decode($geocode);
+            if (isset($output->results[0])) {
+                $latitude = $output->results[0]->geometry->location->lat;
+                $longitude = $output->results[0]->geometry->location->lng;
+                $coord = array("lat" => $latitude, "lng" => $longitude);
+                apc_store($name, $coord);
+                $places = $this->opDAO->getPlacesByDistance($name, $food, $drink, $latitude, $longitude, $distance, $limit);
+            }
+        } else {
+            $placeId = $places1[0]['placeId'];
+            $placeInfo = $this->getPlaceInfos($placeId);
+            $latitude = $placeInfo['place']['placelat'];
+            $longitude = $placeInfo['place']['placelng'];
+            $coord = array("lat" => $latitude, "lng" => $longitude);
+            apc_store($name, $coord);
+            $cat = $places1[0]['category'];
+            if($food == "off" & $drink == "off"){
+            if(strpos($cat, 'Food') !== FALSE){
+                $food = "on";
+            }
+            if(strpos($cat, 'Drink') !== FALSE){
+                $drink = "on";
+            }
+            }
+            $places = $this->opDAO->getPlacesByDistance($name, $food, $drink, $latitude, $longitude, $distance, $limit);
+            
+            //if ((("on" == $food) & (strpos($cat, 'Food') !== FALSE)) || (("on" == $drink) & (strpos($cat, 'Drink') !== FALSE))) {
+                array_unshift($places, $places1[0]);
+                array_pop($places);
+            //}
+        }
+        if (!empty($places)) {
+            $placeId = $places[0]['placeId']; // #1 place from search results..
+            $placeInfo = $this->getPlaceInfos($placeId);
+            $userInfo = $this->userop->getUserDetails();
+            $resp = json_encode(array(
+                'details' => array(
+                    'placeInfos' => $placeInfo,
+                    'places' => $places,
+                    'userInfos' => $userInfo),
+                'status' => 'OK'
+            ));
+        } else {
+            $placeInfo = $this->getPlaceInfos(1595);
+            $places = $this->opDAO->getPlacesNamesAndIds("Restaurant Havana");
+            $userInfo = $this->userop->getUserDetails();
+            $resp = json_encode(array(
+                'details' => array(
+                    'placeInfos' => $placeInfo,
+                    'places' => $places,
+                    'userInfos' => $userInfo),
+                'status' => 'OK'
+            ));
+        }
+        return $resp;
+    }
+    
+    public function getPlaceInfos($placeId) {
+
+        $placeInfo = array();
+        $getPlaceSlug = $this->opDAO->getPlacesSlug($placeId);
+        $placeInfo['placeSlug'] = $getPlaceSlug[0]['slug'];
+        $placeInfo['placeReviews'] = $this->opDAO->getPlaceReviews($placeId);
+        $placeDet = $this->opDAO->getPlacesDetails($placeId);
+        $placeInfo['place']['placeid'] = $placeDet[0]->getPlaceId();
+        $placeInfo['place']['placename'] = $placeDet[0]->getPlaceName();
+        $placeInfo['place']['placephonenumber'] = $placeDet[0]->getPlacePhonenumber();
+        $placeInfo['place']['placevicinity'] = $placeDet[0]->getPlaceVicinity();
+        $placeInfo['place']['placelat'] = $placeDet[0]->getPlaceLat();
+        $placeInfo['place']['placelng'] = $placeDet[0]->getPlaceLng();
+        $placeInfo['place']['placerating'] = $placeDet[0]->getPlaceRating();
+        $placeInfo['place']['placeicon'] = $placeDet[0]->getPlaceIcon();
+        $placeInfo['place']['placeurl'] = $placeDet[0]->getPlaceUrl();
+        $placeInfo['place']['placeWebSite'] = $placeDet[0]->getPlaceWebsite();
+        $placeInfo['placePhotos'] = $this->opDAO->getPlacePhotos($placeId, 1);
+        $placeInfo['placeAllPhotos'] = $this->opDAO->getPlacePhotos($placeId);
+        $placeInfo['totalVotesForPlace'] = $this->opDAO->getCurrentCounts($placeId);
+        $placeInfo['totalVotesAllTime'] = $this->opDAO->getTotalVotes();
+        $placeInfo['total'] = $this->opDAO->getCurrentVotes($placeId);
+        $placeInfo['totalCounts'] = $this->opDAO->getCurrentCounts($placeId);
+        $placeInfo['userStatus'] = $this->opDAO->getUserStatus($placeId, $this->userop->getIp());
+
+        return $placeInfo;
+    }
+    
+    public function getPlaceInfosBySlug($slug) {
+
+        $placeId = $this->opDAO->getPlacesIdBySlug($slug);
+        $id = $placeId[0]['id'];
+        $details = $this ->getPlaceInfos($placeId);
+        $userInfo = $this->userop->getUserDetails();     
+        return array("details" => $details, "userInfo" => $userInfo );
     }
 
 }

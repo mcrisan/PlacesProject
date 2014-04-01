@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand;
 use Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand;
 use Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand;
-use Bundle\PlacesBundle\Service\PlaceOperations;
+use Bundle\PlacesBundle\Service\Places;
 
 class InsertAllDetailsCommand extends ContainerAwareCommand {
 
@@ -17,7 +17,7 @@ class InsertAllDetailsCommand extends ContainerAwareCommand {
     private $reviews;
     private $details;
 
-    public function __construct(PlaceOperations $placeop, InsertPlacesPhotosCommand $photos, InsertPlaceReviewsCommand $review, InsertPlacesDetailsCommand $details) {
+    public function __construct(Places $placeop, InsertPlacesPhotosCommand $photos, InsertPlaceReviewsCommand $review, InsertPlacesDetailsCommand $details) {
         $this->placeop = $placeop;
         $this->photos = $photos;
         $this->reviews = $review;
@@ -55,11 +55,11 @@ class InsertAllDetailsCommand extends ContainerAwareCommand {
             $json = file_get_contents($url);
             $data = json_decode($json, TRUE);
             //details
-            $this->details->addPlacesDetails2($data, $place);
+            $this->details->addPlacesDetails($data, $place);
             //photos
-            $this->photos->addPlacePhotos2($data, $place, $apiKey);
+            $this->photos->addPlacePhotos($data, $place, $apiKey);
             //reviews
-            $this->reviews->addPlaceReviews2($data, $place);
+            $this->reviews->addPlaceReviews($data, $place);
             $nr++;
         }
         $mes = "We have made: " . $nr . " querys to insert all details";

@@ -7,8 +7,6 @@ namespace Bundle\PlacesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Bundle\PlacesBundle\lib\UserIp;
-use Bundle\PlacesBundle\lib\GetUserIp;
 
 class FormsController extends Controller {
 
@@ -43,8 +41,8 @@ class FormsController extends Controller {
             $lat = 0;
             $lng = 0;
         }
-        $search = $this->get('searchDAO');
-        $places = $search->getPlacesByDistance($name, $food, $drink, $lat, $lng, $dist, $limit, $pag);
+        $placesdao = $this->get('placesDAO');
+        $places = $placesdao->getPlacesByDistance($name, $food, $drink, $lat, $lng, $dist, $limit, $pag);
         $this->em = $this->getDoctrine()->getManager();
         $nrplaces = count($places);
         return $this->render('BundlePlacesBundle:Places:morePlaces.html.twig', array(
@@ -65,8 +63,9 @@ class FormsController extends Controller {
           $voteValue = $param[0];
           $placeId = $param[1];
          */
-        $userAddr = new GetUserIp();
-        $userIp = $userAddr->get_user_ip();
+        
+        $userop = $this->get("userop");
+        $userIp = $userop->getIp();
 
         //get the rating before update
         $ratingBeforeUpdate = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
@@ -100,9 +99,9 @@ class FormsController extends Controller {
 
     // Votes for site
     function voteeAction() {
-        $this->em = $this->getDoctrine()->getManager();
-        $userIp = new GetUserIp();
-        $currentIp = $userIp->get_user_ip();
+        $this->em = $this->getDoctrine()->getManager();     
+        $userop = $this->get("userop");
+        $currentIp = $userop->getIp();
 
         $updateVoteFlag = $this->em->getRepository('BundlePlacesBundle:UsersIp')
                 ->updateClient($currentIp);
@@ -214,8 +213,8 @@ class FormsController extends Controller {
     }
 
     function getPlacesNamesAction() {
-        $formsop = $this->get('formsop');
-        $placeName = $formsop->getAllPlacesNames();
+        $placeop = $this->get('placeOperation');
+        $placeName = $placeop->getAllPlacesNames();
 
         $res = json_encode($placeName);
         $resp = new Response($res, 200);
@@ -230,9 +229,13 @@ class FormsController extends Controller {
         $slug = urlencode($placeSlug);
         //var_dump($slug);
         //die;
-        $url = "http://localhost/PlacesProject/web/app_dev.php/renderplaceserice/$slug";
-        $jsonData = file_get_contents($url);
-        $info = json_decode($jsonData, TRUE);
+//        $url = "http://localhost/PlacesProject/web/app_dev.php/renderplaceserice/$slug";
+//        $jsonData = file_get_contents($url);
+//        $info = json_decode($jsonData, TRUE);
+        
+        $placeop = $this->get("placeOperation");
+        //$json = $placeop->getPlaceInfosBySlug($slug);
+        $info = $placeop->getPlaceInfosBySlug($slug);
         //var_dump($info);
         //die;
 //        $placeop = $this->get("search");

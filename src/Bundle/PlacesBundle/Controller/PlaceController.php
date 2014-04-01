@@ -5,9 +5,6 @@
 namespace Bundle\PlacesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Bundle\PlacesBundle\lib\GetUserIp;
-use Bundle\PlacesBundle\Model\StoreModel;
 
 /**
  * Store controller.
@@ -36,9 +33,9 @@ class PlaceController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $placeReviews = $em->getRepository('BundlePlacesBundle:PlaceReviews')
                 ->getReviewsById($id);
-       
-        $userIp = new GetUserIp();
-        $currentIp = $userIp->get_user_ip();
+              
+        $placeop = $this->get("userop");
+        $currentIp = $placeop->getIp();
         
         $em = $this->getDoctrine()->getManager();
         $place = $em->getRepository('BundlePlacesBundle:PlaceDetails')

@@ -86,7 +86,8 @@ Bundle\PlacesBundle\Entity\PlaceReviews:
         authorUrl:   
             - Url: ~
         review:
-            - NotBlank: ~
+            - Length:
+                max: 1000
         ratingAspect:
             - NotBlank: ~
             - Length:

@@ -15,68 +15,55 @@ parameters:
 #        arguments: [@service_id, "plain_value", %parameter%]
 
 services:
-    test:
-        class: Bundle\PlacesBundle\Service\Test
         
     monolog.formatter.session_request:
         class: Monolog\Formatter\LineFormatter
         arguments:
-            - "[%%datetime%%] %%channel%%.%%level_name%%: %%message%%\n"    
-    placeop:
-        class: Bundle\PlacesBundle\Service\PlaceOperations
-        arguments: [@placeopDAO, @service_container, @logger]
+            - "[%%datetime%%] %%channel%%.%%level_name%%: %%message%%\n" 
+            
+    placeOperation:
+        class: Bundle\PlacesBundle\Service\Places
+        arguments: [@placesDAO, @userop, @service_container, @logger]
         tags:
-            - { name: monolog.logger, channel: comm }
-    placeopDAO:
-        class: "%placeoperationDAO.class%"   
-        arguments: [@doctrine.orm.entity_manager]
+            - { name: monolog.logger, channel: comm } 
+            
+    placesDAO:
+        class: Bundle\PlacesBundle\Service\PlacesDAO  
+        arguments: [@doctrine.orm.entity_manager] 
         
-    search:
-        class: Bundle\PlacesBundle\Service\SearchWebService
-        arguments: [@searchDAO, @service_container, @formsop]
-        tags:
-            - { name: monolog.logger, channel: comm }
-    searchDAO:
-        class: Bundle\PlacesBundle\Service\SearchWebServiceDAO  
-        arguments: [@doctrine.orm.entity_manager]    
-        
-    formsop:
-        class: Bundle\PlacesBundle\Service\FormsOperations  
-        arguments: [@formsdao, @service_container, @insertalldetails, @placeop, @placeopDAO, @insertplace]
-  
-    formsdao:
-        class: Bundle\PlacesBundle\Service\FormsOperationsDAO  
-        arguments: [@doctrine.orm.entity_manager]
-        
+    userop:
+        class: Bundle\PlacesBundle\Service\UserOperation  
+        arguments: [@service_container]      
+               
     insertalldetails:
         class: Bundle\PlacesBundle\Command\InsertAllDetailsCommand 
-        arguments: [ @placeop, @insertphotos, @insertrev, @insertadet ]   
+        arguments: [ @placeOperation, @insertphotos, @insertrev, @insertadet ]   
         
     insertadet:
         class: Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand 
-        arguments: [ @placeop ] 
+        arguments: [ @placeOperation ] 
         
     insertrev:
         class: Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand 
-        arguments: [ @placeop ] 
+        arguments: [ @placeOperation ] 
         
     insertphotos:
         class: Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand 
-        arguments: [ @placeop ] 
+        arguments: [ @placeOperation ] 
         
     insertplace:
         class: Bundle\PlacesBundle\Command\InsertPlacesCommand 
-        arguments: [ @placeop ]  
+        arguments: [ @placeOperation ]  
         
     insertallinone:
         class: Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand
-        arguments: [ @placeop, @insertalldetails ] 
+        arguments: [ @placeOperation, @insertalldetails ] 
         
     insertcat:
         class: Bundle\PlacesBundle\Command\InsertCategoriesCommand
-        arguments: [ @placeop ]  
+        arguments: [ @placeOperation ]  
         
     placeDto:
-        class: Bundle\PlacesBundle\Service\PlaceDTO    
+        class: Bundle\PlacesBundle\Entity\PlaceDTO    
         
         
