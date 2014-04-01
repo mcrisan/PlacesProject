@@ -317,6 +317,7 @@ ul, nav, aside{
     margin-left: 50px;
 	border: solid 2px rgb(238,238,238);
 	padding-left: 5px;    
+	z-index: 9999;
 }
 
 #autocomplete-result .restaurant-icon{

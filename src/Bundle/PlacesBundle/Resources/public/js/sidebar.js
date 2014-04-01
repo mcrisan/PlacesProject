@@ -1,18 +1,10 @@
 $(document).ready(function() {
-    var array = "";
     var i = 0;
     var searchvalue = $("#searchvalue").val();
     var nrplaces;
-    // store current places in list
-    $('.app-aside-div').children('a').each(function() {
-        var arrHref = ($(this).attr('id'));
-        array += arrHref + ',';
-    });
-    $('.app-results-wrapper').scroll(function() {
+    $('.right-container').scroll(function() {
         if ($(this)[0].scrollHeight - $(this).scrollTop() == $(this).outerHeight()) {
             i++;
-            console.log(i);
-            console.log(searchvalue);
             $.ajax({
                 url: "morePlacesRequest",
                 type: "POST",
@@ -20,25 +12,8 @@ $(document).ready(function() {
                 success: function(data) {
                     if (data) {
                         $('#gif-loader').hide();
-                        $('.app-aside-div').append(data);
-                        nrplaces = $("#nrplaces").val();
-                        console.log(nrplaces);
-                        $(".it"+i).on('click', function() {
-                            param = $(this).attr('href');
-                            $(this).addClass('active').siblings().removeClass('active');
-                            $.ajax({
-                                url: param,
-                                type: "GET",
-                                success: function(data) {
-                                    if (data) {
-                                        console.log('1');
-                                        $('#place-container').html(data);
-                                    }
-                                }
-                            });
-                            return false;
-                            event.preventDefault();
-                        });
+                        $('.restaurant-list').append(data);
+                        nrplaces = $("#nrplaces").val();                        
                     }
                 },
                 beforeSend: function() {
@@ -50,4 +25,33 @@ $(document).ready(function() {
             });
         }
     });
+    $(".restaurant-list").on('click','.it',function(){
+        param = $(this).attr('href');
+        event.preventDefault();
+        $(this).addClass('active').siblings().removeClass('active');
+        $.ajax({
+            url: param,
+            type: "GET",
+            success: function(data) {
+                if (data) {
+                    $('.left-container').html(data);
+                    refreshMap();
+                }
+            }
+        });
+        return false;
+        event.preventDefault();
+    });
+    var refreshMap = function(){
+        var toAddrLatLng = $("#lat").val() + " " + $("#lng").val();
+        var fromAddr = $("#fromAddress").val();
+        //alert(fromAddr);
+        var toAddr = $("#toAddress").val();
+        //alert(toAddrLatLng);
+        if ("" !== toAddr) {
+            initialize(fromAddr, toAddrLatLng, $("#lat").val(), $("#lng").val());
+        } else {
+            initialize(fromAddr, toAddrLatLng, $("#lat").val(), $("#lng").val());
+        }
+    }
 });
