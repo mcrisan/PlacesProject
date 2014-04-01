@@ -16,6 +16,12 @@ Bundle\PlacesBundle\Entity\AppUsers:
             fixed: false
             nullable: false
             column: username
+        role:
+            type: string
+            length: 45
+            fixed: false
+            nullable: false
+            column: role
         password:
             type: string
             length: 45

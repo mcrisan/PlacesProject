@@ -11,7 +11,7 @@ security:
 
     providers:
         administrators:
-            entity: { class: BundlePlacesBundle:AppUsers, property: login }
+            entity: { class: BundlePlacesBundle:AppUsers, property: username }
     firewalls:
             login:
                 pattern:  ^/admin/login$
@@ -26,7 +26,7 @@ security:
                     login_path: login
                     check_path: login_check
                     always_use_default_target_path: true
-                    default_target_path: admin_start
+                    default_target_path: redirect
                 anonymous: true
                 logout:
                     path:   logout
@@ -39,7 +39,8 @@ security:
 
 
     access_control:
-        - { path: ^/admin, roles: ROLE_USER }
+        - { path: ^/owner, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_ADMIN }
 
 
 ## Symfony2 default demo security schema

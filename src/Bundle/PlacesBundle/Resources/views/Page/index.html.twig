@@ -14,6 +14,7 @@
 {% set placeAddress = "" %}
 
 {% block body %}
+
 <!-- Place container -->
 <div id="place-container">
     <article class="row" style="border:0px solid black;">
@@ -26,6 +27,7 @@
                     <li><a href="#pane3" data-toggle="tab">Ratings</a></li>
                     <li><a href="#pane4" data-toggle="tab">Reviews</a></li>
                     <li><a href="#pane5" data-toggle="tab">Promotions</a></li>
+                    <li><a href="#pane6" data-toggle="tab">Events</a></li>
                 </ul>
                 <div class="tab-content" style="padding:0px;border: 0px">
                 {% for place in placeDetail %}
@@ -173,6 +175,14 @@
                     <div id="pane5" class="tab-pane">
                         <h1>Promotions</h1>
                         <p>promotions</p>
+                    </div><!-- /.panel4 -->
+                    
+                    <div id="pane6" class="tab-pane">
+                        {% if isowner == 1 %}
+                            <a href="#" id="titleevent" data-type="text" data-placement="right" data-title="Enter username">Events</a><br />
+                            <a href="#" id="contextevent" data-type="text" data-placement="right" data-title="Enter username">promotions</a>
+                        {% endif %}
+                            ASDASDASD
                     </div><!-- /.panel4 -->
             {% endfor %}
                 </div><!-- /.tab-content -->
@@ -346,7 +356,21 @@
             }
         });
 
+
+          //toggle `popup` / `inline` mode
+    $.fn.editable.defaults.mode = 'inline';     
+    
+    //make username editable
+    $('#titleevent').editable();
+    
+    //make status editable
+    $('#contextevent').editable();
+
+
+
     });
+    
+
 </script>
     {#<script src="{{ asset('bundles/bundleplaces/js/loadMap.js') }}"></script>#}
 <script src="{{ asset('bundles/bundleplaces/js/renderPlace.js') }}"></script>

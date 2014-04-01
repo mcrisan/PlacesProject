@@ -144,6 +144,8 @@ class PageController extends Controller {
 
     // Demo page - main (New homepage)
     public function indexAction() {
+        $userid = $this->getAuthUser();
+
         $session = $this->get('session');
         $this->em = $this->getDoctrine()->getManager();
         $request = Request::createFromGlobals();
@@ -160,19 +162,33 @@ class PageController extends Controller {
         }
         if (!empty($searchInputVal)) {
             $searchInput = $searchInputVal;
-        }
-        $name = urlencode($searchInput);
-        $url = "http://localhost/PlacesProject/web/app_dev.php/searchplace/$name/$food/$drink";
-        $json = file_get_contents($url);
-        $data = json_decode($json, TRUE);
+        } 
+        $name = $searchInput;
+//        $url = "http://localhost/PlacesProject/web/app_dev.php/searchplace/$name/$food/$drink";
+//        $json = file_get_contents($url);
+//        $data = json_decode($json, TRUE);
+        
+        $placeservice= $this->get("search");
+        $place_det = $placeservice->searchByName($name, $food, $drink);
+        $data = json_decode($place_det, TRUE);
+        
+//        owner found
+        
         //if ($session->has('places')) {
         //    $places = $session->get('places');
         //}else{
             //echo "nu e sesiune";
         //}
+        
         $places = $data['details']['places'];
         $totalResults = count($places);
         $placeInfo = $data['details']['placeInfos'];
+            if ($data['details']['placeInfos']['place']['hasowner'] == $userid) {
+                $isowner = '1';
+            } else {
+                $isowner = '0';
+            }
+           
         $userDet = $data['details']['userInfos'];
         //die;
         if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
@@ -202,9 +218,13 @@ class PageController extends Controller {
                         'userId' => $userDet['userId'],
                         'userName' => $userDet['userName'],
                         'socialLogged' => $userDet['socialLogged'],
-                        'providerName' => $userDet['providerName']
+                        'providerName' => $userDet['providerName'],
+                        'isowner' =>   $isowner
             ));
-        }
+        } 
+        
+        
+        
         return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
                     'input' => $searchInput,
                     'places' => $places,
@@ -216,7 +236,8 @@ class PageController extends Controller {
                     'reviews' => $placeInfo['placeReviews'],
                     'userId' => $userDet['userId'],
                     'userName' => $userDet['userName'],
-                    'socialLogged' => $userDet['socialLogged']
+                    'socialLogged' => $userDet['socialLogged'],
+                    'isowner' =>   $isowner
         ));
     }
 
@@ -384,6 +405,23 @@ class PageController extends Controller {
         $placeop = $this->get("search");
         $placeop->getPlaceInfosBySlug("restaurant-havana");
         return $this->render("BundlePlacesBundle:About:about.html.twig");
+    }
+    
+    public function getAuthUser() {
+        if(!is_null($this->get('security.context')->getToken()) && $this->get('security.context')->getToken()->getUser() != 'anon.'){
+            return $this->get('security.context')->getToken()->getUser()->getId();
+        }else{
+            return 0;
+        }
+//        $userid_s = $this->get('security.context')->getToken()->getUser();
+//        echo "<pre>";
+//        print_r($userid_s->getUser());
+//        die;
+//            if($userid_s->getUser()!='anon.'){
+//            $userid = $this->get('security.context')->getToken()->getUser()->getId();
+//            }else{
+//             $userid = 0;   
+//            }
     }
 
 }

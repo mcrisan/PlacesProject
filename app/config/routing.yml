@@ -10,9 +10,19 @@ login:
 logout:
     path:   /admin/logout
     defaults: { _controller: BundlePlacesBundle:Auth:logout }
-admin_start:
-    path:  /admin/start
+
+redirect:
+    path:  /check_rights
     defaults: { _controller: BundlePlacesBundle:Auth:start }
+    
+admin_start:
+    path:  /admin/dashboard
+    defaults: { _controller: BundlePlacesBundle:Auth:admin }
+
+   
+owner_start:
+    path:  /owner/dashboard
+    defaults: { _controller: BundlePlacesBundle:Auth:owner }
    
 login_check:
     path:  /admin/login_check

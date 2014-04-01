@@ -227,7 +227,9 @@ class SearchWebService {
         $placeInfo['placeSlug'] = $getPlaceSlug[0]['slug'];
         $placeInfo['placeReviews'] = $this->searchDAO->getDefaultPlaceReviews($placeId);
         $placeDet = $this->searchDAO->getPlacesDetails($placeId);
+        
         $placeInfo['place']['placeid'] = $placeDet[0]->getPlaceId();
+        $placeInfo['place']['hasowner'] = $placeDet[0]->getPlace()->getHasOwner();
         $placeInfo['place']['placename'] = $placeDet[0]->getPlaceName();
         $placeInfo['place']['placephonenumber'] = $placeDet[0]->getPlacePhonenumber();
         $placeInfo['place']['placevicinity'] = $placeDet[0]->getPlaceVicinity();

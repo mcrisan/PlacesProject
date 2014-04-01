@@ -28,20 +28,57 @@ class AuthController extends Controller {
             $error = $request->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
         }
 
-        return $this->render('BundlePlacesBundle:Login:index.html.twig');
+        return $this->render('BundlePlacesBundle:Login:index.html.twig',array('error'=>$error));
     }
 
     public function startAction() {
         $user = $this->getUser();
+//        $userId = $user->getId();
+        $role = $user->getRole();
+//        $userName = $user->getUsername();
+//       
+//            return $this->render('BundlePlacesBundle:Login:success.html.twig', array(
+//                        'userId' => $userId,
+//                        'userName' => $userName,
+//                        'role' => $role
+//            ));
+       
+        if($role=="ROLE_ADMIN"){
+//            echo $this->generateUrl('admin_start');
+//            die;
+            return new RedirectResponse($this->generateUrl('admin_start'));
+        }else{
+            return new RedirectResponse($this->generateUrl('owner_start'));
+        }
+        
+    }
+    public function adminAction() {
+        $user = $this->getUser();
         $userId = $user->getId();
+        $role = $user->getRole();
         $userName = $user->getUsername();
-
-        return $this->render('BundlePlacesBundle:Login:success.html.twig', array(
-                    'userId' => $userId,
-                    'userName' => $userName
-        ));
+       
+            return $this->render('BundlePlacesBundle:Login:admin.html.twig', array(
+                        'userId' => $userId,
+                        'userName' => $userName,
+                        'role' => $role
+            ));
+        
     }
 
+    public function ownerAction() {
+        $user = $this->getUser();
+        $userId = $user->getId();
+        $role = $user->getRole();
+        $userName = $user->getUsername();
+        
+        return $this->render('BundlePlacesBundle:Login:owner.html.twig', array(
+                        'userId' => $userId,
+                        'userName' => $userName,
+                        'role' => $role
+            ));
+    }    
+    
     public function loginCheckAction(Request $request) {
         return new Response('true');
     }

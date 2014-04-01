@@ -19,6 +19,11 @@ class AppUsers  implements UserInterface, \Serializable
      * @var string
      */
     private $username;
+    
+    /**
+     * @var string
+     */
+    private $role;
 
     /**
      * @var string
@@ -50,7 +55,30 @@ class AppUsers  implements UserInterface, \Serializable
     {
         return $this->id;
     }
+    
+    /**
+     * Get id
+     *
+     * @return string 
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
 
+    /**
+     * Set role
+     *
+     * @param string $role
+     * @return string
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+    
+        return $this;
+    }
+    
     /**
      * Set txtLogin
      *
@@ -181,7 +209,7 @@ class AppUsers  implements UserInterface, \Serializable
      */
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return array($this->role);
     }
 
     /**
