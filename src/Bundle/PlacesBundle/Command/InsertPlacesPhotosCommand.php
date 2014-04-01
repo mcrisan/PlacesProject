@@ -6,13 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Bundle\PlacesBundle\Entity\PlacePhotos;
-use Bundle\PlacesBundle\Service\Places;
+use Bundle\PlacesBundle\Service\PlacesOp;
 
 class InsertPlacesPhotosCommand extends ContainerAwareCommand {
 
     private $placeop;
 
-    public function __construct(Places $placeop) {
+    public function __construct(PlacesOp $placeop) {
         $this->placeop = $placeop;
     }
     

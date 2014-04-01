@@ -20,7 +20,7 @@ use Bundle\PlacesBundle\Service\UserOperation;
  *
  * @author mcrisan
  */
-class Places {
+class PlacesOp {
 
     protected $opDAO;
     private $container;

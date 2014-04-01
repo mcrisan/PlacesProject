@@ -22,7 +22,7 @@ services:
             - "[%%datetime%%] %%channel%%.%%level_name%%: %%message%%\n" 
             
     placeOperation:
-        class: Bundle\PlacesBundle\Service\Places
+        class: Bundle\PlacesBundle\Service\PlacesOp
         arguments: [@placesDAO, @userop, @service_container, @logger]
         tags:
             - { name: monolog.logger, channel: comm } 

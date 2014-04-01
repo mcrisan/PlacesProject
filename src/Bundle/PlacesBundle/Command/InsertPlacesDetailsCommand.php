@@ -7,13 +7,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Bundle\PlacesBundle\Entity\PlaceDetails;
 use Bundle\PlacesBundle\Entity\Tags;
-use Bundle\PlacesBundle\Service\Places;
+use Bundle\PlacesBundle\Service\PlacesOp;
 
 class InsertPlacesDetailsCommand extends ContainerAwareCommand {
 
     private $placeop;
 
-    public function __construct(Places $placeop) {
+    public function __construct(PlacesOp $placeop) {
         $this->placeop = $placeop;
     }
 
