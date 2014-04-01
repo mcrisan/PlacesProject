@@ -7,32 +7,33 @@ $(function() {
         url: "placesnames",
         cache: false,
         dataType: 'json',
-        success: function(data){
+        success: function(data) {
             data2 = data;
-            $(".search").keyup(function(){
+            $(".search").keyup(function() {
                 //$( ".search" ).addClass( "ui-autocomplete-loading" );
                 $("#autocomplete-result").empty();
                 var searchid = $(this).val();
-                if (searchid != ''){
-                    getPlaces(searchid);
+                if (searchid != '') {
                     getAddress(searchid);
+                    getPlaces(searchid);
+
                 }
                 return false;
             });
         }
     });
 
-    function getPlaces(name){
+    function getPlaces(name) {
         var checkedFood = $("#food-checkbox").is(":checked");
         var checkedDrink = $("#drink-checkbox").is(":checked");
         var checkedAll = checkedFood ^ checkedDrink;
         for (var i = 0; i < data2.length; i++) {
             if (data2[i].placeName.toLowerCase().indexOf(name) != -1) {
                 var category = data2[i].category.toLowerCase();
-                if(checkedFood && category != "food" && checkedAll){
+                if (checkedFood && category != "food" && checkedAll) {
                     continue;
                 }
-                if(checkedDrink && category != "drink" && checkedAll){
+                if (checkedDrink && category != "drink" && checkedAll) {
                     continue;
                 }
                 var div = $('<div/>', {
@@ -43,7 +44,7 @@ $(function() {
                     class: "name",
                     text: data2[i].placeName
                 });
-                var category = data2[i].category?data2[i].category:"food";
+                var category = data2[i].category ? data2[i].category : "food";
                 var icon = $('<div/>', {
                     class: category.toLowerCase() + " category",
                 });
@@ -54,30 +55,72 @@ $(function() {
         }
     }
 
+//    function getAddress(name) {
+//        var addr = $('<div/>', {
+//            id: "addr-auto"
+//        });
+//        $("#autocomplete-result").append(addr);
+//        address = name + " ,Cluj Napoca, Romania";
+//        geocoder.geocode({'address': address}, function(results, status) {
+//            if (status == google.maps.GeocoderStatus.OK) {
+//                res = results[0].formatted_address;
+//                //for (var i = 0; i < results.length; i++) {
+//                latitude = results[0].geometry.location.lat();
+//                longitude = results[0].geometry.location.lng();
+//                $("#search-lat").val(latitude);
+//                $("#search-lng").val(longitude);
+//                var addr = results[0].formatted_address;
+////                    if (i > 0) {
+////                        res2 = results[i].formatted_address;
+////                    } else {
+////                        res2 = "";
+////                    }
+////                    if (res != res2) {
+//                var span = $('<span/>', {
+//                    class: "name",
+//                    text: addr
+//                });
+//                var div = $('<div/>', {
+//                    class: "show",
+//                    align: "left",
+//                });
+//                var icon = $('<div/>', {
+//                    class: "address-marker",
+//                });
+//                $(div).append(icon);
+//                $(div).append(span);
+//                $("#addr-auto").append(div);
+//                // }
+//                //  }
+//            }
+//        });
+//
+//    }
+
     function getAddress(name) {
+
         var addr = $('<div/>', {
             id: "addr-auto"
+                    //text: ""
         });
         $("#autocomplete-result").append(addr);
-        address = name + " Cluj Napoca, Romania";
-        geocoder.geocode({'address': address}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                res = results[0].formatted_address;
-                //for (var i = 0; i < results.length; i++) {
-                    latitude = results[0].geometry.location.lat();
-                    longitude = results[0].geometry.location.lng();
-                    $("#search-lat").val(latitude);
-                    $("#search-lng").val(longitude);
-                    var addr = results[0].formatted_address;
-//                    if (i > 0) {
-//                        res2 = results[i].formatted_address;
-//                    } else {
-//                        res2 = "";
-//                    }
-//                    if (res != res2) {
+
+        var request = {
+            input: name ,
+            //bounds: defaultBounds,
+            types: ['geocode'],
+            componentRestrictions: {country: 'ro'}
+
+        };
+        var nr = 0;
+        autocomplete.getPlacePredictions(request, function(predictions, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                for (var i = 0; i < predictions.length; i++) {
+                    var loc = predictions[i].description;
+                    if (loc.indexOf("Cluj-Napoca") != -1) {
                         var span = $('<span/>', {
                             class: "name",
-                            text: addr
+                            text: loc
                         });
                         var div = $('<div/>', {
                             class: "show",
@@ -88,12 +131,13 @@ $(function() {
                         });
                         $(div).append(icon);
                         $(div).append(span);
+                        nr++;
                         $("#addr-auto").append(div);
-                   // }
-              //  }
+                      break;  
+                    }
+                }
             }
         });
-
     }
 
     jQuery("#autocomplete-result").on("click", function(e) {
