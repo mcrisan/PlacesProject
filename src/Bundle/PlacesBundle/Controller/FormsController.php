@@ -18,62 +18,6 @@ class FormsController extends Controller {
         
     }
 
-    // Render place page
-//    public function renderPlaceAction($param) {
-//        $this->em = $this->getDoctrine()->getManager();
-//        //ex hotel-agape
-//        $placeSlug = $this->gen_slug($param); 
-//
-//        // array containing placeName, id, phone, website, lat, long etc
-//        $placeDetails = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-//                ->getPlaceDetailsBySlug($placeName);
-//        $placeId = $placeDetails[0]['placeId'];
-//        $place = $this->em->getRepository('BundlePlacesBundle:Places')->find($placeId);
-//
-//        if (!$placeDetails) {
-//            return $this->render('BundlePlacesBundle:Error:error.html.twig');
-//            //throw $this->createNotFoundException('Error msg.');
-//        }        
-//
-//        //get all photos
-//        $placeAllPhotos = $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
-//                ->getPlacePhotos($placeId);
-//        // reviews        
-//        $placeReviews = $this->em->getRepository('BundlePlacesBundle:PlaceReviews')
-//                ->getReviews($getDefaultPlaceReviews->getId());
-//        
-//        $user = new GetUserIp();
-//        $currentIp = $user->get_user_ip();
-//
-//        //place ratings value & status
-//        $userStatus = $this->em->getRepository('BundlePlacesBundle:VoteStatus')
-//                ->getUserStatus($placeId, $currentIp);
-//        $totalVotesForPlace = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-//                ->getCurrentCounts($placeId);
-//        $totalVotesAllTime = $this->em->getRepository('BundlePlacesBundle:VoteStatus')
-//                ->getTotalVotes();
-//        $total = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-//                ->getCurrentVotes($placeId);
-//        $totalCounts = $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-//                ->getCurrentCounts($placeId);
-//
-//        if ($userStatus) {
-//            return $this->render('BundlePlacesBundle:Places:renderPlace.html.twig', array(
-//                        'placeDetails' => $placeDetails,
-//                        'placePhotos' => $placePhotos,
-//                        'placeAllPhotos' => $placeAllPhotos,
-//                        'ip' => $currentIp,
-//                        'placeSlug' => $placeName,
-//                        'placeid' => $placeId,
-//                        'reviews' => $placeReviews,
-//                        'totalVotesAllTime' => $totalVotesAllTime,
-//                        'totalVotes' => $totalVotesForPlace[0]['votesCount'],
-//                        'usersRating' => round(
-//                                $total[0]['totalVotes'] / $totalCounts[0]['votesCount'], 2),
-//                        'bool' => true
-//            ));
-//        }
-//    }
     // Get more places
     public function morePlacesRequestAction() {
         $request = Request::createFromGlobals();
@@ -237,14 +181,8 @@ class FormsController extends Controller {
 
     // Demo search
     public function demoSearchAction() {
-        //$request = $this->getRequest();
-        //var_dump($request);
-        //echo "sunt";
+
         $request = Request::createFromGlobals();
-        //var_dump($request);
-        //echo "si";
-        //echo $drink_check ." si ".$food_check ;
-        //die;
         $this->em = $this->getDoctrine()->getManager();
         if ($request->getMethod() == "POST") {
             $searchInput = $request->get('input');
