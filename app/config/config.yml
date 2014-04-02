@@ -62,7 +62,14 @@ doctrine:
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
-        auto_mapping: true
+        auto_mapping: false
+        mappings:
+            BundlePlacesBundle:
+                type: yml
+                #dir: %kernel.root_dir%/../src/Bundle/PlacesBundle/Resources/doctrine
+                dir: Resources/config/doctrine
+                prefix: Bundle\PlacesBundle\Entities
+                alias: BundlePlacesBundle
         dql:
             string_functions:
                 GROUP_CONCAT: DoctrineExtensions\Query\Mysql\GroupConcat

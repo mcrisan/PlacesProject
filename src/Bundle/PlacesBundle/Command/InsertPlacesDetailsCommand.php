@@ -5,15 +5,15 @@ namespace Bundle\PlacesBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Bundle\PlacesBundle\Entity\PlaceDetails;
-use Bundle\PlacesBundle\Entity\Tags;
-use Bundle\PlacesBundle\Service\PlacesOp;
+use Bundle\PlacesBundle\Entities\PlaceDetails;
+use Bundle\PlacesBundle\Entities\Tags;
+use Bundle\PlacesBundle\Services\Places;
 
 class InsertPlacesDetailsCommand extends ContainerAwareCommand {
 
     private $placeop;
 
-    public function __construct(PlacesOp $placeop) {
+    public function __construct(Places $placeop) {
         $this->placeop = $placeop;
     }
 

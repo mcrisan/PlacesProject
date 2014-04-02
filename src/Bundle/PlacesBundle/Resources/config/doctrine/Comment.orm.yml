@@ -1,7 +1,7 @@
-Bundle\PlacesBundle\Entity\Comment:
+Bundle\PlacesBundle\Entities\Comment:
     type: entity
     table: comment
-    repositoryClass: Bundle\PlacesBundle\Entity\Repository\CommentRepository
+    repositoryClass: Bundle\PlacesBundle\Entities\Repository\CommentRepository
     fields:
         id:
             id: true

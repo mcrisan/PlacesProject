@@ -7,14 +7,14 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Bundle\PlacesBundle\Entity\Places;
-use Bundle\PlacesBundle\Service\PlacesOp;
+use Bundle\PlacesBundle\Entities\Places;
+use Bundle\PlacesBundle\Services\Places as PlaceOp;
 
 class InsertPlacesCommand extends ContainerAwareCommand {
 
     private $placeop;
 
-    public function __construct(PlacesOp $placeop) {
+    public function __construct(PlaceOp $placeop) {
         $this->placeop = $placeop;
     }
 

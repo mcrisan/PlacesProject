@@ -1,7 +1,7 @@
-Bundle\PlacesBundle\Entity\VoteStatus:
+Bundle\PlacesBundle\Entities\VoteStatus:
     type: entity
     table: vote_status
-    repositoryClass: Bundle\PlacesBundle\Entity\Repository\VoteStatusRepository
+    repositoryClass: Bundle\PlacesBundle\Entities\Repository\VoteStatusRepository
     fields:
         id:
             id: true

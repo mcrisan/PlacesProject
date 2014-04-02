@@ -1,7 +1,7 @@
-Bundle\PlacesBundle\Entity\PlaceTags:
+Bundle\PlacesBundle\Entities\PlaceTags:
     type: entity
     table: place_tags
-    repositoryClass: Bundle\PlacesBundle\Entity\Repository\PlaceTagsRepository
+    repositoryClass: Bundle\PlacesBundle\Entities\Repository\PlaceTagsRepository
     fields:
         id:
             id: true

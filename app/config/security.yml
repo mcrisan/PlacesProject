@@ -1,6 +1,6 @@
 security:
     encoders:
-        Bundle\PlacesBundle\Entity\AppUsers:
+        Bundle\PlacesBundle\Entities\AppUsers:
             algorithm:        md5
             encode_as_base64: false
             iterations:       1

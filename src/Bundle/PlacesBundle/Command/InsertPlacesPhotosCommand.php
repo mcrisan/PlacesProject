@@ -5,14 +5,14 @@ namespace Bundle\PlacesBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Bundle\PlacesBundle\Entity\PlacePhotos;
-use Bundle\PlacesBundle\Service\PlacesOp;
+use Bundle\PlacesBundle\Entities\PlacePhotos;
+use Bundle\PlacesBundle\Services\Places;
 
 class InsertPlacesPhotosCommand extends ContainerAwareCommand {
 
     private $placeop;
 
-    public function __construct(PlacesOp $placeop) {
+    public function __construct(Places $placeop) {
         $this->placeop = $placeop;
     }
     

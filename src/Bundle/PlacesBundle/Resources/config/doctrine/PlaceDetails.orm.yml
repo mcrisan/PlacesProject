@@ -1,7 +1,7 @@
-Bundle\PlacesBundle\Entity\PlaceDetails:
+Bundle\PlacesBundle\Entities\PlaceDetails:
     type: entity
     table: place_details
-    repositoryClass: Bundle\PlacesBundle\Entity\Repository\PlaceDetailsRepository
+    repositoryClass: Bundle\PlacesBundle\Entities\Repository\PlaceDetailsRepository
     fields:
         placeId:
             id: true
@@ -65,7 +65,7 @@ Bundle\PlacesBundle\Entity\PlaceDetails:
             column: place_website
     oneToOne:
         place:
-            targetEntity: Bundle\PlacesBundle\Entity\Places
+            targetEntity: Bundle\PlacesBundle\Entities\Places
             cascade: {  }
             mappedBy: null
             inversedBy: placeDetails

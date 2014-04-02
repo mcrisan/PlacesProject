@@ -1,7 +1,7 @@
-Bundle\PlacesBundle\Entity\Categories:
+Bundle\PlacesBundle\Entities\Categories:
     type: entity
     table: categories
-    repositoryClass: Bundle\PlacesBundle\Entity\Repository\CategoriesRepository
+    repositoryClass: Bundle\PlacesBundle\Entities\Repository\CategoriesRepository
     fields:
         id:
             id: true

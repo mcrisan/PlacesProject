@@ -1,7 +1,7 @@
-Bundle\PlacesBundle\Entity\UsersIp:
+Bundle\PlacesBundle\Entities\UsersIp:
     type: entity
     table: users_ip
-    repositoryClass: Bundle\PlacesBundle\Entity\Repository\UsersIpRepository
+    repositoryClass: Bundle\PlacesBundle\Entities\Repository\UsersIpRepository
     fields:
         id:
             id: true
