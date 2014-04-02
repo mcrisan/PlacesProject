@@ -14,6 +14,7 @@ use Bundle\PlacesBundle\Entities\PlaceTags;
 use Bundle\PlacesBundle\Entities\PlaceCategories;
 use Bundle\PlacesBundle\Services\PlacesDAO;
 use Bundle\PlacesBundle\Services\UserOperation;
+use Bundle\PlacesBundle\Models\Criteria;
 
 /**
  * Description of Places
@@ -26,12 +27,14 @@ class Places {
     private $container;
     private $logger;
     private $userop;
+    private $criteria;
 
-    public function __construct(PlacesDAO $placesdao, UserOperation $userop, ContainerInterface $container, Logger $logger) {
+    public function __construct(Criteria $criteria, PlacesDAO $placesdao, UserOperation $userop, ContainerInterface $container, Logger $logger) {
         $this->opDAO = $placesdao;
         $this->container = $container;
         $this->logger = $logger;
         $this->userop = $userop;
+        $this->criteria = $criteria;
     }
 
     public function logMessage($mes) {
@@ -288,7 +291,7 @@ class Places {
         $placeCat->setPlaceId($id);
         $this->opDAO->insertCategory($placeCat);
     }
-    
+
     public function getPlacesNames($input) {
 
         return $this->opDAO->getPlacesNames($input);
@@ -305,12 +308,17 @@ class Places {
         }
         return $places;
     }
-    
-    public function searchByName($name, $food, $drink) {
 
-        $places1 = $this->opDAO->getPlacesNamesAndIds($name);
+    public function searchByName($criteria) {
+
         $distance = $this->container->getParameter('distance');
         $limit = $this->container->getParameter('limit');
+        $criteria->setDistance($distance);
+        $criteria->setResultsLimit($limit);
+        $criteria->setPage(0);
+        $name = $criteria->getName();
+        $places1 = $this->opDAO->getPlacesNamesAndIds($name);
+
         if (empty($places1)) {
             $name_enc = urlencode($name);
             $geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address=' . $name_enc . '&sensor=false');
@@ -318,32 +326,38 @@ class Places {
             if (isset($output->results[0])) {
                 $latitude = $output->results[0]->geometry->location->lat;
                 $longitude = $output->results[0]->geometry->location->lng;
+                $criteria->setLat($latitude);
+                $criteria->setLng($longitude);
                 $coord = array("lat" => $latitude, "lng" => $longitude);
                 apc_store($name, $coord);
-                $places = $this->opDAO->getPlacesByDistance($name, $food, $drink, $latitude, $longitude, $distance, $limit);
+                $places = $this->opDAO->getPlacesByDistance($criteria);
             }
         } else {
             $placeId = $places1[0]['placeId'];
             $placeInfo = $this->getPlaceInfos($placeId);
             $latitude = $placeInfo['place']['placelat'];
             $longitude = $placeInfo['place']['placelng'];
+            $criteria->setLat($latitude);
+            $criteria->setLng($longitude);
             $coord = array("lat" => $latitude, "lng" => $longitude);
             apc_store($name, $coord);
             $cat = $places1[0]['category'];
-            if($food == "off" & $drink == "off"){
-            if(strpos($cat, 'Food') !== FALSE){
-                $food = "on";
+            $searchCat= $criteria->getCategory();
+            $food = $searchCat["food"];
+            $drink = $searchCat["drink"];
+            if ($food != "on" & $drink != "on") {
+                if (strpos($cat, 'Food') !== FALSE) {
+                    $food = "on";
+                }
+                if (strpos($cat, 'Drink') !== FALSE) {
+                    $drink = "on";
+                }
             }
-            if(strpos($cat, 'Drink') !== FALSE){
-                $drink = "on";
-            }
-            }
-            $places = $this->opDAO->getPlacesByDistance($name, $food, $drink, $latitude, $longitude, $distance, $limit);
-            
-            //if ((("on" == $food) & (strpos($cat, 'Food') !== FALSE)) || (("on" == $drink) & (strpos($cat, 'Drink') !== FALSE))) {
-                array_unshift($places, $places1[0]);
-                array_pop($places);
-            //}
+            $criteria->setCategory(array("food" => $food, "drink" => $drink));
+            $places = $this->opDAO->getPlacesByDistance($criteria);
+
+            array_unshift($places, $places1[0]);
+            array_pop($places);
         }
         if (!empty($places)) {
             $placeId = $places[0]['placeId']; // #1 place from search results..
@@ -370,7 +384,7 @@ class Places {
         }
         return $resp;
     }
-    
+
     public function getPlaceInfos($placeId) {
 
         $placeInfo = array();
@@ -398,14 +412,14 @@ class Places {
 
         return $placeInfo;
     }
-    
+
     public function getPlaceInfosBySlug($slug) {
 
         $placeId = $this->opDAO->getPlacesIdBySlug($slug);
         $id = $placeId[0]['id'];
-        $details = $this ->getPlaceInfos($placeId);
-        $userInfo = $this->userop->getUserDetails();     
-        return array("details" => $details, "userInfo" => $userInfo );
+        $details = $this->getPlaceInfos($placeId);
+        $userInfo = $this->userop->getUserDetails();
+        return array("details" => $details, "userInfo" => $userInfo);
     }
 
 }

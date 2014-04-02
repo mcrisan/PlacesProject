@@ -119,10 +119,12 @@ class PlaceDetailsRepository extends EntityRepository {
          */
     }
 
-    public function getPlacesByDistance($name, $food, $drink, $lat, $lng, $dist, $limit = null, $pag = null) {
+    public function getPlacesByDistance($criteria) {
 
         $em = $this->getEntityManager();
-
+        $category = $criteria->getCategory();
+        $food = $category["food"];
+        $drink = $category["drink"]; 
         if (("on" != $food & "on" != $drink) || ("on" == $food & "on" == $drink)) {
             $str = '(pd.placeName NOT LIKE :name) and (c.category = :food or c.category = :drink)';
         }
@@ -148,10 +150,10 @@ class PlaceDetailsRepository extends EntityRepository {
                 ->where($str)
                 ->having('distance <= :dist')
                 ->groupBy('pc.placeId')
-                ->setParameter('lat', $lat)
-                ->setParameter('lng', $lng)
-                ->setParameter('dist', $dist)
-                ->setParameter('name', $name);
+                ->setParameter('lat', $criteria->getLat())
+                ->setParameter('lng', $criteria->getLng())
+                ->setParameter('dist', $criteria->getDistance())
+                ->setParameter('name', $criteria->getName());
 
 
         $q = $qb->getQuery();
@@ -165,8 +167,8 @@ class PlaceDetailsRepository extends EntityRepository {
         if ("on" != $food & "on" == $drink) {
             $q->setParameter('drink', "Drink");
         }
-        $q->setFirstResult($limit * $pag);
-        $q->setMaxResults($limit);
+        $q->setFirstResult($criteria->getResultsLimit() * $criteria->getPage());
+        $q->setMaxResults($criteria->getResultsLimit());
         $places = $q->getResult();
         return $places;
     }

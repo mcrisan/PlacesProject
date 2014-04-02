@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class FormsController extends Controller {
 
     private $em;
@@ -19,10 +20,10 @@ class FormsController extends Controller {
     // Get more places
     public function morePlacesRequestAction() {
         $request = Request::createFromGlobals();
-        $pag = $request->request->get('pag');
+        $page = $request->request->get('pag');
         $name = $request->request->get('searchval');
         $limit = $this->container->getParameter('limit');
-        $dist = $this->container->getParameter('distance');
+        $distance = $this->container->getParameter('distance');
         $session = $this->get('session');
         if ($session->has("cat")) {
             $cat = $session->get("cat");
@@ -41,14 +42,22 @@ class FormsController extends Controller {
             $lat = 0;
             $lng = 0;
         }
+        $criteria = $this->get('criteria');
+        $criteria->setCategory(array("food" => $food, "drink" => $drink));
+        $criteria->setName($name);
+        $criteria->setPage($page);
+        $criteria->setResultsLimit($limit);
+        $criteria->setDistance($distance);
+        $criteria->setLat($lat);
+        $criteria->setLng($lng);
         $placesdao = $this->get('placesDAO');
-        $places = $placesdao->getPlacesByDistance($name, $food, $drink, $lat, $lng, $dist, $limit, $pag);
+        $places = $placesdao->getPlacesByDistance($criteria);
         $this->em = $this->getDoctrine()->getManager();
         $nrplaces = count($places);
         return $this->render('BundlePlacesBundle:Places:morePlaces.html.twig', array(
                     'places' => $places,
                     'nrplaces' => $nrplaces,
-                    'pag' => $pag
+                    'pag' => $page
         ));
     }
 

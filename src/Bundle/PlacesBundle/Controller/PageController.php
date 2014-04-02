@@ -114,35 +114,15 @@ class PageController extends Controller {
         $session = $this->get('session');
         $this->em = $this->getDoctrine()->getManager();
         $request = Request::createFromGlobals();
-        // set searchInput - show default results (" places containing 'ma' ")
-        $searchInput = "ma";
         $searchInputVal = $request->query->get('input');
         $food = $request->query->get('food');
-        if(!$food){
-            $food="off";
-        }
         $drink = $request->query->get('drink');
-        if(!$drink){
-            $drink="off";
-        }
-        if (!empty($searchInputVal)) {
-            $searchInput = $searchInputVal;
-        }
-//        $name = urlencode($searchInput);
-//        $url = "http://localhost/PlacesProject/web/app_dev.php/searchplace/$name/$food/$drink";
-//        $json = file_get_contents($url);
-//        $data = json_decode($json, TRUE);
-        //if ($session->has('places')) {
-        //    $places = $session->get('places');
-        //}else{
-            //echo "nu e sesiune";
-        //}
-        
-        //$placeop = $this->get("placeop");
+        $criteria = $this->get('criteria');
+        $criteria->setCategory(array("food" => $food, "drink" => $drink));
+        $criteria->setName($searchInputVal);
         $placeop = $this->get("placeOperation");
-        $json = $placeop->searchByName($searchInput, $food, $drink);
-        $data = json_decode($json, TRUE);
-        
+        $json = $placeop->searchByName($criteria);
+        $data = json_decode($json, TRUE);       
         $places = $data['details']['places'];
         $totalResults = count($places);
         $placeInfo = $data['details']['placeInfos'];
@@ -179,20 +159,10 @@ class PageController extends Controller {
 
         if ($placeInfo['userStatus']) { // if user voted for current store                
             return $this->render('BundlePlacesBundle:Page:details.html.twig', array(
-                        'input' => $searchInput,
+                        'input' => $searchInputVal,
                         'places' => $places,
                         'place'  => $placeDto,
-                        //'placeDetails' => $placeInfo['place'],
-                        //'placePhotos' => $placeInfo['placePhotos'],
-                        //'placeAllPhotos' => $placeInfo['placeAllPhotos'],
-                        //'totalVotesAllTime' => $placeInfo['totalVotesAllTime'],
-                        //'totalVotes' => $placeInfo['totalVotesForPlace'][0]['votesCount'],
-                        //'usersRating' => round(
-                        //        $placeInfo['total'][0]['totalVotes'] / $placeInfo['totalCounts'][0]['votesCount'], 2),
-                        //'bool' => true,
                         'totalResults' => $totalResults,
-                        //'placeSlug' => $placeInfo['placeSlug'],
-                        //'reviews' => $placeInfo['placeReviews'],
                         'userId' => $userInfo['userId'],
                         'userName' => $userInfo['userName'],
                         'socialLogged' => $userInfo['socialLogged'],
@@ -200,7 +170,7 @@ class PageController extends Controller {
             ));
         }
         return $this->render('BundlePlacesBundle:Page:details.html.twig', array(
-                    'input' => $searchInput,
+                    'input' => $searchInputVal,
                     //'place' => $places,
                     'places' => $places,
                     'place'  => $placeDto,
