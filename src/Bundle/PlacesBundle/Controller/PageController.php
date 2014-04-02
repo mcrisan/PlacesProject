@@ -134,10 +134,10 @@ class PageController extends Controller {
 //        $url = "http://localhost/PlacesProject/web/app_dev.php/searchplace/$name/$food/$drink";
 //        $json = file_get_contents($url);
 //        $data = json_decode($json, TRUE);
-        
-        $placeservice= $this->get("search");
-        $place_det = $placeservice->searchByName($name, $food, $drink);
-        $data = json_decode($place_det, TRUE);
+//        
+//        $placeservice= $this->get("search");
+//        $place_det = $placeservice->searchByName($name, $food, $drink);
+//        $data = json_decode($place_det, TRUE);
         
 //        owner found
         
@@ -151,19 +151,19 @@ class PageController extends Controller {
         $placeop = $this->get("placeOperation");
         $json = $placeop->searchByName($searchInput, $food, $drink);
         $data = json_decode($json, TRUE);
-        
+
         $places = $data['details']['places'];
         $totalResults = count($places);
         $placeInfo = $data['details']['placeInfos'];
         $userInfo = $data['details']['userInfos'];
-        
+
+// verify if the use is the owner of the place
             if ($data['details']['placeInfos']['place']['hasowner'] == $userid) {
                 $isowner = '1';
             } else {
                 $isowner = '0';
             }
-           
-        //die;
+
         if ($placeInfo['userStatus']) {
             $userVoted = true;
         } else {
@@ -403,6 +403,7 @@ class PageController extends Controller {
         //$placeop->getPlaceInfosBySlug("restaurant-havana");
         return $this->render("BundlePlacesBundle:About:about.html.twig");
         
+    }
     
     public function getAuthUser() {
         if(!is_null($this->get('security.context')->getToken()) && $this->get('security.context')->getToken()->getUser() != 'anon.'){

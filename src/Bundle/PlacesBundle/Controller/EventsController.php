@@ -17,16 +17,15 @@ use Bundle\PlacesBundle\Command\InsertAllDetailsCommand;
 
 class EventsController extends Controller {
 
-    private $em;
+    
 
-    function __construct() {
-        
-    }
-    
-    
     function editeventAction($id) {
-        //insert db 
-        //upload file
+        $request = Request::createFromGlobals();
+        $em = $this->getDoctrine()->getManager();
+        
+        echo "<pre>";
+        print_r($request->request->all());
+        die;
         return new \Symfony\Component\HttpFoundation\RedirectResponse($this->generateUrl('index', array(
                                     'input' => 'insomnia')));
     }

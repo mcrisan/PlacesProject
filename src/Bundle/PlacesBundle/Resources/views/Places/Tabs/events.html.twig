@@ -1,9 +1,17 @@
 {% if isowner == 0 %}
-<form action="editevent/{{ place.placeId }}">
-    <a href="#" id="titleevent" data-type="text" data-placement="right" data-title="Enter username">Events</a><br />
-    <a href="#" id="contextevent" data-type="textarea" data-placement="right" data-title="Enter username">promotions</a>
-    <button class="btn btn-primary" type="submit" id="save-btn">Save changes</button>
-</form>
+<div style="width: 40%">
+    <div class="alert hide" id="msg"></div>
+    <input type="hidden" value="{{ place.placeid }}" id="dataid" >
+<a data-original-title="Enter title" data-name="title" data-type="text" id="title" class="myeditable editable editable-click editable-empty" href="#">Empty</a><br />
+<a data-original-title="Enter body" data-name="body" data-type="textarea" class="myeditable editable editable-click editable-empty" href="#">Empty</a><br />
+<a data-original-title="Enter picture" data-name="picture" data-type="text" class="myeditable editable editable-pre-wrapped editable-click editable-empty" href="#">Empty</a><br /><br />
+    <div>
+    <button class="btn btn-primary" id="save-btn">Save changes</button>
+    
+    </div>
+</div>
+
 {% endif %}
+{# else #}
      <br />
    
