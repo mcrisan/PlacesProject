@@ -6,6 +6,7 @@ namespace Bundle\PlacesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand;
 
 class PageController extends Controller {
 
@@ -379,6 +380,7 @@ class PageController extends Controller {
         var_dump($placeop->getIp());
         //$placeop->getPlaceInfosBySlug("restaurant-havana");
         return $this->render("BundlePlacesBundle:About:about.html.twig");
+        
     }
 
 }
