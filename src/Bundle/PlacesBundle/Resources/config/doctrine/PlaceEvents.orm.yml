@@ -1,0 +1,32 @@
+Bundle\PlacesBundle\Entity\PlaceEvents:
+    type: entity
+    table: place_events
+    repositoryClass: Bundle\PlacesBundle\Entity\Repository\PlaceEventsRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        image:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: image
+        title:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: title
+        description:
+            type: string
+            length: 500
+            fixed: false
+            nullable: false
+            column: description
+            
+lifecycleCallbacks: {  }

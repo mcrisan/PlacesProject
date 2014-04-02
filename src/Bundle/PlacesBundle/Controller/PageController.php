@@ -183,6 +183,8 @@ class PageController extends Controller {
         $places = $data['details']['places'];
         $totalResults = count($places);
         $placeInfo = $data['details']['placeInfos'];
+        $userInfo = $data['details']['userInfos'];
+        
             if ($data['details']['placeInfos']['place']['hasowner'] == $userid) {
                 $isowner = '1';
             } else {
@@ -223,7 +225,8 @@ class PageController extends Controller {
             return $this->render('BundlePlacesBundle:Page:details.html.twig', array(
                         'input' => $searchInput,
                         'places' => $places,
-                        'place'  => $placeDto,
+                        'place'  => $placeDto, // object
+                        
                         //'placeDetails' => $placeInfo['place'],
                         //'placePhotos' => $placeInfo['placePhotos'],
                         //'placeAllPhotos' => $placeInfo['placeAllPhotos'],
@@ -238,7 +241,7 @@ class PageController extends Controller {
                         'userId' => $userInfo['userId'],
                         'userName' => $userInfo['userName'],
                         'socialLogged' => $userInfo['socialLogged'],
-                        'providerName' => $userDet['providerName'],
+                        'providerName' => $userInfo['providerName'],
                         'isowner' =>   $isowner
             ));
         } 
@@ -251,8 +254,8 @@ class PageController extends Controller {
                     'place'  => $placeDto,
                     'userId' => $userInfo['userId'],
                     'userName' => $userInfo['userName'],
-                    'socialLogged' => $userInfo['socialLogged']
-                    'socialLogged' => $userDet['socialLogged'],
+                    'socialLogged' => $userInfo['socialLogged'],
+                 //   'socialLogged' => $userDet['socialLogged'],
                     'isowner' =>   $isowner
         ));
     }

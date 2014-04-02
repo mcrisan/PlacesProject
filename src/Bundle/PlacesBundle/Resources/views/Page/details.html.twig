@@ -1,7 +1,7 @@
 {% extends 'BundlePlacesBundle::base1.html.twig' %}
 {% block content %} 
     <input id="searchvalue" type="hidden" value="{{ input }}" />
-    {% include 'BundlePlacesBundle:Page:renderPlaceDetails.html.twig' with {'place':place} %}  
+    {% include 'BundlePlacesBundle:Page:renderPlaceDetails.html.twig' with {'place':place, 'isowner' : isowner } %}  
 {% endblock %}  
 
 {# sidebar #}
@@ -53,10 +53,13 @@
     <script src="{{ asset('bundles/bundleplaces/js/app/controllers.js') }}"></script>
     <script src="{{ asset('bundles/bundleplaces/js/app/filters.js') }}"></script>
     <script src="{{ asset('bundles/bundleplaces/js/app/directives.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/x-editable.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/x-editable-custom.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
      <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/details.css') }}" />
+     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/x-editable.css') }}" />
 {% endblock %}
 
 

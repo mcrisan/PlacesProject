@@ -1,12 +1,33 @@
-## Login YAML Template.
+# Login YAML Template.
 login:
-    path:   /login
+    path:   /admin/login
     defaults: { _controller: BundlePlacesBundle:Auth:login }
 
 logout:
-    path:   /logout
-    defaults: { _controller: EcoUserBundle:Auth:logout }
+    path:   /admin/logout
+    defaults: { _controller: BundlePlacesBundle:Auth:logout }
 
+redirect:
+    path:  /check_rights
+    defaults: { _controller: BundlePlacesBundle:Auth:start }
+    
+admin_start:
+    path:  /admin/dashboard
+    defaults: { _controller: BundlePlacesBundle:Auth:admin }
+
+   
+owner_start:
+    path:  /owner/dashboard
+    defaults: { _controller: BundlePlacesBundle:Auth:owner }
+   
 login_check:
-    path:  /login_check
-    defaults: { _controller: EcoUserBundle:Auth:loginCheck }
+    path:  /admin/login_check
+    defaults: { _controller: BundlePlacesBundle:Auth:loginCheck }
+    
+ 
+editevent_edit:
+    path: /editevent/{id}
+    defaults: { _controller: BundlePlacesBundle:Events:editevent }
+   # methods:  [POST]
+    requirements:
+        id:  \d+

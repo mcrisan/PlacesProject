@@ -1,0 +1,9 @@
+{% if isowner == 0 %}
+<form action="editevent/{{ place.placeId }}">
+    <a href="#" id="titleevent" data-type="text" data-placement="right" data-title="Enter username">Events</a><br />
+    <a href="#" id="contextevent" data-type="textarea" data-placement="right" data-title="Enter username">promotions</a>
+    <button class="btn btn-primary" type="submit" id="save-btn">Save changes</button>
+</form>
+{% endif %}
+     <br />
+   

@@ -1,33 +1,6 @@
 # *
 # _bundle_project:
 #      resource: "@BundlePlacesBundle/Resources/config/routing/routing.yml"
-
-## Login YAML Template.
-login:
-    path:   /admin/login
-    defaults: { _controller: BundlePlacesBundle:Auth:login }
-
-logout:
-    path:   /admin/logout
-    defaults: { _controller: BundlePlacesBundle:Auth:logout }
-
-redirect:
-    path:  /check_rights
-    defaults: { _controller: BundlePlacesBundle:Auth:start }
-    
-admin_start:
-    path:  /admin/dashboard
-    defaults: { _controller: BundlePlacesBundle:Auth:admin }
-
-   
-owner_start:
-    path:  /owner/dashboard
-    defaults: { _controller: BundlePlacesBundle:Auth:owner }
-   
-login_check:
-    path:  /admin/login_check
-    defaults: { _controller: BundlePlacesBundle:Auth:loginCheck }
-    
 #social sign-in
 testToken:
   path: /testToken
@@ -57,3 +30,6 @@ _bundle_places:
   
 _bundle_places_services:
   resource: "@BundlePlacesBundle/Resources/config/routing/services.yml"  
+
+_bundle_places_admin:
+  resource: "@BundlePlacesBundle/Resources/config/routing/login.yml"
