@@ -6,14 +6,14 @@
  * and open the template in the editor.
  */
 
-namespace Bundle\PlacesBundle\Service;
+namespace Bundle\PlacesBundle\Services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bridge\Monolog\Logger;
 use Bundle\PlacesBundle\Entities\PlaceTags;
 use Bundle\PlacesBundle\Entities\PlaceCategories;
-use Bundle\PlacesBundle\Service\PlacesDAO;
-use Bundle\PlacesBundle\Service\UserOperation;
+use Bundle\PlacesBundle\Services\PlacesDAO;
+use Bundle\PlacesBundle\Services\UserOperation;
 
 /**
  * Description of Places

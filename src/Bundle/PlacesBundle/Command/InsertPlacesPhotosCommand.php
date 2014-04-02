@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Bundle\PlacesBundle\Entities\PlacePhotos;
-use Bundle\PlacesBundle\Service\Places;
+use Bundle\PlacesBundle\Services\Places;
 
 class InsertPlacesPhotosCommand extends ContainerAwareCommand {
 

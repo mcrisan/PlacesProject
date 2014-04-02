@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Bundle\PlacesBundle\Entities\PlaceDetails;
 use Bundle\PlacesBundle\Entities\Tags;
-use Bundle\PlacesBundle\Service\Places;
+use Bundle\PlacesBundle\Services\Places;
 
 class InsertPlacesDetailsCommand extends ContainerAwareCommand {
 

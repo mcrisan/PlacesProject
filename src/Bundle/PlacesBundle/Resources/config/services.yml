@@ -22,17 +22,17 @@ services:
             - "[%%datetime%%] %%channel%%.%%level_name%%: %%message%%\n" 
             
     placeOperation:
-        class: Bundle\PlacesBundle\Service\Places
+        class: Bundle\PlacesBundle\Services\Places
         arguments: [@placesDAO, @userop, @service_container, @logger]
         tags:
             - { name: monolog.logger, channel: comm } 
             
     placesDAO:
-        class: Bundle\PlacesBundle\Service\PlacesDAO  
+        class: Bundle\PlacesBundle\Services\PlacesDAO  
         arguments: [@doctrine.orm.entity_manager] 
         
     userop:
-        class: Bundle\PlacesBundle\Service\UserOperation  
+        class: Bundle\PlacesBundle\Services\UserOperation  
         arguments: [@service_container]      
                
     insertalldetails:
@@ -64,6 +64,6 @@ services:
         arguments: [ @placeOperation ]  
         
     placeDto:
-        class: Bundle\PlacesBundle\Service\PlaceDTO    
+        class: Bundle\PlacesBundle\Models\PlaceDTO    
         
         

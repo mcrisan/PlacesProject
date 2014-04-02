@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace Bundle\PlacesBundle\Service;
+namespace Bundle\PlacesBundle\Services;
 use Doctrine\ORM\EntityManager;
 
 /**

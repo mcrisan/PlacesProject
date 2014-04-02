@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand;
 use Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand;
 use Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand;
-use Bundle\PlacesBundle\Service\Places;
+use Bundle\PlacesBundle\Services\Places;
 
 class InsertAllDetailsCommand extends ContainerAwareCommand {
 

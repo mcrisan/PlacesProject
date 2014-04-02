@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-namespace Bundle\PlacesBundle\Service;
+namespace Bundle\PlacesBundle\Services;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Description of User
