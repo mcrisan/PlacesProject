@@ -1,7 +1,7 @@
 <?php
 // src/Bundle/ProjectBundle/Form/ContactType.php
 
-namespace Bundle\PlacesBundle\Form;
+namespace Bundle\PlacesBundle\Forms;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

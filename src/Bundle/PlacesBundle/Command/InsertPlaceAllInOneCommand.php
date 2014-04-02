@@ -37,35 +37,35 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
         $apiKey = $this->getContainer()->getParameter('api_key');
         $nr=0;
       
-//        $p1 = array('x' => 46.701731, 'y' => 23.748214);
-//        $p2 = array('x' => 46.815099, 'y' => 23.459823);
-//        
-//        $step = 0.01; // 1/100 -> aprox. 1km 11m
-//        $radius = 1011; // 1011 m
-//        
-//        $x = 46.77461;
-//        $y = 23.59215;
-//        $type='establishment';
-//        $id = $placeop->getLastPlaceId();
-//        echo $id;
-//
-//        $p1['x'] =46.76;
-//        $p2['x'] =46.77;
-//        $mes = "Inserting places from lat ".$p1['x'] ." to lat " .$p2['x'] ;
-//        $placeop->logMessage($mes);
-//        $mes = "Inserting places from long ".$p1['y'] ." to long " .$p1['y'] ;
-//        $placeop->logMessage($mes);
-//        for ($x = $p1['x']; $x <= $p2['x']; $x+=$step)
-//        {
-//            for ($y = $p1['y']; $y >= $p2['y']; $y-=$step)
-//            {
-//                $nr++;
-//                $place->addPlaces($type, $apiKey, $x.','.$y, $radius);
-//            }
-//        }
-//
-//        $mes = "We have made: ". $nr ." querys to search for places";
-//        $placeop->logMessage($mes);
+        $p1 = array('x' => 46.701731, 'y' => 23.748214);
+        $p2 = array('x' => 46.815099, 'y' => 23.459823);
+        
+        $step = 0.01; // 1/100 -> aprox. 1km 11m
+        $radius = 1011; // 1011 m
+        
+        $x = 46.77461;
+        $y = 23.59215;
+        $type='establishment';
+        $id = $placeop->getLastPlaceId();
+        echo $id;
+
+        $p1['x'] =46.76;
+        $p2['x'] =46.77;
+        $mes = "Inserting places from lat ".$p1['x'] ." to lat " .$p2['x'] ;
+        $placeop->logMessage($mes);
+        $mes = "Inserting places from long ".$p1['y'] ." to long " .$p1['y'] ;
+        $placeop->logMessage($mes);
+        for ($x = $p1['x']; $x <= $p2['x']; $x+=$step)
+        {
+            for ($y = $p1['y']; $y >= $p2['y']; $y-=$step)
+            {
+                $nr++;
+                $place->addPlaces($type, $apiKey, $x.','.$y, $radius);
+            }
+        }
+
+        $mes = "We have made: ". $nr ." querys to search for places";
+        $placeop->logMessage($mes);
         $id = 3486;
         $placeDet->addAllPlacesDetails($apiKey, $id );
                
