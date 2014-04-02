@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand;
 use Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand;
 use Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand;
-use Bundle\PlacesBundle\Service\PlaceOperations;
+use Bundle\PlacesBundle\Service\PlacesOp;
 
 class InsertAllDetailsCommand extends ContainerAwareCommand {
 
@@ -17,7 +17,7 @@ class InsertAllDetailsCommand extends ContainerAwareCommand {
     private $reviews;
     private $details;
 
-    public function __construct(PlaceOperations $placeop, InsertPlacesPhotosCommand $photos, InsertPlaceReviewsCommand $review, InsertPlacesDetailsCommand $details) {
+    public function __construct(PlacesOp $placeop, InsertPlacesPhotosCommand $photos, InsertPlaceReviewsCommand $review, InsertPlacesDetailsCommand $details) {
         $this->placeop = $placeop;
         $this->photos = $photos;
         $this->reviews = $review;
@@ -42,7 +42,7 @@ class InsertAllDetailsCommand extends ContainerAwareCommand {
     }
 
     function addAllPlacesDetails($apiKey, $startId = null, $place = null) {
-
+        echo "in1";
         if (!$place) {
             $detailsRef = $this->placeop->getPlacesDetailsRefWithId($startId);
         } else {
@@ -54,12 +54,13 @@ class InsertAllDetailsCommand extends ContainerAwareCommand {
             $url = "https://maps.googleapis.com/maps/api/place/details/json?reference=" . $detailsRef . "&sensor=true&key=" . $apiKey;
             $json = file_get_contents($url);
             $data = json_decode($json, TRUE);
+            echo "in";
             //details
-            $this->details->addPlacesDetails2($data, $place);
+            $this->details->addPlacesDetails($data, $place);
             //photos
-            $this->photos->addPlacePhotos2($data, $place, $apiKey);
+            $this->photos->addPlacePhotos($data, $place, $apiKey);
             //reviews
-            $this->reviews->addPlaceReviews2($data, $place);
+            $this->reviews->addPlaceReviews($data, $place);
             $nr++;
         }
         $mes = "We have made: " . $nr . " querys to insert all details";

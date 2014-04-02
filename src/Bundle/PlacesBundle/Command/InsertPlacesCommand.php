@@ -8,13 +8,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Bundle\PlacesBundle\Entity\Places;
-use Bundle\PlacesBundle\Service\PlaceOperations;
+use Bundle\PlacesBundle\Service\PlacesOp;
 
 class InsertPlacesCommand extends ContainerAwareCommand {
 
     private $placeop;
 
-    public function __construct(PlaceOperations $placeop) {
+    public function __construct(PlacesOp $placeop) {
         $this->placeop = $placeop;
     }
 
@@ -33,7 +33,6 @@ class InsertPlacesCommand extends ContainerAwareCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        //$placeop = $this->getContainer()->get('placeop');
         $apiKey = $this->getContainer()->getParameter('api_key');
         $latLng = $this->getContainer()->getParameter('latLng');
         $radius = 5000;
@@ -41,20 +40,13 @@ class InsertPlacesCommand extends ContainerAwareCommand {
         $output->writeln($this->addPlaces($type, $apiKey, $latLng, $radius));
     }
 
-    function addPlaces($type, $apiKey, $latLng, $radius, &$placeNames = null, $s = null) {
+    function addPlaces($type, $apiKey, $latLng, $radius) {
         $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" . $latLng . "&radius=" . $radius . "&types=" . $type . "&sensor=false&key=" . $apiKey;
-        //$url = "https://maps.googleapis.com/maps/api/js/PlaceService.FindPlaces?1m6&1m2&1d46.7524711471588&2d23.577259023485567&2m2&1d46.77043745284119&2d23.60348577651439&2sen-US&4sbar&callback=_xdc_._jxbr54&token=60012";
-        $this->addPlacesByUrl($url, $type, $apiKey, $latLng, $radius, $placeNames, $s);
+        $this->addPlacesByUrl($url, $type, $apiKey, $latLng, $radius);
     }
 
-    private function addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius, &$placeNames = null, $s = null) {
-        sleep(3);
-        if (!$placeNames) {
-            $placeNames = array();
-            $i = 0;
-        } else {
-            $i = count($placeNames);
-        }
+    private function addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius) {
+        
         $json = file_get_contents($url);
         $data = json_decode($json, TRUE);
         $status = $data['status'];
@@ -75,7 +67,6 @@ class InsertPlacesCommand extends ContainerAwareCommand {
             $pageToken = "";
         }
         foreach ($placeItems as $item) {
-            $placeNames[$i] = array();
             $extId = $item['id'];
             $name = $item['name'];
             $slug = $this->gen_slug($name);
@@ -96,26 +87,11 @@ class InsertPlacesCommand extends ContainerAwareCommand {
             $place->setDetailsRef($detailsRef);
             $place->setOrigin($origin);
             $place->setHasOwner(0);
-            if ($s) {
-                //$placeNames[$i]['placeId'] = $place;
-                $placeNames[$i]['place'] = $place;
-                $placeNames[$i]['placeName'] = $name;
-                $i++;
-            } else {
                 $newPlace = $this->placeop->insertPlace($place);
-                //var_dump($newPlace);
-                //$placeNames[$i]['place'] = $newPlace;
-                $placeNames[$i]['placeId'] = $newPlace->getId();
-                $placeNames[$i]['placeName'] = $name;
-                $placeNames[$i]['placeRating'] = $rating;
-                $placeNames[$i]['slug'] = $newPlace->getSlug();
-                $i++;
-                $s = null;
-            }
         }
         if ($pageToken != "") {
             $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" . $latLng . "&radius=" . $radius . "&types=" . $placeType . "&sensor=false&key=" . $apiKey . "&pagetoken=" . $pageToken;
-            $this->addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius, $placeNames, $s);
+            $this->addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius, $placeNames);
         }
     }
 

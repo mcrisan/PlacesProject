@@ -7,12 +7,10 @@
  */
 namespace Bundle\PlacesBundle\Command;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Bundle\PlacesBundle\Service\PlaceOperations;
+
 /**
  * Description of InsertCategories
  *
@@ -20,12 +18,6 @@ use Bundle\PlacesBundle\Service\PlaceOperations;
  */
 class InsertCategoriesCommand extends ContainerAwareCommand{
     
-//    private $placeop;
-//
-//
-//    public function __construct(PlaceOperations $placeop) {
-//        $this->placeop = $placeop;
-//    }
     
     protected function configure()
     {
@@ -38,14 +30,7 @@ class InsertCategoriesCommand extends ContainerAwareCommand{
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $placeop = $this->getContainer()->get('placeop');
+        $placeop = $this->getContainer()->get('placeOperation');
         $output->writeln($placeop->insertCategories());
     }
-
-//    protected function execute(InputInterface $input, OutputInterface $output) {
-//        
-//        //$this->placeop->insertCategories();
-//        echo "in";
-//        $output->writeln($this->placeop->insertCategories());
-//    }
 }

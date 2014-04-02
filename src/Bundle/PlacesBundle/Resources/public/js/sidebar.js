@@ -25,7 +25,7 @@ $(document).ready(function() {
             });
         }
     });
-    $(".restaurant-list").on('click','.it',function(){
+    $(".restaurant-list").on('click','.it',function(event){
         param = $(this).attr('href');
         event.preventDefault();
         $(this).addClass('active').siblings().removeClass('active');

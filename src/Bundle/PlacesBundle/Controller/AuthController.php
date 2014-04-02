@@ -6,14 +6,8 @@ namespace Bundle\PlacesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Component\Security\Core\SecurityContext;
-use Symfony\Component\DependencyInjection\ContainerAware;
-
-use Bundle\PlacesBundle\lib\ApiKey;
 
 class AuthController extends Controller {
 
@@ -96,11 +90,10 @@ class AuthController extends Controller {
     }
     
     public function testTokenAction() {
-        $key = new ApiKey();
         
         $userName = "";
         $userId = "";
-        $apiKey = $key->getKey();
+        $apiKey = $this->container->getParameter('social_api_key');
         
         if (isset($_POST['token'])) {
             $token = $_POST['token'];

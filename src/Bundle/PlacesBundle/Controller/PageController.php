@@ -6,17 +6,7 @@ namespace Bundle\PlacesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Bundle\PlacesBundle\lib\GetUserIp;
-use Bundle\PlacesBundle\lib\ClientBrowser;
-use Bundle\PlacesBundle\Entity\UsersIp;
-use Bundle\PlacesBundle\Entity\Rating;
-use Bundle\PlacesBundle\Entity\Tags;
-use Bundle\PlacesBundle\Entity\PlaceDetails;
-use Bundle\PlacesBundle\Entity\AppUsers;
-use Bundle\PlacesBundle\lib\UserIp;
-use Bundle\PlacesBundle\Service\PlaceOperations;
-use Bundle\PlacesBundle\Command\InsertAllDetailsCommand;
+use Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand;
 
 class PageController extends Controller {
 
@@ -34,13 +24,14 @@ class PageController extends Controller {
         //$json = file_get_contents($url);
         //$data = json_decode($json, TRUE);
         //var_dump($data);
-        $url = "http://localhost/PlacesProject/web/app_dev.php/homeplace";
-        $json = file_get_contents($url);
-        $data = json_decode($json, TRUE);
-        $places = array();
-        if(array_key_exists('places', $data)){
-            $places = $data['places'];
-        }        
+//        $url = "http://localhost/PlacesProject/web/app_dev.php/homeplace";
+//        $json = file_get_contents($url);
+//        $data = json_decode($json, TRUE);
+//        $places = array();
+//        if(array_key_exists('places', $data)){
+//            $places = $data['places'];
+//        }        
+        $places ="";
         //var_dump($data);
 
         return $this->render("BundlePlacesBundle:Page:home.html.twig", array(
@@ -50,37 +41,13 @@ class PageController extends Controller {
 
         //return $this->redirect($this->generateUrl('index'));
     }
-
-    // Home page
-    function indexxAction() {
-        $this->em = $this->getDoctrine()->getManager();
-
-        $userBrowser = new ClientBrowser();
-        $browserName = $userBrowser->Name;
-        $browserVers = $userBrowser->Version;
-
-        $userIp = new GetUserIp();
-        $currentIp = $userIp->get_user_ip();
-        $userHits = $this->em->getRepository('BundlePlacesBundle:UsersIp')
-                ->getUserHits($currentIp);
-        $allTimeUsers = $this->em->getRepository('BundlePlacesBundle:UsersIp')
-                ->getTotalUniqueUsers();
-
-        return $this->render('BundlePlacesBundle:Page:index.html.twig', array(
-                    'userIp' => $currentIp,
-                    'userSiteHits' => $userHits,
-                    'browserName' => $browserName,
-                    'browserVers' => $browserVers,
-                    'allTimeUsers' => $allTimeUsers
-        ));
-    }
-
+    
     // About page
     function aboutAction() {
         $this->em = $this->getDoctrine()->getManager();
-
-        $userIp = new GetUserIp();
-        $currentIp = $userIp->get_user_ip();
+       
+        $placeop = $this->get("userop");
+        $currentIp = $placeop->getIp();
 
         $providerName = "";
         $userName = "";
@@ -163,7 +130,7 @@ class PageController extends Controller {
         if (!empty($searchInputVal)) {
             $searchInput = $searchInputVal;
         } 
-        $name = $searchInput;
+//        $name = urlencode($searchInput);
 //        $url = "http://localhost/PlacesProject/web/app_dev.php/searchplace/$name/$food/$drink";
 //        $json = file_get_contents($url);
 //        $data = json_decode($json, TRUE);
@@ -179,6 +146,11 @@ class PageController extends Controller {
         //}else{
             //echo "nu e sesiune";
         //}
+        
+        //$placeop = $this->get("placeop");
+        $placeop = $this->get("placeOperation");
+        $json = $placeop->searchByName($searchInput, $food, $drink);
+        $data = json_decode($json, TRUE);
         
         $places = $data['details']['places'];
         $totalResults = count($places);
@@ -421,10 +393,16 @@ class PageController extends Controller {
         
         //var_dump($tags);
         
-        $placeop = $this->get("search");
-        $placeop->getPlaceInfosBySlug("restaurant-havana");
+        $placedao = $this->get("placesDAO");
+        var_dump($placedao ->checkCurrentSlug("restaurant-havana"));
+        $placeop = $this->get("placeOperation");
+        var_dump($placeop ->isPhoto(1595));
+        
+        $placeop = $this->get("userop");
+        var_dump($placeop->getIp());
+        //$placeop->getPlaceInfosBySlug("restaurant-havana");
         return $this->render("BundlePlacesBundle:About:about.html.twig");
-    }
+        
     
     public function getAuthUser() {
         if(!is_null($this->get('security.context')->getToken()) && $this->get('security.context')->getToken()->getUser() != 'anon.'){
