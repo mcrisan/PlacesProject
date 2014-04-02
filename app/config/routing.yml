@@ -44,6 +44,4 @@ _bundle_places_renderPlace:
 ## Posts, comm. actions
 _bundle_places:
   resource: "@BundlePlacesBundle/Resources/config/routing/forms-posts.yml"
-  
-_bundle_places_services:
-  resource: "@BundlePlacesBundle/Resources/config/routing/services.yml"  
+    

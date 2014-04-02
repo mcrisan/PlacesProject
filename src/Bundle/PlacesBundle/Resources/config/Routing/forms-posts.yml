@@ -54,4 +54,4 @@ insert_homepage_places:
     pattern: /homepageplaces
     defaults: { _controller: BundlePlacesBundle:Forms:homepagePlaces }    
 #    requirements:
-#      _method: POST         
+#      _method: POST  
