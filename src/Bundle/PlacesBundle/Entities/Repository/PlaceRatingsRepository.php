@@ -1,9 +1,9 @@
 <?php
 
-namespace Bundle\PlacesBundle\Entity\Repository;
+namespace Bundle\PlacesBundle\Entities\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Bundle\PlacesBundle\Entity\PlaceRatings;
+use Bundle\PlacesBundle\Entities\PlaceRatings;
 /**
  * PlaceRepository
  *
@@ -34,7 +34,7 @@ class PlaceRatingsRepository extends EntityRepository
     // Update place rating
     public function updatePlaceRating($placeId,$vote,$votesTotal,$count,$incValue){
         $qb = $this->createQueryBuilder('')
-                ->update('Bundle\PlacesBundle\Entity\PlaceRatings', 'ratings')
+                ->update('Bundle\PlacesBundle\Entities\PlaceRatings', 'ratings')
                 ->set('ratings.totalVotes', ':total_votes')
                 ->set('ratings.votesCount', ':votes_count')
                 ->where('ratings.placeId = :id')

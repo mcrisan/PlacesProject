@@ -5,8 +5,8 @@ namespace Bundle\PlacesBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Bundle\PlacesBundle\Entity\PlaceDetails;
-use Bundle\PlacesBundle\Entity\Tags;
+use Bundle\PlacesBundle\Entities\PlaceDetails;
+use Bundle\PlacesBundle\Entities\Tags;
 use Bundle\PlacesBundle\Service\Places;
 
 class InsertPlacesDetailsCommand extends ContainerAwareCommand {

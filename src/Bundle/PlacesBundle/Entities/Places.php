@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\PlacesBundle\Entity;
+namespace Bundle\PlacesBundle\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,7 +40,7 @@ class Places
     private $hasOwner;
     
     /**
-     * @var \Bundle\PlacesBundle\Entity\PlaceDetails
+     * @var \Bundle\PlacesBundle\Entities\PlaceDetails
      */
     private $placeDetails;
 
@@ -185,10 +185,10 @@ class Places
     /**
      * Add comments
      *
-     * @param \Bundle\PlacesBundle\Entity\Comment $comments
+     * @param \Bundle\PlacesBundle\Entities\Comment $comments
      * @return Places
      */
-    public function addComment(\Bundle\PlacesBundle\Entity\Comment $comments)
+    public function addComment(\Bundle\PlacesBundle\Entities\Comment $comments)
     {
         $this->comments[] = $comments;
     
@@ -200,7 +200,7 @@ class Places
      *
      * @param \Bundle\ProjectBundle\Entity\Comment $comments
      */
-    public function removeComment(\Bundle\PlacesBundle\Entity\Comment $comments)
+    public function removeComment(\Bundle\PlacesBundle\Entities\Comment $comments)
     {
         $this->comments->removeElement($comments);
     }
@@ -218,10 +218,10 @@ class Places
     /**
      * Set placeDetails
      *
-     * @param \Bundle\PlacesBundle\Entity\PlaceDetails $placeDetails
+     * @param \Bundle\PlacesBundle\Entities\PlaceDetails $placeDetails
      * @return Place
      */
-    public function setPlaceDetails(\Bundle\PlacesBundle\Entity\PlaceDetails $placeDetails = null) {
+    public function setPlaceDetails(\Bundle\PlacesBundle\Entities\PlaceDetails $placeDetails = null) {
         $this->placeDetails = $placeDetails;
 
         return $this;
@@ -230,7 +230,7 @@ class Places
     /**
      * Get placeDetails
      *
-     * @return \Bundle\PlacesBundle\Entity\PlaceDetails 
+     * @return \Bundle\PlacesBundle\Entities\PlaceDetails 
      */
     public function getPlaceDetails() {
         return $this->placeDetails;

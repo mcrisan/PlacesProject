@@ -1,7 +1,7 @@
-Bundle\PlacesBundle\Entity\PlaceReviews:
+Bundle\PlacesBundle\Entities\PlaceReviews:
     type: entity
     table: place_reviews
-    repositoryClass: Bundle\PlacesBundle\Entity\Repository\PlaceReviewsRepository
+    repositoryClass: Bundle\PlacesBundle\Entities\Repository\PlaceReviewsRepository
     fields:
         id:
             id: true
@@ -42,7 +42,7 @@ Bundle\PlacesBundle\Entity\PlaceReviews:
             nullable: false
     manyToOne:
         places:
-            targetEntity: Bundle\PlacesBundle\Entity\Places
+            targetEntity: Bundle\PlacesBundle\Entities\Places
             inversedBy: reviews
             joinColumns:
                 place_id:

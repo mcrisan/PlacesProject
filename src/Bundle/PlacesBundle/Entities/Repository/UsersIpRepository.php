@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\PlacesBundle\Entity\Repository;
+namespace Bundle\PlacesBundle\Entities\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -48,7 +48,7 @@ class UsersIpRepository extends EntityRepository
     
     public function updateClient($ip) {
         $qb = $this->createQueryBuilder('')
-                ->update('Bundle\PlacesBundle\Entity\UsersIp','u')
+                ->update('Bundle\PlacesBundle\Entities\UsersIp','u')
                 ->set('u.voteFlag', ':flag')
                 ->where('u.ip = :ip')
                 ->setParameter('flag', 1)

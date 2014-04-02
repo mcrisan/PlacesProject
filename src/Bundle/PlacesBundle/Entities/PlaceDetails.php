@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\PlacesBundle\Entity;
+namespace Bundle\PlacesBundle\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -61,7 +61,7 @@ class PlaceDetails
     private $placeWebsite;
     
     /**
-     * @var \Bundle\PlacesBundle\Entity\Places
+     * @var \Bundle\PlacesBundle\Entities\Places
      */
     private $place;
 
@@ -309,11 +309,11 @@ class PlaceDetails
     /**
      * Set place
      *
-     * @param \Bundle\PlacesBundle\Entity\Places $place
+     * @param \Bundle\PlacesBundle\Entities\Places $place
      * @return Comment
      */
     
-    public function setPlace(\Bundle\PlacesBundle\Entity\Places $place = null) {
+    public function setPlace(\Bundle\PlacesBundle\Entities\Places $place = null) {
         $this->place = $place;
 
         return $this;
@@ -322,7 +322,7 @@ class PlaceDetails
     /**
      * Get place
      *
-     * @return \Bundle\PlacesBundle\Entity\Places 
+     * @return \Bundle\PlacesBundle\Entities\Places 
      */
     
     public function getPlace() {

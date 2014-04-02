@@ -5,8 +5,8 @@ namespace Bundle\PlacesBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Bundle\PlacesBundle\Entity\PlaceReviews;
-use Bundle\PlacesBundle\Entity\Places;
+use Bundle\PlacesBundle\Entities\PlaceReviews;
+use Bundle\PlacesBundle\Entities\Places;
 use Bundle\PlacesBundle\Service\Places;
 
 class InsertPlaceReviewsCommand extends ContainerAwareCommand {

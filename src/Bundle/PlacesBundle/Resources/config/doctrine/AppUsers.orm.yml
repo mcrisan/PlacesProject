@@ -1,7 +1,7 @@
-Bundle\PlacesBundle\Entity\AppUsers:
+Bundle\PlacesBundle\Entities\AppUsers:
     type: entity
     table: app_users
-    repositoryClass: Bundle\PlacesBundle\Entity\Repository\AppUsersRepository
+    repositoryClass: Bundle\PlacesBundle\Entities\Repository\AppUsersRepository
     fields:
         id:
             id: true

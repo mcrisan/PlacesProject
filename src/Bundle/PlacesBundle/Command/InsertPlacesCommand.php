@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Bundle\PlacesBundle\Entity\Places;
+use Bundle\PlacesBundle\Entities\Places;
 use Bundle\PlacesBundle\Service\Places;
 
 class InsertPlacesCommand extends ContainerAwareCommand {

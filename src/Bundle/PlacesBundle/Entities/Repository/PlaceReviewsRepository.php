@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\PlacesBundle\Entity\Repository;
+namespace Bundle\PlacesBundle\Entities\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -57,7 +57,7 @@ class PlaceReviewsRepository extends EntityRepository
         $query = $em
         ->createQuery("
                 DELETE 
-                FROM Bundle\PlacesBundle\Entity\PlaceReviews pr
+                FROM Bundle\PlacesBundle\Entities\PlaceReviews pr
                 WHERE pr.places = :id
             ")
         ->setParameter('id',$id);

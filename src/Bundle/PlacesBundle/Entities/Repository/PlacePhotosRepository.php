@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\PlacesBundle\Entity\Repository;
+namespace Bundle\PlacesBundle\Entities\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -51,7 +51,7 @@ class PlacePhotosRepository extends EntityRepository
     // Update photos table
     public function updatePlacePhotos($id,$photoRef,$photoUrl){
         $qb = $this->createQueryBuilder('')
-                ->update('Bundle\PlacesBundle\Entity\PlacePhotos','place')
+                ->update('Bundle\PlacesBundle\Entities\PlacePhotos','place')
                 ->set('place.imgRef', ':ref')
                 ->set('place.imgUrl', ':url')
                 ->where('place.placeId = :id')

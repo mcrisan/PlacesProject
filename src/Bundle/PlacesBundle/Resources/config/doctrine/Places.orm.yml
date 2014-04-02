@@ -1,7 +1,7 @@
-Bundle\PlacesBundle\Entity\Places:
+Bundle\PlacesBundle\Entities\Places:
     type: entity
     table: places
-    repositoryClass: Bundle\PlacesBundle\Entity\Repository\PlacesRepository
+    repositoryClass: Bundle\PlacesBundle\Entities\Repository\PlacesRepository
     fields:
         id:
             id: true
@@ -40,14 +40,14 @@ Bundle\PlacesBundle\Entity\Places:
     
     oneToMany:
         reviews:
-            targetEntity: Bundle\PlacesBundle\Entity\PlaceReviews
+            targetEntity: Bundle\PlacesBundle\Entities\PlaceReviews
             mappedBy: places
     oneToMany:
         comments:
-            targetEntity: Bundle\PlacesBundle\Entity\Comment
+            targetEntity: Bundle\PlacesBundle\Entities\Comment
             mappedBy: place
     oneToOne:
         placeDetails:
-            targetEntity: Bundle\PlacesBundle\Entity\PlaceDetails
+            targetEntity: Bundle\PlacesBundle\Entities\PlaceDetails
             mappedBy: place        
     lifecycleCallbacks: {  }

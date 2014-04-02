@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\PlacesBundle\Entity;
+namespace Bundle\PlacesBundle\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;

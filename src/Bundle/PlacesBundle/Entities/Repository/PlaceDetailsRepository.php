@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\PlacesBundle\Entity\Repository;
+namespace Bundle\PlacesBundle\Entities\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -66,8 +66,8 @@ class PlaceDetailsRepository extends EntityRepository {
 //        $query = $em
 //                ->createQuery("
 //                SELECT pd.placeId,pd.placeName,pd.placeRating, p.slug
-//                FROM Bundle\PlacesBundle\Entity\PlaceDetails pd
-//                ,Bundle\PlacesBundle\Entity\Places p
+//                FROM Bundle\PlacesBundle\Entities\PlaceDetails pd
+//                ,Bundle\PlacesBundle\Entities\Places p
 //                WHERE pd.placeId = p.id AND
 //                pd.placeName LIKE :name
 //                order by pd.placeName asc
@@ -96,8 +96,8 @@ class PlaceDetailsRepository extends EntityRepository {
         $query = $em
                 ->createQuery("
                 SELECT pd.placeId,pd.placeName,pd.placeRating, p.slug
-                FROM Bundle\PlacesBundle\Entity\PlaceDetails pd
-                ,Bundle\PlacesBundle\Entity\Places p
+                FROM Bundle\PlacesBundle\Entities\PlaceDetails pd
+                ,Bundle\PlacesBundle\Entities\Places p
                 WHERE pd.placeId = p.id AND
                 pd.placeVicinity LIKE :address
                 order by pd.placeName asc
@@ -410,7 +410,7 @@ class PlaceDetailsRepository extends EntityRepository {
     // Update details table 
     public function updatePlaceDetails($id, $name, $phone, $addr, $lat, $lng, $rating, $icon, $url, $website) {
         $qb = $this->createQueryBuilder('')
-                ->update('Bundle\PlacesBundle\Entity\PlaceDetails', 'place')
+                ->update('Bundle\PlacesBundle\Entities\PlaceDetails', 'place')
                 ->set('place.placeName', ':name')
                 ->set('place.placePhonenumber', ':phone')
                 ->set('place.placeVicinity', ':addr')
@@ -461,8 +461,8 @@ class PlaceDetailsRepository extends EntityRepository {
         $query = $em
                 ->createQuery("
                 SELECT pd.placeName, p.slug
-                FROM Bundle\PlacesBundle\Entity\PlaceDetails pd
-                ,Bundle\PlacesBundle\Entity\Places p
+                FROM Bundle\PlacesBundle\Entities\PlaceDetails pd
+                ,Bundle\PlacesBundle\Entities\Places p
                 WHERE pd.placeId = p.id
                 AND p.id = :id
             ")
@@ -484,8 +484,8 @@ class PlaceDetailsRepository extends EntityRepository {
                 SELECT pd.placeName, pd.placeId, pd.placePhonenumber, pd.placeVicinity,
                 pd.placeLat, pd.placeLng, pd.placeRating, pd.placeIcon, 
                 pd.placeUrl, pd.placeWebsite, p.slug
-                FROM Bundle\PlacesBundle\Entity\PlaceDetails pd
-                ,Bundle\PlacesBundle\Entity\Places p
+                FROM Bundle\PlacesBundle\Entities\PlaceDetails pd
+                ,Bundle\PlacesBundle\Entities\Places p
                 WHERE pd.placeId = p.id
                 AND p.slug = :slug
             ")

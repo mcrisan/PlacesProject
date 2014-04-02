@@ -64,6 +64,6 @@ services:
         arguments: [ @placeOperation ]  
         
     placeDto:
-        class: Bundle\PlacesBundle\Entity\PlaceDTO    
+        class: Bundle\PlacesBundle\Service\PlaceDTO    
         
         

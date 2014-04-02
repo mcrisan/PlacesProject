@@ -1,14 +1,14 @@
 <?php
 
-namespace Bundle\PlacesBundle\Entity;
+namespace Bundle\PlacesBundle\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * PlaceTags
+ * PlaceCategories
  */
-class PlaceTags
-{
+class PlaceCategories {
+    
     /**
      * @var integer
      */
@@ -22,13 +22,7 @@ class PlaceTags
     /**
      * @var integer
      */
-    private $tagId;
-
-    /**
-     * @var string
-     */
-    private $main;
-
+    private $categoryId;
 
     /**
      * Get id
@@ -44,7 +38,7 @@ class PlaceTags
      * Set placeId
      *
      * @param integer $placeId
-     * @return PlaceTags
+     * @return PlaceCategories
      */
     public function setPlaceId($placeId)
     {
@@ -64,48 +58,25 @@ class PlaceTags
     }
 
     /**
-     * Set tagId
+     * Set categoryId
      *
-     * @param integer $tagId
-     * @return PlaceTags
+     * @param integer $categoryId
+     * @return PlaceCategories
      */
-    public function setTagId($tagId)
+    public function setCategoryId($categoryId)
     {
-        $this->tagId = $tagId;
+        $this->categoryId = $categoryId;
     
         return $this;
     }
 
     /**
-     * Get tagId
+     * Get categoryId
      *
      * @return integer 
      */
-    public function getTagId()
+    public function getCategoryId()
     {
-        return $this->tagId;
-    }
-
-    /**
-     * Set main
-     *
-     * @param string $main
-     * @return PlaceTags
-     */
-    public function setMain($main)
-    {
-        $this->main = $main;
-    
-        return $this;
-    }
-
-    /**
-     * Get main
-     *
-     * @return string 
-     */
-    public function getMain()
-    {
-        return $this->main;
+        return $this->categoryId;
     }
 }

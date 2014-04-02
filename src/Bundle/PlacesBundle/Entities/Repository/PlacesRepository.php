@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\PlacesBundle\Entity\Repository;
+namespace Bundle\PlacesBundle\Entities\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -82,7 +82,7 @@ class PlacesRepository extends EntityRepository
     // Update table 
     public function updatePlace($id,$slug,$detailsRef) {
         $qb = $this->createQueryBuilder('')
-                ->update('Bundle\PlacesBundle\Entity\Places', 'place')
+                ->update('Bundle\PlacesBundle\Entities\Places', 'place')
                 ->set('place.slug', ':slug')
                 ->set('place.detailsRef', ':ref')
                 ->where('place.extId = :id')
@@ -143,7 +143,7 @@ class PlacesRepository extends EntityRepository
         $em = $this->getEntityManager();
         $query = $em ->createQuery("
                 DELETE 
-                FROM Bundle\PlacesBundle\Entity\Places p
+                FROM Bundle\PlacesBundle\Entities\Places p
                 WHERE p.id = :id
             ")
         ->setParameter('id',$id)

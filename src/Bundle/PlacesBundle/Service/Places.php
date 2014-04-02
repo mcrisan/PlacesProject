@@ -10,8 +10,8 @@ namespace Bundle\PlacesBundle\Service;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bridge\Monolog\Logger;
-use Bundle\PlacesBundle\Entity\PlaceTags;
-use Bundle\PlacesBundle\Entity\PlaceCategories;
+use Bundle\PlacesBundle\Entities\PlaceTags;
+use Bundle\PlacesBundle\Entities\PlaceCategories;
 use Bundle\PlacesBundle\Service\PlacesDAO;
 use Bundle\PlacesBundle\Service\UserOperation;
 

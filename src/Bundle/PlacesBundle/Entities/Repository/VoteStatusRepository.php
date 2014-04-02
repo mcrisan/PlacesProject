@@ -1,9 +1,9 @@
 <?php
 
-namespace Bundle\PlacesBundle\Entity\Repository;
+namespace Bundle\PlacesBundle\Entities\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Bundle\PlacesBundle\Entity\VoteStatus;
+use Bundle\PlacesBundle\Entities\VoteStatus;
 /**
  * VoteStatusRepository
  *

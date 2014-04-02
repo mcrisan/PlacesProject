@@ -3,7 +3,7 @@
 namespace Bundle\PlacesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Bundle\PlacesBundle\Entity\Comment;
+use Bundle\PlacesBundle\Entities\Comment;
 use Bundle\PlacesBundle\Form\CommentType;
 
 class CommentController extends Controller{

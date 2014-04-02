@@ -26,7 +26,7 @@ class CommentType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Bundle\PlacesBundle\Entity\Comment'
+            'data_class' => 'Bundle\PlacesBundle\Entities\Comment'
         ));
     }
 

@@ -1,7 +1,7 @@
-Bundle\PlacesBundle\Entity\PlacePhotos:
+Bundle\PlacesBundle\Entities\PlacePhotos:
     type: entity
     table: place_photos
-    repositoryClass: Bundle\PlacesBundle\Entity\Repository\PlacePhotosRepository
+    repositoryClass: Bundle\PlacesBundle\Entities\Repository\PlacePhotosRepository
     fields:
         id:
             id: true
