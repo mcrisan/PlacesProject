@@ -23,7 +23,7 @@ services:
             
     placeOperation:
         class: Bundle\PlacesBundle\Services\Places
-        arguments: [@criteria, @placesDAO, @userop, @service_container, @logger]
+        arguments: [@criteria, @placesDAO, @userop, @service_container, @logger, @cache]
         tags:
             - { name: monolog.logger, channel: comm } 
             

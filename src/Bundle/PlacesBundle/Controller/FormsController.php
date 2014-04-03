@@ -32,10 +32,11 @@ class FormsController extends Controller {
         } else {
             $food = "";
             $drink = "";
-        }
-        //echo $food. " si ".$drink; 
-        if (apc_exists($name)) {
-            $coord = apc_fetch($name);
+        } 
+        $cache = $this->get('cache');
+        $cache->setNamespace("search.coord");
+        if ($cache->contains($name)) {
+            $coord = $cache->fetch($name);
             $lat = $coord['lat'];
             $lng = $coord['lng'];
         } else {
@@ -245,16 +246,6 @@ class FormsController extends Controller {
             $userVoted = true;
         } else {
             $userVoted = false;          
-        }
-        
-        if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
-            $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
-        }
-        if (!isset($placeInfo['total'][0]['totalVotes'])) {
-            $placeInfo['total'][0]['totalVotes'] = 0;
-        }
-        if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
-            $placeInfo['totalCounts'][0]['votesCount'] = 1;
         }
         
         $placeDto = $this->get("placeDto");

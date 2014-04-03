@@ -33,7 +33,6 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
     }
 
     private function addAllPlaces($type, $placeop, $placeDet, $place) {
-        $doctrine = $this->getContainer()->get('doctrine');
         $apiKey = $this->getContainer()->getParameter('api_key');
         $nr=0;
       
@@ -65,10 +64,7 @@ class InsertPlaceAllInOneCommand extends ContainerAwareCommand {
         }
 
         $mes = "We have made: ". $nr ." querys to search for places";
-        echo "3486";
-        $id =3486;
         $placeop->logMessage($mes);
-        $id = 3486;
         $placeDet->addAllPlacesDetails($apiKey, $id );
                
     }

@@ -15,6 +15,7 @@ use Bundle\PlacesBundle\Entities\PlaceCategories;
 use Bundle\PlacesBundle\Services\PlacesDAO;
 use Bundle\PlacesBundle\Services\UserOperation;
 use Bundle\PlacesBundle\Models\Criteria;
+use Doctrine\Common\Cache\ApcCache;
 
 /**
  * Description of Places
@@ -28,13 +29,15 @@ class Places {
     private $logger;
     private $userop;
     private $criteria;
+    protected $cache;
 
-    public function __construct(Criteria $criteria, PlacesDAO $placesdao, UserOperation $userop, ContainerInterface $container, Logger $logger) {
+    public function __construct(Criteria $criteria, PlacesDAO $placesdao, UserOperation $userop, ContainerInterface $container, Logger $logger, ApcCache $cache) {
         $this->opDAO = $placesdao;
         $this->container = $container;
         $this->logger = $logger;
         $this->userop = $userop;
         $this->criteria = $criteria;
+        $this->cache = $cache;
     }
 
     public function logMessage($mes) {
@@ -329,7 +332,9 @@ class Places {
                 $criteria->setLat($latitude);
                 $criteria->setLng($longitude);
                 $coord = array("lat" => $latitude, "lng" => $longitude);
-                apc_store($name, $coord);
+                $this->cache->setNamespace("search.coord");
+                $this->cache->save($name, $coord);
+                //apc_store($name, $coord);
                 $places = $this->opDAO->getPlacesByDistance($criteria);
             }
         } else {
@@ -340,9 +345,11 @@ class Places {
             $criteria->setLat($latitude);
             $criteria->setLng($longitude);
             $coord = array("lat" => $latitude, "lng" => $longitude);
-            apc_store($name, $coord);
+            $this->cache->setNamespace("search.coord");
+            $this->cache->save($name, $coord);
+            //apc_store($name, $coord);
             $cat = $places1[0]['category'];
-            $searchCat= $criteria->getCategory();
+            $searchCat = $criteria->getCategory();
             $food = $searchCat["food"];
             $drink = $searchCat["drink"];
             if ($food != "on" & $drink != "on") {
@@ -409,6 +416,15 @@ class Places {
         $placeInfo['total'] = $this->opDAO->getCurrentVotes($placeId);
         $placeInfo['totalCounts'] = $this->opDAO->getCurrentCounts($placeId);
         $placeInfo['userStatus'] = $this->opDAO->getUserStatus($placeId, $this->userop->getIp());
+        if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
+            $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
+        }
+        if (!isset($placeInfo['total'][0]['totalVotes'])) {
+            $placeInfo['total'][0]['totalVotes'] = 0;
+        }
+        if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
+            $placeInfo['totalCounts'][0]['votesCount'] = 1;
+        }
 
         return $placeInfo;
     }

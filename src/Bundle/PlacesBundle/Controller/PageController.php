@@ -133,15 +133,6 @@ class PageController extends Controller {
         } else {
             $userVoted = false;          
         }
-        if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
-            $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
-        }
-        if (!isset($placeInfo['total'][0]['totalVotes'])) {
-            $placeInfo['total'][0]['totalVotes'] = 0;
-        }
-        if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
-            $placeInfo['totalCounts'][0]['votesCount'] = 1;
-        }
 
         $placeDto = $this->get("placeDto");
         $placeDto->setPlaceDetails($placeInfo['place']);
