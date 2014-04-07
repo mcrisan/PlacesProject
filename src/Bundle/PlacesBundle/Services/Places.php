@@ -419,6 +419,7 @@ class Places {
         $placeInfo['total']                         = $this->opDAO->getCurrentVotes($placeId);
         $placeInfo['totalCounts']                   = $this->opDAO->getCurrentCounts($placeId);
         if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
+        if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
             $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
         }
         if (!isset($placeInfo['total'][0]['totalVotes'])) {
@@ -427,7 +428,6 @@ class Places {
         if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
             $placeInfo['totalCounts'][0]['votesCount'] = 1;
         }
-        
         if($events != null){
             $placeInfo['events']['image']               = $events->getImage();
             $placeInfo['events']['title']               = $events->getTitle();

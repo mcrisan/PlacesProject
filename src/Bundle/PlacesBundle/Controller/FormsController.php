@@ -238,7 +238,6 @@ class FormsController extends Controller {
         
         $placeSlug = $this->gen_slug($param);
         $slug = urlencode($placeSlug);      
-        
         $securityContext = $this->container->get('security.context');
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $userid = $this->get('security.context')->getToken()->getUser()->getId();                   
@@ -260,21 +259,11 @@ class FormsController extends Controller {
             $userVoted = false;
         }
 
-        if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
-            $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
-        }
-        if (!isset($placeInfo['total'][0]['totalVotes'])) {
-            $placeInfo['total'][0]['totalVotes'] = 0;
-        }
-        if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
-            $placeInfo['totalCounts'][0]['votesCount'] = 1;
-        }
         if ($placeInfo['place']['hasowner'] == $userid) {
             $isowner = '1';
         } else {
             $isowner = '0';
         }
-        
         $events = $placeInfo['events'] ;
         $placeDto = $this->get("placeDto");
         $placeDto->setPlaceDetails($placeInfo['place']);

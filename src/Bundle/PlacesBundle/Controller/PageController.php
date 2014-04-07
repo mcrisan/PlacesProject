@@ -132,22 +132,13 @@ class PageController extends Controller {
         $request = Request::createFromGlobals();
         $searchInputVal = $request->query->get('input');
         $food = $request->query->get('food');
-        if (!$food) {
-            $food = "off";
-        }
         $drink = $request->query->get('drink');
         $criteria = $this->get('criteria');
         $criteria->setCategory(array("food" => $food, "drink" => $drink));
         $criteria->setName($searchInputVal);
-//        
-//        $placeservice= $this->get("search");
-//        $place_det = $placeservice->searchByName($name, $food, $drink);
-//        $data = json_decode($place_det, TRUE);
-//        owner found
         $placeop = $this->get("placeOperation");
         $json = $placeop->searchByName($criteria);
         $data = json_decode($json, TRUE);       
-
         $places = $data['details']['places'];
         $totalResults = count($places);
         $placeInfo = $data['details']['placeInfos'];
@@ -164,15 +155,6 @@ class PageController extends Controller {
             $userVoted = true;
         } else {
             $userVoted = false;
-        }
-        if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
-            $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
-        }
-        if (!isset($placeInfo['total'][0]['totalVotes'])) {
-            $placeInfo['total'][0]['totalVotes'] = 0;
-        }
-        if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
-            $placeInfo['totalCounts'][0]['votesCount'] = 1;
         }
 
         $placeDto = $this->get("placeDto");
