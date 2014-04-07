@@ -321,7 +321,7 @@ class Places {
         $criteria->setPage(0);
         $name = $criteria->getName();
         $places1 = $this->opDAO->getPlacesNamesAndIds($name);
-
+//var_dump($places1);
         if (empty($places1)) {
             $name_enc = urlencode($name);
             $geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address=' . $name_enc . '&sensor=false');
@@ -347,7 +347,6 @@ class Places {
             $coord = array("lat" => $latitude, "lng" => $longitude);
             $this->cache->setNamespace("search.coord");
             $this->cache->save($name, $coord);
-            //apc_store($name, $coord);
             $cat = $places1[0]['category'];
             $searchCat = $criteria->getCategory();
             $food = $searchCat["food"];
@@ -362,7 +361,6 @@ class Places {
             }
             $criteria->setCategory(array("food" => $food, "drink" => $drink));
             $places = $this->opDAO->getPlacesByDistance($criteria);
-
             array_unshift($places, $places1[0]);
             array_pop($places);
         }
@@ -377,7 +375,6 @@ class Places {
                     'userInfos' => $userInfo),
                 'status' => 'OK'
             ));
-            //var_dump($placeInfo);
         } else {
             $placeInfo = $this->getPlaceInfos(1595);
             $places = $this->opDAO->getPlacesNamesAndIds("Restaurant Havana");
@@ -390,56 +387,54 @@ class Places {
                 'status' => 'OK'
             ));
         }
-        //var_dump($resp);
         return $resp;
     }
 
     public function getPlaceInfos($placeId) {
         $events = $this->opDAO->getEvents($placeId);
         $placeInfo = array();
-        $getPlaceSlug                               = $this->opDAO->getPlacesSlug($placeId);
-        $placeInfo['placeSlug']                     = $getPlaceSlug[0]['slug'];
-        $placeInfo['placeReviews']                  = $this->opDAO->getPlaceReviews($placeId);
-        $placeDet                                   = $this->opDAO->getPlacesDetails($placeId);
-        $placeInfo['place']['placeid']              = $placeDet[0]->getPlaceId();
-        $placeInfo['place']['placename']            = $placeDet[0]->getPlaceName();
-        $placeInfo['place']['placephonenumber']     = $placeDet[0]->getPlacePhonenumber();
-        $placeInfo['place']['placevicinity']        = $placeDet[0]->getPlaceVicinity();
-        $placeInfo['place']['placelat']             = $placeDet[0]->getPlaceLat();
-        $placeInfo['place']['placelng']             = $placeDet[0]->getPlaceLng();
-        $placeInfo['place']['placerating']          = $placeDet[0]->getPlaceRating();
-        $placeInfo['place']['placeicon']            = $placeDet[0]->getPlaceIcon();
-        $placeInfo['place']['placeurl']             = $placeDet[0]->getPlaceUrl();
-        $placeInfo['place']['placeWebSite']         = $placeDet[0]->getPlaceWebsite();
-        $placeInfo['place']['hasowner']             = $placeDet[0]->getPlace()->getHasOwner();
-        $placeInfo['placePhotos']                   = $this->opDAO->getPlacePhotos($placeId, 1);
-        $placeInfo['placeAllPhotos']                = $this->opDAO->getPlacePhotos($placeId);
-        $placeInfo['totalVotesForPlace']            = $this->opDAO->getCurrentCounts($placeId);
-        $placeInfo['totalVotesAllTime']             = $this->opDAO->getTotalVotes();
-        $placeInfo['total']                         = $this->opDAO->getCurrentVotes($placeId);
-        $placeInfo['totalCounts']                   = $this->opDAO->getCurrentCounts($placeId);
-        if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
-        if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
-            $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
-        }
-        if (!isset($placeInfo['total'][0]['totalVotes'])) {
-            $placeInfo['total'][0]['totalVotes'] = 0;
-        }
-        if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
-            $placeInfo['totalCounts'][0]['votesCount'] = 1;
-        }
-        if($events != null){
-            $placeInfo['events']['image']               = $events->getImage();
-            $placeInfo['events']['title']               = $events->getTitle();
-            $placeInfo['events']['description']         = $events->getDescription();
-        }else{
-            $placeInfo['events']['image']               = NULL;
-            $placeInfo['events']['title']               = NULL;
-            $placeInfo['events']['description']         = NULL;
-        }
-        
-        $placeInfo['userStatus']                    = $this->opDAO->getUserStatus($placeId, $this->userop->getIp());
-        return $placeInfo;
+        $getPlaceSlug = $this->opDAO->getPlacesSlug($placeId);
+        $placeInfo['placeSlug'] = $getPlaceSlug[0]['slug'];
+        $placeInfo['placeReviews'] = $this->opDAO->getPlaceReviews($placeId);
+        $placeDet = $this->opDAO->getPlacesDetails($placeId);
+        $placeInfo['place']['placeid'] = $placeDet[0]->getPlaceId();
+        $placeInfo['place']['placename'] = $placeDet[0]->getPlaceName();
+        $placeInfo['place']['placephonenumber'] = $placeDet[0]->getPlacePhonenumber();
+        $placeInfo['place']['placevicinity'] = $placeDet[0]->getPlaceVicinity();
+        $placeInfo['place']['placelat'] = $placeDet[0]->getPlaceLat();
+        $placeInfo['place']['placelng'] = $placeDet[0]->getPlaceLng();
+        $placeInfo['place']['placerating'] = $placeDet[0]->getPlaceRating();
+        $placeInfo['place']['placeicon'] = $placeDet[0]->getPlaceIcon();
+        $placeInfo['place']['placeurl'] = $placeDet[0]->getPlaceUrl();
+        $placeInfo['place']['placeWebSite'] = $placeDet[0]->getPlaceWebsite();
+        $placeInfo['place']['hasowner'] = $placeDet[0]->getPlace()->getHasOwner();
+        $placeInfo['placePhotos'] = $this->opDAO->getPlacePhotos($placeId, 1);
+        $placeInfo['placeAllPhotos'] = $this->opDAO->getPlacePhotos($placeId);
+        $placeInfo['totalVotesForPlace'] = $this->opDAO->getCurrentCounts($placeId);
+        $placeInfo['totalVotesAllTime'] = $this->opDAO->getTotalVotes();
+        $placeInfo['total'] = $this->opDAO->getCurrentVotes($placeId);
+        $placeInfo['totalCounts'] = $this->opDAO->getCurrentCounts($placeId);
+            if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
+                $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
+            }
+            if (!isset($placeInfo['total'][0]['totalVotes'])) {
+                $placeInfo['total'][0]['totalVotes'] = 0;
+            }
+            if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
+                $placeInfo['totalCounts'][0]['votesCount'] = 1;
+            }
+            if ($events != null) {
+                $placeInfo['events']['image'] = $events->getImage();
+                $placeInfo['events']['title'] = $events->getTitle();
+                $placeInfo['events']['description'] = $events->getDescription();
+            } else {
+                $placeInfo['events']['image'] = NULL;
+                $placeInfo['events']['title'] = NULL;
+                $placeInfo['events']['description'] = NULL;
+            }
+
+            $placeInfo['userStatus'] = $this->opDAO->getUserStatus($placeId, $this->userop->getIp());
+            return $placeInfo;       
     }
 
     public function getPlaceInfosBySlug($slug) {
@@ -451,7 +446,5 @@ class Places {
         //var_dump($userInfo);
         return array("details" => $details, "userInfo" => $userInfo);
     }
-    
-   
 
 }
