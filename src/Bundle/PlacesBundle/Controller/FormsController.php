@@ -259,11 +259,12 @@ class FormsController extends Controller {
             $userVoted = false;
         }
 
-        if ($placeInfo['place']['hasowner'] == $userid) {
+        if ($placeInfo['place']['hasowner'] === $userid) {
             $isowner = '1';
         } else {
             $isowner = '0';
         }
+        
         $events = $placeInfo['events'] ;
         $placeDto = $this->get("placeDto");
         $placeDto->setPlaceDetails($placeInfo['place']);

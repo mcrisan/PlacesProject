@@ -145,7 +145,7 @@ class PageController extends Controller {
         $userInfo = $data['details']['userInfos'];
 
 // verify if the use is the owner of the place
-        if ($data['details']['placeInfos']['place']['hasowner'] == $userid) {
+        if ($data['details']['placeInfos']['place']['hasowner'] === $userid) {
             $isowner = '1';
         } else {
             $isowner = '0';
