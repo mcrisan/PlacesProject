@@ -7,7 +7,9 @@
  */
 
 namespace Bundle\PlacesBundle\Services;
+
 use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Cache\ApcCache;
 
 /**
  * Description of PlacesDAO
@@ -17,9 +19,11 @@ use Doctrine\ORM\EntityManager;
 class PlacesDAO {
 
     protected $em;
-
-    public function __construct(EntityManager $em) {
+    protected $cache;
+    
+    public function __construct(EntityManager $em, ApcCache $cache) {
         $this->em = $em;
+        $this->cache = $cache;
     }
 
     public function test2($p) {
@@ -202,74 +206,89 @@ class PlacesDAO {
         return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
                         ->getAllPlacesNames();
     }
-    
-    public function getPlacesNamesAndIds($name){
+
+    public function getPlacesNamesAndIds($name) {
         
-        return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
+        $key = \md5($name);
+        $this->cache->setNamespace("search.name");
+        if ($this->cache->contains($key)) {
+            return $this->cache->fetch($key);
+        } else {
+            $data = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
                     ->getPlacesNamesAndIds($name);
+            $this->cache->save($key, $data);
+            return $data;
+        }
     }
-    
-    public function getPlacesByDistance($name, $food, $drink, $lat, $lng, $dist, $limit=null, $pag=null){
-        
+
+    public function getPlacesByDistance($criteria) {
+        $key = \md5($criteria->toString());
+        $this->cache->setNamespace("search.criteria");
+        if ($this->cache->contains($key)) {
+            return $this->cache->fetch($key);
+        } else {
+            $data = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
+                    ->getPlacesByDistance($criteria);
+            $this->cache->save($key, $data);
+            return $data;
+        }
+    }
+
+    public function getPlacesSlug($id) {
+
         return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                    ->getPlacesByDistance($name, $food, $drink, $lat, $lng, $dist, $limit, $pag);
+                        ->getPlacesSlug($id);
     }
-    
-    public function getPlacesSlug($id){
-        
-        return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                    ->getPlacesSlug($id);
-    }
-    
-    public function getPlaceReviews($placeId){
-        
+
+    public function getPlaceReviews($placeId) {
+
         return $this->em->getRepository('BundlePlacesBundle:PlaceReviews')
-                    ->getReviews($placeId);
+                        ->getReviews($placeId);
     }
-    
-    public function getPlacesDetails($placeId){
-        
+
+    public function getPlacesDetails($placeId) {
+
         return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
-                    ->getPlacesDetails($placeId, 1);
+                        ->getPlacesDetails($placeId, 1);
     }
     public function getEvents($placesId) {
         $events = $this->em->getRepository('BundlePlacesBundle:PlaceEvents')
                 ->findOneBy(array('placeid'=>$placesId));
         return $events;
     }
-    public function getPlacePhotos($placeId, $nr = null){
-        
+    public function getPlacePhotos($placeId, $nr = null) {
+
         return $this->em->getRepository('BundlePlacesBundle:PlacePhotos')
-                    ->getPlacePhotos($placeId, $nr);
+                        ->getPlacePhotos($placeId, $nr);
     }
-    
-    public function getUserStatus($placeId, $currentIp){
-        
+
+    public function getUserStatus($placeId, $currentIp) {
+
         return $this->em->getRepository('BundlePlacesBundle:VoteStatus')
-                    ->getUserStatus($placeId, $currentIp);
+                        ->getUserStatus($placeId, $currentIp);
     }
-    
-    public function getCurrentCounts($placeId){
-        
+
+    public function getCurrentCounts($placeId) {
+
         return $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-                    ->getCurrentCounts($placeId);
+                        ->getCurrentCounts($placeId);
     }
-    
-    public function getTotalVotes(){
-        
+
+    public function getTotalVotes() {
+
         return $this->em->getRepository('BundlePlacesBundle:VoteStatus')
-                    ->getTotalVotes();
+                        ->getTotalVotes();
     }
-    
-    public function getCurrentVotes($placeId){
-        
+
+    public function getCurrentVotes($placeId) {
+
         return $this->em->getRepository('BundlePlacesBundle:PlaceRatings')
-                    ->getCurrentVotes($placeId);
+                        ->getCurrentVotes($placeId);
     }
-    
-    public function getPlacesIdBySlug($slug){
-       return $this->em->getRepository('BundlePlacesBundle:Places')
-                    ->getPlaceIdBySlug($slug); 
+
+    public function getPlacesIdBySlug($slug) {
+        return $this->em->getRepository('BundlePlacesBundle:Places')
+                        ->getPlaceIdBySlug($slug);
     }
 
 }

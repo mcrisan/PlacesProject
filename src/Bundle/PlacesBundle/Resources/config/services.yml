@@ -1,7 +1,5 @@
 parameters:
-    placeoperation.class: Bundle\PlacesBundle\Service\PlaceOperations
-    placeoperationDAO.class: Bundle\PlacesBundle\Service\PlaceOperationsDAO
-    test.class: Bundle\PlacesBundle\Service\Test
+
 
 #    bundle_project.example.class: Bundle\ProjectBundle\Example
 
@@ -23,13 +21,13 @@ services:
             
     placeOperation:
         class: Bundle\PlacesBundle\Services\Places
-        arguments: [@placesDAO, @userop, @service_container, @logger]
+        arguments: [@criteria, @placesDAO, @userop, @service_container, @logger, @cache]
         tags:
             - { name: monolog.logger, channel: comm } 
             
     placesDAO:
         class: Bundle\PlacesBundle\Services\PlacesDAO  
-        arguments: [@doctrine.orm.entity_manager] 
+        arguments: [@doctrine.orm.entity_manager, @cache] 
         
     userop:
         class: Bundle\PlacesBundle\Services\UserOperation  
@@ -65,6 +63,13 @@ services:
         
     placeDto:
         class: Bundle\PlacesBundle\Models\PlaceDTO 
+        
+    criteria:
+        class: Bundle\PlacesBundle\Models\Criteria  
+        
+    cache:
+        class: Doctrine\Common\Cache\ApcCache
+        arguments: [%kernel.cache_dir%]    
         
     ownerplaces:
         class: Bundle\PlacesBundle\Services\OwnerPlacesDAO

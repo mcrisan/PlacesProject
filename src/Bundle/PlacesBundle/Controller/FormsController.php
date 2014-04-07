@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class FormsController extends Controller {
 
     private $em;
@@ -19,10 +20,10 @@ class FormsController extends Controller {
     // Get more places
     public function morePlacesRequestAction() {
         $request = Request::createFromGlobals();
-        $pag = $request->request->get('pag');
+        $page = $request->request->get('pag');
         $name = $request->request->get('searchval');
         $limit = $this->container->getParameter('limit');
-        $dist = $this->container->getParameter('distance');
+        $distance = $this->container->getParameter('distance');
         $session = $this->get('session');
         if ($session->has("cat")) {
             $cat = $session->get("cat");
@@ -31,24 +32,33 @@ class FormsController extends Controller {
         } else {
             $food = "";
             $drink = "";
-        }
-        //echo $food. " si ".$drink; 
-        if (apc_exists($name)) {
-            $coord = apc_fetch($name);
+        } 
+        $cache = $this->get('cache');
+        $cache->setNamespace("search.coord");
+        if ($cache->contains($name)) {
+            $coord = $cache->fetch($name);
             $lat = $coord['lat'];
             $lng = $coord['lng'];
         } else {
             $lat = 0;
             $lng = 0;
         }
+        $criteria = $this->get('criteria');
+        $criteria->setCategory(array("food" => $food, "drink" => $drink));
+        $criteria->setName($name);
+        $criteria->setPage($page);
+        $criteria->setResultsLimit($limit);
+        $criteria->setDistance($distance);
+        $criteria->setLat($lat);
+        $criteria->setLng($lng);
         $placesdao = $this->get('placesDAO');
-        $places = $placesdao->getPlacesByDistance($name, $food, $drink, $lat, $lng, $dist, $limit, $pag);
+        $places = $placesdao->getPlacesByDistance($criteria);
         $this->em = $this->getDoctrine()->getManager();
         $nrplaces = count($places);
         return $this->render('BundlePlacesBundle:Places:morePlaces.html.twig', array(
                     'places' => $places,
                     'nrplaces' => $nrplaces,
-                    'pag' => $pag
+                    'pag' => $page
         ));
     }
 
@@ -227,7 +237,7 @@ class FormsController extends Controller {
     public function renderPlaceAction($param) {
         
         $placeSlug = $this->gen_slug($param);
-        $slug = urlencode($placeSlug);
+        $slug = urlencode($placeSlug);      
         
         $securityContext = $this->container->get('security.context');
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
@@ -239,21 +249,11 @@ class FormsController extends Controller {
         
        
         $userid = $this->getAuthUser(); //get leged usrt id
-        //var_dump($slug);
-        //die;
-//        $url = "http://localhost/PlacesProject/web/app_dev.php/renderplaceserice/$slug";
-//        $jsonData = file_get_contents($url);
-//        $info = json_decode($jsonData, TRUE);
-
         $placeop = $this->get("placeOperation");
-        //$json = $placeop->getPlaceInfosBySlug($slug);
         $info = $placeop->getPlaceInfosBySlug($slug);
-
-//        $placeop = $this->get("search");
-//        $info = $placeop->getPlaceInfosBySlug($placeSlug);
         $placeInfo = $info['details'];
         $userInfo = $info['userInfo'];
-
+               
         if ($placeInfo['userStatus']) {
             $userVoted = true;
         } else {
@@ -290,10 +290,6 @@ class FormsController extends Controller {
         $placeDto->setTotalVotesForPlace($placeInfo['totalVotesForPlace'][0]['votesCount']);
         $placeDto->setUserVoted($userVoted);
 
-        /*      $data = $placeDto->jsonSerialize();
-          $json = json_encode($data);
-          $resp = new Response($json, 200); */
-        //$resp->headers->set('Content-Type', 'application/json');
 
         return $this->render('BundlePlacesBundle:Page:renderPlaceDetails.html.twig', array(
             'place'     => $placeDto, 

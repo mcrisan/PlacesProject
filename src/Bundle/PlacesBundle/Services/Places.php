@@ -14,6 +14,8 @@ use Bundle\PlacesBundle\Entities\PlaceTags;
 use Bundle\PlacesBundle\Entities\PlaceCategories;
 use Bundle\PlacesBundle\Services\PlacesDAO;
 use Bundle\PlacesBundle\Services\UserOperation;
+use Bundle\PlacesBundle\Models\Criteria;
+use Doctrine\Common\Cache\ApcCache;
 
 /**
  * Description of Places
@@ -26,12 +28,16 @@ class Places {
     private $container;
     private $logger;
     private $userop;
+    private $criteria;
+    protected $cache;
 
-    public function __construct(PlacesDAO $placesdao, UserOperation $userop, ContainerInterface $container, Logger $logger) {
+    public function __construct(Criteria $criteria, PlacesDAO $placesdao, UserOperation $userop, ContainerInterface $container, Logger $logger, ApcCache $cache) {
         $this->opDAO = $placesdao;
         $this->container = $container;
         $this->logger = $logger;
         $this->userop = $userop;
+        $this->criteria = $criteria;
+        $this->cache = $cache;
     }
 
     public function logMessage($mes) {
@@ -288,7 +294,7 @@ class Places {
         $placeCat->setPlaceId($id);
         $this->opDAO->insertCategory($placeCat);
     }
-    
+
     public function getPlacesNames($input) {
 
         return $this->opDAO->getPlacesNames($input);
@@ -305,12 +311,17 @@ class Places {
         }
         return $places;
     }
-    
-    public function searchByName($name, $food, $drink) {
 
-        $places1 = $this->opDAO->getPlacesNamesAndIds($name);
+    public function searchByName($criteria) {
+
         $distance = $this->container->getParameter('distance');
         $limit = $this->container->getParameter('limit');
+        $criteria->setDistance($distance);
+        $criteria->setResultsLimit($limit);
+        $criteria->setPage(0);
+        $name = $criteria->getName();
+        $places1 = $this->opDAO->getPlacesNamesAndIds($name);
+
         if (empty($places1)) {
             $name_enc = urlencode($name);
             $geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address=' . $name_enc . '&sensor=false');
@@ -318,32 +329,42 @@ class Places {
             if (isset($output->results[0])) {
                 $latitude = $output->results[0]->geometry->location->lat;
                 $longitude = $output->results[0]->geometry->location->lng;
+                $criteria->setLat($latitude);
+                $criteria->setLng($longitude);
                 $coord = array("lat" => $latitude, "lng" => $longitude);
-                apc_store($name, $coord);
-                $places = $this->opDAO->getPlacesByDistance($name, $food, $drink, $latitude, $longitude, $distance, $limit);
+                $this->cache->setNamespace("search.coord");
+                $this->cache->save($name, $coord);
+                //apc_store($name, $coord);
+                $places = $this->opDAO->getPlacesByDistance($criteria);
             }
         } else {
             $placeId = $places1[0]['placeId'];
             $placeInfo = $this->getPlaceInfos($placeId);
             $latitude = $placeInfo['place']['placelat'];
             $longitude = $placeInfo['place']['placelng'];
+            $criteria->setLat($latitude);
+            $criteria->setLng($longitude);
             $coord = array("lat" => $latitude, "lng" => $longitude);
-            apc_store($name, $coord);
+            $this->cache->setNamespace("search.coord");
+            $this->cache->save($name, $coord);
+            //apc_store($name, $coord);
             $cat = $places1[0]['category'];
-            if($food == "off" & $drink == "off"){
-            if(strpos($cat, 'Food') !== FALSE){
-                $food = "on";
+            $searchCat = $criteria->getCategory();
+            $food = $searchCat["food"];
+            $drink = $searchCat["drink"];
+            if ($food != "on" & $drink != "on") {
+                if (strpos($cat, 'Food') !== FALSE) {
+                    $food = "on";
+                }
+                if (strpos($cat, 'Drink') !== FALSE) {
+                    $drink = "on";
+                }
             }
-            if(strpos($cat, 'Drink') !== FALSE){
-                $drink = "on";
-            }
-            }
-            $places = $this->opDAO->getPlacesByDistance($name, $food, $drink, $latitude, $longitude, $distance, $limit);
-            
-            //if ((("on" == $food) & (strpos($cat, 'Food') !== FALSE)) || (("on" == $drink) & (strpos($cat, 'Drink') !== FALSE))) {
-                array_unshift($places, $places1[0]);
-                array_pop($places);
-            //}
+            $criteria->setCategory(array("food" => $food, "drink" => $drink));
+            $places = $this->opDAO->getPlacesByDistance($criteria);
+
+            array_unshift($places, $places1[0]);
+            array_pop($places);
         }
         if (!empty($places)) {
             $placeId = $places[0]['placeId']; // #1 place from search results..
@@ -372,7 +393,7 @@ class Places {
         //var_dump($resp);
         return $resp;
     }
-    
+
     public function getPlaceInfos($placeId) {
         $events = $this->opDAO->getEvents($placeId);
         $placeInfo = array();
@@ -397,6 +418,15 @@ class Places {
         $placeInfo['totalVotesAllTime']             = $this->opDAO->getTotalVotes();
         $placeInfo['total']                         = $this->opDAO->getCurrentVotes($placeId);
         $placeInfo['totalCounts']                   = $this->opDAO->getCurrentCounts($placeId);
+        if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
+            $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
+        }
+        if (!isset($placeInfo['total'][0]['totalVotes'])) {
+            $placeInfo['total'][0]['totalVotes'] = 0;
+        }
+        if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
+            $placeInfo['totalCounts'][0]['votesCount'] = 1;
+        }
         
         if($events != null){
             $placeInfo['events']['image']               = $events->getImage();
@@ -411,15 +441,15 @@ class Places {
         $placeInfo['userStatus']                    = $this->opDAO->getUserStatus($placeId, $this->userop->getIp());
         return $placeInfo;
     }
-    
+
     public function getPlaceInfosBySlug($slug) {
 
         $placeId = $this->opDAO->getPlacesIdBySlug($slug);
         $id = $placeId[0]['id'];
-        $details = $this ->getPlaceInfos($id);
-        $userInfo = $this->userop->getUserDetails(); 
+        $details = $this->getPlaceInfos($id);
+        $userInfo = $this->userop->getUserDetails();
         //var_dump($userInfo);
-        return array("details" => $details, "userInfo" => $userInfo );
+        return array("details" => $details, "userInfo" => $userInfo);
     }
     
    
