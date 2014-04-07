@@ -63,7 +63,7 @@ class FormsController extends Controller {
           $voteValue = $param[0];
           $placeId = $param[1];
          */
-        
+
         $userop = $this->get("userop");
         $userIp = $userop->getIp();
 
@@ -99,7 +99,7 @@ class FormsController extends Controller {
 
     // Votes for site
     function voteeAction() {
-        $this->em = $this->getDoctrine()->getManager();     
+        $this->em = $this->getDoctrine()->getManager();
         $userop = $this->get("userop");
         $currentIp = $userop->getIp();
 
@@ -225,30 +225,41 @@ class FormsController extends Controller {
     }
 
     public function renderPlaceAction($param) {
-        $placeSlug = $this->gen_slug($param);    
+        
+        $placeSlug = $this->gen_slug($param);
         $slug = urlencode($placeSlug);
+        
+        $securityContext = $this->container->get('security.context');
+        if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $userid = $this->get('security.context')->getToken()->getUser()->getId();                   
+            //search action
+        }else{
+            $userid = 'null';
+        }
+        
+       
+        $userid = $this->getAuthUser(); //get leged usrt id
         //var_dump($slug);
         //die;
 //        $url = "http://localhost/PlacesProject/web/app_dev.php/renderplaceserice/$slug";
 //        $jsonData = file_get_contents($url);
 //        $info = json_decode($jsonData, TRUE);
-        
+
         $placeop = $this->get("placeOperation");
         //$json = $placeop->getPlaceInfosBySlug($slug);
         $info = $placeop->getPlaceInfosBySlug($slug);
-        //var_dump($info);
-        //die;
+
 //        $placeop = $this->get("search");
 //        $info = $placeop->getPlaceInfosBySlug($placeSlug);
         $placeInfo = $info['details'];
         $userInfo = $info['userInfo'];
-               
+
         if ($placeInfo['userStatus']) {
             $userVoted = true;
         } else {
-            $userVoted = false;          
+            $userVoted = false;
         }
-        
+
         if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
             $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
         }
@@ -258,7 +269,13 @@ class FormsController extends Controller {
         if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
             $placeInfo['totalCounts'][0]['votesCount'] = 1;
         }
+        if ($placeInfo['place']['hasowner'] == $userid) {
+            $isowner = '1';
+        } else {
+            $isowner = '0';
+        }
         
+        $events = $placeInfo['events'] ;
         $placeDto = $this->get("placeDto");
         $placeDto->setPlaceDetails($placeInfo['place']);
         $placeDto->setFirstPhoto($placeInfo['placePhotos']);
@@ -273,14 +290,35 @@ class FormsController extends Controller {
         $placeDto->setTotalVotesForPlace($placeInfo['totalVotesForPlace'][0]['votesCount']);
         $placeDto->setUserVoted($userVoted);
 
-/*      $data = $placeDto->jsonSerialize();
-        $json = json_encode($data);
-        $resp = new Response($json, 200);*/
+        /*      $data = $placeDto->jsonSerialize();
+          $json = json_encode($data);
+          $resp = new Response($json, 200); */
         //$resp->headers->set('Content-Type', 'application/json');
+
         return $this->render('BundlePlacesBundle:Page:renderPlaceDetails.html.twig', array(
-            'place' => $placeDto
+            'place'     => $placeDto, 
+            'isowner'   => $isowner, 
+            'events'    => $events
         ));
     }
+    
+    public function getAuthUser() {
+        if (!is_null($this->get('security.context')->getToken()) && $this->get('security.context')->getToken()->getUser() != 'anon.') {
+            return $this->get('security.context')->getToken()->getUser()->getId();
+        } else {
+            return 0;
+        }
+//        $userid_s = $this->get('security.context')->getToken()->getUser();
+//        echo "<pre>";
+//        print_r($userid_s->getUser());
+//        die;
+//            if($userid_s->getUser()!='anon.'){
+//            $userid = $this->get('security.context')->getToken()->getUser()->getId();
+//            }else{
+//             $userid = 0;   
+//            }
+    }
+
 }
 
 ?>

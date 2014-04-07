@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\PlacesBundle\Entity;
+namespace Bundle\PlacesBundle\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,6 +28,11 @@ class PlaceEvents
      * @var string
      */
     private $description;
+   
+    /**
+     * @var string
+     */
+    private $placeid;
 
 
     /**
@@ -41,26 +46,49 @@ class PlaceEvents
     }
 
     /**
-     * Set placeId
+     * Set image
      *
-     * @param string $placeId
+     * @param string $image
      * @return PlacePhotos
      */
-    public function setImage($placeId)
+    public function setImage($image)
     {
-        $this->placeId = $placeId;
+        $this->image = $image;
+    
+        return $this;
+    }
+    
+    /**
+     * Set placeid
+     *
+     * @param string $image
+     * @return PlacePhotos
+     */
+    public function setPlaceid($placeid)
+    {
+        $this->placeid = $placeid;
     
         return $this;
     }
 
     /**
-     * Get placeId
+     * Get image
      *
      * @return string 
      */
     public function getImage()
     {
-        return $this->placeId;
+        return $this->image;
+    }
+    
+    /**
+     * Get placeid
+     *
+     * @return string 
+     */
+    public function getPlaceid()
+    {
+        return $this->placeid;
     }
 
 
@@ -83,7 +111,7 @@ class PlaceEvents
      */
     public function setTitle($title)
     {
-        $this->imgUrl = $imgUrl;
+        $this->title = $title;
     
         return $this;
     }
@@ -99,14 +127,14 @@ class PlaceEvents
     }
 
     /**
-     * Set origin
+     * Set description
      *
      * @param string $description
      * @return description
      */
     public function setDescription($description)
     {
-        $this->origin = $description;
+        $this->description = $description;
     
         return $this;
     }

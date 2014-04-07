@@ -232,7 +232,11 @@ class PlacesDAO {
         return $this->em->getRepository('BundlePlacesBundle:PlaceDetails')
                     ->getPlacesDetails($placeId, 1);
     }
-    
+    public function getEvents($placesId) {
+        $events = $this->em->getRepository('BundlePlacesBundle:PlaceEvents')
+                ->findOneBy(array('placeid'=>$placesId));
+        return $events;
+    }
     public function getPlacePhotos($placeId, $nr = null){
         
         return $this->em->getRepository('BundlePlacesBundle:PlacePhotos')

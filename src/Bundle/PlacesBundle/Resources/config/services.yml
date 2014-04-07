@@ -64,6 +64,9 @@ services:
         arguments: [ @placeOperation ]  
         
     placeDto:
-        class: Bundle\PlacesBundle\Models\PlaceDTO    
+        class: Bundle\PlacesBundle\Models\PlaceDTO 
         
+    ownerplaces:
+        class: Bundle\PlacesBundle\Services\OwnerPlacesDAO
+        arguments: [ @doctrine.orm.entity_manager ]
         

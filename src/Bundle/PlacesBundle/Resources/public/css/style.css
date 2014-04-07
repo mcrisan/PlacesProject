@@ -159,4 +159,10 @@ label.css-label {
 	-ms-user-select: none;
 	user-select: none;
 }
+.admin-loged-bar{
+    border-bottom: 1px solid #000000;
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 100%;
+}
 

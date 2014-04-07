@@ -1,0 +1,16 @@
+<div class="admin-loged-bar">
+
+   {% if placesList is iterable %}
+    Go to place: <select onchange="window.location.href='home?input='+$($(this)).val();">
+        <option> - </option>
+    {% for place in placesList %}
+        {% for places in place %}
+        <option value="{{ places|url_encode }}"> {{ places }} </option>
+
+        {% endfor %}
+    {% endfor %}
+    </select>
+    {% else %}
+        <p> There is no place asignet to your user. Use the menu to claim your place.</p>
+    {% endif %}
+</div>

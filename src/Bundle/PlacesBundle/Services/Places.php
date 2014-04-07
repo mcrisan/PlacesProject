@@ -356,6 +356,7 @@ class Places {
                     'userInfos' => $userInfo),
                 'status' => 'OK'
             ));
+            //var_dump($placeInfo);
         } else {
             $placeInfo = $this->getPlaceInfos(1595);
             $places = $this->opDAO->getPlacesNamesAndIds("Restaurant Havana");
@@ -368,11 +369,12 @@ class Places {
                 'status' => 'OK'
             ));
         }
+        //var_dump($resp);
         return $resp;
     }
     
     public function getPlaceInfos($placeId) {
-
+        $events = $this->opDAO->getEvents($placeId);
         $placeInfo = array();
         $getPlaceSlug                               = $this->opDAO->getPlacesSlug($placeId);
         $placeInfo['placeSlug']                     = $getPlaceSlug[0]['slug'];
@@ -395,8 +397,18 @@ class Places {
         $placeInfo['totalVotesAllTime']             = $this->opDAO->getTotalVotes();
         $placeInfo['total']                         = $this->opDAO->getCurrentVotes($placeId);
         $placeInfo['totalCounts']                   = $this->opDAO->getCurrentCounts($placeId);
+        
+        if($events != null){
+            $placeInfo['events']['image']               = $events->getImage();
+            $placeInfo['events']['title']               = $events->getTitle();
+            $placeInfo['events']['description']         = $events->getDescription();
+        }else{
+            $placeInfo['events']['image']               = NULL;
+            $placeInfo['events']['title']               = NULL;
+            $placeInfo['events']['description']         = NULL;
+        }
+        
         $placeInfo['userStatus']                    = $this->opDAO->getUserStatus($placeId, $this->userop->getIp());
-
         return $placeInfo;
     }
     
@@ -404,9 +416,12 @@ class Places {
 
         $placeId = $this->opDAO->getPlacesIdBySlug($slug);
         $id = $placeId[0]['id'];
-        $details = $this ->getPlaceInfos($placeId);
-        $userInfo = $this->userop->getUserDetails();     
+        $details = $this ->getPlaceInfos($id);
+        $userInfo = $this->userop->getUserDetails(); 
+        //var_dump($userInfo);
         return array("details" => $details, "userInfo" => $userInfo );
     }
+    
+   
 
 }

@@ -179,8 +179,11 @@ Bundle\PlacesBundle\Entities\Comment:
            - DateTime: ~
         comment:
            - NotBlank: ~ 
+ 
             
-            
-            
-            
-            
+Bundle\PlacesBundle\Entities\PlaceEvents:
+ properties:
+#        image:
+#            - Url: ~
+        image:
+            - Url: ~

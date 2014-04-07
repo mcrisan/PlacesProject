@@ -1,7 +1,7 @@
-Bundle\PlacesBundle\Entity\PlaceEvents:
+Bundle\PlacesBundle\Entities\PlaceEvents:
     type: entity
     table: place_events
-    repositoryClass: Bundle\PlacesBundle\Entity\Repository\PlaceEventsRepository
+    repositoryClass: Bundle\PlacesBundle\Entities\Repository\PlaceEventsRepository
     fields:
         id:
             id: true
@@ -22,6 +22,12 @@ Bundle\PlacesBundle\Entity\PlaceEvents:
             fixed: false
             nullable: false
             column: title
+        placeid:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: placeid
         description:
             type: string
             length: 500

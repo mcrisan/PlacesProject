@@ -1,17 +1,113 @@
-{% if isowner == 0 %}
+{% if isowner == 1 %}
+    {% if events.title == NULL and events.description == NULL %}
+<h2> No event defined. Please add an event</h2>
 <div style="width: 40%">
     <div class="alert hide" id="msg"></div>
     <input type="hidden" value="{{ place.placeid }}" id="dataid" >
-<a data-original-title="Enter title" data-name="title" data-type="text" id="title" class="myeditable editable editable-click editable-empty" href="#">Empty</a><br />
-<a data-original-title="Enter body" data-name="body" data-type="textarea" class="myeditable editable editable-click editable-empty" href="#">Empty</a><br />
-<a data-original-title="Enter picture" data-name="picture" data-type="text" class="myeditable editable editable-pre-wrapped editable-click editable-empty" href="#">Empty</a><br /><br />
-    <div>
-    <button class="btn btn-primary" id="save-btn">Save changes</button>
-    
-    </div>
-</div>
+    Title: <a data-original-title="Enter title" data-name="title" data-type="text" id="title" class="myeditable editable editable-click editable-empty" href="#"></a><br />
+    Description: <a data-original-title="Enter body" data-name="body" data-type="textarea" class="myeditable editable editable-click editable-empty" href="#"></a><br />
+    Foto: <a data-original-title="Enter picture" data-name="picture" data-type="text" class="myeditable editable editable-pre-wrapped editable-click editable-empty" href="#">Photo</a><br /><br />
 
+    <img src="{{ events.image }}" width="160px" alt="poster" >
+
+    <div>
+        <button class="btn btn-primary" id="save-btn">Save changes</button>
+
+    </div>
+    <div id="msg-show"> </div>
+    {% else %}
+    <input type="hidden" value="{{ place.placeid }}" id="dataid" >
+    <article>
+        <div class="images">
+            <img title="" src="{{ events.image }}">
+        </div>
+        <header>
+            <a style="color: #000000;border-bottom: none;" data-original-title="Enter title" data-name="title" data-type="text" id="title" class="myeditable editable editable-click editable-empty" href="#">{{ events.title }}</a>
+        </header>
+
+        <aside class="element-bar">
+            <ul class="rating-stars">                
+                <li></li>               
+                <li></li>               
+                <li></li>               
+                <li></li>               
+                <li class="red"></li>
+            </ul>
+            <ul class="social-bar">
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+            </ul>
+        </aside>
+        <p></p>
+        <p><a style="color: #000000;border-bottom: none;" data-original-title="Enter body" data-name="body" data-type="textarea" class="myeditable editable editable-click editable-empty" href="#">{{ events.description }}</a></p>
+        <p></p>
+    </article>
+            {#
+            <h2><a style="color: #000000;border-bottom: none;" data-original-title="Enter title" data-name="title" data-type="text" id="title" class="myeditable editable editable-click editable-empty" href="#">{{ events.title }}</a><br /></h2>
+            <a style="color: #000000;border-bottom: none;" data-original-title="Enter picture" data-name="picture" data-type="text" class="myeditable editable editable-pre-wrapped editable-click editable-empty" href="#">Change foto</a>
+            <a style="color: #000000;border-bottom: none;" data-original-title="Enter body" data-name="body" data-type="textarea" class="myeditable editable editable-click editable-empty" href="#">{{ events.description }}</a><br />
+            
+
+            <img src="{{ events.image }}" width="160px" alt="poster" >
+
+            <div>
+                <button class="btn btn-primary" id="save-btn">Save changes</button>
+
+            </div>#}
+    <div id="msg-show"> </div>
+
+
+    {% endif %}
+
+    {% else %}
+
+
+
+
+        {% if events.title == NULL and events.description == NULL %}
+    <h2> No event defined.</h2>
+            {% else %}
+    <article>
+        <div class="images">
+            <img title="" src="{{ events.image }}">
+        </div>
+        <header><a title="" href="#">{{ events.title }}</a></header>
+
+        <aside class="element-bar">
+            <ul class="rating-stars">                
+                <li></li>               
+                <li></li>               
+                <li></li>               
+                <li></li>               
+                <li class="red"></li>
+            </ul>
+            <ul class="social-bar">
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+            </ul>
+        </aside>
+        <p></p>
+        <p>{{ events.description }}</p>
+        <p></p>
+    </article>
+
+
+
+        {% endif %}
 {% endif %}
-{# else #}
-     <br />
-   
+
+
+    <style>
+        .editable-input{
+            width: 415px;
+        }
+        .editable-buttons{
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
+   <a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="picture" data-type="text" data-pk="1" href="#">Change foto</a>

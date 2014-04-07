@@ -3,6 +3,11 @@
     <input id="searchvalue" type="hidden" value="{{ input }}" />
     {% include 'BundlePlacesBundle:Page:renderPlaceDetails.html.twig' with {'place':place, 'isowner' : isowner } %}  
 {% endblock %}  
+{% block adminblock %}
+    {% if app.user %} 
+        {% include 'BundlePlacesBundle:Places:admin.html.twig' %}{# de pus obiectul #}
+    {% endif %}
+{% endblock %}
 
 {# sidebar #}
 {% block sidebar %}

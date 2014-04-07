@@ -1,134 +1,135 @@
 {# create response for renderPlace - on placeName click' #}
 {# vars #}
+
 {% set placeAddress = "" %}
 <article class="row" style="border:0px solid black;">
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:0px;">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:0px;">
         <div class="tabbable">
             <ul class="nav nav-tabs">
-              <li><a href="#pane1" data-toggle="tab">Details</a></li>
-              <li class="active"><a href="#pane2" data-toggle="tab">Photos</a></li>
-              <li><a href="#pane3" data-toggle="tab">Ratings</a></li>
-              <li><a href="#pane4" data-toggle="tab">Reviews</a></li>
-              <li><a href="#pane5" data-toggle="tab">Promotions</a></li>
+                <li><a href="#pane1" data-toggle="tab">Details</a></li>
+                <li class="active"><a href="#pane2" data-toggle="tab">Photos</a></li>
+                <li><a href="#pane3" data-toggle="tab">Ratings</a></li>
+                <li><a href="#pane4" data-toggle="tab">Reviews</a></li>
+                <li><a href="#pane5" data-toggle="tab">Promotions</a></li>
             </ul>
             <div class="tab-content" style="padding:0px; border:0px">
                 {% for place in placeDetails %}
                     {% set placeAddress = place.placeVicinity %}
                 <div id="pane1" class="tab-pane">
-                        <input id="name" type="hidden" value="{{ place.placeName }}" />
-                        <input id="lat" type="hidden" value="{{ place.placeLat }}" />
-                        <input id="lng" type="hidden" value="{{ place.placeLng }}" />
-                        <input id="placeId" type="hidden" value="{{ place.placeId }}" />
-                        <input id="ip" type="hidden" value="{{ ip }}" />
-                        
-                        <h1>{{ place.placeName }}</h1>
-                        <p>Place id: {{ place.placeId }}</p>
+                    <input id="name" type="hidden" value="{{ place.placeName }}" />
+                    <input id="lat" type="hidden" value="{{ place.placeLat }}" />
+                    <input id="lng" type="hidden" value="{{ place.placeLng }}" />
+                    <input id="placeId" type="hidden" value="{{ place.placeId }}" />
+                    <input id="ip" type="hidden" value="{{ ip }}" />
+
+                    <h1>{{ place.placeName }}</h1>
+                    <p>Place id: {{ place.placeId }}</p>
                         {% if placePhotos is not empty %}
                             {% for photo in placePhotos %}
-                                <img src="{{ photo.imgUrl }}" title="{{ place.placeName }}" width="160" height="140"/>
+                    <img src="{{ photo.imgUrl }}" title="{{ place.placeName }}" width="160" height="140"/>
                             {% endfor %}
                         {% else %}
-                              <span class="glyphicon glyphicon-picture icon-font-size-verylarge"></span>
+                    <span class="glyphicon glyphicon-picture icon-font-size-verylarge"></span>
                         {% endif %}
-                        <a href="{{ place.placeUrl }}" target="_blank" title="{{ place.placeName }}">
+                    <a href="{{ place.placeUrl }}" target="_blank" title="{{ place.placeName }}">
                         <img src="{{ place.placeIcon }}"/></a>
-                        <p><a href="{{ path('index_indexShowPlace',{'name':placeSlug}) }}">{{ place.placeName|capitalize }}</a></p>
-                        <p><a href="{{ path('index_placeDetails',{'name':placeSlug}) }}">New - {{ place.placeName|capitalize }}</a></p>
+                    <p><a href="{{ path('index_indexShowPlace',{'name':placeSlug}) }}">{{ place.placeName|capitalize }}</a></p>
+                    <p><a href="{{ path('index_placeDetails',{'name':placeSlug}) }}">New - {{ place.placeName|capitalize }}</a></p>
 
                         {% if place.placePhonenumber|length > 1 %}
-                            <p><b>Phone: </b>{{ place.placePhonenumber }}</p>
+                    <p><b>Phone: </b>{{ place.placePhonenumber }}</p>
                         {% else %}
-                            <p><b>Phone: </b>number not avaiable.</p>
+                    <p><b>Phone: </b>number not avaiable.</p>
                         {% endif %}
 
-                        <p><b>Type: </b>type - recode querys</p>
-                        <p><b>Address: </b>{{ place.placeVicinity }}</p>
+                    <p><b>Type: </b>type - recode querys</p>
+                    <p><b>Address: </b>{{ place.placeVicinity }}</p>
 
                         {% if place.placeRating|length != 0 %}
-                            <p><b>Ratings: <big><font color="green">{{ place.placeRating }}</font></b></big> / 5 points.</p>
+                    <p><b>Ratings: <big><font color="green">{{ place.placeRating }}</font></b></big> / 5 points.</p>
                         {% else %}
-                            <p><b>Ratings: </b> Ratings are not available for this place.</p>
+                    <p><b>Ratings: </b> Ratings are not available for this place.</p>
                         {% endif %}
-                        <p><b>Geo Location: </b><u>Lat. </u>{{ place.placeLat }}. <u>Lng.</u>{{ place.placeLng }}.</p>  
+                    <p><b>Geo Location: </b><u>Lat. </u>{{ place.placeLat }}. <u>Lng.</u>{{ place.placeLng }}.</p>  
 
                         {% if place.placeWebsite %}
-                            <p><b>WebSite: </b>{{ place.placeWebsite }}</p>
+                    <p><b>WebSite: </b>{{ place.placeWebsite }}</p>
                         {% else %}
-                            <p><b>WebSite: </b>website not avaiable</p>    
+                    <p><b>WebSite: </b>website not avaiable</p>    
                         {% endif %}
                 </div><!-- /.panel1 -->
-                
+
                 <!-- Photos section -->
                 <div id="pane2" class="tab-pane active">
                     <h1>{{ place.placeName }}</h1>
                     <!-- SlideShow -->
                     {% if placeAllPhotos is not empty %}
                         {% if placeAllPhotos|length > 1 %}
-                            <div id="carousel-example-generic" class="carousel slide">
-                            <!-- Indicators -->
-                            <ol class="carousel-indicators">
+                    <div id="carousel-example-generic" class="carousel slide">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
                                 {% for key,value in placeAllPhotos %}
                                     {% if key == 0 %}
-                                        <li data-target="#carousel-example-generic" data-slide-to="{{ key }}" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="{{ key }}" class="active"></li>
                                     {% else %}
-                                         <li data-target="#carousel-example-generic" data-slide-to="{{ key }}"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="{{ key }}"></li>
                                     {% endif %}
                                 {% endfor %}
-                            </ol>
+                        </ol>
 
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner">
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner">
                             {% for key,photo in placeAllPhotos %}
                                 {% if key == 0 %}
-                                    <div class="item active" style="border:0px solid blue; height: 350px; width:100%">
-                                    <img src="{{ photo.imgUrl }}" width="100%"/>
-                                        <div class="carousel-caption">
-                                            Slide {{ key }}
-                                        </div>
-                                    </div>
+                            <div class="item active" style="border:0px solid blue; height: 350px; width:100%">
+                                <img src="{{ photo.imgUrl }}" width="100%"/>
+                                <div class="carousel-caption">
+                                    Slide {{ key }}
+                                </div>
+                            </div>
                                 {% else %}
-                                    <div class="item" style="border:0px solid blue; height: 350px; width:100%">
-                                        <img src="{{ photo.imgUrl }}" width="100%"/>
+                            <div class="item" style="border:0px solid blue; height: 350px; width:100%">
+                                <img src="{{ photo.imgUrl }}" width="100%"/>
                                         {#<img src="http://upload.wikimedia.org/wikipedia/commons/a/a2/BadHogastein-Winter.jpg" alt="First slide">#}
-                                        <div class="carousel-caption">
-                                            Slide {{ key }}
-                                        </div>
-                                    </div>
+                                <div class="carousel-caption">
+                                    Slide {{ key }}
+                                </div>
+                            </div>
                                 {% endif %}
                             {% endfor %}
-                            </div><!-- /carousel-inner -->
+                        </div><!-- /carousel-inner -->
 
-                            <!-- Controls -->
-                            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                                <span class="glyphicon glyphicon-chevron-left"></span>
-                            </a>
-                            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                                <span class="glyphicon glyphicon-chevron-right"></span>
-                            </a>
-                        </div><!-- /carousel-example-generic -->
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
+                    </div><!-- /carousel-example-generic -->
                         {% else %}
                             {% for photo in placePhotos %}
-                                <div class="item" style="border:0px solid blue; width:100%;height:350px;" >
-                                    <a href="{{ photo.imgUrl }}" target="_blank"><img src="{{ photo.imgUrl }}" width="100%" height="100%" title="{{ place.placeName }}"/></a>
-                                </div>
+                    <div class="item" style="border:0px solid blue; width:100%;height:350px;" >
+                        <a href="{{ photo.imgUrl }}" target="_blank"><img src="{{ photo.imgUrl }}" width="100%" height="100%" title="{{ place.placeName }}"/></a>
+                    </div>
                             {% endfor %}
                         {% endif %}
                     {% else %}
-                        <center>
+                    <center>
                             {#<p>Image not found !</p>#}
-                            <span class="glyphicon glyphicon-picture icon-font-size-verylarge" title="Image not found !"></span>
-                        </center>
+                        <span class="glyphicon glyphicon-picture icon-font-size-verylarge" title="Image not found !"></span>
+                    </center>
                     {% endif %}
                 </div><!-- /.pane2 -->
-                
+
                 <!-- Vote section -->
                 <div id="pane3" class="tab-pane">
                     <div id="voteSection"> 
-                <h1>{{ place.placeName }}</h1>
+                        <h1>{{ place.placeName }}</h1>
                 {% if bool is defined %} {# client already voted ! #}
-                    <p><b>Total votes: </b>{{ totalVotesAllTime }} votes</p>
-                    <p><b>Total votes for this place: </b>{{ totalVotes }} votes</p>
-                    <p><b>Points / Stars:</b> <font color="green"><big>{{ usersRating }}</big></font></p>
+                        <p><b>Total votes: </b>{{ totalVotesAllTime }} votes</p>
+                        <p><b>Total votes for this place: </b>{{ totalVotes }} votes</p>
+                        <p><b>Points / Stars:</b> <font color="green"><big>{{ usersRating }}</big></font></p>
 
                     {% if usersRating < 2%}
                         <span class="glyphicon glyphicon-star icon-font-size-large"></span>
@@ -162,23 +163,23 @@
                         <span class="glyphicon glyphicon-star icon-font-size-large"></span>
                     {% endif %}
                 {% else %} {# if client dose not vote #}
-                <p>Select a star</p>
-                    <form>
-                        <br />1<input type="radio" name="vote" value="1" onclick="setVote(this.value,'{{ path('setVote') }}');">
-                        2<input type="radio" name="vote" value="2" onclick="setVote(this.value,'{{ path('setVote') }}');">
-                        3<input type="radio" name="vote" value="3" onclick="setVote(this.value,'{{ path('setVote') }}');">
-                        4<input type="radio" name="vote" value="4" onclick="setVote(this.value,'{{ path('setVote') }}');">
-                        5<input type="radio" name="vote" value="5" onclick="setVote(this.value,'{{ path('setVote') }}');">
-                    </form>
+                        <p>Select a star</p>
+                        <form>
+                            <br />1<input type="radio" name="vote" value="1" onclick="setVote(this.value, '{{ path('setVote') }}');">
+                            2<input type="radio" name="vote" value="2" onclick="setVote(this.value, '{{ path('setVote') }}');">
+                            3<input type="radio" name="vote" value="3" onclick="setVote(this.value, '{{ path('setVote') }}');">
+                            4<input type="radio" name="vote" value="4" onclick="setVote(this.value, '{{ path('setVote') }}');">
+                            5<input type="radio" name="vote" value="5" onclick="setVote(this.value, '{{ path('setVote') }}');">
+                        </form>
                 {% endif %}
                     </div><!-- /.voteSection -->
                 </div><!-- /.pane3 -->
-                
+
                 <div id="pane4" class="tab-pane">
                     <h1>{{ place.placeName }}</h1>
                      {% include 'BundlePlacesBundle:Reviews:index.html.twig' with {'reviews':reviews} %}
                 </div><!-- /.panel4 -->
-                
+
                 <div id="pane5" class="tab-pane">
                     <h1>Promotions</h1>
                     <p>reviews</p>
@@ -188,20 +189,20 @@
         </div><!-- /.tabbable -->
     </div><!-- /.tabs-div -->
     <!-- /Tabs content  -->
-    </article>   
-    <br />
-    
-    <!-- Map and directions (nested) -->
-    <article class="row" style="border:1px solid red;">
-        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="padding:2px;border:0px solid black;margin-bottom: 2px;">
-            <!--col-xs-12 col-sm-8 col-md-8 col-lg-8<br/>-->
-            <div id="googleMap" class="place-map"></div>
-        </div>
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="padding:2px;border:0px solid black;">
-            <!--col-xs-12 col-sm,md,lg-4 <br />-->
-            <div class="get-directions">
-                <h1>Directions</h1>
-                <div class="form-group">
+</article>   
+<br />
+
+<!-- Map and directions (nested) -->
+<article class="row" style="border:1px solid red;">
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="padding:2px;border:0px solid black;margin-bottom: 2px;">
+        <!--col-xs-12 col-sm-8 col-md-8 col-lg-8<br/>-->
+        <div id="googleMap" class="place-map"></div>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="padding:2px;border:0px solid black;">
+        <!--col-xs-12 col-sm,md,lg-4 <br />-->
+        <div class="get-directions">
+            <h1>Directions</h1>
+            <div class="form-group">
                     {# Method one
                         <form id="calculate-route" name="calculate-route" action="#" method="get">
                             <input class="form-control" type="text" id="from" name="from" required="required" placeholder="From A" size="15" />
@@ -212,25 +213,25 @@
                             <br />
                             <button class="btn btn-default" type="submit"><b>Get directions</b></button>
                         </form>#}
-                            
+
                     {#Metdod #2 with txt-directions #}
-                    <form action="#" onsubmit="setDirections(this.from.value, this.to.value); return false;">
-                        <input class="form-control" type="text" size="25" id="fromAddress" name="from" value="Cluj-Napoca,Romania" placeholder="location address"/>
-                        <a id="from-link" href="#">Get current position</a><img class="loader" style="display:none;padding-left: 5px;"src="{{ asset('bundles/bundleplaces/images/load.gif') }}"/>
-                        <input class="form-control" type="text" size="25" id="toAddress" name="to" value="{#{{ placeAddress }}#}" placeholder="destination address"/>                               
-                        <button class="btn btn-default" type="submit" style="width:100px;margin-top: 2px;"><img src="{{ asset('bundles/bundleplaces/images/icons/arrow_branch.png') }}" title="Get Directions" alt="accept" /></button>  <img src="{{ asset('bundles/bundleplaces/images/icons/car.png') }}" title="By car" alt="accept" />
-                    </form>
-                </div><!-- /.form-group -->
-                
-                <div id="directions" style="height: 310px;overflow: scroll;overflow-x: hidden;padding-top: 0px;padding-right: 3px;" class="scroll-style11">
-                    <p><small>Directions</small></p>
-                </div>
-            </div> 
-        </div><!-- /.nested cols -->
-    </article><!-- /.map-directions-div --> 
-    
-    <!-- Js to load map and directions -->
-    <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/google-map-get-directions.js') }}"></script>
+                <form action="#" onsubmit="setDirections(this.from.value, this.to.value);
+                            return false;">
+                    <input class="form-control" type="text" size="25" id="fromAddress" name="from" value="Cluj-Napoca,Romania" placeholder="location address"/>
+                    <a id="from-link" href="#">Get current position</a><img class="loader" style="display:none;padding-left: 5px;"src="{{ asset('bundles/bundleplaces/images/load.gif') }}"/>
+                    <input class="form-control" type="text" size="25" id="toAddress" name="to" value="{#{{ placeAddress }}#}" placeholder="destination address"/>                               
+                    <button class="btn btn-default" type="submit" style="width:100px;margin-top: 2px;"><img src="{{ asset('bundles/bundleplaces/images/icons/arrow_branch.png') }}" title="Get Directions" alt="accept" /></button>  <img src="{{ asset('bundles/bundleplaces/images/icons/car.png') }}" title="By car" alt="accept" />
+                </form>
+            </div><!-- /.form-group -->
+
+            <div id="directions" style="height: 310px;overflow: scroll;overflow-x: hidden;padding-top: 0px;padding-right: 3px;" class="scroll-style11">
+                <p><small>Directions</small></p>
+            </div>
+        </div> 
+    </div><!-- /.nested cols -->
+</article><!-- /.map-directions-div --> 
+
+<!-- Js to load map and directions -->
+<script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/google-map-get-directions.js') }}"></script>
     {#<script src=" http://maps.google.com/?file=api&amp;v=2&amp;key=ABQIAAAAjU0EJWnWPMv7oQ-jjS7dYxSPW5CJgpdgO_s4yyMovOaVh_KvvhSfpvagV18eOyDWu7VytS6Bi1CWxw" type="text/javascript"></script>#}
     {#<script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/loadMap.js') }}"></script>#}
-    

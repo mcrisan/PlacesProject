@@ -31,21 +31,21 @@ class PageController extends Controller {
 //        if(array_key_exists('places', $data)){
 //            $places = $data['places'];
 //        }        
-        $places ="";
+        $places = "";
         //var_dump($data);
 
         return $this->render("BundlePlacesBundle:Page:home.html.twig", array(
-                    "places" => $places            
-                )
-            );
+                    "places" => $places
+                        )
+        );
 
         //return $this->redirect($this->generateUrl('index'));
     }
-    
+
     // About page
     function aboutAction() {
         $this->em = $this->getDoctrine()->getManager();
-       
+
         $placeop = $this->get("userop");
         $currentIp = $placeop->getIp();
 
@@ -103,15 +103,29 @@ class PageController extends Controller {
                         'providerName' => $providerName
             ));
         }
-       
+
         return $this->render("BundlePlacesBundle:About:about.html.twig");
     }
-    
-    
 
     // Demo page - main (New homepage)
     public function indexAction() {
-        $userid = $this->getAuthUser();
+        $securityContext = $this->container->get('security.context');
+        if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $userid = $this->getAuthUser();
+            $ownerPlaces = $this->get('ownerplaces');
+            $placeO = $ownerPlaces->getPlaceForUser($userid);
+            if($placeO){
+                $placesList = $placeO;
+            }else{
+                $placesList = '';
+            }
+           
+            //search action
+        }else{
+            $userid = 'null';
+            $placesList = '';
+        }
+
 
         $session = $this->get('session');
         $this->em = $this->getDoctrine()->getManager();
@@ -120,16 +134,16 @@ class PageController extends Controller {
         $searchInput = "ma";
         $searchInputVal = $request->query->get('input');
         $food = $request->query->get('food');
-        if(!$food){
-            $food="off";
+        if (!$food) {
+            $food = "off";
         }
         $drink = $request->query->get('drink');
-        if(!$drink){
-            $drink="off";
+        if (!$drink) {
+            $drink = "off";
         }
         if (!empty($searchInputVal)) {
             $searchInput = $searchInputVal;
-        } 
+        }
 //        $name = urlencode($searchInput);
 //        $url = "http://localhost/PlacesProject/web/app_dev.php/searchplace/$name/$food/$drink";
 //        $json = file_get_contents($url);
@@ -138,15 +152,12 @@ class PageController extends Controller {
 //        $placeservice= $this->get("search");
 //        $place_det = $placeservice->searchByName($name, $food, $drink);
 //        $data = json_decode($place_det, TRUE);
-        
 //        owner found
-        
         //if ($session->has('places')) {
         //    $places = $session->get('places');
         //}else{
-            //echo "nu e sesiune";
+        //echo "nu e sesiune";
         //}
-        
         //$placeop = $this->get("placeop");
         $placeop = $this->get("placeOperation");
         $json = $placeop->searchByName($searchInput, $food, $drink);
@@ -158,16 +169,16 @@ class PageController extends Controller {
         $userInfo = $data['details']['userInfos'];
 
 // verify if the use is the owner of the place
-            if ($data['details']['placeInfos']['place']['hasowner'] == $userid) {
-                $isowner = '1';
-            } else {
-                $isowner = '0';
-            }
+        if ($data['details']['placeInfos']['place']['hasowner'] == $userid) {
+            $isowner = '1';
+        } else {
+            $isowner = '0';
+        }
 
         if ($placeInfo['userStatus']) {
             $userVoted = true;
         } else {
-            $userVoted = false;          
+            $userVoted = false;
         }
         if (!isset($placeInfo['totalVotesForPlace'][0]['votesCount'])) {
             $placeInfo['totalVotesForPlace'][0]['votesCount'] = 0;
@@ -178,7 +189,8 @@ class PageController extends Controller {
         if (!isset($placeInfo['totalCounts'][0]['votesCount'])) {
             $placeInfo['totalCounts'][0]['votesCount'] = 1;
         }
-
+//        print_r($placeInfo['events']);
+//        die;
         $placeDto = $this->get("placeDto");
         $placeDto->setPlaceDetails($placeInfo['place']);
         $placeDto->setFirstPhoto($placeInfo['placePhotos']);
@@ -197,8 +209,7 @@ class PageController extends Controller {
             return $this->render('BundlePlacesBundle:Page:details.html.twig', array(
                         'input' => $searchInput,
                         'places' => $places,
-                        'place'  => $placeDto, // object
-                        
+                        'place' => $placeDto, // object
                         //'placeDetails' => $placeInfo['place'],
                         //'placePhotos' => $placeInfo['placePhotos'],
                         //'placeAllPhotos' => $placeInfo['placeAllPhotos'],
@@ -214,21 +225,23 @@ class PageController extends Controller {
                         'userName' => $userInfo['userName'],
                         'socialLogged' => $userInfo['socialLogged'],
                         'providerName' => $userInfo['providerName'],
-                        'isowner' =>   $isowner
+                        'isowner' => $isowner,
+                        'events' => $placeInfo['events'],
+                        'placesList' => $placesList
             ));
-        } 
+        }
         return $this->render('BundlePlacesBundle:Page:details.html.twig', array(
-        
-        
                     'input' => $searchInput,
                     //'place' => $places,
                     'places' => $places,
-                    'place'  => $placeDto,
+                    'place' => $placeDto,
                     'userId' => $userInfo['userId'],
                     'userName' => $userInfo['userName'],
                     'socialLogged' => $userInfo['socialLogged'],
-                 //   'socialLogged' => $userDet['socialLogged'],
-                    'isowner' =>   $isowner
+                    //   'socialLogged' => $userDet['socialLogged'],
+                    'isowner' => $isowner,
+                    'events' => $placeInfo['events'],
+                    'placesList' => $placesList 
         ));
     }
 
@@ -384,31 +397,39 @@ class PageController extends Controller {
         }
         return null;
     }
-    
-    
+
     function testAction() {
         $this->em = $this->getDoctrine()->getManager();
+        $placedet = $this->em->getRepository('BundlePlacesBundle:PlaceEvents')->find(3);
+        //$placedet->setPlaceRating("132rweafrgsegsrggwe");
+        //var_dump($placedet);
+        $validator = $this->container->get('validator');
+        $errors = $validator->validate($placedet);
+        $strerror = (string) $errors;
+        if ($strerror) {
+            echo "nu e bun";
+        } else {
+            echo "bun";
+        }
 
-        
-        
+
+
         //var_dump($tags);
-        
-        $placedao = $this->get("placesDAO");
-        var_dump($placedao ->checkCurrentSlug("restaurant-havana"));
-        $placeop = $this->get("placeOperation");
-        var_dump($placeop ->isPhoto(1595));
-        
-        $placeop = $this->get("userop");
-        var_dump($placeop->getIp());
+//        $placedao = $this->get("placesDAO");
+//        var_dump($placedao ->checkCurrentSlug("restaurant-havana"));
+//        $placeop = $this->get("placeOperation");
+//        var_dump($placeop ->isPhoto(1595));
+//        
+//        $placeop = $this->get("userop");
+//        var_dump($placeop->getIp());
         //$placeop->getPlaceInfosBySlug("restaurant-havana");
         return $this->render("BundlePlacesBundle:About:about.html.twig");
-        
     }
-    
+
     public function getAuthUser() {
-        if(!is_null($this->get('security.context')->getToken()) && $this->get('security.context')->getToken()->getUser() != 'anon.'){
+        if (!is_null($this->get('security.context')->getToken()) && $this->get('security.context')->getToken()->getUser() != 'anon.') {
             return $this->get('security.context')->getToken()->getUser()->getId();
-        }else{
+        } else {
             return 0;
         }
 //        $userid_s = $this->get('security.context')->getToken()->getUser();
