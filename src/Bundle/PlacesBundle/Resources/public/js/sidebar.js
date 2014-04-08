@@ -28,6 +28,8 @@ $(document).ready(function() {
     $(".restaurant-list").on('click','.it',function(event){
         param = $(this).attr('href');
         event.preventDefault();
+        $(".restaurant-list li").removeClass("item-active");
+        $(this).parents('li').addClass("item-active");
         $(this).addClass('active').siblings().removeClass('active');
         $.ajax({
             url: param,

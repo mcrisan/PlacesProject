@@ -15,11 +15,12 @@
         <ul class="restaurant-list">
         {% if input is defined %}
             {% for key,place in places %}
-                <li>
+                {% set itemActive = (key == 0 ? 'item-active' : '') %}
+                <li class="{{ itemActive }}">
                     <section>
                         {# set first result as active #}
                         {% set active = (key == 0 ? 'active' : '') %}
-                        <a id="{{ place.placeId }}" class="it {{ active }}" href="{{ path('renderPlace',{'param':place.slug}) }}">
+                        <a id="{{ place.placeId }}" class="it" href="{{ path('renderPlace',{'param':place.slug}) }}">
                             <header>{{ place.placeName }}</header>
                             <ul class="rating-stars">                
                                {% for i in 1..5%}

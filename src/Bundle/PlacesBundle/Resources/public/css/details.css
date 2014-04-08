@@ -69,6 +69,11 @@ ul, nav, aside{
 	background: url('../images/list-selector.png') no-repeat, rgb(219,219,219);
 	background-position: center left;
 }
+.item-active{
+        background: url('../images/list-selector.png') no-repeat;
+        text-decoration: underline;
+	background-position: center left;
+}
 
 .restaurant-list > li > section {
 	height: 100%;
