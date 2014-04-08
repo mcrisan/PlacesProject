@@ -1,10 +1,10 @@
 $(function() {
     var geocoder = new google.maps.Geocoder();
     var data2;
-
+//url redefine to dynamic form
     $.ajax({
         type: "POST",
-        url: "placesnames",
+        url: "http://localhost/placesproject/web/app_dev.php/placesnames",
         cache: false,
         dataType: 'json',
         success: function(data) {
