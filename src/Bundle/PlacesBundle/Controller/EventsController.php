@@ -15,6 +15,7 @@ use Bundle\PlacesBundle\Entity\AppUsers;
 use Bundle\PlacesBundle\lib\UserIp;
 use Bundle\PlacesBundle\Service\PlaceOperations;
 use Bundle\PlacesBundle\Command\InsertAllDetailsCommand;
+use Symfony\Component\Filesystem\Filesystem;
 
 class EventsController extends Controller {
 
@@ -50,22 +51,72 @@ class EventsController extends Controller {
         return $resp;
     }
 
-    public function eventuploaduhoto($url) {
-        $request = Request::createFromGlobals();
-        var_dump($request);
-        $saveto = '';//?
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
+    public function getDataFromUrl($url) {
+        $ch = curl_init();
+        $timeout = 5;
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
-        $raw = curl_exec($ch);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        $data = curl_exec($ch);
         curl_close($ch);
-        if (file_exists($saveto)) {
-            unlink($saveto);
+        return $data;
+    }
+
+    public function eventuploaduhotoAction() {
+        $request = Request::createFromGlobals();
+//        var_dump($request);
+//        echo "<hr />";
+        $image = $request->get('value');
+        $tImage = $this->getDataFromUrl($image);
+        if (getimagesize($image) !== false) {
+            echo "is image";
+            echo "<pre>";
+            $imDets = getimagesize($image);
+            $fs = new Filesystem();
+            
+                $fp = fopen('D:\git\PlacesProject\web\uploads\\'. uniqid() . '.jpg', 'w');
+                fwrite($fp, $tImage);
+                fclose($fp);
+           
+            
+        }else{
+            echo "not an image";
         }
-        $fp = fopen($saveto, 'x');
-        fwrite($fp, $raw);
-        fclose($fp);
+//        verify if extension is a foto
+//        $saveto = ''; //?
+//        $ch = curl_init($url);
+//        curl_setopt($ch, CURLOPT_HEADER, 0);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//        curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+//        $raw = curl_exec($ch);
+//        curl_close($ch);
+//        if (file_exists($saveto)) {
+//            unlink($saveto);
+//        }
+//        $fp = fopen($saveto, 'x');
+//        fwrite($fp, $raw);
+//        fclose($fp);
+//
+//        echo "<pre>";
+//        print_r($placeInfo['events']);
+//        echo $placeInfo['events']['image'];
+//        echo getcwd();
+//        $returned_content = $this->getDataFromUrl($placeInfo['events']['image']);
+//
+//        echo $returned_content;
+//
+//        $fp = fopen('C:\Users\vtapu\Desktop\git\PlacesProject\web\uploads\\' . uniqid() . '.jpg', 'w');
+//        fwrite($fp, $returned_content);
+//        fclose($fp);
+//        $fs = new \Symfony\Component\Filesystem\Filesystem();
+//
+//        try {
+//            $fs->mkdir('C:\Users\vtapu\Desktop\git\PlacesProject\web\uploads\asdasd');
+//        } catch (IOExceptionInterface $e) {
+//            echo "An error occurred while creating your directory at " . $e->getPath();
+//        }
+//
+//        die;
     }
 
 }

@@ -19,4 +19,11 @@ index_indexShowPlace:
         
 index_placeDetails:
     pattern: /home/details/{name}
-    defaults: { _controller: BundlePlacesBundle:Page:placeDetails }     
+    defaults: { _controller: BundlePlacesBundle:Page:placeDetails }    
+    
+eventUploadPhoto:
+    path: /eventUploadPhoto
+    defaults: { _controller: BundlePlacesBundle:Events:eventuploaduhoto }
+   # methods:  [POST]
+#    requirements:
+#        id:  \d+

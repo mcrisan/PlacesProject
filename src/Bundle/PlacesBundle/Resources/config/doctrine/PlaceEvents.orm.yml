@@ -34,5 +34,10 @@ Bundle\PlacesBundle\Entities\PlaceEvents:
             fixed: false
             nullable: false
             column: description
+        eventdate:
+            type: datetime
+            fixed: false
+            nullable: false
+            column: eventdate
             
 lifecycleCallbacks: {  }

@@ -107,21 +107,22 @@ class PageController extends Controller {
         return $this->render("BundlePlacesBundle:About:about.html.twig");
     }
 
-    // Demo page - main (New homepage)
+   
+
     public function indexAction() {
         $securityContext = $this->container->get('security.context');
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $userid = $this->getAuthUser();
             $ownerPlaces = $this->get('ownerplaces');
             $placeO = $ownerPlaces->getPlaceForUser($userid);
-            if($placeO){
+            if ($placeO) {
                 $placesList = $placeO;
-            }else{
+            } else {
                 $placesList = '';
             }
-           
+
             //search action
-        }else{
+        } else {
             $userid = 'null';
             $placesList = '';
         }
@@ -138,7 +139,7 @@ class PageController extends Controller {
         $criteria->setName($searchInputVal);
         $placeop = $this->get("placeOperation");
         $json = $placeop->searchByName($criteria);
-        $data = json_decode($json, TRUE);       
+        $data = json_decode($json, TRUE);
         $places = $data['details']['places'];
         $totalResults = count($places);
         $placeInfo = $data['details']['placeInfos'];
@@ -170,35 +171,35 @@ class PageController extends Controller {
         $placeDto->setUsersRating($rate);
         $placeDto->setTotalVotesForPlace($placeInfo['totalVotesForPlace'][0]['votesCount']);
         $placeDto->setUserVoted($userVoted);
-
-        if ($placeInfo['userStatus']) { // if user voted for current store                
-            return $this->render('BundlePlacesBundle:Page:details.html.twig', array(
-                        'input' => $searchInputVal,
-                        'places' => $places,
-                        'place'  => $placeDto,
-                        'totalResults' => $totalResults,
-                        'userId' => $userInfo['userId'],
-                        'userName' => $userInfo['userName'],
-                        'socialLogged' => $userInfo['socialLogged'],
-                        'providerName' => $userInfo['providerName'],
-                        'isowner' => $isowner,
-                        'events' => $placeInfo['events'],
-                        'placesList' => $placesList
-            ));
-        }
+        
+        //if ($placeInfo['userStatus']) { // if user voted for current store                
         return $this->render('BundlePlacesBundle:Page:details.html.twig', array(
                     'input' => $searchInputVal,
-                    //'place' => $places,
                     'places' => $places,
                     'place' => $placeDto,
+                    'totalResults' => $totalResults,
                     'userId' => $userInfo['userId'],
                     'userName' => $userInfo['userName'],
                     'socialLogged' => $userInfo['socialLogged'],
-                    //   'socialLogged' => $userDet['socialLogged'],
+                    'providerName' => $userInfo['providerName'],
                     'isowner' => $isowner,
                     'events' => $placeInfo['events'],
-                    'placesList' => $placesList 
+                    'placesList' => $placesList
         ));
+        //}
+//        return $this->render('BundlePlacesBundle:Page:details.html.twig', array(
+//                    'input' => $searchInputVal,
+//                    //'place' => $places,
+//                    'places' => $places,
+//                    'place' => $placeDto,
+//                    'userId' => $userInfo['userId'],
+//                    'userName' => $userInfo['userName'],
+//                    'socialLogged' => $userInfo['socialLogged'],
+//                    //   'socialLogged' => $userDet['socialLogged'],
+//                    'isowner' => $isowner,
+//                    'events' => $placeInfo['events'],
+//                    'placesList' => $placesList 
+//        ));
     }
 
 // index
@@ -371,12 +372,12 @@ class PageController extends Controller {
 
 
         //var_dump($tags);
-        
+
         $placedao = $this->get("placesDAO");
-        var_dump($placedao ->checkCurrentSlug("restaurant-havana"));
+        var_dump($placedao->checkCurrentSlug("restaurant-havana"));
         $placeop = $this->get("placeOperation");
-        var_dump($placeop ->isPhoto(1595));
-        
+        var_dump($placeop->isPhoto(1595));
+
         $placeop = $this->get("userop");
         var_dump($placeop->getIp());
         //$placeop->getPlaceInfosBySlug("restaurant-havana");

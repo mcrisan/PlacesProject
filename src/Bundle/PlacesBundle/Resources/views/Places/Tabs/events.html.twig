@@ -1,3 +1,11 @@
+{% block stylesheets %} 
+<link href="http://vitalets.github.io/x-editable/assets/x-editable/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">   
+{% endblock %}
+{% block javascript %}
+<script src="http://vitalets.github.io/x-editable/assets/momentjs/moment.min.js"></script> 
+
+{% endblock %}
+
 {% if isowner == 1 %}
     {% if events.title == NULL and events.description == NULL %}
 <h2> No event defined. Please add an event</h2>
@@ -7,9 +15,9 @@
     Title: <a data-original-title="Enter title" data-name="title" data-type="text" id="title" class="myeditable editable editable-click editable-empty" href="#"></a><br />
     Description: <a data-original-title="Enter body" data-name="body" data-type="textarea" class="myeditable editable editable-click editable-empty" href="#"></a><br />
     Foto: <a data-original-title="Enter picture" data-name="picture" data-type="text" class="myeditable editable editable-pre-wrapped editable-click editable-empty" href="#">Photo</a><br /><br />
-
-    <img src="{{ events.image }}" width="160px" alt="poster" >
-
+    <a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="picture" data-type="text" data-pk="1" href="#">
+        <img class="img-e" src="{{ events.image }}" width="160px" alt="poster" >
+    </a>
     <div>
         <button class="btn btn-primary" id="save-btn">Save changes</button>
 
@@ -19,31 +27,20 @@
     <input type="hidden" value="{{ place.placeid }}" id="dataid" >
     <article>
         <div class="images">
-            <img title="" src="{{ events.image }}">
+            <a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="picture" data-type="text" data-pk="1" href="#">
+                <img class="img-e" src="{{ events.image }}" width="160px" alt="poster" >
+            </a>
         </div>
         <header>
             <a style="color: #000000;border-bottom: none;" data-original-title="Enter title" data-name="title" data-type="text" id="title" class="myeditable editable editable-click editable-empty" href="#">{{ events.title }}</a>
         </header>
 
-        <aside class="element-bar">
-            <ul class="rating-stars">                
-                <li></li>               
-                <li></li>               
-                <li></li>               
-                <li></li>               
-                <li class="red"></li>
-            </ul>
-            <ul class="social-bar">
-                <li><a href="#"></a></li>
-                <li><a href="#"></a></li>
-                <li><a href="#"></a></li>
-                <li><a href="#"></a></li>
-            </ul>
-        </aside>
-        <p></p>
+        <p><a class="editable editable-click editable-empty" href="#" id="event" data-type="combodate" data-template="D MMM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="MMM D, YYYY, HH:mm" data-pk="1" data-title="Setup event date and time">Empty</a></p>
         <p><a style="color: #000000;border-bottom: none;" data-original-title="Enter body" data-name="body" data-type="textarea" class="myeditable editable editable-click editable-empty" href="#">{{ events.description }}</a></p>
-        <p></p>
+
     </article>
+    <div id="left-paginate"> <div class="arrow-left"></div>   </div>
+    <div id="right-paginate"> <div class="arrow-right"></div> </div>
             {#
             <h2><a style="color: #000000;border-bottom: none;" data-original-title="Enter title" data-name="title" data-type="text" id="title" class="myeditable editable editable-click editable-empty" href="#">{{ events.title }}</a><br /></h2>
             <a style="color: #000000;border-bottom: none;" data-original-title="Enter picture" data-name="picture" data-type="text" class="myeditable editable editable-pre-wrapped editable-click editable-empty" href="#">Change foto</a>
@@ -51,11 +48,10 @@
             
 
             <img src="{{ events.image }}" width="160px" alt="poster" >
-
-            <div>
-                <button class="btn btn-primary" id="save-btn">Save changes</button>
-
-            </div>#}
+#}
+    <div class="submit-but-div">
+        <button class="btn btn-primary" id="save-btn">Save changes</button>
+    </div>
     <div id="msg-show"> </div>
 
 
@@ -71,28 +67,15 @@
             {% else %}
     <article>
         <div class="images">
-            <img title="" src="{{ events.image }}">
+            <img class="img-e" title="" src="{{ events.image }}">
         </div>
         <header><a title="" href="#">{{ events.title }}</a></header>
 
-        <aside class="element-bar">
-            <ul class="rating-stars">                
-                <li></li>               
-                <li></li>               
-                <li></li>               
-                <li></li>               
-                <li class="red"></li>
-            </ul>
-            <ul class="social-bar">
-                <li><a href="#"></a></li>
-                <li><a href="#"></a></li>
-                <li><a href="#"></a></li>
-                <li><a href="#"></a></li>
-            </ul>
-        </aside>
+
         <p></p>
         <p>{{ events.description }}</p>
         <p></p>
+
     </article>
 
 
@@ -100,14 +83,98 @@
         {% endif %}
 {% endif %}
 
-
+{#move this to style.css#}
     <style>
         .editable-input{
-            width: 415px;
+            width: 400px;
         }
         .editable-buttons{
             display: block;
             margin-top: 5px;
         }
+
+        .img-e{
+            width:100%;
+            height: 100%;
+        }
+        #left-paginate{
+            border-left: 1px solid #000000;
+            height: 359px;
+            left: -13px;
+            position: absolute;
+            top: -4px;
+            width: 22px;
+            opacity: 0.32;
+        }
+
+        #left-paginate:hover{
+            opacity: 1;
+        }
+
+        #right-paginate:hover{
+            opacity: 1;
+        }
+
+        #right-paginate{
+            border-right: 1px solid #000000;
+            height: 359px;
+            position: absolute;
+            right: 0;
+            top: -4px;
+            width: 22px;
+            opacity: 0.32;
+        }
+
+        .arrow-right {
+            border-bottom: 20px solid rgba(0, 0, 0, 0);
+            border-left: 20px solid #FF0000;
+            border-top: 20px solid rgba(0, 0, 0, 0);
+            margin-top: 165px;
+            height: 0;
+            width: 0;
+            cursor: pointer;
+
+        }
+
+        .arrow-left {
+            width: 0; 
+            height: 0; 
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent; 
+            margin-top: 165px;
+            cursor: pointer;
+            border-right:20px solid #FF0000; 
+        }
+
+        .day {
+            width: 89px !important;
+        }
+
+        .submit-but-div{
+            border: 1px solid #000000;
+            bottom: 0;
+            position: absolute;
+            right: 76px;
+        }
+        .form-control.day{
+            margin-left: 0px;
+            margin-right: 1px;
+        }
+        .form-control.month{
+            margin-left: -24px;
+            margin-right: 0;
+        }
+        .form-control.year{
+            margin-left: -24px;
+            margin-right: -7px;
+        }
+        .form-control.hour{
+            margin-left: -24px;
+            margin-right: -7px;
+        }
+        .form-control.minute{
+            margin-left: 0px;
+            margin-right: 0px;
+        }
     </style>
-   <a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="picture" data-type="text" data-pk="1" href="#">Change foto</a>
+

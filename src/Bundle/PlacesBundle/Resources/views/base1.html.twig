@@ -10,6 +10,7 @@
         <!-- App css -->
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/style.css') }}" />
         <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.1/css/bootstrap.css" />
+        <link href="http://vitalets.github.io/x-editable/assets/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet">
         <!-- Append css -->
         {% block stylesheets %} {% endblock %}
     </head>
@@ -81,12 +82,13 @@
 
         <!-- Bootstrap js -->
         <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/bootstrap.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/typeahead.js')  }}"></script>
+{#        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/typeahead.js')  }}"></script>#}
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
         <!-- App js -->
         <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/image-hover.js') }}"></script>
         <!-- for autocomplete -->
         <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/searchautocomplete.js') }}"></script>
+        <script src="http://vitalets.github.io/x-editable/assets/x-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>
         {% block javascript %} 
             {# private js - overwrite in view if needed #}
         {% endblock %}

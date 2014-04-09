@@ -31,9 +31,4 @@ editevent_edit:
    # methods:  [POST]
     requirements:
         id:  \d+
-eventUploadPhoto_event:
-    path: /eventUploadPhoto
-    defaults: { _controller: BundlePlacesBundle:Events:eventuploaduhoto }
-   # methods:  [POST]
-    requirements:
-        id:  \d+
+        
