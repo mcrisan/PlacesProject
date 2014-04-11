@@ -16,26 +16,30 @@
     Description: <a data-original-title="Enter body" data-name="body" data-type="textarea" class="myeditable editable editable-click editable-empty" href="#"></a><br />
     Foto: <a data-original-title="Enter picture" data-name="picture" data-type="text" class="myeditable editable editable-pre-wrapped editable-click editable-empty" href="#">Photo</a><br /><br />
     <a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="picture" data-type="text" data-pk="1" href="#">
-        <img class="img-e" src="{{ events.image }}" width="160px" alt="poster" >
+        <img class="img-e" id="poster" src="{{ events.image }}" width="160px" alt="poster" >
     </a>
     <div>
         <button class="btn btn-primary" id="save-btn">Save changes</button>
-
     </div>
     <div id="msg-show"> </div>
     {% else %}
     <input type="hidden" value="{{ place.placeid }}" id="dataid" >
-    <article>
-        <div class="images">
+    <article id="event-article">
+        <div class="images" id="imagepreview">
             <a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="picture" data-type="text" data-pk="1" href="#">
-                <img class="img-e" src="{{ events.image }}" width="160px" alt="poster" >
+                <img class="img-e" id="poster" src="{{ events.image }}" width="160px" alt="poster" >
             </a>
         </div>
         <header>
             <a style="color: #000000;border-bottom: none;" data-original-title="Enter title" data-name="title" data-type="text" id="title" class="myeditable editable editable-click editable-empty" href="#">{{ events.title }}</a>
         </header>
 
-        <p><a class="editable editable-click editable-empty" href="#" id="event" data-type="combodate" data-template="D MMM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="MMM D, YYYY, HH:mm" data-pk="1" data-title="Setup event date and time">Empty</a></p>
+        <p>
+            <a class="editable editable-click editable-empty" data-value="{{ events.eventdate.date }}" href="#" id="event" data-type="combodate" data-template="D MMM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="MMM D, YYYY, HH:mm" data-pk="1" data-title="Setup event date and time">
+            {{ events.eventdate.date }}
+            </a>
+        </p>
+        <span id="imagetag"> </span>
         <p><a style="color: #000000;border-bottom: none;" data-original-title="Enter body" data-name="body" data-type="textarea" class="myeditable editable editable-click editable-empty" href="#">{{ events.description }}</a></p>
 
     </article>
@@ -67,7 +71,7 @@
             {% else %}
     <article>
         <div class="images">
-            <img class="img-e" title="" src="{{ events.image }}">
+            <img class="img-e" id="poster" title="" src="{{ events.image }}">
         </div>
         <header><a title="" href="#">{{ events.title }}</a></header>
 

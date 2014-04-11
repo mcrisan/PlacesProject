@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Entities/Repository/PlaceTagsRepository.php</file>
             <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Controller/PageController.php</file>
             <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Page/home.html.twig</file>
@@ -19,6 +20,15 @@
             <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/base.html.twig</file>
             <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/public/js/image-hover.js</file>
             <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/base1.html.twig</file>
+=======
+            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Controller/PageController.php</file>
+            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Resources/views/Places/Tabs/events.html.twig</file>
+            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Services/Places.php</file>
+            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Resources/public/js/x-editable-custom.js</file>
+            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Resources/public/css/x-editable.css</file>
+            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Resources/public/css/style.css</file>
+            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Controller/EventsController.php</file>
+>>>>>>> cfc9ccfadb9572e5a517beadee0aadd1c2607db3
         </group>
     </open-files>
 </project-private>
