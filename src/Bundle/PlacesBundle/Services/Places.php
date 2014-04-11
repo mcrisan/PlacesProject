@@ -427,10 +427,12 @@ class Places {
                 $placeInfo['events']['image'] = $events->getImage();
                 $placeInfo['events']['title'] = $events->getTitle();
                 $placeInfo['events']['description'] = $events->getDescription();
+                $placeInfo['events']['eventdate'] = $events->getEventdate();
             } else {
                 $placeInfo['events']['image'] = NULL;
                 $placeInfo['events']['title'] = NULL;
                 $placeInfo['events']['description'] = NULL;
+                $placeInfo['events']['date'] = NULL;
             }
 
             $placeInfo['userStatus'] = $this->opDAO->getUserStatus($placeId, $this->userop->getIp());

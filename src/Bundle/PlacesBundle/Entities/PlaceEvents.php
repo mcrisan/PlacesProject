@@ -47,7 +47,28 @@ class PlaceEvents {
     public function getId() {
         return $this->id;
     }
+    
+    /**
+     * Get eventdate
+     *
+     * @return sting 
+     */
+    public function getEventdate() {
+        return $this->eventdate;
+    }
 
+    /**
+     * Set eventdate
+     *
+     * @param string $eventdate
+     * @return eventdate
+     */
+    public function setEventdate($eventdate) {
+        $this->eventdate = $eventdate;
+
+        return $this;
+    }
+    
     /**
      * Set image
      *
