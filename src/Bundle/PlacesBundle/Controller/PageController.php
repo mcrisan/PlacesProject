@@ -7,6 +7,7 @@ namespace Bundle\PlacesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand;
+use Symfony\Component\HttpFoundation\Response;
 
 class PageController extends Controller {
 
@@ -31,15 +32,32 @@ class PageController extends Controller {
 //        if(array_key_exists('places', $data)){
 //            $places = $data['places'];
 //        }        
+        
+        
+       $articles = $this->getDoctrine()
+                  ->getRepository("BundlePlacesBundle:PlaceEvents")
+                  ->findAll();
         $places = "";
-        //var_dump($data);
 
         return $this->render("BundlePlacesBundle:Page:home.html.twig", array(
-                    "places" => $places
+                    "places" => $places, "events"=> $articles
                         )
         );
 
         //return $this->redirect($this->generateUrl('index'));
+    }
+    
+    function eventsDetailsAction() {
+              
+       $articles = $this->getDoctrine()
+                  ->getRepository("BundlePlacesBundle:PlaceEvents")
+                  ->findEvents();
+        $res = json_encode($articles);
+        $resp = new Response($res, 200);
+        $resp->headers->set('Content-Type', 'application/json');
+
+
+        return $resp;       
     }
 
     // About page
@@ -132,6 +150,13 @@ class PageController extends Controller {
         $this->em = $this->getDoctrine()->getManager();
         $request = Request::createFromGlobals();
         $searchInputVal = $request->query->get('input');
+        $placeid = $request->query->get('placeid');
+        if($placeid){
+           
+        $place = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')->find($placeid) ;//findOneBy(array("placeId" => $placeid));
+        //var_dump($place);
+        $searchInputVal = $place->getPlaceName();
+        }
         $food = $request->query->get('food');
         $drink = $request->query->get('drink');
         $criteria = $this->get('criteria');

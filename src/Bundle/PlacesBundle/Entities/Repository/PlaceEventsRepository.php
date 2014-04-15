@@ -15,4 +15,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class PlaceEventsRepository extends EntityRepository{
     //put your code here
+    
+    public function findEvents() {
+        $em = $this->getEntityManager();
+        
+        $qb = $em->createQueryBuilder()
+                ->select('events.placeid,events.id, events.title, events.description, events.eventdate, events.image')
+                ->from('BundlePlacesBundle:PlaceEvents', 'events')
+                ->getQuery()
+                ->getResult();
+        return $qb;
+    }
 }

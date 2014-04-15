@@ -1,31 +1,64 @@
 {% extends 'BundlePlacesBundle::base1.html.twig' %}
 {% block content %} 
 	{% set counter = 0 %}
-	{% for i in 0..6 %}
+{#{% for event in events %}
+<div style="height:180px; width:252px ">
+    <img class="img" id="{{event.getId()}}" src="{{event.getImage()}}"/>
+    <div class="hover-image">
+        <label>{{event.getTitle()}}</label>
+        <p>{{event.getDescription()}}</p>
+        <ul>
+          {{event.getEventdate()|date('Y-m-d')}}
+        
+       
+        </ul>
+    </div>
+</div>
+
+
+{%endfor%}#}
+	{# {% for i in 0..6 %}
 
 		<div>
 		 	{% for j in 0..6 %}
-			 	{% if counter > 19 %}
+			 	{% if counter > 42 %}
 			 		{% set counter = 0 %}
 			 	{% else %}
 			 		{% set counter = counter+1 %}
 			 	{% endif %}
-		 		{% if i == 3%}
-		 			<img id="{{counter}}" class="no-hovering" src="{{ asset('bundles/bundleplaces/images/fast-food.jpg') }}"/>
-	 			{% else %}
-			 		<img id="{{counter}}" src="{{ asset('bundles/bundleplaces/images/fast-food.jpg') }}"/>
+		 		{% if i == 3 %}
+		 			<img id="" src="{{ asset('bundles/bundleplaces/images/fast-food.jpg') }}"/>
+                                        {% set counter = counter - 1 %}
+	 			{% elseif counter<11 %}
+			 		<img id="{{events[counter].id}}" src="{{events[counter].getImage()}}"/>
+                                {% else %}
+                                     <img id="" src="{{ asset('bundles/bundleplaces/images/fast-food.jpg') }}"/>   
 			 	{% endif %}
 	    	{% endfor %}
     	</div>
-    {% endfor %}
+    {% endfor %} #}
+
+{% for event in events %}
+<div class="event-container">
+    <div  class="homepicture" >
+    <img src="{{event.getImage()}}" class="eventimage" >
+     
+        <div  class="description events" rel="{{event.getPlaceid()}}"  >
+            <span>{{event.getTitle()}} </span>
+            <p>{{event.getDescription()}}</p>
+            <p1>Event date: {{event.getEventdate()|date('m-d-Y H:i')}}</p1>
+         </div>
+    </div>
+
+</div>
+
+{% endfor %}
 {% endblock %}	
 
 {% block javascript %}
-	<script>
-    	var places = {{ places|json_encode|raw }};
-	</script>
+     
 {% endblock %}
-
+                  
 {% block stylesheets %}
      <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/home.css') }}" />
 {% endblock %}
