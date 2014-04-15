@@ -44,6 +44,7 @@ class EventsController extends Controller {
 
     public function eventuploaduhotoAction() {
         $uid = uniqid();
+        $webPath = $this->get('kernel')->getRootDir().'/../web';
         $request = Request::createFromGlobals();
         $image = $request->get('value');
         if (filter_var($image, FILTER_VALIDATE_URL) === FALSE) {
@@ -54,11 +55,11 @@ class EventsController extends Controller {
             $imDets = getimagesize($image);
             $fs = new Filesystem();
 
-            $fp = fopen('D:\git\PlacesProject\web\uploads\\' . $uid . '.jpg', 'w');
+            $fp = fopen($webPath.'\uploads\\' . $uid . '.jpg', 'w');
             fwrite($fp, $tImage);
             fclose($fp);
 
-            $msg = 'http://localhost/PlacesProject/web/uploads/' . $uid . '.jpg';
+            $msg = $_SERVER['BASE'].'/uploads/' . $uid . '.jpg';
         } else {
             $msg = 'Not a valid URL';
         }
