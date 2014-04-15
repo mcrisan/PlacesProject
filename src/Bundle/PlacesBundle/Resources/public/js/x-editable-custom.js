@@ -27,17 +27,9 @@ $(function() {
                 }
             },
             params: function(params) {
-                //originally params contain pk, name and value
                 params.a = 1;
                 return params;
             },
-//            params: function(params) {
-//                // add additional params from data-attributes of trigger element
-//                params.imagetag = $('#image-tag').editable().val();
-//                console.log(params);
-//                //return false;
-//                return params;
-//            },
             error: function(errors) {
 
                 var msg = '';
