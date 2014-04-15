@@ -12,7 +12,7 @@ namespace Bundle\PlacesBundle\Models;
  * @author mcrisan
  */
 class Criteria {
-    
+    private $placeid;
     private $name;
     private $category;
     private $distance;
@@ -73,7 +73,7 @@ class Criteria {
     public function setLat($lat){
         $this->lat = $lat;
     }
-    
+   
     public function getLat(){
         return $this->lat;
     }
@@ -86,9 +86,17 @@ class Criteria {
         return $this->lng;
     }
     
+    public function getPlaceId(){
+        return $this->PlaceId;
+    }
+     public function setPlaceId(){
+        $this->placeid = $placeid;
+    }
+    
     public function toString(){
         $str = $this->name . " " .
                 $this->category['food'] . " " .
+                $this->placeid . " " .
                 $this->category['drink'] . " " .
                 $this->distance . " " .
                 $this->page . " " .

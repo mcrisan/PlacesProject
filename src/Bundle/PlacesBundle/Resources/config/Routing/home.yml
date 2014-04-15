@@ -24,6 +24,10 @@ index_placeDetails:
 eventUploadPhoto:
     path: /eventUploadPhoto
     defaults: { _controller: BundlePlacesBundle:Events:eventuploaduhoto }
+    
+eventdetails:
+    path: /eventDetails
+    defaults: { _controller: BundlePlacesBundle:Page:eventsDetails }    
    # methods:  [POST]
 #    requirements:
 #        id:  \d+
