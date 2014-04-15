@@ -12,34 +12,40 @@ $(function() {
 
 
     $('#save-btn').click(function() {
+        var test = {};
+        test.image = $('#image-tag').val();
+        test.dateevent = $('#event').text();
         $('.myeditable').editable('submit', {
-        url: 'editevent/' + dataid,
-                ajaxOptions: {
-                dataType: 'json' //assuming json response
-                },
-                success: function(data, config) {
-                    if (data && data.id) {
-                        $('#').val();
-                        var msg = 'New event created!';
-                    } else if (data && data.errors) {
-                        config.error.call(this, data.errors);
-                    }
-                },
-                params: function(params) {
-                    // add additional params from data-attributes of trigger element
-                    params.imagetag = $('#image-tag').editable().val();
-                    console.log(params);
-                    return false;
-                    //return params;
+            url: 'editevent/' + dataid,           
+            data: test,
+            success: function(data, config) {
+                if (data && data.id) {
+                    $('#').val();
+                    var msg = 'New event created!';
+                } else if (data && data.errors) {
+                    config.error.call(this, data.errors);
+                }
             },
+            params: function(params) {
+                //originally params contain pk, name and value
+                params.a = 1;
+                return params;
+            },
+//            params: function(params) {
+//                // add additional params from data-attributes of trigger element
+//                params.imagetag = $('#image-tag').editable().val();
+//                console.log(params);
+//                //return false;
+//                return params;
+//            },
             error: function(errors) {
 
-            var msg = '';
-            if (errors && errors.responseText) {
-                msg = errors.responseText;
+                var msg = '';
+                if (errors && errors.responseText) {
+                    msg = errors.responseText;
 
-            }
-            $('#msg-show').html(msg);
+                }
+                $('#msg-show').html(msg);
             }
         });
     });
@@ -61,6 +67,7 @@ $(function() {
         datetimepicker: {
             todayBtn: 'linked',
             weekStart: 1
+            
         }
     });
 
@@ -70,23 +77,77 @@ $(function() {
 
 
 $(function() {
-    var oldimage = $('#poster').attr('src');
-
-    $('#imagesEvent').editable({
-        url: 'eventUploadPhoto',
-        success: function(data) {
-            if (data == 'Not a valid URL') {
-                $('#imagepreview').html('<img class="img-e" src="' + oldimage + '" width="160px" alt="poster" >');
-                $('#msg-show').show(0).html(data).ready(function() {
-                    $('#msg-show').fadeOut(2350)
-                });
-                $('#imagetag').html('<input type="hidden" class="myeditable editable editable-pre-wrapped editable-click editable-empty" id="image-tag" value="' + oldimage + '">');
-            } else {
-                $('#imagepreview').html('<img class="img-e" src="' + data + '" width="160px" alt="poster" >');
-                $('#imagetag').html('<a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="' + data + '" data-type="text" data-pk="2" href="#"><input type="hidden" class="myeditable editable editable-pre-wrapped editable-click editable-empty" id="image-tag" value="' + data + '"></a>');
-            }
-
-        }
-    });
+    __images.processImages();
 });
+//var oldimage = $('#poster').attr('src');
+//
+//$('#imagesEvent').on('click', function() {
+//    alert('aa');
+//
+//});
 
+
+//function bindPostImage() {
+//    var oldimage = $('#poster').attr('src');
+//
+//    alert('aa');
+//    $('#imagesEvent').editable({
+//        url: 'eventUploadPhoto',
+//        success: function(data) {
+//            if (data == 'Not a valid URL') {
+//                $('#imagepreview').html('<a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="picture" data-type="text" data-pk="1" href="#"><img class="img-e" src="' + oldimage + '" width="160px" alt="poster" ></a>');
+//                $('#msg-show').show(0).html(data).ready(function() {
+//                    $('#msg-show').fadeOut(2350)
+//                });
+//                $('#imagetag').html('<input type="hidden" class="myeditable editable editable-pre-wrapped editable-click editable-empty" id="image-tag" value="' + oldimage + '">');
+//            } else {
+//                $('#imagepreview').html('<img class="img-e" src="' + data + '" width="160px" alt="poster" >');
+//                $('#imagetag').html('<a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="' + data + '" data-type="text" data-pk="2" href="#"><input type="hidden" class="myeditable editable editable-pre-wrapped editable-click editable-empty" id="image-tag" value="' + data + '"></a>');
+//            }
+//
+//        }
+//    });
+//
+//}
+
+var __images = {
+    processImages: function() {
+        $('#imagesEvent').editable({
+            url: 'eventUploadPhoto',
+            success: function(data) {
+                if (data == 'Not a valid URL') {
+                    oldimage = $('#poster').attr('src');
+                    $('#imagepreview').html('<a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="picture" data-type="text" data-pk="1" href="#"><img class="img-e" src="' + oldimage + '" width="160px" alt="poster" ></a>');
+                    $('#msg-show').show(0).html(data).ready(function() {
+                        $('#msg-show').fadeOut(2350);
+                        __images.postAction();
+                    });
+                    $('#imagetag').html('<input type="hidden" data-name="image-poster-data" class="myeditable editable editable-pre-wrapped editable-click editable-empty" id="image-tag" value="' + oldimage + '">');
+                } else {
+                    $('#imagepreview').html('<img class="img-e" src="' + data + '" width="160px" alt="poster" >');
+                    $('#imagetag').html('<a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="' + data + '" data-type="text" data-pk="2" href="#"><input type="hidden" class="myeditable editable editable-pre-wrapped editable-click editable-empty" id="image-tag" value="' + data + '"></a>');
+                }
+
+            }
+        });
+    },
+    postAction: function() {
+        $('#imagesEvent').editable({
+            url: 'eventUploadPhoto',
+            success: function(data) {
+                if (data == 'Not a valid URL') {
+                    $('#imagepreview').html('<a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="picture" data-type="text" data-pk="1" href="#"><img class="img-e" src="' + oldimage + '" width="160px" alt="poster" ></a>');
+                    $('#msg-show').show(0).html(data).ready(function() {
+                        $('#msg-show').fadeOut(2350);
+                        __images.postAction();
+                    });
+                    $('#imagetag').html('<input type="hidden" class="myeditable editable editable-pre-wrapped editable-click editable-empty" id="image-tag" value="' + oldimage + '">');
+                } else {
+                    $('#imagepreview').html('<img class="img-e" src="' + data + '" width="160px" alt="poster" >');
+                    $('#imagetag').html('<a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="' + data + '" data-type="text" data-pk="2" href="#"><input type="hidden" class="myeditable editable editable-pre-wrapped editable-click editable-empty" id="image-tag" value="' + data + '"></a>');
+                }
+
+            }
+        });
+    }
+}

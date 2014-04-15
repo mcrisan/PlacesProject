@@ -36,7 +36,6 @@ Bundle\PlacesBundle\Entities\PlaceEvents:
             column: description
         eventdate:
             type: datetime
-            fixed: false
             nullable: false
             column: eventdate
             
