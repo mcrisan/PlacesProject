@@ -18,39 +18,15 @@ use Bundle\PlacesBundle\Command\InsertAllDetailsCommand;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 
+//use \DateTime;
+
 class EventsController extends Controller {
 
     function editeventAction($id) {
         $request = Request::createFromGlobals();
-        $em = $this->getDoctrine()->getManager();
-        $repository = $this->getDoctrine()->getRepository('BundlePlacesBundle:PlaceEvents');
-        $events = $repository->findOneBy(array('placeid' => $id));
-        if (!$events) {
-            $events = new \Bundle\PlacesBundle\Entities\PlaceEvents();
-        }
-
-        $events->setTitle($request->request->get('title'));
-        $events->setDescription($request->request->get('body'));
-        if ($request->request->get('picture') != '') {
-            $events->setImage($request->request->get('picture'));
-        }
-
-        $events->setPlaceid($id);
-
-
-        $validator = $this->container->get('validator');
-
-
-        $errors = $validator->validate($events);
-        $strerror = (string) $errors;
-        if ($strerror) {
-            $msg = "Error, image url!";
-        } else {
-            $em->persist($events);
-            $em->flush();
-            $msg = "Success.";
-        }
-
+        $eventProcess = $this->get('ownerplaces');
+        $eventProcess->eventProcess($id,$request);
+        $msg = "Success.";
         $resp = new \Symfony\Component\HttpFoundation\Response($msg, 200);
         return $resp;
     }
@@ -77,17 +53,17 @@ class EventsController extends Controller {
         if (getimagesize($image) !== false) {
             $imDets = getimagesize($image);
             $fs = new Filesystem();
-            
+
             $fp = fopen('D:\git\PlacesProject\web\uploads\\' . $uid . '.jpg', 'w');
             fwrite($fp, $tImage);
             fclose($fp);
-            
+
             $msg = 'http://localhost/PlacesProject/web/uploads/' . $uid . '.jpg';
         } else {
             $msg = 'Not a valid URL';
         }
-         $resp = new Response($msg, 200);
-         return $resp;
+        $resp = new Response($msg, 200);
+        return $resp;
     }
 
 }

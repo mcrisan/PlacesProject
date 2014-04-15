@@ -34,4 +34,26 @@ class OwnerPlacesDAO {
        return $placeOwner;
     }
     
+    public function eventProcess($id,$request) {
+        $repository = $this->em->getRepository('BundlePlacesBundle:PlaceEvents');
+        $events = $repository->findOneBy(array('placeid' => $id));
+        if (!$events) {
+            $events = new \Bundle\PlacesBundle\Entities\PlaceEvents();
+        }
+        $request->request->get('dateevent');
+        $events->setTitle($request->request->get('title'));
+
+
+        $date = new \DateTime($request->request->get('dateevent'));
+        $events->setDescription($request->request->get('body'));
+        if ($request->request->get('image') != '') {
+            $events->setImage($request->request->get('image'));
+        }
+        $events->setEventdate($request->request->get('title'));
+        $events->setEventdate($date);
+        $events->setPlaceid($id);
+        $this->em->persist($events);
+        $this->em->flush();
+    }
+    
 }

@@ -73,7 +73,7 @@ class PlaceEvents {
      * Set image
      *
      * @param string $image
-     * @return PlacePhotos
+     * @return image
      */
     public function setImage($image) {
         $this->image = $image;

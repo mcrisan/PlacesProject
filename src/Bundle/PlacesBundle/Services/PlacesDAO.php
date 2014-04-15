@@ -290,5 +290,11 @@ class PlacesDAO {
         return $this->em->getRepository('BundlePlacesBundle:Places')
                         ->getPlaceIdBySlug($slug);
     }
+    
+    public function insertEvent($event) {
+        $this->em->persist($event);
+        $this->em->flush();
+        //return $place;
+    }
 
 }
