@@ -43,10 +43,12 @@ class EventsController extends Controller {
     }
 
     public function eventuploaduhotoAction() {
-        $uid = uniqid();
-        $webPath = $this->get('kernel')->getRootDir().'/../web';
         $request = Request::createFromGlobals();
         $image = $request->get('value');
+        $uid = uniqid();
+        $webPath = $this->get('kernel')->getRootDir().'/../web';
+        $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
+        
         if (filter_var($image, FILTER_VALIDATE_URL) === FALSE) {
             die('Not a valid URL');
         }
@@ -58,8 +60,7 @@ class EventsController extends Controller {
             $fp = fopen($webPath.'\uploads\\' . $uid . '.jpg', 'w');
             fwrite($fp, $tImage);
             fclose($fp);
-
-            $msg = $_SERVER['BASE'].'/uploads/' . $uid . '.jpg';
+            $msg = $baseurl."/uploads/" . $uid . '.jpg';
         } else {
             $msg = 'Not a valid URL';
         }
