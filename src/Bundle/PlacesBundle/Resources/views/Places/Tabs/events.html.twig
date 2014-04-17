@@ -11,7 +11,7 @@
 
 <input type="hidden" value="{{ place.placeid }}" id="dataid" >
 <div class="alert hide" id="msg"></div>
-<article id="event-article">
+<article id="event-article">asdasdasd
     <div class="images" id="imagepreview">
         <a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="picture" data-type="text" data-pk="1" href="#">
             <img class="img-e" id="poster" src="{{ events.image }}" width="160px" alt="poster" >
@@ -64,22 +64,19 @@
 
 
         {% if events.title == NULL and events.description == NULL %}
-<h2> No event defined.</h2>
-            {% else %}
-<article>
-    <div class="images">
-        <img class="img-e" id="poster" title="" src="{{ events.image }}">
-    </div>
-    <header><a title="" href="#">{{ events.title }}</a></header>
-    <p>{{ events.eventdate.date|date("d/m/Y") }}</p>
+            <h2> No event defined.</h2>
+        {% else %}
+            <article>
+                <div class="images">
+                    <img class="img-e" id="poster" title="" src="{{ events.image }}">
+                </div>
+                <header><a title="" href="#">{{ events.title }}</a></header>
+                <p>{{ events.eventdate.date|date("d/m/Y") }}</p>
 
-    <p></p>
-    <p>{{ events.description }}</p>
-    <p></p>
+                <p></p>
+                <p>{{ events.description }}</p>
+                <p></p>
 
-</article>
-
-
-
+            </article>
         {% endif %}
 {% endif %}

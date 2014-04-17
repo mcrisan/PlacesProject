@@ -13,7 +13,8 @@ $(document).ready(function() {
                     if (data) {
                         $('#gif-loader').hide();
                         $('.restaurant-list').append(data);
-                        nrplaces = $("#nrplaces").val();                        
+                        nrplaces = $("#nrplaces").val();      
+                        alert(1);
                     }
                 },
                 beforeSend: function() {
