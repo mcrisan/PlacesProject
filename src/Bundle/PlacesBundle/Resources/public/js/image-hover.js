@@ -52,7 +52,9 @@
       
       $('div.events').click(function(){
              var id = $(this).attr('rel');
-             url = "http://localhost/placesproject/web/app_dev.php/home?placeid=" + id;
+
+             url = "http://"+window.location.hostname+"/placesproject/web/app_dev.php/home?placeid=" + id;
+
              window.location.replace(url);
           });
   });

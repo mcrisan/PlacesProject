@@ -4,7 +4,7 @@ $(function() {
 //url redefine to dynamic form
     $.ajax({
         type: "POST",
-        url: "http://localhost/placesproject/web/app_dev.php/placesnames",
+        url: "http://"+window.location.hostname+"/placesproject/web/app_dev.php/placesnames",
         cache: false,
         dataType: 'json',
         success: function(data) {
