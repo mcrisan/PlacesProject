@@ -731,18 +731,23 @@ a.editable-click.editable-disabled:hover {
         margin-right: 1px;
     }
     .form-control.month{
-        margin-left: -24px;
+        margin-left: -4px;
         margin-right: 0;
     }
     .form-control.year{
-        margin-left: -24px;
+        margin-left: -3px;
         margin-right: -7px;
     }
     .form-control.hour{
-        margin-left: -24px;
+        margin-left: 0px;
         margin-right: -7px;
+        padding-right: 21px;
     }
     .form-control.minute{
-        margin-left: 0px;
+        margin-left: 4px;
         margin-right: 0px;
+        padding-right: 10px;
+    }
+    .control-group.form-group > div{
+        width: 332px;
     }

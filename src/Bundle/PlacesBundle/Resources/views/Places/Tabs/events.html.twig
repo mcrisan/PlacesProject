@@ -43,15 +43,15 @@
     <header>
         <a style="color: #000000;border-bottom: none;" data-original-title="Enter title" data-name="title" data-type="text" id="title" class="myeditable editable editable-click editable-empty" href="#">{{ events.title }}</a>
     </header>
-
-    <p>
-        <a class="editable editable-click editable-empty" data-value="{{ events.eventdate.date }}" href="#" id="event" data-type="combodate" data-template="D MMM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="MMM D, YYYY, HH:mm" data-pk="1" data-title="Setup event date and time">
+<a class="editable editable-click editable-empty" data-value="{{ events.eventdate.date }}" href="#" id="event" data-type="combodate" data-template="D MMM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="MMM D, YYYY, HH:mm" data-pk="1" data-title="Setup event date and time">
             {{ events.eventdate.date }}
-        </a>
-    </p>
+</a>
+
     <span id="imagetag"> </span>
     <p><a style="color: #000000;border-bottom: none;" data-original-title="Enter body" data-name="body" data-type="textarea" class="myeditable editable editable-click editable-empty" href="#">{{ events.description }}</a></p>
-
+    <div class="submit-but-div">
+        <button class="btn btn-primary" id="save-btn">Save changes</button>
+    </div>
 </article>
 <div id="left-paginate"> <div class="arrow-left"></div>   </div>
 <div id="right-paginate"> <div class="arrow-right"></div> </div>
@@ -64,19 +64,19 @@
 
 
         {% if events.title == NULL and events.description == NULL %}
-            <h2> No event defined.</h2>
+<h2> No event defined.</h2>
         {% else %}
-            <article>
-                <div class="images">
-                    <img class="img-e" id="poster" title="" src="{{ events.image }}">
-                </div>
-                <header><a title="" href="#">{{ events.title }}</a></header>
-                <p>{{ events.eventdate.date|date("d/m/Y") }}</p>
+<article>
+    <div class="images">
+        <img class="img-e" id="poster" title="" src="{{ events.image }}">
+    </div>
+    <header><a title="" href="#">{{ events.title }}</a></header>
+    <p>{{ events.eventdate.date|date("d/m/Y") }}</p>
 
-                <p></p>
-                <p>{{ events.description }}</p>
-                <p></p>
+    <p></p>
+    <p>{{ events.description }}</p>
+    <p></p>
 
-            </article>
+</article>
         {% endif %}
 {% endif %}
