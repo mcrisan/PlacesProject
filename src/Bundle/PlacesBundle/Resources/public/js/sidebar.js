@@ -14,7 +14,6 @@ $(document).ready(function() {
                         $('#gif-loader').hide();
                         $('.restaurant-list').append(data);
                         nrplaces = $("#nrplaces").val();      
-                        alert(1);
                     }
                 },
                 beforeSend: function() {
