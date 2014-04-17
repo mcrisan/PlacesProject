@@ -71,36 +71,6 @@ $(function() {
 $(function() {
     __images.processImages();
 });
-//var oldimage = $('#poster').attr('src');
-//
-//$('#imagesEvent').on('click', function() {
-//    alert('aa');
-//
-//});
-
-
-//function bindPostImage() {
-//    var oldimage = $('#poster').attr('src');
-//
-//    alert('aa');
-//    $('#imagesEvent').editable({
-//        url: 'eventUploadPhoto',
-//        success: function(data) {
-//            if (data == 'Not a valid URL') {
-//                $('#imagepreview').html('<a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="picture" data-type="text" data-pk="1" href="#"><img class="img-e" src="' + oldimage + '" width="160px" alt="poster" ></a>');
-//                $('#msg-show').show(0).html(data).ready(function() {
-//                    $('#msg-show').fadeOut(2350)
-//                });
-//                $('#imagetag').html('<input type="hidden" class="myeditable editable editable-pre-wrapped editable-click editable-empty" id="image-tag" value="' + oldimage + '">');
-//            } else {
-//                $('#imagepreview').html('<img class="img-e" src="' + data + '" width="160px" alt="poster" >');
-//                $('#imagetag').html('<a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="' + data + '" data-type="text" data-pk="2" href="#"><input type="hidden" class="myeditable editable editable-pre-wrapped editable-click editable-empty" id="image-tag" value="' + data + '"></a>');
-//            }
-//
-//        }
-//    });
-//
-//}
 
 var __images = {
     processImages: function() {

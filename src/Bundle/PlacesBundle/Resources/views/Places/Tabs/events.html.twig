@@ -3,15 +3,12 @@
 {% endblock %}
 {% block javascript %}
 <script src="http://vitalets.github.io/x-editable/assets/momentjs/moment.min.js"></script> 
-
 {% endblock %}
-
-{% if isowner == 1 %}
+{% if isowner == 1 or is_granted('ROLE_ADMIN') %}
     {% if events.title == NULL and events.description == NULL %}
-
 <input type="hidden" value="{{ place.placeid }}" id="dataid" >
 <div class="alert hide" id="msg"></div>
-<article id="event-article">asdasdasd
+<article id="event-article">
     <div class="images" id="imagepreview">
         <a style="color: #000000;border-bottom: none;" id="imagesEvent" data-original-title="Enter picture" data-name="picture" data-type="text" data-pk="1" href="#">
             <img class="img-e" id="poster" src="{{ events.image }}" width="160px" alt="poster" >
@@ -43,9 +40,9 @@
     <header>
         <a style="color: #000000;border-bottom: none;" data-original-title="Enter title" data-name="title" data-type="text" id="title" class="myeditable editable editable-click editable-empty" href="#">{{ events.title }}</a>
     </header>
-<a class="editable editable-click editable-empty" data-value="{{ events.eventdate.date }}" href="#" id="event" data-type="combodate" data-template="D MMM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="MMM D, YYYY, HH:mm" data-pk="1" data-title="Setup event date and time">
+    <a class="editable editable-click editable-empty" data-value="{{ events.eventdate.date }}" href="#" id="event" data-type="combodate" data-template="D MMM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="MMM D, YYYY, HH:mm" data-pk="1" data-title="Setup event date and time">
             {{ events.eventdate.date }}
-</a>
+    </a>
 
     <span id="imagetag"> </span>
     <p><a style="color: #000000;border-bottom: none;" data-original-title="Enter body" data-name="body" data-type="textarea" class="myeditable editable editable-click editable-empty" href="#">{{ events.description }}</a></p>
@@ -80,3 +77,4 @@
 </article>
         {% endif %}
 {% endif %}
+
