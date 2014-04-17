@@ -32,7 +32,7 @@ body {
 #main-container {
 	width: auto !important;
 	height: auto !important;
-	margin-top: -650px;
+	margin-top: -456px;
 	top: 50%;
 	position: absolute;
         overflow-x: hidden !important;
@@ -189,11 +189,12 @@ body {
     left: 0;
 }
 .event-container{
-    margin: 3px 4px;
+    margin: 1px 2px;
     width:252px; 
     height: 180px;
     position: relative;
     float:left;
+    cursor: pointer;
 }
 
 .eventimage{
@@ -204,16 +205,16 @@ body {
     height: 180px;
 }
 .description span{
-	font-size: 30px;
-	font-family: 'Lao Ui';
-	margin: 5px 15px 0 15px;
+    font-size: 30px;
+    font-family: 'Lao Ui';
+    margin: 5px 15px 0 15px;
 }
 .description  p{
-	height: 80px;
-	font-size: 12px;
-	text-align: justify;
-	margin: 10px 15px 0 15px;
-        cursor: pointer;
+    height: 80px;
+    font-size: 12px;
+    text-align: justify;
+    margin: 10px 15px 0 15px;
+    
 }
 .description p1{
     float:right;
