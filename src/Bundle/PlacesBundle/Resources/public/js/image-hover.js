@@ -10,8 +10,8 @@
 
         }
     });
-
-    $(document).mousemove(function(e) {
+ 
+   $(document).mousemove(function(e) {
         var tagName = e.target.tagName.toLowerCase();
         if ((tagName == "img" || e.target.className == "hover-image") && e.target.className != "no-hovering") {
             var $target = $(e.target);
@@ -52,7 +52,9 @@
       
       $('div.events').click(function(){
              var id = $(this).attr('rel');
+
              url = "http://"+window.location.hostname+"/placesproject/web/app_dev.php/home?placeid=" + id;
+
              window.location.replace(url);
           });
   });
