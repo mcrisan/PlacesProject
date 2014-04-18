@@ -6,7 +6,7 @@ $(function() {
         type: "POST",
         url: "http://"+window.location.hostname+"/placesproject/web/app_dev.php/placesnames",
         cache: false,
-        dataType: 'json',
+       dataType: 'json',
         success: function(data) {
             data2 = data;
             $(".search").keyup(function() {
