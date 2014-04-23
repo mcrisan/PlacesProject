@@ -28,13 +28,14 @@
 	margin-top: 5px;
 }
 
-.search-bar-header label{
+.search-bar-header label a{
 	float:left;
 	color: red;
 	font-family: 'DINNeuzeitGrotesk';
 	font-size: 22px;
 	margin-left: 35px;
 	margin-top: -10px;
+        text-decoration: none;
 }
 
 .search-bar-header ul{

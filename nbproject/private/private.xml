@@ -3,16 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Resources/views/Places/Tabs/events.html.twig</file>
-            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Controller/FormsController.php</file>
-            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Resources/public/js/image-hover.js</file>
-            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Resources/config/Routing/render-place.yml</file>
-            <file>file:/D:/git/PlacesProject/app/config/security.yml</file>
-            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Resources/public/js/x-editable-custom.js</file>
-            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Resources/public/js/searchautocomplete.js</file>
-            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Resources/public/css/x-editable.css</file>
-            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Resources/public/js/sidebar.js</file>
-            <file>file:/D:/git/PlacesProject/src/Bundle/PlacesBundle/Resources/views/Page/renderPlaceDetails.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Page/home.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/public/css/style.css</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/public/css/home.css</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/base1.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/base_.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/base2.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/public/js/searchautocomplete.js</file>
         </group>
     </open-files>
 </project-private>
