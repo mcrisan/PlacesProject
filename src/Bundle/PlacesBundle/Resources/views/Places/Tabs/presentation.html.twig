@@ -11,8 +11,8 @@
         {% endif %}
     </div>
     <header><a href="{{ place.placeurl }}" target="_blank" title="{{ place.placename }}">{{ place.placename }}</a></header>
-    
-    <aside class="element-bar">
+   
+    <aside class="element-bar">         
         <ul class="rating-stars">                
            {% for i in 1..5%}
                 {% if i <= place.placerating %}
@@ -22,12 +22,7 @@
                 {% endif%}
             {% endfor %}
         </ul>
-        <ul class="social-bar">
-            <li><a href="#"></a></li>
-            <li><a href="#"></a></li>
-            <li><a href="#"></a></li>
-            <li><a href="#"></a></li>
-        </ul>
+        
     </aside>
     <p>
         <p><b>Phone: </b>{{ place.placephonenumber }}</p>

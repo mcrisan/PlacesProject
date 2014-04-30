@@ -386,3 +386,17 @@ ul, nav, aside{
 	float: left;
 	background: url('../images/address-marker.png') no-repeat;
 }
+.left-container  .ownership{
+    
+    
+    margin-left: 705px; 
+    width: 75px;
+    height: 70px; 
+    z-index: 1; 
+    position: absolute; 
+    background: url('../images/owner2.png') no-repeat ;
+}
+.left-container .ownership:hover{
+    
+    cursor:pointer;
+}

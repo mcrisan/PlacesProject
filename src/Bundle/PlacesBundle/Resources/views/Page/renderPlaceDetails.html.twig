@@ -1,5 +1,8 @@
 <div class="left-container">
-    <section class="top">         
+    <section class="top">    
+              <div class="ownership" data-toggle="modal" data-target="#formOwner">
+            
+             </div>
 <!--         <tabset class="menu-bar">        
             <tab ng-repeat="tab in tabs" heading="{{'{{tab.title}}'}}" active="tab.active" disabled="tab.disabled">
               {{'{{tab.content}}'}}
@@ -76,3 +79,33 @@
         <div id="googleMap"></div>
     </section>
 </div>  
+
+<div class="modal fade" id="formOwner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title blockquote-reverse" id="myModalLabel">Ownership</h4>
+      </div>
+      <div class="modal-body">
+          <ul class="nav nav-list">
+                <label for="exampleInputPassword1">Name</label>
+                <li><input class="input-xlarge form-control" placeholder="Enter Name" value="" type="text" name="name"></li>
+                <label for="exampleInputPassword1">Email</label>
+                <input type="email" class="form-control" id="inputEmail" placeholder="Email" data-error="Bruh, that email address is invalid" required>
+                <label for="exampleInputPassword1">Tel:</label>
+                <li><input class="input-xlarge form-control" placeholder="Enter Number" value="" type="text" name="Tel"></li>
+               <blockquote class="blockquote-reverse">
+                <p>Aceste date sunt private.</p>
+                <p>Va vom contacta pentru a va acorda drepturi de administrare a Place-ului.</p>
+                <p>Va multumim!</p>
+                </blockquote>
+                </ul> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
