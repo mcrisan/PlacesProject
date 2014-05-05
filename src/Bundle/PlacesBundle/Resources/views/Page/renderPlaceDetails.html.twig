@@ -1,59 +1,59 @@
 <div class="left-container">
     <section class="top">    
-              <div class="ownership" data-toggle="modal" data-target="#formOwner">
-            
-             </div>
-<!--         <tabset class="menu-bar">        
-            <tab ng-repeat="tab in tabs" heading="{{'{{tab.title}}'}}" active="tab.active" disabled="tab.disabled">
+        <div class="ownership" data-toggle="modal" data-target="#formOwner">
+
+        </div>
+        <!--         <tabset class="menu-bar">        
+                    <tab ng-repeat="tab in tabs" heading="{{'{{tab.title}}'}}" active="tab.active" disabled="tab.disabled">
               {{'{{tab.content}}'}}
-              <div ng-if ="tab" ng-include src="'/PlacesProject/Web/bundles/bundleplaces/partials/tabs/{{'{{tab.title}}'}}.html'"></div>
-            </tab>
-            <tab heading="PRESENTATION">
-                <article>          
-                </article>
-            </tab>
-            <tab heading="PHOTOS">
-                <article>
-                </article>
-            </tab>
-            <tab heading="RATINGS">
-                <article>
-                </article>
-            </tab>
-            <tab heading="REVIEWS">
-                <article>           
-                </article>
-            </tab>
-            <tab heading="PROMOTIONS">
-                <article>
-                </article>
-            </tab> 
-        </tabset> -->
+                      <div ng-if ="tab" ng-include src="'/PlacesProject/Web/bundles/bundleplaces/partials/tabs/{{'{{tab.title}}'}}.html'"></div>
+                    </tab>
+                    <tab heading="PRESENTATION">
+                        <article>          
+                        </article>
+                    </tab>
+                    <tab heading="PHOTOS">
+                        <article>
+                        </article>
+                    </tab>
+                    <tab heading="RATINGS">
+                        <article>
+                        </article>
+                    </tab>
+                    <tab heading="REVIEWS">
+                        <article>           
+                        </article>
+                    </tab>
+                    <tab heading="PROMOTIONS">
+                        <article>
+                        </article>
+                    </tab> 
+                </tabset> -->
         <div class="tabbable menu-bar">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#pane1" data-toggle="tab">DETAILS</a></li>
-              <li><a href="#pane2" data-toggle="tab">PHOTOS</a></li>
-              <li><a href="#pane3" data-toggle="tab">RATINGS</a></li>
-              <li><a href="#pane4" data-toggle="tab">REVIEWS</a></li>
-              <li><a href="#pane5" data-toggle="tab">PROMOTIONS</a></li>
-              <li><a href="#pane6" data-toggle="tab">EVENTS</a></li>
+                <li class="active"><a href="#pane1" data-toggle="tab">DETAILS</a></li>
+                <li><a href="#pane2" data-toggle="tab">PHOTOS</a></li>
+                <li><a href="#pane3" data-toggle="tab">RATINGS</a></li>
+                <li><a href="#pane4" data-toggle="tab">REVIEWS</a></li>
+                <li><a href="#pane5" data-toggle="tab">PROMOTIONS</a></li>
+                <li><a href="#pane6" data-toggle="tab">EVENTS</a></li>
             </ul>
             <div class="tab-content" style="padding:0px; border:0px">
                 <div id="pane1" class="tab-pane active">  
                 {% include 'BundlePlacesBundle:Places/Tabs:presentation.html.twig' with {'place':place.placeDetails, 'placePhotos' : place.firstPhoto } %}                    
                 </div><!-- /.panel1 -->
-                
+
                 <!-- Photos section -->
                 <div id="pane2" class="tab-pane">                    
                 </div><!-- /.pane2 -->
-                
+
                 <!-- Vote section -->
                 <div id="pane3" class="tab-pane">                    
                 </div><!-- /.pane3 -->
-                
+
                 <div id="pane4" class="tab-pane">                    
                 </div><!-- /.panel4 -->
-                
+
                 <div id="pane5" class="tab-pane">
                 </div><!-- /.panel5 -->  
                 <div id="pane6" class="tab-pane">
@@ -79,33 +79,48 @@
         <div id="googleMap"></div>
     </section>
 </div>  
-
+<form data-toggle="validator" role="form">
 <div class="modal fade" id="formOwner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title blockquote-reverse" id="myModalLabel">Ownership</h4>
-      </div>
-      <div class="modal-body">
-          <ul class="nav nav-list">
-                <label for="exampleInputPassword1">Name</label>
-                <li><input class="input-xlarge form-control" placeholder="Enter Name" value="" type="text" name="name"></li>
-                <label for="exampleInputPassword1">Email</label>
-                <input type="email" class="form-control" id="inputEmail" placeholder="Email" data-error="Bruh, that email address is invalid" required>
-                <label for="exampleInputPassword1">Tel:</label>
-                <li><input class="input-xlarge form-control" placeholder="Enter Number" value="" type="text" name="Tel"></li>
-               <blockquote class="blockquote-reverse">
-                <p>Aceste date sunt private.</p>
-                <p>Va vom contacta pentru a va acorda drepturi de administrare a Place-ului.</p>
-                <p>Va multumim!</p>
-                </blockquote>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title blockquote-reverse" id="myModalLabel">Ownership</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-list">
+                    
+                    <div class="form-group">
+                        <label for="inputName" class="control-label">Name</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="Enter Name" data-error="Enter your name." required>
+                        <div class="help-block with-errors"></div>
+                     </div>
+                    
+                     <div class="form-group">
+                        <label for="inputEmail" class="control-label">Email</label>
+                        <input type="email" class="form-control" id="inputEmail" placeholder="Email" data-error="This email is not valid." required>
+                            <div class="help-block with-errors"></div>
+                     </div>
+                   <div class="form-group">
+                        <label class="control-label" for="firstname">Tel:</label>
+                     <div class="input-group">
+                        <span class="input-group-addon">+4</span>
+                        <input class="form-control" placeholder="Enter Number" type="number"  min="100000000" max="999999999" data-error="This number is not valid." required />
+                      </div>
+                                <div class="help-block with-errors"></div>
+                   </div>
+                    <blockquote class="blockquote-reverse">                       
+                        <p>Aceste date sunt private.</p>
+                        <p>Va vom contacta pentru a va acorda drepturi de administrare a Place-ului.</p>
+                        <p>Va multumim!</p>
+                    </blockquote>
                 </ul> 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Send</button>
-      </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send</button>                
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+</div>  
+</form>

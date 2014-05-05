@@ -3,13 +3,37 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Page/home.html.twig</file>
-            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/public/css/style.css</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/public/js/x-editable.js</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/public/css/forms.css</file>
             <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/public/css/home.css</file>
-            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/base1.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Page/indexx.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Places/Tabs/presentation.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Places/Tabs/events.html.twig</file>
             <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/base_.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Places/Tabs/promotions.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/public/css/details.css</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Controller/CommentController.php</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Page/index.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Page/placeDetails.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Controller/PageController.php</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Page/home.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Places/Tabs/photos.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/public/js/sidebar.js</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Controller/FormsController.php</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Login/admin.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Page/details.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Login/index.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Controller/EventsController.php</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/config/Routing/login.yml</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Page/renderPlaceDetails.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Entities/PlaceEvents.php</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Service/index.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/public/js/x-editable-custom.js</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/base.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/base1.html.twig</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Places/details.html.twig</file>
             <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/base2.html.twig</file>
-            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/public/js/searchautocomplete.js</file>
+            <file>file:/C:/wamp/www/placesproject/src/Bundle/PlacesBundle/Resources/views/Page/indexShowPlace.html.twig</file>
         </group>
     </open-files>
 </project-private>
