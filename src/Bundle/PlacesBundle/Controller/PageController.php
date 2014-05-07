@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand;
 use Symfony\Component\HttpFoundation\Response;
+use Bundle\PlacesBundle\Entities\Ownership;
 
 class PageController extends Controller {
 
@@ -425,7 +426,30 @@ class PageController extends Controller {
 //             $userid = 0;   
 //            }
     }
+    
+    public function insertOwnershipAction()
+    {
+        $request = Request::createFromGlobals();
+        $placeId = $request->request->get('placeid', false);
+        $name = $request->request->get('name', false);
+        $email = $request->request->get('email', false);
+        $tel = $request->request->get('tel', false);
+        $manager = $this->getDoctrine()->getManager();
+        if($name && $email && $tel)
+        {
+            $owner = new Ownership() ;
+            $owner->setName($name)
+                   ->setEmail($email)
+                   ->setTel($tel)
+                   ->setPlaceId($placeId);
+            $manager->persist($owner);
+            $manager->flush();
+            
+        }
+           $response = new Response(json_encode(array('name' => $name)));
+           $response->headers->set('Content-Type', 'application/json');
+
+            return $response;
+    }
 
 }
-
-?>

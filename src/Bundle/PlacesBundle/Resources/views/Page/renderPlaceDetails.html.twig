@@ -79,7 +79,7 @@
         <div id="googleMap"></div>
     </section>
 </div>  
-<form data-toggle="validator" role="form">
+<form data-toggle="validator" role="form" id="formid">
 <div class="modal fade" id="formOwner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -89,6 +89,8 @@
             </div>
             <div class="modal-body">
                 <ul class="nav nav-list">
+                    
+                    <input type="hidden" id="placeid" name="placeid" value="{{ place.placeId }}"/>
                     
                     <div class="form-group">
                         <label for="inputName" class="control-label">Name</label>
@@ -105,7 +107,7 @@
                         <label class="control-label" for="firstname">Tel:</label>
                      <div class="input-group">
                         <span class="input-group-addon">+4</span>
-                        <input class="form-control" placeholder="Enter Number" type="number"  min="100000000" max="999999999" data-error="This number is not valid." required />
+                        <input id='inputTel' class="form-control" placeholder="Enter Number" type="number"  min="100000000" max="999999999" data-error="This number is not valid. Type like model: 0751234567" required />
                       </div>
                                 <div class="help-block with-errors"></div>
                    </div>
@@ -117,8 +119,8 @@
                 </ul> 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Send</button>                
+                <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
+                <button id='send_owner_details' type="submit" disabled="disabled" class="btn btn-primary">Send</button>                
             </div>
         </div>
     </div>
