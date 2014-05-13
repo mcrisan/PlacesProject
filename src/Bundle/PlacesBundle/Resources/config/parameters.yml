@@ -5,6 +5,6 @@ parameters:
     latLng : 46.7592,23.5577
     server: localhost
     port: 11211
-    distance: 0.5
+    distance: 1
     limit: 20
     social_api_key : c2f34fe8782d701b5c64600b0c24349cca9829f3

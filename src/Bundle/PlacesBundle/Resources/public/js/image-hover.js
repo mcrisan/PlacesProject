@@ -51,9 +51,9 @@
   $(document).ready(function (){
       
       $('div.events').click(function(){
-             var id = $(this).attr('rel');
-
-             url = "http://"+window.location.hostname+"/placesproject/web/app_dev.php/home?placeid=" + id;
+             var slug = $(this).attr('rel');
+             
+             url = "http://"+window.location.hostname+"/placesproject/web/app_dev.php/home?slug=" + slug;
 
              window.location.replace(url);
           });

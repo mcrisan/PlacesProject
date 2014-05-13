@@ -245,7 +245,8 @@ class FormsController extends Controller {
         }else{
             $userid = 'null';
         }
-        
+        $session = $this->get('session');
+        $session->set('aux', false);
        
         $userid = $this->getAuthUser(); //get leged usrt id
         $placeop = $this->get("placeOperation");

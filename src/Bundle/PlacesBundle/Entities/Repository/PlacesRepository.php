@@ -22,6 +22,19 @@ class PlacesRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
     
+    public function getPlaceName($slug){
+      $em = $this->getEntityManager();
+         $qb = $em->createQueryBuilder()
+                ->select('placedet.placeName')
+                ->from('BundlePlacesBundle:Places', 'place')
+                ->innerJoin('BundlePlacesBundle:PlaceDetails', 'placedet', 'WITH', 'place.id=placedet.placeId')
+                ->where('place.slug = :slug')
+                ->setParameter('slug', $slug)
+                ->getQuery()
+                ->getResult();
+         
+        return $qb; 
+    }   
     public function getLastPlaceId() {
         $qb = $this->createQueryBuilder('place')
                 ->select('place.id')

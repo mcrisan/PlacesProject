@@ -62,11 +62,42 @@ $(function() {
             
         }
     });
-
-
+//$(function(){
+//  var hash = window.location.hash;
+//  hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+//
+//  $('.nav-tabs a').click(function (e) {
+//    $(this).tab('show');
+//    var scrollmem = $('body').scrollTop();
+//    window.location.hash = this.hash;
+//    $('html,body').scrollTop(scrollmem);
+//  });
+//});
+//
 });
 
+$(document).ready(function() {
+    
 
+  // add a hash to the URL when the user clicks on a tab
+  $('a[data-toggle="tab"]').on('click', function(e) {
+   //   $('#tabs li').removeClass('active');
+   //  $(this).parent.addClass('active');
+   
+    history.pushState(null, null, $(this).attr('href'));
+  });
+  // navigate to a tab when the history changes
+  window.addEventListener("popstate", function(e) {
+    var activeTab = $('[href=' + location.hash + ']');
+     e.preventDefault();
+    if (activeTab.length) {
+      activeTab.tab('show');
+    } else {
+    $('.nav-tabs a:first').tab('show');
+    }
+   
+  });
+});
 
 $(function() {
     __images.processImages();

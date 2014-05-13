@@ -37,8 +37,9 @@ class PageController extends Controller {
         
        $articles = $this->getDoctrine()
                   ->getRepository("BundlePlacesBundle:PlaceEvents")
-                  ->findAll();
+                  ->findEvents();
         $places = "";
+
 
         return $this->render("BundlePlacesBundle:Page:home.html.twig", array(
                     "places" => $places, "events"=> $articles
@@ -146,17 +147,20 @@ class PageController extends Controller {
             $placesList = '';
         }
 
-
+        
         $session = $this->get('session');
         $this->em = $this->getDoctrine()->getManager();
         $request = Request::createFromGlobals();
         $searchInputVal = $request->query->get('input');
-        $placeid = $request->query->get('placeid');
-        if($placeid){
+        $slug = $request->query->get('slug');
+        $aux = false;
+        
+        if($slug){
            
-        $place = $this->em->getRepository('BundlePlacesBundle:PlaceDetails')->find($placeid) ;//findOneBy(array("placeId" => $placeid));
-        //var_dump($place);
-        $searchInputVal = $place->getPlaceName();
+        $place = $this->em->getRepository('BundlePlacesBundle:Places')->getPlaceName($slug);//findOneBy(array("placeId" => $placeid));
+        $searchInputVal = $place[0]['placeName'];
+        $session->set('aux', true);
+    
         }
         $food = $request->query->get('food');
         $drink = $request->query->get('drink');

@@ -58,6 +58,6 @@ insert_ownership_details:
     pattern: /ownershipdetails
     defaults: { _controller: BundlePlacesBundle:Page:insertOwnership } 
     requirements:
-        _method:  POST
+        _method:  POST|GET
 #    requirements:
 #      _method: POST  

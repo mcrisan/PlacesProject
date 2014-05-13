@@ -12,9 +12,39 @@ body {
 @media all and (max-width: 1280px){
     
 	//#search {left: 27px !important;}
-        .event-container{left: -284px; top:70px;}
+        .event-container{left: -284px; top:-23px;}
            }
            
+/*          @media all and (width: 1366px){
+    
+	//#search {left: 27px !important;}
+        .event-container{left: -241px; top:70px;}
+           }
+           
+               @media all and (width: 1440px){
+    
+	#search {top: 17px !important;}
+        .event-container{left: -204px; top:79px;}
+           }
+           
+                    @media all and (width: 1600px){
+    
+	#search {top: 17px !important;}
+        .event-container{left: -124px; top:79px;}
+           }
+           
+                       @media all and (width: 1680px ){
+    
+	//#search {top: 1px !important;}
+        .event-container{left: -84px; top:70px;}
+           }
+           
+                         @media all and (width: 1920px){
+    
+	//#search {top: 1px !important;}
+        .event-container{left: 36px; top:70px;}
+           }
+          */
 
 /*Background images*/
 #main-container > div > img {
@@ -28,8 +58,8 @@ body {
 #main-container {
         
         overflow: hidden;
-	width: 1920px ;
-	height: 1080px ;
+	width: 1848px ;
+	height: 931px ;
 	position: absolute;
         top:0px;
         right:0px;

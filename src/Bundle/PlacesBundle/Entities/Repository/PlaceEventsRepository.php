@@ -20,8 +20,9 @@ class PlaceEventsRepository extends EntityRepository{
         $em = $this->getEntityManager();
         
         $qb = $em->createQueryBuilder()
-                ->select('events.placeid,events.id, events.title, events.description, events.eventdate, events.image')
+                ->select('places.slug, events.placeid, events.id, events.title, events.description, events.eventdate, events.image')
                 ->from('BundlePlacesBundle:PlaceEvents', 'events')
+                ->innerJoin('BundlePlacesBundle:Places', 'places', 'WITH', 'places.id=events.placeid')
                 ->getQuery()
                 ->getResult();
         return $qb;

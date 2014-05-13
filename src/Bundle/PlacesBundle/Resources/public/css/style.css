@@ -165,8 +165,17 @@ label.css-label {
     margin-bottom: 20px;
     padding: 10px;
     width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+    background-color: white;
 }
 
+#header-section{
+  margin-top:61px;  
+};
 /*******/
 
 

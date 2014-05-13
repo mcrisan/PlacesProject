@@ -1,64 +1,85 @@
 <div class="left-container">
-    <section class="top">    
+    <section class="top">
         <div class="ownership" data-toggle="modal" data-target="#formOwner">
 
         </div>
-        <!--         <tabset class="menu-bar">        
-                    <tab ng-repeat="tab in tabs" heading="{{'{{tab.title}}'}}" active="tab.active" disabled="tab.disabled">
-              {{'{{tab.content}}'}}
-                      <div ng-if ="tab" ng-include src="'/PlacesProject/Web/bundles/bundleplaces/partials/tabs/{{'{{tab.title}}'}}.html'"></div>
-                    </tab>
-                    <tab heading="PRESENTATION">
-                        <article>          
-                        </article>
-                    </tab>
-                    <tab heading="PHOTOS">
-                        <article>
-                        </article>
-                    </tab>
-                    <tab heading="RATINGS">
-                        <article>
-                        </article>
-                    </tab>
-                    <tab heading="REVIEWS">
-                        <article>           
-                        </article>
-                    </tab>
-                    <tab heading="PROMOTIONS">
-                        <article>
-                        </article>
-                    </tab> 
-                </tabset> -->
+        <!-- <tabset class="menu-bar">
+<tab ng-repeat="tab in tabs" heading="{{'{{tab.title}}'}}" active="tab.active" disabled="tab.disabled">
+{{'{{tab.content}}'}}
+<div ng-if ="tab" ng-include src="'/PlacesProject/Web/bundles/bundleplaces/partials/tabs/{{'{{tab.title}}'}}.html'"></div>
+</tab>
+<tab heading="PRESENTATION">
+<article>
+</article>
+</tab>
+<tab heading="PHOTOS">
+<article>
+</article>
+</tab>
+<tab heading="RATINGS">
+<article>
+</article>
+</tab>
+<tab heading="REVIEWS">
+<article>
+</article>
+</tab>
+<tab heading="PROMOTIONS">
+<article>
+</article>
+</tab>
+</tabset> -->
         <div class="tabbable menu-bar">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#pane1" data-toggle="tab">DETAILS</a></li>
-                <li><a href="#pane2" data-toggle="tab">PHOTOS</a></li>
-                <li><a href="#pane3" data-toggle="tab">RATINGS</a></li>
-                <li><a href="#pane4" data-toggle="tab">REVIEWS</a></li>
-                <li><a href="#pane5" data-toggle="tab">PROMOTIONS</a></li>
-                <li><a href="#pane6" data-toggle="tab">EVENTS</a></li>
+         {% if app.session.get('aux')=='true' %}
+                <li ><a href="#details" data-value='#details' data-toggle="tab">DETAILS</a></li>
+         {%else%}
+                <li class="active"><a href="#details" data-value='#details' data-toggle="tab">DETAILS</a></li>
+         {%endif%}
+                <li><a href="#photos" data-value='#photos' data-toggle="tab">PHOTOS</a></li>
+                <li><a href="#ratings" data-value='#ratings' data-toggle="tab">RATINGS</a></li>
+                <li><a href="#reviews" data-value='#reviews' data-toggle="tab">REVIEWS</a></li>
+                <li><a href="#promotions" data-value='#promotions' data-toggle="tab">PROMOTIONS</a></li>
+         {% if app.session.get('aux')=='true' %}
+                <li class="active"><a href="#events" data-value='#events'data-toggle="tab">EVENTS</a></li>
+         {%else%}
+                <li><a href="#events" data-value='#events' data-toggle="tab">EVENTS</a></li>
+         {%endif%}
+                
             </ul>
             <div class="tab-content" style="padding:0px; border:0px">
-                <div id="pane1" class="tab-pane active">  
-                {% include 'BundlePlacesBundle:Places/Tabs:presentation.html.twig' with {'place':place.placeDetails, 'placePhotos' : place.firstPhoto } %}                    
+         {% if app.session.get('aux')=='true' %}
+                <div id="details" class="tab-pane">
+                {% include 'BundlePlacesBundle:Places/Tabs:presentation.html.twig' with {'place':place.placeDetails, 'placePhotos' : place.firstPhoto } %}
                 </div><!-- /.panel1 -->
-
+         {%else%}
+                <div id="details" class="tab-pane active">
+                {% include 'BundlePlacesBundle:Places/Tabs:presentation.html.twig' with {'place':place.placeDetails, 'placePhotos' : place.firstPhoto } %}
+                </div><!-- /.panel1 -->
+         {%endif%}
                 <!-- Photos section -->
-                <div id="pane2" class="tab-pane">                    
+                <div id="photos" class="tab-pane">
                 </div><!-- /.pane2 -->
 
                 <!-- Vote section -->
-                <div id="pane3" class="tab-pane">                    
+                <div id="ratings" class="tab-pane">
                 </div><!-- /.pane3 -->
 
-                <div id="pane4" class="tab-pane">                    
+                <div id="reviews" class="tab-pane">
                 </div><!-- /.panel4 -->
 
-                <div id="pane5" class="tab-pane">
-                </div><!-- /.panel5 -->  
-                <div id="pane6" class="tab-pane">
-                     {% include 'BundlePlacesBundle:Places/Tabs:events.html.twig' with { 'place':place, 'isowner' : isowner } %}                    
-                </div><!-- /.panel6 -->  
+                <div id="promotions" class="tab-pane">
+                </div><!-- /.panel5 -->
+         {% if app.session.get('aux')=='true' %}
+                <div id="events" class="tab-pane active">
+                     {% include 'BundlePlacesBundle:Places/Tabs:events.html.twig' with { 'place':place, 'isowner' : isowner } %}
+                </div><!-- /.panel6 -->
+
+         {% else %}
+                <div id="events" class="tab-pane">
+                     {% include 'BundlePlacesBundle:Places/Tabs:events.html.twig' with { 'place':place, 'isowner' : isowner } %}
+                </div><!-- /.panel6 -->
+         {% endif %}
             </div><!-- /.tab-content -->
         </div><!-- /.tabbable -->
     </section>
@@ -67,18 +88,18 @@
         <div class="header">
             <div class="address" ng-controller="TypeaheadCtrl">
                 <div class="marker"></div>
-                <label>Dorobantilor 48, CLUJ NAPOCA</label>   
-                <input type="hidden" id="fromAddress" name="from" value="Calea Dorobantilor 48, Cluj Napoca, Romania" placeholder="location address"/>      
+                <label>Dorobantilor 48, CLUJ NAPOCA</label>
+                <input type="hidden" id="fromAddress" name="from" value="Calea Dorobantilor 48, Cluj Napoca, Romania" placeholder="location address"/>
                 <input ng-model="asyncSelected" value="" typeahead = "address for address in getLocation($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations"></input>
             </div>
             <button class="location-button">
                 <label>Change Location</label>
                 <div class="pen-icon"></div>
-            </button>            
+            </button>
         </div>
         <div id="googleMap"></div>
     </section>
-</div>  
+</div>
 <form data-toggle="validator" role="form" id="formid">
 <div class="modal fade" id="formOwner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -107,22 +128,22 @@
                         <label class="control-label" for="firstname">Tel:</label>
                      <div class="input-group">
                         <span class="input-group-addon">+4</span>
-                        <input id='inputTel' class="form-control" placeholder="Enter Number" type="number"  min="100000000" max="999999999" data-error="This number is not valid. Type like model: 0751234567" required />
+                        <input id='inputTel' class="form-control" placeholder="Enter Number" type="number" min="100000000" max="999999999" data-error="This number is not valid. Type like model: 0751234567" required />
                       </div>
                                 <div class="help-block with-errors"></div>
                    </div>
-                    <blockquote class="blockquote-reverse">                       
+                    <blockquote class="blockquote-reverse">
                         <p>Aceste date sunt private.</p>
                         <p>Va vom contacta pentru a va acorda drepturi de administrare a Place-ului.</p>
                         <p>Va multumim!</p>
                     </blockquote>
-                </ul> 
+                </ul>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
-                <button id='send_owner_details' type="submit" disabled="disabled" class="btn btn-primary">Send</button>                
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id='send_owner_details' type="submit" disabled="disabled" class="btn btn-primary">Send</button>
             </div>
         </div>
     </div>
-</div>  
+</div>
 </form>

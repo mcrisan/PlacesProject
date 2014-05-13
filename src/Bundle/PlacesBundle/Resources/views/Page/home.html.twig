@@ -40,12 +40,12 @@
 
 {% for event in events %}
         <div  class="event-container" >
-        <img src="{{event.getImage()}}" class="eventimage" >
+        <img src="{{event.image}}" class="eventimage" >
 
-            <div  class="description events" rel="{{event.getPlaceid()}}"  >
-                <span>{{event.getTitle()}} </span>
-                <p>{{event.getDescription()}}</p>
-                <p1>Event date: {{event.getEventdate()|date('m-d-Y H:i')}}</p1>
+            <div  class="description events" rel="{{event.slug}}"  >
+                <span>{{event.title}} </span>
+                <p>{{event.description}}</p>
+                <p1>Event date: {{event.eventdate|date('m-d-Y H:i')}}</p1>
              </div>
         </div>
     {% endfor %}
