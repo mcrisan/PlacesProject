@@ -1,58 +1,48 @@
-$(document).ready(function(){
- 
-    $('#send_owner_details').click(function(e){
-        var name = $('#inputName').val();
-        var email = $('#inputEmail').val();
-        var tel = $('#inputTel').val();
-        var placeId = $('#placeid').val();
-        if(name!="" || email!="" || tel!="");
-        {
-            $.ajax({
-                 url: "ownershipdetails",
-                 data:{name:name,email:email,tel:tel,placeid:placeId},
-                 type: "POST",
-                 success: function(data) {
-                     if (data) {
-                         console.log(data);
-                     }
-                 }
-             });
-         };
-         e.preventDefault();
-    });
-            $('#send_owner_details').click(function(){
-               $('#formOwner').modal('hide');
-               $('.close').show;
+/*modal claim ownership button*/
+homePage.controller('ModalDemoCtrl', function($scope, $modal, $log, $http, $location){
 
-                    }); 
-  
-       
-        $(document).ready(function () {  
-  var top = $('#scroll').offset().top - parseFloat($('#scroll').css('marginTop').replace(/auto/, 100));
-  $(window).scroll(function (event) {
-    // what the y position of the scroll is
-    var y = $(this).scrollTop();
+    $scope.user = {
+        name: "",
+        email: "",
+        tel: ""
+    };
 
-    // whether that's below the form
-    if (y >= top) {
-      // if so, ad the fixed class
-      $('#scroll').addClass('fixed');
-    } else {
-      // otherwise remove it
-      $('#scroll').removeClass('fixed');
-    }
-  });
+    $scope.open = function () {
+
+        $modal.open({
+            templateUrl: 'myModalContent.html',
+            backdrop: true,
+            windowClass: 'modal',
+            controller: function ($scope, $modalInstance, $log, user) {
+                $scope.user = user;
+                $scope.submit = function (placeId) {
+                    $scope.user.placeId = placeId;
+                    $http({
+                        method: 'POST',
+                        url: 'ownershipdetails',
+                        data: user,
+                        dataType: 'json',
+                        headers: {'Content-Type': 'application/json'}
+                    }).success(function(data) {
+                        var transform = function(data){
+                            return $.param(data);
+                        };
+                        $modalInstance.dismiss('submit');
+
+                    });
+                };
+                $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                };
+            },
+            resolve: {
+                user: function () {
+                    return $scope.user;
+                }
+            }
+        });
+
+    };
+
 });
-        
-        
-  }); 
-  
- 
-
-        
-     
-   
-    
-     
-   
 

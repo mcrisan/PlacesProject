@@ -1,167 +1,147 @@
-$(function() {
-    var geocoder = new google.maps.Geocoder();
-    var data2;
-//url redefine to dynamic form
-    $.ajax({
-        type: "POST",
-        url: "http://"+window.location.hostname+"/placesproject/web/app_dev.php/placesnames",
-        cache: false,
-       dataType: 'json',
-        success: function(data) {
-            data2 = data;
-            $(".search").keyup(function() {
-                //$( ".search" ).addClass( "ui-autocomplete-loading" );
-                $("#autocomplete-result").empty();
-                var searchid = $(this).val();
-                if (searchid != '') {
-                    getAddress(searchid);
-                    getPlaces(searchid);
 
-                }
-                return false;
+
+    homePage.service('getPlaces', function($http) {
+        this.getAllPlaces = function(){
+            return $http({
+                url: "http://"+window.location.hostname+"/placesproject/web/app_dev.php/placesnames",
+                method: 'get'
+            }).success(function(data){
+                return data;
             });
-        }
-    });
-
-    function getPlaces(name) {
-        var checkedFood = $("#food-checkbox").is(":checked");
-        var checkedDrink = $("#drink-checkbox").is(":checked");
-        var checkedAll = checkedFood ^ checkedDrink;
-        for (var i = 0; i < data2.length; i++) {
-            if (data2[i].placeName.toLowerCase().indexOf(name) != -1) {
-                var category = data2[i].category.toLowerCase();
-                if (checkedFood && category != "food" && checkedAll) {
-                    continue;
-                }
-                if (checkedDrink && category != "drink" && checkedAll) {
-                    continue;
-                }
-                var div = $('<div/>', {
-                    class: "show",
-                    align: "left"
-                });
-                var span = $('<span/>', {
-                    class: "name",
-                    text: data2[i].placeName
-                });
-                var category = data2[i].category ? data2[i].category : "food";
-                var icon = $('<div/>', {
-                    class: category.toLowerCase() + " category",
-                });
-                $(div).append(icon);
-                $(div).append(span);
-                $("#autocomplete-result").append(div);
-            }
-        }
-    }
-
-//    function getAddress(name) {
-//        var addr = $('<div/>', {
-//            id: "addr-auto"
-//        });
-//        $("#autocomplete-result").append(addr);
-//        address = name + " ,Cluj Napoca, Romania";
-//        geocoder.geocode({'address': address}, function(results, status) {
-//            if (status == google.maps.GeocoderStatus.OK) {
-//                res = results[0].formatted_address;
-//                //for (var i = 0; i < results.length; i++) {
-//                latitude = results[0].geometry.location.lat();
-//                longitude = results[0].geometry.location.lng();
-//                $("#search-lat").val(latitude);
-//                $("#search-lng").val(longitude);
-//                var addr = results[0].formatted_address;
-////                    if (i > 0) {
-////                        res2 = results[i].formatted_address;
-////                    } else {
-////                        res2 = "";
-////                    }
-////                    if (res != res2) {
-//                var span = $('<span/>', {
-//                    class: "name",
-//                    text: addr
-//                });
-//                var div = $('<div/>', {
-//                    class: "show",
-//                    align: "left",
-//                });
-//                var icon = $('<div/>', {
-//                    class: "address-marker",
-//                });
-//                $(div).append(icon);
-//                $(div).append(span);
-//                $("#addr-auto").append(div);
-//                // }
-//                //  }
-//            }
-//        });
-//
-//    }
-
-    function getAddress(name) {
-
-        var addr = $('<div/>', {
-            id: "addr-auto"
-                    //text: ""
-        });
-        $("#autocomplete-result").append(addr);
-
-          var autocomplete = new google.maps.places.AutocompleteService();
-
-        var request = {
-            input: name ,
-            //bounds: defaultBounds,
-            types: ['geocode'],
-            componentRestrictions: {country: 'ro'}
-
         };
-        var nr = 0;
-        autocomplete.getPlacePredictions(request, function(predictions, status) {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-                for (var i = 0; i < predictions.length; i++) {
-                    var loc = predictions[i].description;
-                    if (loc.indexOf("Cluj-Napoca") != -1) {
-                        var span = $('<span/>', {
-                            class: "name",
-                            text: loc
-                        });
-                        var div = $('<div/>', {
-                            class: "show",
-                            align: "left",
-                        });
-                        var icon = $('<div/>', {
-                            class: "address-marker",
-                        });
-                        $(div).append(icon);
-                        $(div).append(span);
-                        nr++;
-                        $("#addr-auto").append(div);
-                      break;  
-                    }
-                }
+    });
+
+    homePage.controller('SearchForm',['$scope', 'getPlaces','$filter',function($scope,getPlaces,$filter){
+        $scope.location = '';
+        $scope.allPlaces = {};
+        $scope.name = '';
+        $scope.address = '';
+        $scope.selected = false;
+        
+
+        $scope.showdetails = function(name) {
+            var found = $filter('filter')($scope.allPlaces, {placeName: name}, true);
+            if (found.length) {
+                $scope.selected = true;
+            } else {
+                $scope.selected = false;
             }
-        });
-    }
+    };
 
-    jQuery("#autocomplete-result").on("click", function(e) {
-        var $clicked = $(e.target);
-        //var $name = $clicked.parent().find('.name').html();
-        //alert($name);
-        var $name = $clicked.find('.name').html();
-        if (typeof $name == 'undefined') {
-            $name = $clicked.parent().find('.name').html();
-        }
-        //alert($name);
-        var decoded = $("<div/>").html($name).text();
-        $('#searchh').val(decoded);
-    });
-    jQuery(document).on("click", function(e) {
-        var $clicked = $(e.target);
-        if (!$clicked.hasClass("search")) {
-            jQuery("#autocomplete-result").fadeOut();
-        }
-    });
-    $('#searchh').click(function() {
-        jQuery("#autocomplete-result").fadeIn();
+    getPlaces.getAllPlaces().then(function(response){
+        $scope.allPlaces =  response.data;
     });
 
-});
+    $scope.doSearch = function(){
+        if($scope.name === ''){
+        } else {
+            $scope.showdetails($scope.name);
+
+            if($scope.selected)
+            {
+                window.location.href = "http://"+window.location.hostname+"/placesproject/web/app_dev.php/home?input=" + $scope.name;
+            }
+            else
+            {
+                window.location.href = "http://"+window.location.hostname+"/placesproject/web/app_dev.php/home?input=" + $scope.link;
+            }
+        }
+    };
+
+}]);
+ 
+
+/* Directive google places */
+    homePage.directive('googlePlaces', function(){
+        return {
+            restrict:'E',
+            replace:true,
+            transclude:true,
+            template: '<input style="height: 90px; width: 94%; border-top: solid 15px red; border-bottom: solid 15px red; border-left: solid 25px red; font-size: 32px; color: rgb(119,119,119); padding-left: 25px;"  id="google_places_ac" name="google_places_ac" type="text"  />',
+            link: function($scope, element, attrs, model){
+                var autocomplete = new google.maps.places.Autocomplete($("#google_places_ac")[0], {});
+                var componentRestrictions = {country: 'ro'};
+                                     autocomplete.setComponentRestrictions(componentRestrictions);
+
+                    
+                $scope.secondClick = false;
+
+        $scope.clickEvent = function(){
+
+                if(!$scope.secondClick){
+                     var types = ['establishment'];          
+                     autocomplete.setTypes(types);
+                     $scope.secondClick = true;              
+                         console.log(types);  
+                }
+                                     
+                else{
+                    $scope.secondClick = false;              
+                     var componentRestrictions = {country: 'ro'};
+                     var types = []; 
+                     autocomplete.setTypes(types);
+                     autocomplete.setComponentRestrictions(componentRestrictions);
+                         console.log(componentRestrictions);
+       
+                }
+                
+        }
+                
+                
+                google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                    var place = autocomplete.getPlace();
+                    console.log(place);
+                    var name = place.name;//encodeURIComponent(place.name).replace(/%20/g,'+');
+                    var address = encodeURIComponent(place.formatted_address).replace(/%20/g,'+');
+                    $scope.name = name;
+                    $scope.link = encodeURIComponent(place.name).replace(/%20/g,'+')+"+"+address;
+                    $scope.address = address;
+                   // $scope.location = place.geometry.location.lat() + ',' + place.geometry.location.lng();
+                    $scope.$apply();
+                });
+            }
+            
+            
+        }
+    
+    });
+    
+   
+//var map;
+//var infowindow;
+//
+//function initialize() {
+//  var pyrmont = new google.maps.LatLng(46.766667, 23.583333);
+//
+//  map = new google.maps.Map(document.getElementById('drink-checkbox'), {
+//    center: pyrmont,
+//    zoom: 15
+//  });
+//
+//  var request = {
+//    location: pyrmont,
+//    radius: 5000,
+//    types: ['cafe']
+//  };
+//  infowindow = new google.maps.InfoWindow();
+//  var service = new google.maps.places.PlacesService(map);
+//  service.nearbySearch(request, callback);
+//}
+//
+//function callback(results, status) {
+//  if (status == google.maps.places.PlacesServiceStatus.OK) {
+//  console.log(results[0]);
+//    for (var i = 0; i < results.length; i++) {
+//
+//    if (results[i].name.toLowerCase().indexOf("Bulgakov Cafe".toLowerCase()) >= 0){
+//    console.log(results[i]);
+//    window.placesfilter = results[i];
+//    console.log(window.placesfilter);
+//      
+//     } 
+//  }
+//}
+//}
+//
+//google.maps.event.addDomListener(window, 'load', initialize);
+//

@@ -2,6 +2,32 @@
 {% block content %} 
     <input id="searchvalue" type="hidden" value="{{ input }}" />
     {% include 'BundlePlacesBundle:Page:renderPlaceDetails.html.twig' with {'place':place, 'isowner' : isowner } %}  
+        <div class="left-container map">  
+            <div class="header">
+                <div class="address" >
+                    <div class="marker"></div>
+                    <label>Dorobantilor 48, CLUJ NAPOCA</label>
+                    <input type="hidden" id="fromAddress" name="from" value="Calea Dorobantilor 48, Cluj Napoca, Romania" placeholder="location address"/>
+                    <input ng-model="asyncSelected" value="" typeahead = "address for address in getLocation($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations"></input>
+                </div>
+                    <button class="location-button">
+                        <label>Change Location</label>
+                        <div class="pen-icon"></div>
+                    </button>
+            </div>
+            <form novalidate name="mapContainer" class="mapContainer panel">
+                <div id="theMap"></div>
+                <div class="directions" ng-show="directions || directions==undefined">
+                    <input type="hidden" ng-model="origin" name="origin" ng-model="origin"  required>
+                        <small class="error" id="wrongAddress">Error: \n 
+                            <span>Sorry this is not a valid address.</span>
+                        </small>
+                    <input ng-model="endPoint" type="hidden" disabled >
+                    
+                </div>
+           </form>
+            
+        </div>
 {% endblock %}  
 {% block adminblock %}
     {% if app.user %} 
@@ -9,18 +35,17 @@
     {% endif %}
 {% endblock %}
 
-{# sidebar #}
 {% block sidebar %}
-    <aside class="right-container">
-        <ul class="restaurant-list">
+    <aside when-scrolled class="right-container"  ng-controller="sideBar">
+        <ul class="restaurant-list" >
         {% if input is defined %}
             {% for key,place in places %}
                 {% set itemActive = (key == 0 ? 'item-active' : '') %}
-                <li class="{{ itemActive }}">
+                <li  get-siblings class="{{ itemActive }}" ng-click="clicked()">
                     <section>
                         {# set first result as active #}
                         {% set active = (key == 0 ? 'active' : '') %}
-                        <a id="{{ place.placeId }}" class="it" href="{{ path('renderPlace',{'param':place.slug}) }}">
+                        <a id="{{ place.placeId }}" class="it" ng-click="getLeftData('{{ path('renderPlace',{'param':place.slug}) }}')">
                             <header>{{ place.placeName }}</header>
                             <ul class="rating-stars">                
                                {% for i in 1..5%}
@@ -46,7 +71,7 @@
 
 {% block javascript %}
     <!-- Js to load map and directions -->
-    <script src="{{ asset('bundles/bundleplaces/js/sidebar.js') }}"></script>
+
     <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/google-map-get-directions.js') }}"></script>
     <script src="{{ asset('bundles/bundleplaces/js/renderPlace.js') }}"></script>
     <script src="{{ asset('bundles/bundleplaces/js/processingVote.js') }}"></script>{#
@@ -61,6 +86,7 @@
     <script src="{{ asset('bundles/bundleplaces/js/app/directives.js') }}"></script>  #}
     <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/x-editable.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/x-editable-custom.js') }}"></script>
+    <script src="{{ asset('bundles/bundleplaces/js/sidebar.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}

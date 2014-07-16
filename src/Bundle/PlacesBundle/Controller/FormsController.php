@@ -16,12 +16,24 @@ class FormsController extends Controller {
     function __construct() {
         
     }
-
+  
+    protected function getRequestJson()
+    {
+        $params = null;
+        $content = $this->get("request")->getContent();
+        if (!empty($content))
+        {
+            $params = json_decode($content, true);
+        }
+        return $params;
+    }
     // Get more places
     public function morePlacesRequestAction() {
         $request = Request::createFromGlobals();
-        $page = $request->request->get('pag');
-        $name = $request->request->get('searchval');
+        $params = $this->getRequestJson();
+        $manager = $this->getDoctrine()->getManager();
+        $page=$params['pag'];
+        $name=$params['searchval'];
         $limit = $this->container->getParameter('limit');
         $distance = $this->container->getParameter('distance');
         $session = $this->get('session');

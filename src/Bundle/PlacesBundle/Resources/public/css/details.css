@@ -17,7 +17,7 @@ ul, nav, aside{
 #main-container{
 	margin: auto;
 	width: 1150px;
-	height: 640px;
+	height: 382px;
 }
 
 .left-container{
@@ -37,9 +37,8 @@ ul, nav, aside{
 
 /*RIGHT CONTAINER*/
 .right-container{
-	float: right;
 	width: 340px;
-	height: 780px;
+	height: 820px;
 	background: rgb(238,238,238);
 	overflow: auto;
 }
@@ -84,6 +83,7 @@ ul, nav, aside{
 }
 
 .restaurant-list > li header {
+        cursor: pointer;
 	float: left;
 	height: 40px;
 	width: 200px;

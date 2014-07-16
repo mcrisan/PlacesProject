@@ -1,9 +1,9 @@
 <input id="nrplaces" type="hidden" value="{{ nrplaces }}" />
 <input id="pagplaces" type="hidden" value="{{ pag }}" />
 {% for place in places %}
-    <li>
+    <li get-siblings  ng-click="clicked()" ng-controller="sideBar">
         <section>
-            <a id="{{ place.placeId }}" class="it" href="{{ path('renderPlace',{'param':place.slug}) }}">
+            <a id="{{ place.placeId }}" class="it" ng-click="getLeftData('{{ path('renderPlace',{'param':place.slug}) }}')">
                 <header>{{ place.placeName }}</header>
                 <ul class="rating-stars">                
                    {% for i in 1..5%}

@@ -134,6 +134,7 @@ input[type=checkbox].css-checkbox {
 }
 
 input[type=checkbox].css-checkbox + label.css-label {
+        margin-top:6px;
 	padding-left:18px;
 	height:32px; 
 	display:inline-block;
@@ -176,6 +177,6 @@ label.css-label {
 #header-section{
   margin-top:61px;  
 };
-/*******/
+
 
 

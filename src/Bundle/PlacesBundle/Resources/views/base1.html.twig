@@ -9,20 +9,21 @@
         <!-- Stylesheets -->
         <!-- App css -->
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/style.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/maps.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/bootstrap3.css') }}" />
         <link href="{{ asset('bundles/bundleplaces/css/datetimepicker.css') }}" rel="stylesheet">
         <!-- Append css -->
         {% block stylesheets %} {% endblock %}
     </head>
-    <body>
+    <body  ng-app="homePage">
         <header id="header-section">
             {% block adminblock %}
             
             {% endblock %}
             {% block header %}
-            
+
                 
-            <div id ="search" class="search-bar">
+            <div id ="search" class="search-bar" ng-controller="SearchForm">
                 <div class="search-bar-header">
                     <label>
                     <a href="{{ path('preLoad') }}">Yummy</a>
@@ -41,21 +42,28 @@
                         </li>
                     </ul>
                 </div>
-                <form id="search-form"action="{{ path('demoSearch') }}" method="post">
+    <div id="test1"></div>
+                <form id="search-form">
                     <div class="search-input">                        
                        {# <form action="{{ path('demoSearch') }}" method="post">#}
                         <div class="divider"></div>
-                        <input id="searchh" class="search typeahead1" type="text" name="input" placeholder="Enter name or address..." autocomplete="off" />
+                        <google-places location="location"></google-places>
+                        <!--<input id="searchh" class="search typeahead1" type="text" name="input" placeholder="Enter name or address..." autocomplete="off" />-->
                         <input id="search-lat" type="hidden" name="input-lat" />
                         <input id="search-lng" type="hidden" name="input-lng" />                            
-                        <button type="submit"></button>
-                        <div id="autocomplete-result"></div>
-                       {# </form> #}                         
+                        <button class="getDirections" type="submit" ng-click="doSearch()">
+                        </button>
+                        <div id="autocomplete-result">
+                            <!--<div class="show" align="left" ng-repeat="place in allPlaces | filter:searchText">
+                                <div class="{[{place.category | lowercase}]} category"></div>
+                                <span class="name">{[{place.placeName}]}</span>
+                            </div>-->
+                        </div>
                     </div>
                     <div class="search-bar-footer">
                         <ul class="search-filters">
                             <li>
-                                <input type="checkbox" class="css-checkbox" name="drink-checkbox" id="drink-checkbox"></input>
+                                <input ng-click="clickEvent()" ng-model="value1" type="checkbox" class="css-checkbox" name="drink-checkbox" id="drink-checkbox"></input>
                                 <label for="drink-checkbox" class="css-label">DRINK</label>
                             </li>
                             <li>
@@ -72,27 +80,27 @@
             {% block content %} {% endblock %}
             {% block sidebar %} {% endblock %}
         </section>
-        <footer class="footer">
-            {% block footer %}
-            {% endblock %}
-        </footer>
+
 
         <!-- Javascripts -->
         <!-- jQuery -->
         <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/jquery-1.9.1.js') }}"></script>
         <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/jquery-ui.js') }}"></script>
-
-        <!-- Bootstrap js -->
+        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/angular/angular.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/image-hover.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/ui-bootstrap-tpls-0.10.0.js') }}"></script>
+       <!-- Bootstrap js -->
         <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/bootstrap.js') }}"></script>
         <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/validator.js')  }}"></script>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
         <!-- App js -->
-        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/image-hover.js') }}"></script>
         <!-- for autocomplete -->
         <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/searchautocomplete.js') }}"></script>
-        {#<script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/events.js') }}"></script>#}
+        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/google-maps.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/sidebar.js') }}"></script>
         <script src="http://vitalets.github.io/x-editable/assets/x-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>
-         <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/bootstrap-tab.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/bootstrap-tab.js') }}"></script>
+
         {% block javascript %} 
             {# private js - overwrite in view if needed #}
         {% endblock %}

@@ -48,7 +48,11 @@ body {
 
 /*Background images*/
 #main-container > div > img {
-	width: 100%;
+     width: 100%;
+ }
+
+#go_to_event > div > img {
+    width: 100%;
 }
 
 *:focus {

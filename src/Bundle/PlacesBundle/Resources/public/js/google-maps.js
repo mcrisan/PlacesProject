@@ -1,23 +1,103 @@
+/* get maps and put directions*/
+//    var refreshMap = function(){
+//        var toAddrLatLng = $("#lat").val() + " " + $("#lng").val();
+//        var lat = $("#lat").val();
+//        var long = $("#lng").val();
+//        $('.mapContainer').attr('lat',lat);
+//        $('.mapContainer').attr('long',long);
+//          //  getDirections lat and long
+//    }
 
+    homePage.directive('mapTest', function () {
+    'use strict';
 
-window.google = window.google || {};
-google.maps = google.maps || {};
-(function() {
-  
-  function getScript(src) {
-    document.write('<' + 'script src="' + src + '"' +
-                   ' type="text/javascript"><' + '/script>');
-  }
-  
-  var modules = google.maps.modules = {};
-  google.maps.__gjsload__ = function(name, text) {
-    modules[name] = text;
-  };
-  
-  google.maps.Load = function(apiLoad) {
-    delete google.maps.Load;
-    apiLoad([0.009999999776482582,[[["http://mt0.googleapis.com/vt?lyrs=m@245000000\u0026src=api\u0026hl=ro-RO\u0026","http://mt1.googleapis.com/vt?lyrs=m@245000000\u0026src=api\u0026hl=ro-RO\u0026"],null,null,null,null,"m@245000000",["https://mts0.google.com/vt?lyrs=m@245000000\u0026src=api\u0026hl=ro-RO\u0026","https://mts1.google.com/vt?lyrs=m@245000000\u0026src=api\u0026hl=ro-RO\u0026"]],[["http://khm0.googleapis.com/kh?v=142\u0026hl=ro-RO\u0026","http://khm1.googleapis.com/kh?v=142\u0026hl=ro-RO\u0026"],null,null,null,1,"142",["https://khms0.google.com/kh?v=142\u0026hl=ro-RO\u0026","https://khms1.google.com/kh?v=142\u0026hl=ro-RO\u0026"]],[["http://mt0.googleapis.com/vt?lyrs=h@245000000\u0026src=api\u0026hl=ro-RO\u0026","http://mt1.googleapis.com/vt?lyrs=h@245000000\u0026src=api\u0026hl=ro-RO\u0026"],null,null,null,null,"h@245000000",["https://mts0.google.com/vt?lyrs=h@245000000\u0026src=api\u0026hl=ro-RO\u0026","https://mts1.google.com/vt?lyrs=h@245000000\u0026src=api\u0026hl=ro-RO\u0026"]],[["http://mt0.googleapis.com/vt?lyrs=t@131,r@245000000\u0026src=api\u0026hl=ro-RO\u0026","http://mt1.googleapis.com/vt?lyrs=t@131,r@245000000\u0026src=api\u0026hl=ro-RO\u0026"],null,null,null,null,"t@131,r@245000000",["https://mts0.google.com/vt?lyrs=t@131,r@245000000\u0026src=api\u0026hl=ro-RO\u0026","https://mts1.google.com/vt?lyrs=t@131,r@245000000\u0026src=api\u0026hl=ro-RO\u0026"]],null,null,[["http://cbk0.googleapis.com/cbk?","http://cbk1.googleapis.com/cbk?"]],[["http://khm0.googleapis.com/kh?v=82\u0026hl=ro-RO\u0026","http://khm1.googleapis.com/kh?v=82\u0026hl=ro-RO\u0026"],null,null,null,null,"82",["https://khms0.google.com/kh?v=82\u0026hl=ro-RO\u0026","https://khms1.google.com/kh?v=82\u0026hl=ro-RO\u0026"]],[["http://mt0.googleapis.com/mapslt?hl=ro-RO\u0026","http://mt1.googleapis.com/mapslt?hl=ro-RO\u0026"]],[["http://mt0.googleapis.com/mapslt/ft?hl=ro-RO\u0026","http://mt1.googleapis.com/mapslt/ft?hl=ro-RO\u0026"]],[["http://mt0.googleapis.com/vt?hl=ro-RO\u0026","http://mt1.googleapis.com/vt?hl=ro-RO\u0026"]],[["http://mt0.googleapis.com/mapslt/loom?hl=ro-RO\u0026","http://mt1.googleapis.com/mapslt/loom?hl=ro-RO\u0026"]],[["https://mts0.googleapis.com/mapslt?hl=ro-RO\u0026","https://mts1.googleapis.com/mapslt?hl=ro-RO\u0026"]],[["https://mts0.googleapis.com/mapslt/ft?hl=ro-RO\u0026","https://mts1.googleapis.com/mapslt/ft?hl=ro-RO\u0026"]]],["ro-RO","US",null,0,null,null,"http://maps.gstatic.com/mapfiles/","http://csi.gstatic.com","https://maps.googleapis.com","http://maps.googleapis.com"],["http://maps.gstatic.com/intl/ro_ro/mapfiles/api-3/15/1a","3.15.1a"],[1918266948],1,null,null,null,null,0,"",["adsense","geometry","zombie"],null,0,"http://khm.googleapis.com/mz?v=142\u0026",null,"https://earthbuilder.googleapis.com","https://earthbuilder.googleapis.com",null,"http://mt.googleapis.com/vt/icon",[["http://mt0.googleapis.com/vt","http://mt1.googleapis.com/vt"],["https://mts0.googleapis.com/vt","https://mts1.googleapis.com/vt"],[null,[[0,"m",245000000]],[null,"ro-RO","US",null,18,null,null,null,null,null,null,[[47],[37,[["smartmaps"]]]]],0],[null,[[0,"m",245000000]],[null,"ro-RO","US",null,18,null,null,null,null,null,null,[[47],[37,[["smartmaps"]]]]],3],[null,[[0,"h",245000000]],[null,"ro-RO","US",null,18,null,null,null,null,null,null,[[50],[37,[["smartmaps"]]]]],0],[null,[[0,"h",245000000]],[null,"ro-RO","US",null,18,null,null,null,null,null,null,[[50],[37,[["smartmaps"]]]]],3],[null,[[4,"t",131],[0,"r",131000000]],[null,"ro-RO","US",null,18,null,null,null,null,null,null,[[5],[37,[["smartmaps"]]]]],0],[null,[[4,"t",131],[0,"r",131000000]],[null,"ro-RO","US",null,18,null,null,null,null,null,null,[[5],[37,[["smartmaps"]]]]],3],[null,null,[null,"ro-RO","US",null,18],0],[null,null,[null,"ro-RO","US",null,18],3],[null,null,[null,"ro-RO","US",null,18],6],[null,null,[null,"ro-RO","US",null,18],0],["https://mts0.google.com/vt","https://mts1.google.com/vt"]],2,500], loadScriptTime);
-  };
-  var loadScriptTime = (new Date).getTime();
-  getScript("http://maps.gstatic.com/cat_js/intl/ro_ro/mapfiles/api-3/15/1a/%7Bmain,adsense,geometry,zombie%7D.js");
-})();
+    var directionsDisplay = new google.maps.DirectionsRenderer(),
+        directionsService = new google.maps.DirectionsService(),
+        geocoder = new google.maps.Geocoder(),
+        map,
+        marker,
+        mapObj,
+        infowindow;
+
+    mapObj = {
+        restrict: 'EAC',
+        scope: {
+            destination: '@',
+            lat: '@',
+            long: '@',
+            latlong: '@',
+            markerContent: '@',
+            zoom: '=',
+            type: '@',
+            directions: '@'
+        },
+        replace: true,
+        link: function (scope, element, attrs) {
+
+            scope.init = function () {
+                var mapOptions = {
+                    zoom: scope.zoom !== undefined ? scope.zoom : 15,
+                    mapTypeId: scope.type.toLowerCase(),
+                    streetViewControl: false
+                };
+                map = new google.maps.Map(document.getElementById('theMap'), mapOptions);
+                scope.endPoint = scope.destination !== undefined ? scope.destination : 'Dorobantilor 48, CLUJ NAPOCA';
+
+                geocoder.geocode({
+                    address: scope.endPoint
+                }, function (results, status) {
+                    var location = results[0].geometry.location;
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        map.setCenter(location);
+                        marker = new google.maps.Marker({
+                            map: map,
+                            position: location,
+                            animation: google.maps.Animation.DROP
+
+                        });
+
+                        infowindow = new google.maps.InfoWindow({
+                            content: scope.markerContent !== undefined ? scope.markerContent : 'Google HQ'
+                        });
+
+                    } else {
+                        alert('Cannot Geocode');
+                    }
+                    scope.getDirections();
+
+                });
+
+            };
+
+            scope.init();
+
+            scope.getDirections = function () {
+                scope.latlong =  new google.maps.LatLng(parseFloat(scope.lat),parseFloat(scope.long));
+                var request = {
+                    origin: scope.latlong,
+                    destination: scope.endPoint,
+                    travelMode: google.maps.DirectionsTravelMode.DRIVING
+                };
+                directionsService.route(request, function (response, status) {
+                    if (status === google.maps.DirectionsStatus.OK) {
+                        directionsDisplay.setDirections(response)
+                        document.getElementById('wrongAddress').style.display = "none";
+                    } else {
+                        document.getElementById('wrongAddress').style.display = "block";
+                    }
+                });
+                directionsDisplay.setMap(map);
+
+            };
+
+            scope.clearDirections = function () {
+                scope.init();
+                directionsDisplay.setPanel(null);
+                scope.origin = '';
+            };
+        }
+    };
+
+    return mapObj;
+
+});

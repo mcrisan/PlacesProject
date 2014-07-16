@@ -431,28 +431,35 @@ class PageController extends Controller {
 //            }
     }
     
+    protected function getRequestJson()
+    {
+        $params = null;
+        $content = $this->get("request")->getContent();
+        if (!empty($content))
+        {
+            $params = json_decode($content, true);
+        }
+        return $params;
+    }
+    
     public function insertOwnershipAction()
     {
-        $request = Request::createFromGlobals();
-        $placeId = $request->request->get('placeid', false);
-        $name = $request->request->get('name', false);
-        $email = $request->request->get('email', false);
-        $tel = $request->request->get('tel', false);
+        $params = $this->getRequestJson();
         $manager = $this->getDoctrine()->getManager();
-        if($name && $email && $tel)
+       
+        if($params['name'] && $params['email'] && $params['tel'])
         {
             $owner = new Ownership() ;
-            $owner->setName($name)
-                   ->setEmail($email)
-                   ->setTel($tel)
-                   ->setPlaceId($placeId);
+            $owner->setName($params['name'])
+                   ->setEmail($params['email'])
+                   ->setTel($params['tel'])
+                   ->setPlaceId($params['placeId']);
             $manager->persist($owner);
             $manager->flush();
-            
         }
-           $response = new Response(json_encode(array('name' => $name)));
+           $response = new Response(json_encode($params));
            $response->headers->set('Content-Type', 'application/json');
-
+           
             return $response;
     }
 
