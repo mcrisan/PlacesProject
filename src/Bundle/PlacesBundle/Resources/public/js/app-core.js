@@ -2,7 +2,6 @@ function getCurrentPageName() {
     //method to get Current page name from url addr.
     var PageURL = document.location.href;
     var PageName = PageURL.substring(PageURL.lastIndexOf('/') + 1);
-    //alert(PageName);
     return PageName.toLowerCase();
 }
 
@@ -28,7 +27,6 @@ $(document).ready(function() {
 
     /* Homepage Navigation menu links - stay active */
     var currPage = getCurrentPageName();
-    //alert(currPage);
     switch (currPage) {
         case 'home':
             $('#li-home').addClass('active');

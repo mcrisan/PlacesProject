@@ -1,13 +1,3 @@
-/* get maps and put directions*/
-//    var refreshMap = function(){
-//        var toAddrLatLng = $("#lat").val() + " " + $("#lng").val();
-//        var lat = $("#lat").val();
-//        var long = $("#lng").val();
-//        $('.mapContainer').attr('lat',lat);
-//        $('.mapContainer').attr('long',long);
-//          //  getDirections lat and long
-//    }
-
     homePage.directive('mapTest', function () {
     'use strict';
 
