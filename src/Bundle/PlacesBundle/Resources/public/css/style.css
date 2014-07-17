@@ -1,4 +1,13 @@
 /*FONTS*/
+input[type=number] {
+    -moz-appearance:textfield;
+}
+/* hides the spin-button for chrome*/
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 @font-face{
   font-family:'DINNeuzeitGrotesk';
   src: url('../fonts/DINNeuzeitGrotesk-BoldCond-Regular.ttf'); /* here you go, IE */

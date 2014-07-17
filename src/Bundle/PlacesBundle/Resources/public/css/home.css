@@ -7,7 +7,9 @@ body {
 	-ms-user-select: none;
 	user-select: none;
         overflow: hidden;
+        
 }
+
 
 @media all and (max-width: 1280px){
     

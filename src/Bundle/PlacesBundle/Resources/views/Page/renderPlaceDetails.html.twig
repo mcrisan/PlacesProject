@@ -29,7 +29,7 @@
                             <label for="tel" >Tel:*</label>
                             <div class="input-group">
                             <span class="input-group-addon">+4</span>
-                            <input type="number" name="tel" class="form-control" ng-model="user.tel" ng-minlength="10" ng-maxlength="10" placeholder="Enter your Contact Number..." >
+                            <input type="number" pattern="[0-9]*" name="tel" class="form-control" ng-model="user.tel" ng-minlength="10" ng-maxlength="10" placeholder="Enter your Contact Number..." >
                         </div>
                             <p ng-show="userForm.tel.$error.number" class="help-block">Please enter only numbers.</p>
                             <p ng-show="userForm.tel.$error.minlength" class="help-block">Number is too short. Please enter a valid phone number.</p>
