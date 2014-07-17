@@ -11,27 +11,29 @@
                 <div class="modal fade" id="formOwner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 </div>
                 <div class="modal-body">
-                        <div class="form-group" ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine }">
+                        <div class="form-group" ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.username.$pristine }">
                             <label for="name">Name*</label>
-                            <input type="text" name="name" class="form-control" ng-model="user.name" ng-minlength="3" ng-maxlength="8">
-                            <p ng-show="userForm.username.$error.minlength" class="help-block">Username is too short.</p>
-                            <p ng-show="userForm.username.$error.maxlength" class="help-block">Username is too long.</p>
+                            <input type="text" name="name" class="form-control" ng-model="user.name" ng-minlength="5" ng-maxlength="17">
+                            <p ng-show="userForm.name.$error.minlength" class="help-block">Name is too short. Please enter min 5 characters.</p>
+                            <p ng-show="userForm.name.$error.maxlength" class="help-block">Name is too long.</p>
+                            <div class="help-block with-errors"></div>
                         </div>
 
                         <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
                             <label for="email">Email*</label>
                             <input type="email" name="email" class="form-control" ng-model="user.email" >
-                            <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Enter a valid email.</p>
+                            <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Your email address is invalid. Please enter a valid email address.</p>
                         </div>
 
                         <div class="form-group" ng-class="{ 'has-error' : userForm.tel.$invalid && !userForm.tel.$pristine }">
                             <label for="tel" >Tel:*</label>
                             <div class="input-group">
                             <span class="input-group-addon">+4</span>
-                            <input type="tel" name="tel" class="form-control" ng-model="user.tel" ng-minlength="10" ng-maxlength="10">
+                            <input type="number" name="tel" class="form-control" ng-model="user.tel" ng-minlength="10" ng-maxlength="10">
                         </div>
-                            <p ng-show="userForm.tel.$error.minlength" class="help-block">Number is too short.</p>
-                            <p ng-show="userForm.tel.$error.maxlength" class="help-block">Number is too long.</p>
+                            <p ng-show="userForm.tel.$error.number" class="help-block" >Please enter only numbers.</p>
+                            <p ng-show="userForm.tel.$error.minlength" class="help-block">Number is too short. Please enter a valid phone number.</p>
+                            <p ng-show="userForm.tel.$error.maxlength" class="help-block">Number is too long. Please enter a valid phone number.</p>
                             <div class="help-block with-errors"></div>
                         </div>
 
@@ -43,7 +45,7 @@
                         </blockquote>
                <div class="modal-footer">
                      <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">Close</button>
-                     <button   name="add" type="submit" value="Submit" ng-disabled='userForm.$invalid' class="btn btn-primary" >Send</button>
+                     <button name="add" type="submit" value="Submit" ng-disabled='userForm.$invalid' class="btn btn-primary" >Send</button>
                 </div>
         
             </form>
