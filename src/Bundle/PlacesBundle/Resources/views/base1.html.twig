@@ -18,12 +18,12 @@
     <body  ng-app="homePage">
         <header id="header-section">
             {% block adminblock %}
-            
+
             {% endblock %}
             {% block header %}
 
-                
-            <div id ="search" class="search-bar" ng-controller="SearchForm">
+
+            <div id="search" class="search-bar" ng-controller="SearchForm">
                 <div class="search-bar-header">
                     <label>
                     <a href="{{ path('preLoad') }}">Yummy</a>
@@ -43,13 +43,13 @@
                     </ul>
                 </div>
                 <form id="search-form">
-                    <div class="search-input">                        
+                    <div class="search-input">
                        {# <form action="{{ path('demoSearch') }}" method="post">#}
                         <div class="divider"></div>
                         <google-places location="location"></google-places>
                         <!--<input id="searchh" class="search typeahead1" type="text" name="input" placeholder="Enter name or address..." autocomplete="off" />-->
                         <input id="search-lat" type="hidden" name="input-lat" />
-                        <input id="search-lng" type="hidden" name="input-lng" />                            
+                        <input id="search-lng" type="hidden" name="input-lng" />
                         <button class="getDirections" type="submit" ng-click="doSearch()">
                         </button>
                         <div id="autocomplete-result">
@@ -70,9 +70,9 @@
                                 <label for="food-checkbox" class="css-label">FOOD</label>
                             </li>
                         </ul>
-                    </div> 
+                    </div>
                 </form>
-            </div><!--end search bar--> 
+            </div><!--end search bar-->
             {% endblock %}
         </header>
         <section id="main-container">
@@ -100,7 +100,7 @@
         <script src="http://vitalets.github.io/x-editable/assets/x-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>
         <script type="text/javascript" src="{{ asset('bundles/bundleplaces/js/bootstrap-tab.js') }}"></script>
 
-        {% block javascript %} 
+        {% block javascript %}
             {# private js - overwrite in view if needed #}
         {% endblock %}
     </body>

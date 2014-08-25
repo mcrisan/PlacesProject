@@ -28,7 +28,7 @@ input[type=number]::-webkit-inner-spin-button {
 	margin: auto;
 	height: 172px;
 	background: white;
-	min-width: 780px;
+	/*min-width: 780px;*/
 }
 
 /*Search bar header*/
@@ -88,7 +88,7 @@ input[type=number]::-webkit-inner-spin-button {
 	display: block;
 	text-decoration: none;
 	text-align: center;
-	color: rgb(119,119,119);	
+	color: rgb(119,119,119);
 }
 
 /*Search bar input*/
@@ -98,8 +98,8 @@ input[type=number]::-webkit-inner-spin-button {
 	width: 13px;
 	background: rgb(238,238,238);
 	float: left;
-	margin-top: -50px; 
-	
+	margin-top: -50px;
+
 }
 
 .search-bar .search-input input{
@@ -148,7 +148,7 @@ input[type=checkbox].css-checkbox {
 input[type=checkbox].css-checkbox + label.css-label {
         margin-top:6px;
 	padding-left:18px;
-	height:32px; 
+	height:32px;
 	display:inline-block;
 	line-height:48px;
 	background-repeat:no-repeat;
@@ -187,8 +187,5 @@ label.css-label {
 }
 
 #header-section{
-  margin-top:61px;  
+  margin-top:61px;
 };
-
-
-

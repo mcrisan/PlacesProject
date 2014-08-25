@@ -6,72 +6,71 @@ parameters:
 #services:
 #    model.storemodel:
 #      class: Bundle\ProjectBundle\Model\StoreModel
-#      arguments: 
+#      arguments:
 #        entityManager: "@doctrine.orm.entity_manager"
 #    bundle_project.example:
 #        class: %bundle_project.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
 
 services:
-        
+
     monolog.formatter.session_request:
         class: Monolog\Formatter\LineFormatter
         arguments:
-            - "[%%datetime%%] %%channel%%.%%level_name%%: %%message%%\n" 
-            
+            - "[%%datetime%%] %%channel%%.%%level_name%%: %%message%%\n"
+
     placeOperation:
         class: Bundle\PlacesBundle\Services\Places
         arguments: [@criteria, @placesDAO, @userop, @service_container, @logger, @cache]
         tags:
-            - { name: monolog.logger, channel: comm } 
-            
+            - { name: monolog.logger, channel: comm }
+
     placesDAO:
-        class: Bundle\PlacesBundle\Services\PlacesDAO  
-        arguments: [@doctrine.orm.entity_manager, @cache] 
-        
+        class: Bundle\PlacesBundle\Services\PlacesDAO
+        arguments: [@doctrine.orm.entity_manager, @cache]
+
     userop:
-        class: Bundle\PlacesBundle\Services\UserOperation  
-        arguments: [@service_container]      
-               
+        class: Bundle\PlacesBundle\Services\UserOperation
+        arguments: [@service_container]
+
     insertalldetails:
-        class: Bundle\PlacesBundle\Command\InsertAllDetailsCommand 
-        arguments: [ @placeOperation, @insertphotos, @insertrev, @insertadet ]   
-        
+        class: Bundle\PlacesBundle\Command\InsertAllDetailsCommand
+        arguments: [ @placeOperation, @insertphotos, @insertrev, @insertadet ]
+
     insertadet:
-        class: Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand 
-        arguments: [ @placeOperation ] 
-        
+        class: Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand
+        arguments: [ @placeOperation ]
+
     insertrev:
-        class: Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand 
-        arguments: [ @placeOperation ] 
-        
+        class: Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand
+        arguments: [ @placeOperation ]
+
     insertphotos:
-        class: Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand 
-        arguments: [ @placeOperation ] 
-        
+        class: Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand
+        arguments: [ @placeOperation ]
+
     insertplace:
-        class: Bundle\PlacesBundle\Command\InsertPlacesCommand 
-        arguments: [ @placeOperation ]  
-        
+        class: Bundle\PlacesBundle\Command\InsertPlacesCommand
+        arguments: [ @placeOperation ]
+
     insertallinone:
         class: Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand
-        arguments: [ @placeOperation, @insertalldetails ] 
-        
+        arguments: [ @placeOperation, @insertalldetails ]
+
     insertcat:
         class: Bundle\PlacesBundle\Command\InsertCategoriesCommand
-        arguments: [ @placeOperation ]  
-        
+        arguments: [ @placeOperation ]
+
     placeDto:
-        class: Bundle\PlacesBundle\Models\PlaceDTO 
-        
+        class: Bundle\PlacesBundle\Models\PlaceDTO
+
     criteria:
-        class: Bundle\PlacesBundle\Models\Criteria  
-        
+        class: Bundle\PlacesBundle\Models\Criteria
+
     cache:
         class: Doctrine\Common\Cache\ApcCache
-        arguments: [%kernel.cache_dir%]    
-        
+        arguments: [%kernel.cache_dir%]
+
     ownerplaces:
         class: Bundle\PlacesBundle\Services\OwnerPlacesDAO
         arguments: [ @doctrine.orm.entity_manager ]
-        

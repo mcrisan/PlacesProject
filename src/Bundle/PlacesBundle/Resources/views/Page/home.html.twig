@@ -1,6 +1,6 @@
 {% extends 'BundlePlacesBundle::base1.html.twig' %}
 {% block content %}
-    <div>
+    <div class="container-fluid">
     <div id="go_to_event"  ng-controller="goController">
         {% set counter = 0 %}
         {% for event in events %}
@@ -16,12 +16,48 @@
         {% endfor %}
         </div>
     </div>
-{% endblock %}	
+{% endblock %}
 
 {% block javascript %}
-     
+  <script type="text/javascript">
+    function adjustEventContainer() {
+      var w = $(window).width();
+      var evW = $("#main-container").width();
+      var eventContainer = $(".event-container");
+
+      if(evW > w) {
+        if(w >= 1224 || (w >= 608 && w < 916)) {
+          eventContainer.css("left", "-" + ((evW - w) / 2) + "px");
+        }
+        else {
+          var diff = (w >= 916) ? 916 : 300;
+          var wDiffLeft = (w - diff) / 2;
+          eventContainer.css("left", "-" + (312 - wDiffLeft) + "px");
+          if (diff == 300) {
+            $(".search-input input").css({
+              "height" : "50px",
+              "border-top" : "solid 6px red",
+              "border-bottom" : "solid 6px red",
+              "border-left" : "solid 6px red",
+              "font-size" : "16px",
+              "padding-left" : "10px"
+            });
+          }
+        }
+      }
+      else {
+        eventContainer.css("left", "0px");
+      }
+    }
+    $(document).ready(function() {
+      adjustEventContainer();
+      $( window ).resize(function() {
+        adjustEventContainer();
+      });
+    });
+  </script>
 {% endblock %}
-                  
+
 {% block stylesheets %}
      <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bundleplaces/css/home.css') }}" />
 {% endblock %}
