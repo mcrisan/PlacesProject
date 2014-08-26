@@ -28,6 +28,16 @@
       if(evW > w) {
         if(w >= 1224 || (w >= 608 && w < 916)) {
           eventContainer.css("left", "-" + ((evW - w) / 2) + "px");
+          if (w >= 608 && w < 916) {
+            $(".search-input input").css({
+              "height" : "90px",
+              "border-top" : "solid 15px red",
+              "border-bottom" : "solid 15px red",
+              "border-left" : "solid 15px red",
+              "font-size" : "32px",
+              "padding-left" : "25px"
+            });
+          }
         }
         else {
           var diff = (w >= 916) ? 916 : 300;
