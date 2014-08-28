@@ -22,6 +22,9 @@
   <script type="text/javascript">
     function adjustEventContainer() {
       var w = $(window).width();
+      var h = $(window).height();
+      $('body').css('height', h + "px");
+      $('body').css('width', w + "px");
       var evW = $("#main-container").width();
       var eventContainer = $(".event-container");
 
