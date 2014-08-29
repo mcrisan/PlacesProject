@@ -57,7 +57,7 @@
             restrict:'E',
             replace:true,
             transclude:true,
-            template: '<input style="height: 90px; width: 94%; border-top: solid 15px red; border-bottom: solid 15px red; border-left: solid 25px red; font-size: 32px; color: rgb(119,119,119); padding-left: 25px;"  id="google_places_ac" name="google_places_ac" type="text"  />',
+            template: '<input style="height: 90px; width: 94%; border-top: solid 15px red; border-bottom: solid 15px red; border-left: solid 25px red; font-size: 24px; color: rgb(119,119,119); padding-left: 25px;"  id="google_places_ac" name="google_places_ac" type="text"  />',
             link: function($scope, element, attrs, model){
                 var autocomplete = new google.maps.places.Autocomplete($("#google_places_ac")[0], {});
                 var componentRestrictions = {country: 'ro'};

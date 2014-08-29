@@ -1,5 +1,5 @@
 /*modal claim ownership button*/
-homePage.controller('ModalDemoCtrl', function($scope, $modal, $log, $http, $location){
+homePage.controller('ModalDemoCtrl', function($scope, $modal, $log, $http){
 
     $scope.user = {
         name: "",

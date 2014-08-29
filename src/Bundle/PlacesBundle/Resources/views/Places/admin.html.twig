@@ -1,8 +1,8 @@
 <div class="admin-loged-bar" id="scroll">
 
    {% if placesList is iterable %}
-    Go to place: <select onchange="window.location.href='home?input='+$($(this)).val();">
-        <option> - </option>
+    <b>Go to place:</b> <select onchange="window.location.href='home?input='+$($(this)).val();">
+        <option> Select a place... </option>
     {% for place in placesList %}
         {% for places in place %}
         <option value="{{ places|url_encode }}"> {{ places }} </option>

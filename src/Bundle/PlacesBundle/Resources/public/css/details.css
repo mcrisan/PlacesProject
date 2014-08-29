@@ -1,3 +1,148 @@
+@media all and (min-width: 1280px) {
+   .restaurant-list > li a{
+	
+	font-size: 19px !important;
+   }
+   .left-container .top .menu-bar .nav-tabs li a{
+        font-size: 0.9vw !important;
+   }
+   .restaurant-list > li header {
+       
+	text-overflow:ellipsis;
+	white-space: nowrap;
+   }
+   .left-container .header .address label, .left-container .header .address input{
+	
+	font-size: 1vw !important;
+   }
+   .left-container .top article header a{
+
+	font-size: 1.9vw !important;
+   }
+   
+
+}
+@media all and (width: 1280px) and (max-width: 1024) {
+     .left-container .header .address label, .left-container .header .address input{
+	
+	font-size: 1.3vw !important;
+   }
+   .restaurant-list > li a{
+
+	font-size: 1.7vw !important;
+   }
+}
+@media all and (min-width: 768px) and (max-width: 1024px) {
+    .left-container .top .menu-bar .nav-tabs li a{
+        font-size: 1.3vw !important;
+    }
+    .left-container .header .address label, .left-container .header .address input{
+
+	font-size: 1.5vw !important;
+        width: 270px !important;
+    }
+    .left-container .top .images{
+	width: 29.3vw !important;
+        height: 23vw !important;
+	margin: 7px 14px 0 1 !important;
+    }
+   .left-container .top article header {
+       margin-top:40px !important;        
+    }
+    .restaurant-list > li a{
+	font-size: 1.5vw !important;
+    }
+    .restaurant-list > li header {   
+	width: 110px !important;
+    }
+    .left-container .header .address {
+	width: 295px !important;
+    }
+}
+@media (min-width:500px) and (max-width: 767px)  {
+    #sidebartest {
+        display: none;
+    }
+    .paddingmobile{
+        padding:20px;
+    }
+    .left-container .top .images{
+	width: 40.3vw !important;
+        height: 37vw !important;
+	margin: 7px 14px 0 1 !important;
+    }
+    .left-container .header .address label, .left-container .header .address input{
+
+	font-size: 12pt !important;
+         width: 290px !important;
+    }
+     .left-container .top article header a{
+
+	font-size: 15pt !important;
+       
+   }
+   .left-container .header .address{
+       width: 320px !important;
+   }
+
+    .left-container {
+        width:100% !important;
+    }
+    .left-container .top .menu-bar .nav-tabs li a{
+        font-size: 11pt !important;
+   }
+   
+}
+@media (min-width:500px) and (max-width: 600px)  {
+     .left-container .top article header {
+       margin-top: 25px !important;        
+    }
+}
+@media (min-width:320px) and (max-width: 499px)  {
+    #sidebartest {
+        display: none;
+    }
+    .paddingmobile{
+        padding:20px 20px 0 20px;
+    }
+    .left-container .top .images{
+	width: 40.3vw !important;
+        height: 37vw !important;
+	margin: 7px 14px 0 1 !important;
+    }
+    .left-container .header .address label, .left-container .header .address input{
+
+	font-size: 12pt !important;
+         width: 290px !important;
+    }
+     .left-container .top article header a{
+
+	font-size: 15pt !important;
+       
+   }
+   .left-container .header .address{
+       width: 320px !important;
+       padding-top:20px;
+   }
+
+    .left-container {
+        width:100% !important;
+    }
+    .left-container .top .menu-bar .nav-tabs li a{
+        font-size: 7pt !important;
+   }
+   .left-container .top article .element-bar {
+        padding-top: 10px !important;
+    }
+    .left-container .top article p{
+        text-align: initial !important;
+    }
+     .left-container .top  header {
+       padding-top: 25px !important;        
+    }
+   
+}
+
 ul, nav, aside{
 	list-style: none;
 }
@@ -10,21 +155,25 @@ ul, nav, aside{
 /*SEARCH BAR*/
 #search{
 	margin: auto;
-	width: 1150px;
+	width: auto;
 	height: 170px;
+        max-width: 1150px;
+        min-width: 320px;
 }
 
 #main-container{
 	margin: auto;
-	width: 1150px;
-	height: 382px;
+        max-width: 1150px;
+        min-width: 320px;
+        position: relative;
 }
 
 .left-container{
 	float: left;
-	margin-right: 30px;
 	height: 100%;
-	width: 780px;
+	width: 66%;
+        padding-bottom: 23px;
+        position: relative;
 }
 
 .footer{
@@ -37,10 +186,13 @@ ul, nav, aside{
 
 /*RIGHT CONTAINER*/
 .right-container{
-	width: 340px;
+	width: 31%;
+        float: right;
 	height: 820px;
 	background: rgb(238,238,238);
 	overflow: auto;
+        right: 0;
+        position: absolute;
 }
 
 /*OBJECTIVE LIST*/
@@ -86,7 +238,7 @@ ul, nav, aside{
         cursor: pointer;
 	float: left;
 	height: 40px;
-	width: 200px;
+	width: 177px;
 	margin: 0;
 	text-overflow:ellipsis;
 	white-space: nowrap;
@@ -97,7 +249,7 @@ ul, nav, aside{
 	display: block;
 	height: 100%;
 	width: 100%;
-	font-size: 20px;
+	font-size: 1.3vw;
 	color: red;
 	line-height: 40px;
 	text-decoration: none;
@@ -158,7 +310,7 @@ ul, nav, aside{
 .left-container .top article header a{
 	text-decoration: none;
 	font-family: 'Lao UI';
-	font-size: 30px;
+	font-size: 2.5vw;
 	color: red;
 }
 
@@ -197,13 +349,14 @@ ul, nav, aside{
 }
 
 .left-container .top .menu-bar .nav-tabs li {
-	width: 110px;
+	width: 15%;
 	height: 45px;
 	float: left;
 	margin-right: 4px;
 }
 
 .left-container .top .menu-bar .nav-tabs li a{
+        font-size: 1.1vw;
 	background: rgb(219,219,219);
 	color: rgb(119,119,119);
 	display: block;
@@ -258,17 +411,17 @@ ul, nav, aside{
 
 .left-container .header .address {
 	float: left;
-	width: 300px;
+	width: 400px;
 	height: 100%;
 }
 
 .left-container .header .address label, .left-container .header .address input{
 	color: red;
 	font-family: 'Lao UI';
-	font-size: 17px;
+	font-size: 1.3vw;
 	float: right;
 	font-weight: bold;
-	width: 270px;
+	width: 375px;
 }
 
 .left-container .header .address input{
@@ -389,14 +542,19 @@ ul, nav, aside{
 .left-container  .ownership{
     
     
-    margin-left: 705px; 
     width: 75px;
-    height: 70px; 
+    height: 71px; 
     z-index: 1; 
     position: absolute; 
     background: url('../images/owner2.png') no-repeat ;
+    float:right;
+    right: 0;
+    
 }
 .left-container .ownership:hover{
     
     cursor:pointer;
+}
+.left-container #loadmap{
+    width: 100%;
 }

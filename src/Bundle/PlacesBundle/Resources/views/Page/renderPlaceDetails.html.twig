@@ -53,23 +53,23 @@
   </script>
             <div class="ownership"  ng-click="open()" ></div>
     </div>
-       
+         
 
         <div class="tabbable menu-bar">
             <ul class="nav nav-tabs">
          {% if app.session.get('aux')=='true' %}
-                <li ><a href="#details" data-value='#details' data-toggle="tab">DETAILS</a></li>
+                <li ><a href="#details" data-value='#details'>DETAILS</a></li>
          {%else%}
-                <li class="active"><a href="#details" data-value='#details' data-toggle="tab">DETAILS</a></li>
+                <li class="active"><a href="#details" data-value='#details'>DETAILS</a></li>
          {%endif%}
-                <li><a href="#photos" data-value='#photos' data-toggle="tab">PHOTOS</a></li>
-                <li><a href="#ratings" data-value='#ratings' data-toggle="tab">RATINGS</a></li>
-                <li><a href="#reviews" data-value='#reviews' data-toggle="tab">REVIEWS</a></li>
-                <li><a href="#promotions" data-value='#promotions' data-toggle="tab">PROMOTIONS</a></li>
+                <li><a href="#photos" data-value='#photos'>PHOTOS</a></li>
+                <li><a href="#ratings" data-value='#ratings'>RATINGS</a></li>
+                <li><a href="#reviews" data-value='#reviews'>REVIEWS</a></li>
+                <li><a href="#promo" data-value='#promo'>PROMO</a></li>
          {% if app.session.get('aux')=='true' %}
-                <li class="active"><a href="#events" data-value='#events'data-toggle="tab">EVENTS</a></li>
+                <li class="active"><a href="#events" data-value='#events'>EVENTS</a></li>
          {%else%}
-                <li><a href="#events" data-value='#events' data-toggle="tab">EVENTS</a></li>
+                <li><a href="#events" data-value='#events'>EVENTS</a></li>
          {%endif%}
                 
             </ul>

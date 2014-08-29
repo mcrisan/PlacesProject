@@ -2,6 +2,18 @@
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2013 Vitaliy Potapov; Licensed MIT */
+@media all and (min-width: 768px) {
+     .submit-but-div{
+        right: 72px !important;
+        top: 208px !important;
+    }
+}
+@media (max-width: 767px) and(min-width:500px) {
+    .submit-but-div{
+        right: 72px !important;
+        top: 170px !important;
+    }
+}
 .editableform {
     margin-bottom: 0; /* overwrites bootstrap margin */
 }
@@ -723,7 +735,6 @@ a.editable-click.editable-disabled:hover {
     }
 
     .submit-but-div{
-        border: 1px solid #000000;
         bottom: 0;
         position: absolute;
         right: 76px;

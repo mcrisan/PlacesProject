@@ -15,7 +15,7 @@
                         <div class="pen-icon"></div>
                     </button>
             </div>
-            <form novalidate name="mapContainer" class="mapContainer panel">
+            <form novalidate name="mapContainer" class="mapContainer panel paddingmobile">
                 <div id="theMap"></div>
                 <div class="directions" ng-show="directions || directions==undefined">
                     <input type="hidden" ng-model="origin" name="origin" ng-model="origin"  required>
@@ -36,7 +36,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    <aside when-scrolled class="right-container"  ng-controller="sideBar">
+    <aside id="sidebartest" when-scrolled class="right-container"  ng-controller="sideBar">
         <ul class="restaurant-list" >
         {% if input is defined %}
             {% for key,place in places %}
