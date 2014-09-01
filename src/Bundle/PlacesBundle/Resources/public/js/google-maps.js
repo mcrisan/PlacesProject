@@ -28,7 +28,7 @@
                 var mapOptions = {
                     zoom: scope.zoom !== undefined ? scope.zoom : 15,
                     mapTypeId: scope.type.toLowerCase(),
-                    streetViewControl: false
+                    streetViewControl: true
                 };
                 map = new google.maps.Map(document.getElementById('theMap'), mapOptions);
                 scope.endPoint = scope.destination !== undefined ? scope.destination : 'Dorobantilor 48, CLUJ NAPOCA';
@@ -39,13 +39,6 @@
                     var location = results[0].geometry.location;
                     if (status === google.maps.GeocoderStatus.OK) {
                         map.setCenter(location);
-                        marker = new google.maps.Marker({
-                            map: map,
-                            position: location,
-                            animation: google.maps.Animation.DROP
-
-                        });
-
                         infowindow = new google.maps.InfoWindow({
                             content: scope.markerContent !== undefined ? scope.markerContent : 'Google HQ'
                         });
@@ -60,7 +53,7 @@
             };
 
             scope.init();
-
+            
             scope.getDirections = function () {
                 scope.latlong =  new google.maps.LatLng(parseFloat(scope.lat),parseFloat(scope.long));
                 var request = {
