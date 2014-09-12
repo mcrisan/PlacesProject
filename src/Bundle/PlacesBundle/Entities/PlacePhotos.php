@@ -33,9 +33,16 @@ class PlacePhotos
      * @var string
      */
     private $origin;
+    
+    
+    public function __construct($imgUrl=null, $origin=null, $placeId=null, $photoRef=null) {
+        $this->imgUrl = $imgUrl;
+        $this->imgRef = $photoRef;
+        $this->origin = $origin;
+        $this->placeId = $placeId;
+    }
 
-
-    /**
+        /**
      * Get id
      *
      * @return integer 

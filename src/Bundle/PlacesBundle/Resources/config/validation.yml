@@ -143,7 +143,6 @@ Bundle\PlacesBundle\Entities\PlaceDetails:
            - Length:
                 max: 20
        placeVicinity:
-           - NotBlank: ~
            - Length:
                 max: 255
        placeLat:

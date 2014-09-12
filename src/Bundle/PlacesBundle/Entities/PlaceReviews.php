@@ -44,6 +44,16 @@ class PlaceReviews
      */
     private $date;
 
+    
+    public function __construct($place=null, $author=null, $authorUrl=null, $review=null, $ratingAspect=null, $rating=null, $date=null) {
+        $this->setPlaces($place);
+        $this->author = $author;
+        $this->authorUrl = $authorUrl;
+        $this->review = $review;
+        $this->ratingAspect = $ratingAspect;
+        $this->rating = $rating;
+        $this->date = $date;
+    }
     /**
      * Get id
      *

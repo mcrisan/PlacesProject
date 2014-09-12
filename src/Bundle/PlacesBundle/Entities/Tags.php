@@ -20,6 +20,9 @@ class Tags
     private $tag;
 
 
+    public function __construct($tag=null) {
+        $this->tag = $tag;
+    }
     /**
      * Get id
      *

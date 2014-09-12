@@ -34,28 +34,22 @@ services:
         arguments: [@service_container]      
                
     insertalldetails:
-        class: Bundle\PlacesBundle\Command\InsertAllDetailsCommand 
-        arguments: [ @placeOperation, @insertphotos, @insertrev, @insertadet ]   
+        class: Bundle\PlacesBundle\Command\InsertAllDetailsCommand   
         
     insertadet:
         class: Bundle\PlacesBundle\Command\InsertPlacesDetailsCommand 
-        arguments: [ @placeOperation ] 
         
     insertrev:
         class: Bundle\PlacesBundle\Command\InsertPlaceReviewsCommand 
-        arguments: [ @placeOperation ] 
         
     insertphotos:
         class: Bundle\PlacesBundle\Command\InsertPlacesPhotosCommand 
-        arguments: [ @placeOperation ] 
         
     insertplace:
-        class: Bundle\PlacesBundle\Command\InsertPlacesCommand 
-        arguments: [ @placeOperation ]  
+        class: Bundle\PlacesBundle\Command\InsertPlacesCommand  
         
     insertallinone:
-        class: Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand
-        arguments: [ @placeOperation, @insertalldetails ] 
+        class: Bundle\PlacesBundle\Command\InsertPlaceAllInOneCommand 
         
     insertcat:
         class: Bundle\PlacesBundle\Command\InsertCategoriesCommand
@@ -74,4 +68,19 @@ services:
     ownerplaces:
         class: Bundle\PlacesBundle\Services\OwnerPlacesDAO
         arguments: [ @doctrine.orm.entity_manager ]
+        
+    cityMetaProvider:
+        class: Bundle\PlacesBundle\Services\CityMetaProvider       
+    
+    inputService:
+        class: Bundle\PlacesBundle\Services\InputValidationService
+        
+        
+    placeDataFormatter:
+        class: Bundle\PlacesBundle\Services\PlacesDataFormating
+        arguments: [ @inputService ]
+        
+    commandOperations:
+        class: Bundle\PlacesBundle\Services\PlacesInformationsProvider
+        arguments: [ @cityMetaProvider, @service_container, @placeOperation, @inputService, @placeDataFormatter]
         

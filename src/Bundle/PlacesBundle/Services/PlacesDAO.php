@@ -296,5 +296,10 @@ class PlacesDAO {
         $this->em->flush();
         //return $place;
     }
+    
+    public function checkPlaceReview($text, $author, $placeId) {
+        return $this->em->getRepository('BundlePlacesBundle:PlaceReviews')
+                        ->checkPlaceReview($text, $author, $placeId);
+    }
 
 }

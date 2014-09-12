@@ -19,13 +19,13 @@ Bundle\PlacesBundle\Entities\PlaceDetails:
             type: string
             length: 255
             fixed: false
-            nullable: false
+            nullable: true
             column: place_phonenumber
         placeVicinity:
             type: string
             length: 255
             fixed: false
-            nullable: false
+            nullable: true
             column: place_vicinity
         placeLat:
             type: string
@@ -43,25 +43,25 @@ Bundle\PlacesBundle\Entities\PlaceDetails:
             type: string
             length: 255
             fixed: false
-            nullable: false
+            nullable: true
             column: place_rating
         placeIcon:
             type: string
             length: 255
             fixed: false
-            nullable: false
+            nullable: true
             column: place_icon
         placeUrl:
             type: string
             length: 255
             fixed: false
-            nullable: false
+            nullable: true
             column: place_url
         placeWebsite:
             type: string
             length: 255
             fixed: false
-            nullable: false
+            nullable: true
             column: place_website
     oneToOne:
         place:
