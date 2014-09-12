@@ -1,6 +1,9 @@
 <?php
 
 namespace Bundle\PlacesBundle\Services;
+
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 /**
  * Description of InputService
  *
@@ -15,7 +18,7 @@ class InputValidationService {
         return $default;
     }
     
-    private function decodeJson($json){
+    public function decodeJson($json){
         if(empty($json)){
             throw new InvalidArgumentException;
         }
@@ -28,7 +31,7 @@ class InputValidationService {
         return $data;
     }
     
-    private function checkDataStatus($data){
+    public function checkDataStatus($data){
         $status = $data['status'];
         if ($status == "REQUEST_DENIED") {
             $this->placeop->logMessage("Request denied while inserting places ");
