@@ -130,27 +130,6 @@ class PageController extends Controller {
    
 
     public function indexAction() {
-        $comm = $this->get('commandOperations');
-        $comm->addAllPlaces("establishment", 46.701731, 46.71);
-//        $placeop = $this->get("placeOperation");
-//        $place = $placeop->getPlaceDetails(1595);
-//        var_dump($place);
-//        $place->updateAllDetails('$placename', 
-//            '$placePhonenumber', 
-//            '$placeVicinity',
-//            '$placeLat',
-//            '$placeLng',
-//            '$placeRating',
-//            '$placeIcon',
-//            '$placeUrl',
-//            '$placeWebsite');
-//         var_dump($place);
-        //$this->em = $this->getDoctrine()->getManager();
-        //$text = 'Although there were more server there than guests, they ignored us for more than 30 minutes. There is a system installed that notifies the staff when one of the guests pushes the button on the table but the waiter girls got extremely irritated by it and j';
-        //$author= 'Vencel Biro' ;
-        //$placeId= 1595;
-        //echo $this->em->getRepository('BundlePlacesBundle:PlaceReviews')
-        //                ->checkPlaceReview($text, $author, $placeId);
         $securityContext = $this->container->get('security.context');
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $userid = $this->getAuthUser();
