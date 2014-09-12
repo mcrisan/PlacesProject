@@ -58,7 +58,6 @@ class PlacesInformationsProvider {
         $coord = $this->cityMeta->GetCurrentCityCoordinates();
         $id = $this->placeop->getLastPlaceId();       
         $this->placeop->logMessage("Inserting places from lat " .$wlat ." to lat " .$elat);
-        
         $nr = $this->addPlacesFromCoord($wlat, $elat, $coord, $apiKey, $type); 
         $this->placeop->logMessage("We have made: ". $nr ." querys to search for places");
         $this->addAllPlacesDetails($apiKey, $id, null, true, true, true );              

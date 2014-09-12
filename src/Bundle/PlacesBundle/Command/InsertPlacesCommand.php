@@ -18,6 +18,9 @@ class InsertPlacesCommand extends ContainerAwareCommand {
                 ->addArgument(
                         'type', InputArgument::OPTIONAL, 'Place type !'
                 )
+                ->addArgument(
+                        'latlng', InputArgument::OPTIONAL, 'Place type !'
+                )
                 ->addOption(
                         'yell', null, InputOption::VALUE_NONE, 'If set, the task message will yell in uppercase letters'
                 )
@@ -26,10 +29,10 @@ class InsertPlacesCommand extends ContainerAwareCommand {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $apiKey = $this->getContainer()->getParameter('api_key');
-        $latLng = $this->getContainer()->getParameter('latLng');
+        $latlng = $input->getArgument('latlng');
         $radius = 1011;
         $type = $input->getArgument('type');
         $comandOp = $this->getContainer()->get('commandOperations');
-        $output->writeln($comandOp->addPlaces($type, $apiKey, $latLng, $radius));
+        $output->writeln($comandOp->addPlaces($type, $apiKey, $latlng, $radius));
     }
 }
