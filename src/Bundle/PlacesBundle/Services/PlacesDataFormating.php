@@ -6,6 +6,8 @@ namespace Bundle\PlacesBundle\Services;
  * and open the template in the editor.
  */
 use Bundle\PlacesBundle\Services\InputValidationService;
+use Bundle\PlacesBundle\Services\Places;
+use Bundle\PlacesBundle\Services\CurlRequest;
 /**
  * Description of PlacesDataProcessing
  *
@@ -14,10 +16,15 @@ use Bundle\PlacesBundle\Services\InputValidationService;
 class PlacesDataFormating {
     
     private $inputService;
+    private $placeop;
+    private $curlRequest;
+    
     const GET_PHOTO_URL = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=";
       
-    public function __construct($inputService=null) {
-        $this->inputService = $inputService; 
+    public function __construct($inputService=null, $placeop=null, $curlRequest=null) {
+        $this->inputService = $inputService;
+        $this->placeop = $placeop;
+        $this->curlRequest = $curlRequest;
     }
     
     public function gen_slug($str) {
@@ -53,15 +60,12 @@ class PlacesDataFormating {
     }
 
     public function getImgUrl($urlPicture) {
-        $toCurl = curl_init($urlPicture);
-        curl_setopt($toCurl, CURLOPT_URL, $urlPicture);
-        curl_setopt($toCurl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($toCurl, CURLOPT_RETURNTRANSFER, 1);
-        curl_exec($toCurl);
-        if(curl_errno($toCurl)){
-            throw new Exception(curl_error($toCurl));
-        }
-        $urlToAdd = curl_getinfo($toCurl);
+        $this->curlRequest->initCurl($urlPicture);
+        $this->curlRequest->setOption(CURLOPT_URL, $urlPicture);
+        $this->curlRequest->setOption(CURLOPT_SSL_VERIFYPEER, false);
+        $this->curlRequest->setOption(CURLOPT_RETURNTRANSFER, 1);
+        $this->curlRequest->execute();
+        $urlToAdd = $this->curlRequest->getInfo();
         $imgUrl = $urlToAdd['redirect_url'];
         return $imgUrl;
     }

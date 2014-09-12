@@ -75,10 +75,13 @@ services:
     inputService:
         class: Bundle\PlacesBundle\Services\InputValidationService
         
+    curlRequest:
+        class: Bundle\PlacesBundle\Services\CurlRequest
+        arguments: [ ]
         
     placeDataFormatter:
         class: Bundle\PlacesBundle\Services\PlacesDataFormating
-        arguments: [ @inputService ]
+        arguments: [ @inputService, @placeOperation, @curlRequest ]
         
     commandOperations:
         class: Bundle\PlacesBundle\Services\PlacesInformationsProvider
