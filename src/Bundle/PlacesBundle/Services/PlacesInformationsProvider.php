@@ -41,11 +41,11 @@ class PlacesInformationsProvider {
 
 
     public function __construct(CityMetaProvider $cityMeta, 
-                                ContainerInterface $container,
-                                PlaceOp $placeop,
-                                InputValidationService $inputService,
-                                PlacesDataFormating $placeDataFormater
-                                ) {
+        ContainerInterface $container,
+        PlaceOp $placeop,
+        InputValidationService $inputService,
+        PlacesDataFormating $placeDataFormater
+    ) {
         $this->cityMeta = $cityMeta;
         $this->container = $container;
         $this->placeop = $placeop;
@@ -64,19 +64,20 @@ class PlacesInformationsProvider {
     }
     
     function addAllPlacesDetails($apiKey, 
-                                 $startId = null, 
-                                 $place = null, 
-                                 $saveDetails = false, 
-                                 $savePhotos = false, 
-                                 $saveReviews = false
-                                 ) {
+        $startId = null, 
+        $place = null, 
+        $saveDetails = false, 
+        $savePhotos = false, 
+        $saveReviews = false
+    ) {
         if (!$place) {
             $detailsRef = $this->placeop->getPlacesDetailsRefWithId($startId);
         } else {
             $detailsRef = array(0 => array('id' => $place->getId(), 
-                                           'detailsRef' => $place->getDetailsRef(), 
-                                           'slug' => $place->getSlug()
-                                           ));
+                    'detailsRef' => $place->getDetailsRef(), 
+                    'slug' => $place->getSlug()
+                )
+            );
         }
         foreach ($detailsRef as $place) {
             $url = self::GET_PLACE_DETAILS_URL . $place['detailsRef'] . 
@@ -97,8 +98,7 @@ class PlacesInformationsProvider {
             }
         }
         $this->placeop->logMessage("We have made: " . 
-                                    count($detailsRef) . 
-                                    " querys to insert all details");
+            count($detailsRef) . " querys to insert all details");
     }
     
     private function getDataFromUrl($url){       
@@ -120,8 +120,8 @@ class PlacesInformationsProvider {
     }
     
     function addPlaces($type, $apiKey, $latLng, $radius) {
-        $url= self::GET_PLACES_URL . $latLng . "&radius=" . $radius . "&types=" . 
-                    $type . "&sensor=false&key=" . $apiKey;
+        $url= self::GET_PLACES_URL . $latLng . "&radius=" . $radius . "&types=" 
+            . $type . "&sensor=false&key=" . $apiKey;
         $this->addPlacesByUrl($url, $type, $apiKey, $latLng, $radius);
     }
         
@@ -148,16 +148,17 @@ class PlacesInformationsProvider {
         foreach ($placeItems as $item) {
             $data = $this->placeDataFormater->getPlaceDataFromArray($item);
             $place = new Places($data['detailsRef'], 
-                                $data['extId'], 
-                                0, 
-                                $data['origin'], 
-                                $data['slug']
-                                );
+                $data['extId'], 
+                0, 
+                $data['origin'], 
+                $data['slug']
+            );
             $this->placeop->insertPlace($place);            
         }
         if ($pageToken != "") {
-            $url = self::GET_PLACES_URL . $latLng . "&radius=" . $radius . "&types=" . 
-                   $placeType . "&sensor=false&key=" . $apiKey . "&pagetoken=" . $pageToken;
+            $url = self::GET_PLACES_URL . $latLng . "&radius=" . $radius 
+                . "&types=" . $placeType . "&sensor=false&key=" . $apiKey 
+                . "&pagetoken=" . $pageToken;
             $this->addPlacesByUrl($url, $placeType, $apiKey, $latLng, $radius);
         }
     }       
@@ -168,14 +169,14 @@ class PlacesInformationsProvider {
             foreach ($photos as $photo) {
                 $photodetails = $this->placeDataFormater->getPlacePhotoDetails($photo, $apiKey);
                 $placePhotos = $this->placeop->getImageByPhotoRef($placeId, 
-                                                                  $photodetails['imgUrl']
-                                                                 );
+                    $photodetails['imgUrl']
+                );
                 if (!$placePhotos & $photodetails['imgUrl']) {
                     $placePhoto = new PlacePhotos($photodetails['imgUrl'], 
-                                                  'google', 
-                                                  $placeId, 
-                                                  $photodetails['photoRef']
-                                                );
+                        'google', 
+                        $placeId, 
+                        $photodetails['photoRef']
+                    );
                     $this->placeop->insertPlacePhotos($placePhoto);
                 }
             }  
@@ -188,18 +189,18 @@ class PlacesInformationsProvider {
             foreach ($reviews as $review) {
                 $reviewDetails = $this->placeDataFormater->getReviewDetails($review, $placeId);
                 $review = $this->placeop->checkPlaceReview($reviewDetails['text'], 
-                                                           $reviewDetails['authorName'], 
-                                                           $placeId
-                                                            );
+                    $reviewDetails['authorName'], 
+                    $placeId
+                );
                 if (!$review){
                     $placeReview = new PlaceReviews($reviewDetails['place'],
-                                                    $reviewDetails['authorName'],
-                                                    $reviewDetails['authorUrl'],
-                                                    $reviewDetails['text'],
-                                                    $reviewDetails['aspectType'],
-                                                    $reviewDetails['aspectRating'],
-                                                    $reviewDetails['time']
-                            );
+                        $reviewDetails['authorName'],
+                        $reviewDetails['authorUrl'],
+                        $reviewDetails['text'],
+                        $reviewDetails['aspectType'],
+                        $reviewDetails['aspectRating'],
+                        $reviewDetails['time']
+                    );
                     $this->placeop->InsertPlaceReview($placeReview);
                 }
             }
@@ -216,14 +217,15 @@ class PlacesInformationsProvider {
         }
         $data['place'] = $place;
         $place->updateAllDetails($data['placeName'], 
-                                 $data['placePhoneNumber'], 
-                                 $data['placeAddr'], 
-                                 $data['placeLat'], 
-                                 $data['placeLng'], 
-                                 $data['placeRating'], 
-                                 $data['placeIcon'], 
-                                 $data['placeUrl'], 
-                                 $data['placeWebSite']);
+            $data['placePhoneNumber'], 
+            $data['placeAddr'], 
+            $data['placeLat'], 
+            $data['placeLng'], 
+            $data['placeRating'], 
+            $data['placeIcon'], 
+            $data['placeUrl'], 
+            $data['placeWebSite']
+        );
         $this->placeop->insertPlaceDetails($place);
     }    
     

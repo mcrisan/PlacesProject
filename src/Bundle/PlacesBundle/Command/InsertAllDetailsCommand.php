@@ -26,6 +26,9 @@ class InsertAllDetailsCommand extends ContainerAwareCommand {
         }
         $startid = $input->getArgument('startid');
         $comandOp = $this->getContainer()->get('commandOperations');
-        $output->writeln($comandOp->addAllPlacesDetails($apiKey, $startid, null, true, true, true));
+        $output->writeln($comandOp->addAllPlacesDetails($apiKey, 
+                $startid, null, true, true, true
+            )
+        );
     }
 }

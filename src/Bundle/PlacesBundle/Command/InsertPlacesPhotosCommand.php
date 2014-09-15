@@ -22,6 +22,9 @@ class InsertPlacesPhotosCommand extends ContainerAwareCommand {
         $apiKey = $this->getContainer()->getParameter('api_key');
         $startid = $input->getArgument('startid');
         $comandOp = $this->getContainer()->get('commandOperations');
-        $output->writeln($comandOp->addAllPlacesDetails($apiKey, $startid, null, false, true, false));
+        $output->writeln($comandOp->addAllPlacesDetails($apiKey
+                , $startid, null, false, true, false
+            )
+        );
     }
 }
