@@ -17,7 +17,3 @@ app/config/parameters.yml
 composer.phar
 
 nbproject/*
-.buildpath
-.project
-.settings/*
-.travis.yml
