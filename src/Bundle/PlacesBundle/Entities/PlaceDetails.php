@@ -65,6 +65,25 @@ class PlaceDetails
      */
     private $place;
 
+    public function __construct($placename=null, 
+            $placePhonenumber=null, 
+            $placeVicinity=null,
+            $placeLat=null,
+            $placeLng=null,
+            $placeRating=null,
+            $placeIcon=null,
+            $placeUrl=null,
+            $placeWebsite=null) {
+        $this->placeName = $placename;
+        $this->placePhonenumber = $placePhonenumber;
+        $this->placeVicinity = $placeVicinity;
+        $this->placeLat = $placeLat;
+        $this->placeLng = $placeLng;
+        $this->placeRating = $placeRating;
+        $this->placeIcon = $placeIcon;
+        $this->placeUrl = $placeUrl;
+        $this->placeWebsite = $placeWebsite;
+    }
 
     /**
      * Get id
@@ -327,5 +346,25 @@ class PlaceDetails
     
     public function getPlace() {
         return $this->place;
+    }
+    
+    public function updateAllDetails($placename, 
+            $placePhonenumber, 
+            $placeVicinity,
+            $placeLat,
+            $placeLng,
+            $placeRating,
+            $placeIcon,
+            $placeUrl,
+            $placeWebsite){
+        $this->setPlaceName($placename);
+        $this->setPlacePhonenumber($placePhonenumber);
+        $this->setPlaceVicinity($placeVicinity);
+        $this->setPlaceLat($placeLat);
+        $this->setPlaceLng($placeLng);
+        $this->setPlaceRating($placeRating);
+        $this->setPlaceIcon($placeIcon);
+        $this->setPlaceUrl($placeUrl);
+        $this->setPlaceWebsite($placeWebsite);      
     }
 }

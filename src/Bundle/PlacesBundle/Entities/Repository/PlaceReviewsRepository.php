@@ -38,6 +38,24 @@ class PlaceReviewsRepository extends EntityRepository
         }
     }
     
+    function checkPlaceReview($text, $author, $placeId){
+        $qb = $this->createQueryBuilder('reviews')
+                ->select('reviews')
+                ->where('reviews.places = :id and reviews.review = :review and reviews.author = :author')
+                ->setParameter('id', $placeId)
+                ->setParameter('review', $text)
+                ->setParameter('author', $author)
+                ->getQuery()
+                ->getResult();
+                
+        $rows = count($qb);
+        if($rows >= 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
     // Get reviews for place
     function getReviews($id){
         $qb = $this->createQueryBuilder('review')

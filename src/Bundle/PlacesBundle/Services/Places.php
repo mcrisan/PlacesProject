@@ -448,5 +448,9 @@ class Places {
         //var_dump($userInfo);
         return array("details" => $details, "userInfo" => $userInfo);
     }
+    
+    public function checkPlaceReview($text, $author, $placeId) {
+        return $this->opDAO->checkPlaceReview($text, $author, $placeId);
+    }
 
 }

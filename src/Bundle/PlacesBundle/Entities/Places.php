@@ -177,8 +177,13 @@ class Places
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct($detailsRef=null, $extid=null, $hasOwner=null, $origin=null, $slug=null)
     {
+        $this->detailsRef = $detailsRef ;
+        $this->extId = $extid;
+        $this->hasOwner = $hasOwner;
+        $this->origin = $origin;
+        $this->slug = $slug;
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
